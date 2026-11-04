@@ -3,15 +3,16 @@
 // image with its label map, and the page's recipe and files from TEC-OS's
 // dist/, once they match pins.json. Run after npm run tecos.
 
+import { createRequire } from "node:module";
 import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { build } from "esbuild";
 import { check } from "./tecos.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TECOS = resolve(ROOT, "tec-os");
 const OUT = resolve(ROOT, "dist");
+const { build } = createRequire(resolve(TECOS, "package.json"))("esbuild"); // TEC-OS's, installed with the runtime
 const PROFILES = ["tecos"]; // one image; the width is a CON PICO 40 or 32 line in the card's STARTUP.CMD
 
 /** Every import of the runtime, the page's and TEC-OS's, resolved from tec-os/ by its exports: one copy, at TEC-OS's version. */

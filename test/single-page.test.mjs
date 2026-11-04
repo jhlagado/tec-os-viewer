@@ -7,12 +7,10 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { web } from "./lib/page.mjs";
-import { ROOT } from "./lib/root.mjs";
+import { ROOT, fromTecos } from "./lib/root.mjs";
 
-const require = createRequire(import.meta.url);
 const commit = (dir) => execFileSync("git", ["-C", dir, "rev-parse", "--short=7", "HEAD"], { encoding: "utf8" }).trim();
 
 test("the single page boots to A> with no request but its own, and names both commits", { timeout: 120_000 }, async (t) => {
@@ -24,7 +22,7 @@ test("the single page boots to A> with no request but its own, and names both co
     res.end(html);
   });
   await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const browser = await chromium.launch();
   t.after(async () => {
     await browser.close();

@@ -3,12 +3,12 @@
 A TEC-1G running TEC-OS in a web page, with the cards and recipes that load it: the demo system for TEC-OS and its programs.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
-from it and holds no copy of them. `pins.json` holds the SHA-256 of the ROM and of each file on the page's card, as TEC-OS's build
+from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
+`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM and of each file on the page's card, as TEC-OS's build
 at the pin gives them.
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
-npm ci
 npm run page
 ```
 

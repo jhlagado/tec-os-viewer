@@ -7,14 +7,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { createRequire } from "node:module";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { cardProblem } from "../tec-os/host/card.mjs";
 import { card, prepareCard, web } from "./lib/page.mjs";
+import { fromTecos } from "./lib/root.mjs";
 import { open, serve } from "./lib/serve.mjs";
 
-const require = createRequire(import.meta.url);
 const sha = (b) => createHash("sha256").update(b).digest("hex");
 const startupFile = (...lines) => Buffer.from(lines.map((l) => `${l}\r\n`).join("") + "\x1a", "latin1");
 const driveA = (image) => {
@@ -62,7 +61,7 @@ const storedSha = (page) =>
 
 test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words", { timeout: 120_000 }, async (t) => {
   web();
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
   t.after(async () => {

@@ -7,15 +7,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
-import { ROOT } from "./lib/root.mjs";
+import { ROOT, fromTecos } from "./lib/root.mjs";
 import { serve } from "./lib/serve.mjs";
-
-const require = createRequire(import.meta.url);
 
 let closes = 0;
 /** An IndexedDB whose open fails, or whose put's transaction fails, as asked. */
@@ -71,7 +68,7 @@ test("the real store's saveCard throws when IndexedDB can't open, or a put fails
 
 test("the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153)", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
   t.after(async () => {
@@ -205,7 +202,7 @@ test("the real store's loadCard gives null for no card and throws when the read 
 
 test("a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so (KE-164)", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
   t.after(async () => {

@@ -10,12 +10,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createRequire } from "node:module";
 import { resolve } from "node:path";
-import { ROOT } from "./lib/root.mjs";
+import { ROOT, fromTecos } from "./lib/root.mjs";
 import { serve } from "./lib/serve.mjs";
-
-const require = createRequire(import.meta.url);
 
 /** In the page: edit the focused field as a phone keyboard does, one
  *  character at a time: beforeinput, then, unless that was cancelled, the
@@ -36,7 +33,7 @@ function phoneType(text) {
 
 test("on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
   t.after(async () => {

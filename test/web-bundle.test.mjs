@@ -4,8 +4,10 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { build } from "esbuild";
 import { bundleOptions } from "../tools/build.mjs";
+import { fromTecos } from "./lib/root.mjs";
+
+const { build } = fromTecos("esbuild");
 
 const NODE_GLOBALS = ["Buffer", "process", "global", "require", "module", "__dirname", "__filename", "setImmediate", "clearImmediate"];
 

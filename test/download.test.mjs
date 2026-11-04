@@ -5,13 +5,11 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { card, web } from "./lib/page.mjs";
+import { fromTecos } from "./lib/root.mjs";
 import { open, serve } from "./lib/serve.mjs";
-
-const require = createRequire(import.meta.url);
 
 /** The page's card with DEMO.COM's first block number set past A:'s DSM, and the words TEC-OS's read gives for it. */
 async function damagedCard() {
@@ -36,7 +34,7 @@ test("Download of a file whose entry names a block past DSM says why, and the pa
   web();
   const { image, words } = await damagedCard();
   assert.match(words ?? "", /DEMO\.COM: extent 0 .* names block \d+, beyond DSM \d+/, "TEC-OS's read refuses it, naming the entry");
-  const { chromium } = require("playwright");
+  const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
   t.after(async () => {
