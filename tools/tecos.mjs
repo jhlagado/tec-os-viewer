@@ -8,7 +8,7 @@
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,9 +19,20 @@ const sha = (path) => createHash("sha256").update(readFileSync(path)).digest("he
 /** Each way TEC-OS's output differs from its pins, in words; none when it matches. */
 export function problems() {
   const found = [];
-  const dirty = execFileSync("git", ["-C", TECOS, "status", "--porcelain"], { encoding: "utf8" }).trimEnd();
-  if (dirty) found.push(`tec-os has changes to tracked files:\n${dirty}`);
+  const git = (dir, ...args) => execFileSync("git", ["-C", dir, ...args], { encoding: "utf8" }).trimEnd();
+  const pinned = git(ROOT, "rev-parse", "HEAD:tec-os");
+  const checked = git(TECOS, "rev-parse", "HEAD");
+  if (pinned !== checked) found.push(`tec-os is checked out at ${checked}, not the viewer's pin ${pinned}`);
+  const status = git(TECOS, "status", "--porcelain").split("\n").filter(Boolean);
+  const untracked = status.filter((l) => l.startsWith("??"));
+  const changed = status.filter((l) => !l.startsWith("??"));
+  if (changed.length) found.push(`tec-os has changes to tracked files:\n${changed.join("\n")}`);
+  if (untracked.length) found.push(`tec-os has untracked files:\n${untracked.join("\n")}`);
   const pins = JSON.parse(readFileSync(resolve(ROOT, "pins.json"), "utf8"));
+  const files = resolve(TECOS, "dist/files");
+  for (const name of existsSync(files) ? readdirSync(files) : []) {
+    if (!Object.hasOwn(pins.files, name)) found.push(`tec-os/dist/files/${name} is not named in pins.json`);
+  }
   const rom = resolve(TECOS, "dist/tecos.rom");
   if (!existsSync(rom)) found.push("tec-os/dist/tecos.rom is missing: run npm run tecos");
   else if (sha(rom) !== pins.rom) found.push(`tec-os/dist/tecos.rom has SHA-256 ${sha(rom)}, not the pinned ${pins.rom}`);
