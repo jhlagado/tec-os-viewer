@@ -10,32 +10,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { extname, resolve, sep } from "node:path";
+import { resolve } from "node:path";
 import { ROOT } from "./lib/root.mjs";
+import { serve } from "./lib/serve.mjs";
 
 const require = createRequire(import.meta.url);
-const DIST = resolve(ROOT, "dist");
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
-
-function serve() {
-  const server = createServer(async (req, res) => {
-    const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
-    const file = path === DIST || path.endsWith(sep) ? resolve(path, "index.html") : path;
-    try {
-      if (!file.startsWith(DIST + sep)) throw new Error("outside");
-      const body = await readFile(file);
-      res.writeHead(200, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
-      res.end(body);
-    } catch {
-      res.writeHead(404);
-      res.end();
-    }
-  });
-  return new Promise((ok) => server.listen(0, "127.0.0.1", () => ok(server)));
-}
 
 /** In the page: edit the focused field as a phone keyboard does, one
  *  character at a time: beforeinput, then, unless that was cancelled, the

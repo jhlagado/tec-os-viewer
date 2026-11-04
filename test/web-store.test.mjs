@@ -7,18 +7,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { extname, resolve, sep } from "node:path";
+import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import { ROOT } from "./lib/root.mjs";
+import { serve } from "./lib/serve.mjs";
 
 const require = createRequire(import.meta.url);
-const DIST = resolve(ROOT, "dist");
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
 
 let closes = 0;
 /** An IndexedDB whose open fails, or whose put's transaction fails, as asked. */
@@ -71,23 +68,6 @@ test("the real store's saveCard throws when IndexedDB can't open, or a put fails
     delete globalThis.indexedDB;
   }
 });
-
-function serve() {
-  const server = createServer(async (req, res) => {
-    const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
-    const file = path === DIST || path.endsWith(sep) ? resolve(path, "index.html") : path;
-    try {
-      if (!file.startsWith(DIST + sep)) throw new Error("outside");
-      const body = await readFile(file);
-      res.writeHead(200, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
-      res.end(body);
-    } catch {
-      res.writeHead(404);
-      res.end();
-    }
-  });
-  return new Promise((ok) => server.listen(0, "127.0.0.1", () => ok(server)));
-}
 
 test("the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153)", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
