@@ -12,7 +12,7 @@ import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/c
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { cardProblem } from "../tec-os/host/card.mjs";
 import { card, prepareCard, web } from "./lib/page.mjs";
-import { serve } from "./lib/serve.mjs";
+import { open, serve } from "./lib/serve.mjs";
 
 const require = createRequire(import.meta.url);
 const sha = (b) => createHash("sha256").update(b).digest("hex");
@@ -41,37 +41,6 @@ async function driverCard() {
   a.write("PICO.DRV", Uint8Array.of(0xc9));
   a.write("STARTUP.CMD", startupFile("GLCD.DRV"));
   return image;
-}
-
-/** The page at its own origin with IMAGE as its stored card, and DISPLAY and WIDTH chosen. */
-async function open(browser, url, image, display, width) {
-  const context = await browser.newContext();
-  await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
-  const planter = await context.newPage();
-  await planter.goto(`${url}missing`); // the origin, without the page's own code
-  await planter.evaluate(
-    async ([display, width]) => {
-      localStorage.setItem("tecos.display", display);
-      localStorage.setItem("tecos.width", width);
-      const bytes = await fetch("planted.img").then((r) => r.arrayBuffer());
-      await new Promise((ok) => {
-        const r = indexedDB.open("tecos", 1);
-        r.onupgradeneeded = () => r.result.createObjectStore("cards");
-        r.onsuccess = () => {
-          const tx = r.result.transaction("cards", "readwrite");
-          tx.objectStore("cards").put(bytes, "current");
-          tx.oncomplete = () => (r.result.close(), ok());
-        };
-      });
-    },
-    [display, width],
-  );
-  await planter.close();
-  const page = await context.newPage();
-  const errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(url);
-  return { context, page, errors };
 }
 
 /** The SHA-256 of the page's stored card. */

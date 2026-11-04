@@ -575,7 +575,14 @@ function refreshFiles() {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${f.user}</td><td>${f.name}</td><td>${f.bytes}</td><td><button>Download</button></td>`;
     tr.querySelector("button").addEventListener("click", () => {
-      download(fs.read(f.name, { user: f.user, text: $("astext").checked }), f.name);
+      let bytes;
+      try {
+        bytes = fs.read(f.name, { user: f.user, text: $("astext").checked });
+      } catch (err) {
+        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // a damaged entry, named (VE-2)
+        return;
+      }
+      download(bytes, f.name);
     });
     body.appendChild(tr);
   }

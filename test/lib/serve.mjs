@@ -1,4 +1,5 @@
-// dist/ served on a free local port, as a static host serves the page.
+// dist/ served on a free local port, as a static host serves the page, and the
+// page opened there with a card in its store.
 
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -24,4 +25,35 @@ export function serve() {
     }
   });
   return new Promise((ok) => server.listen(0, "127.0.0.1", () => ok(server)));
+}
+
+/** The page at its own origin with IMAGE as its stored card, and DISPLAY and WIDTH chosen. */
+export async function open(browser, url, image, display, width) {
+  const context = await browser.newContext();
+  await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
+  const planter = await context.newPage();
+  await planter.goto(`${url}missing`); // the origin, without the page's own code
+  await planter.evaluate(
+    async ([display, width]) => {
+      localStorage.setItem("tecos.display", display);
+      localStorage.setItem("tecos.width", width);
+      const bytes = await fetch("planted.img").then((r) => r.arrayBuffer());
+      await new Promise((ok) => {
+        const r = indexedDB.open("tecos", 1);
+        r.onupgradeneeded = () => r.result.createObjectStore("cards");
+        r.onsuccess = () => {
+          const tx = r.result.transaction("cards", "readwrite");
+          tx.objectStore("cards").put(bytes, "current");
+          tx.oncomplete = () => (r.result.close(), ok());
+        };
+      });
+    },
+    [display, width],
+  );
+  await planter.close();
+  const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(url);
+  return { context, page, errors };
 }
