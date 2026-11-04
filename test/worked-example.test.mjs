@@ -10,11 +10,23 @@ import { card, power } from "./lib/page.mjs";
 const LIMIT = 400_000_000; // each step's cycles: a stall fails, naming the step
 const RIGHT = "\x1b[C"; // TED's cursor right
 
-/** Keys for M on the matrix keyboard, each when it waits for one, then until it waits with nothing queued and DONE holds. */
+/**
+ * Keys for M on the matrix keyboard, each when it waits for one, then until it
+ * waits with nothing queued and DONE holds. DONE, which may read the screen, is
+ * asked at most every EVERY cycles, so a wait that never ends reaches LIMIT soon.
+ */
+const EVERY = 20_000;
 function keys(m, s, what, done = () => true) {
   m.enqueueInput(s, "matrix");
+  let next = 0;
+  const settled = () => {
+    m.pumpInput();
+    if (m.pending?.length || !m.waitingForInput() || m.cycles < next) return false;
+    next = m.cycles + EVERY;
+    return done();
+  };
   try {
-    m.runUntil(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), LIMIT, what);
+    m.runUntil(settled, LIMIT, what);
   } catch {
     throw new Error(`${what}: not within ${LIMIT} cycles, ${m.pending?.length ?? 0} keys unread\n${m.screen().filter((l) => l.trim()).join("\n")}`);
   }
