@@ -1,0 +1,22 @@
+{
+  "name": "tec-os-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TEC-OS on a model of the TEC-1G, in a web page",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "tecos": "node tools/tecos.mjs",
+    "web": "node tools/build.mjs",
+    "page": "npm run tecos && npm run web && node tools/page.mjs",
+    "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "quick": "node --test --test-concurrency=1 --test-name-pattern=\"bundle|serial board\" test/web-bundle.test.mjs test/boards.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2",
+    "playwright": "1.62.1"
+  }
+}

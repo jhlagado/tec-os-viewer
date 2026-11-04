@@ -1,0 +1,3 @@
+[submodule "tec-os"]
+	path = tec-os
+	url = https://github.com/jhlagado/tec-os.git
