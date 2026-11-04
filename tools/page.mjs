@@ -2,7 +2,8 @@
 // One self-contained viewer page from dist/, for a private link:
 // dist/tec-os-viewer.html, labelled with the viewer's commit and TEC-OS's. The
 // page's files are embedded and served to its fetch calls by their relative
-// paths; the page's code is unchanged. Run after npm run web.
+// paths; the page's code is unchanged. It refuses a viewer tree with changes,
+// whose commit wouldn't name what built the page. Run after npm run web.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -10,6 +11,11 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = resolve(ROOT, "dist"), out = resolve(dist, "tec-os-viewer.html");
 const commit = (dir) => execFileSync("git", ["-C", dir, "rev-parse", "--short=7", "HEAD"], { encoding: "utf8" }).trim();
+const dirty = execFileSync("git", ["-C", ROOT, "status", "--porcelain"], { encoding: "utf8" }).trimEnd();
+if (dirty) {
+  console.error(`No page: the viewer's tree has changes, so its commit wouldn't name what built the page:\n${dirty}`);
+  process.exit(1);
+}
 const viewer = commit(ROOT), tecos = commit(resolve(ROOT, "tec-os"));
 const embed = {};
 const add = (rel) => (embed[rel] = readFileSync(join(dist, rel)).toString("base64"));
