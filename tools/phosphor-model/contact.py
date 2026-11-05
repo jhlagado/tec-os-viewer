@@ -3,13 +3,15 @@ import hashlib,json,pathlib,resource,time,sys
 from PIL import Image,ImageDraw,ImageFont,__version__
 root=pathlib.Path(__file__).resolve().parents[2]
 group=sys.argv[2] if len(sys.argv)>2 else 'legacy'
-assert group in ['legacy','softening']
+assert group in ['legacy','softening','core']
 out=root/'evidence/vs3-model'
 if group=='softening':out=out/'softening'
+if group=='core':out=out/'core-softening'
 name=sys.argv[1] if len(sys.argv)>1 else '600-dpr1-80-reading'
 start=time.perf_counter()
 data=json.loads((out/(name+'.json')).read_text())
-images=[Image.open(out/'screenshots'/c['file']).convert('RGBA') for c in data['cells']]
+entries=data.get('comparisonEntries',data['cells'])
+images=[Image.open(out/'screenshots'/c['file']).convert('RGBA') for c in entries]
 w,h=images[0].size
 assert all(im.size==(w,h) for im in images)
 gap,heading=24,30
@@ -17,9 +19,9 @@ sheet=Image.new('RGBA',(2*w+gap,3*(h+heading+gap)),(22,25,26,255))
 draw=ImageDraw.Draw(sheet)
 font=ImageFont.load_default(size=20)
 inputs=[]
-for i,(cell,im) in enumerate(zip(data['cells'],images)):
+for i,(cell,im) in enumerate(zip(entries,images)):
  x=(i%2)*(w+gap);y=(i//2)*(h+heading+gap)
- draw.text((x,y),cell['label'],fill='white',font=font)
+ draw.text((x,y),cell['label']+(' (synthetic)' if cell.get('synthetic') else ''),fill='white',font=font)
  sheet.paste(im,(x,y+heading))
  assert sheet.crop((x,y+heading,x+w,y+heading+h)).tobytes()==im.tobytes()
  inputs.append({'label':cell['label'],'file':cell['file'],'sha256':hashlib.sha256((out/'screenshots'/cell['file']).read_bytes()).hexdigest(),'rect':[x,y+heading,w,h],'pixelCopyEqual':True})

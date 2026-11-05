@@ -110,13 +110,18 @@ def _anchors(frame,raw,font,geometry,image_size):
     'mapping':'native screenshot pixel centres relative to unchanged CSS clip; no sample interpolation or resizing'})
  return anchors
 
-def analyse(root,frame,identity,raw,images,geometry):
+def analyse(root,frame,identity,raw,images,geometry,candidate_names=('B1','B2'),anchor_reference=None,control_export=None):
  from PIL import ImageFilter
  font_source=(root/identity['fontSource']).read_bytes();assert _sha(font_source)==identity['fontSourceSha256']
  font=_font(font_source);assert _sha(font)==identity['fontBytesSha256']
  vram_before=_sha(bytes(frame['snapshot']['vram']));assert vram_before==frame['vramSha256']
  assert _sha(raw)==frame['rgbaSha256']
  anchors=_anchors(frame,raw,font,geometry,images['F'].size)
+ if anchor_reference is not None:
+  assert len(anchors)==len(anchor_reference),'anchor count changed'
+  for actual,accepted in zip(anchors,anchor_reference):
+   for key in ['id','axis','source','nativeEdgeCoordinate','fixedCrossPixel','nativePixelCoordinates','offsetsCssPx']:
+    assert actual[key]==accepted[key],('accepted anchor changed',actual['id'],key)
  profiles={name:{a['id']:_samples(image,a) for a in anchors} for name,image in images.items()}
  def compare(samples):
   result=[{'anchor':a['id'],**_detect(profiles['F'][a['id']],samples[a['id']],a)} for a in anchors]
@@ -125,13 +130,14 @@ def analyse(root,frame,identity,raw,images,geometry):
    'interpretation':'resolved at all four source profiles; not a visual pass' if count==4 else
      'partial broadening evidence at listed profiles only; not a visual pass' if count else
      'no observable edge broadening at these native samples; not a visual pass'}
- candidates={name:compare(profiles[name]) for name in ['B1','B2']}
+ candidates={name:compare(profiles[name]) for name in candidate_names}
  controls=[]
  control_images=[('identical-reference',images['F'],{'kind':'identical'}),('blur-disabled',images['F'].copy(),{'kind':'no-filter F raster'})]
  for name,gain,offset in [('affine-dimmer-offset',.8,7),('affine-brighter-offset',1.1,2)]:
   assert all(0<=gain*lo+offset and gain*hi+offset<=255 for lo,hi in images['F'].getextrema()),'affine control would clip'
   control_images.append((name,images['F'].point(lambda v:int(round(gain*v+offset))),{'kind':'uniform RGB affine','gain':gain,'offset':offset,'quantized':True,'clipped':False}))
  for name,image,transform in control_images:
+  if name=='affine-dimmer-offset' and control_export is not None:image.save(control_export)
   samples={a['id']:_samples(image,a) for a in anchors};detected=compare(samples)
   assert detected['observableProfiles']==0,('edge detector accepted a non-blur control',name)
   controls.append({'name':name,'rejected':True,'transform':transform,'imagePixelsSha256':_sha(image.tobytes()),'samples':samples,'detector':detected,
