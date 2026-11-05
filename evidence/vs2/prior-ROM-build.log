@@ -1,0 +1,5 @@
+mem-guard 19:18:37 P6-VS2-prior-ROM-build: started, limit 600 MB, heap 450 MB, memory free 35 percent, load 3, waited 0 s
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+

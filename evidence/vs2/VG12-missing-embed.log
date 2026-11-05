@@ -18,3 +18,4 @@ test at ../../../../private/tmp/p6-vs2/VG12-missing-embed.test.mjs:16:1
     name: 'TimeoutError',
     log: []
   }
+mem-guard 19:15:08 P6-VS2-VG12-missing-embed: exit 1, peak 483 MB, 6 processes at most, 62.2 s

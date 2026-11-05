@@ -1,0 +1,17 @@
+{
+  "app.js": "f164a167037bef2d4dfe82e7eb51ae92c0a7170d90cff11fe2a9c870d6e9c82e",
+  "app.js.map": "664e7c576a5045e10f2e60187f1f681fe096b4614ff5e45598aee5cefca6a222",
+  "files/DEMO.COM": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d",
+  "files/GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
+  "files/MOUNT.COM": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc",
+  "files/SAMPLE.ASM": "0544eba7fbdb498d8d9114e64ad3ddbf48825e5430ee4665940ce82098ab6776",
+  "files/STARTUP.CMD": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d",
+  "files/TAS.COM": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2",
+  "files/TED.COM": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f",
+  "index.html": "5ec7cd5bbbfb6e1434e6449ab9b4e2cbfee094c7ade316bf8bd5810b1321cfb3",
+  "roms/tecos.rom": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb",
+  "roms/tecos.symbols.json": "e45027e3f31bb27cf50dc63d96ad63e1a1c06fc6bd526f052c4885699f02ab8b",
+  "starter.recipe.json": "b57ea4d1433348b69f9fbc929ef7e62fb84326a5742e5da6018808308351a029",
+  "style.css": "bb89b6202ab780f4b0ddf6b9862608d7ec55b062a10d96ec72c2ed712e782411",
+  "tec-os-viewer.html": "e393fe29149551152e3014642d4f3694dad8b49a783cc02bb72e832fc9c56864"
+}

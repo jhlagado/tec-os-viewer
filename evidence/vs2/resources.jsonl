@@ -37,3 +37,9 @@
 {"name":"P6-VS2-VG12-copy","command":"node --test no-copy.test.mjs","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T08:14:05.559Z","freePercent":35,"load":2.78,"waitedSeconds":0}
 {"name":"P6-VS2-VG12-copy","command":"node --test no-copy.test.mjs","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T08:14:06.144Z","outcome":"exit 1","code":1,"peakMB":104,"processes":3,"seconds":0.6,"freePercentAtEnd":36}
 {"name":"P6-VS2-VG12-missing-embed","command":"node --test VG12-missing-embed.test.mjs","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T08:14:06.566Z","freePercent":36,"load":2.78,"waitedSeconds":0}
+{"name":"P6-VS2-VG12-missing-embed","command":"node --test VG12-missing-embed.test.mjs","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T08:15:08.716Z","outcome":"exit 1","code":1,"peakMB":483,"processes":6,"seconds":62.2,"freePercentAtEnd":32}
+{"name":"P6-VS2-VG9-clean-1","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:15:37.355Z","freePercent":35,"load":4.82,"waitedSeconds":0}
+{"name":"P6-VS2-VG9-clean-1","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:16:38.815Z","outcome":"exit 0","code":0,"peakMB":334,"processes":10,"seconds":61.5,"freePercentAtEnd":35}
+{"name":"P6-VS2-VG9-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:16:46.074Z","freePercent":34,"load":4.9,"waitedSeconds":0}
+{"name":"P6-VS2-VG9-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:17:47.438Z","outcome":"exit 0","code":0,"peakMB":335,"processes":10,"seconds":61.4,"freePercentAtEnd":34}
+{"name":"P6-VS2-prior-ROM-build","command":"npm run build","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:18:37.153Z","freePercent":35,"load":3,"waitedSeconds":0}
