@@ -48,6 +48,9 @@ for value in blur.values():
  value['rasterObservable']=bool(value['changedPixels'])
  value['interpretation']='Raster difference only, not a softness or reading ranking' if value['changedPixels'] else 'No raster-observable blur at this size; not a visual pass'
 edge_profiles=analyse(root,f,manifest['identity'],raw,images,g)
+for variant in ['B1','B2']:
+ blur[variant]['edgeBroadeningObservableProfiles']=edge_profiles['candidatesVersusF'][variant]['observableProfiles']
+ blur[variant]['edgeBroadeningInterpretation']=edge_profiles['candidatesVersusF'][variant]['interpretation']
 halo=diff(images['H'],images['B1'])
 assert halo['maxDecrease']>=-1,'screen halo unexpectedly darkens the B1 image'
 outside=0

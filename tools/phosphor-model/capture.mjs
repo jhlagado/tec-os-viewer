@@ -19,6 +19,10 @@ function checkRestoration(result){
   assert.equal(result.restorationProof.effect.sourceSha,expected,'effect restoration was not positively verified');
   assert.equal(result.restorationProof.raw.sourceSha,expected,'raw restoration was not positively verified');
   assert.equal(result.restorationProof.raw.settings.candidate,'R');
+  const effect=result.restorationProof.effect;
+  assert.equal(effect.settings.candidate,effect.group==='legacy'?'L':'H');
+  assert.equal(effect.glowBufferSha256,effect.glowExpectedBufferSha256);
+  assert.ok(effect.glowBufferSha256,'effect restoration did not check a current glow buffer');
 }
 function checkControls(result,names){
   assert.deepEqual(result.controls.map(c=>c.name).sort(),[...names].sort(),'control coverage differs');

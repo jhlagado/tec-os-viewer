@@ -55,3 +55,5 @@ No publication, hardware work, production effect build or source repin was perfo
 ## Prepared next source-only segment
 
 The separate [softening plan](../../tools/phosphor-model/softening.md) specifies R/F/B1/B2/H, the exact one-cell command and the new source/glow/style/mask/final-image and unchanged-reference decoded controls. Legacy URL defaults and existing measurements remain unchanged. This is unrun source preparation during the P3 allocation hold, with syntax checks only. Its 15–30-second cost is an estimate based on the earlier 3.4-second/495 MB batch. Independent source review and allocation precede execution.
+
+A further source-only review correction adds zero-wait allocation (`--wait 0`), source-anchored normal/reverse edge profiles with affine-brightness/disabled-blur detector controls, and explicit positive verification of effect and raw restoration. The 110-second timer requests browser close and is not a proved hard termination. These additions are unrun, with no new measurements or baseline change.
