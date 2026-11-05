@@ -139,6 +139,14 @@ for(const f of frames){
   const option=document.createElement('option');option.value=f.id;option.textContent=f.id;$('frame').append(option);
 }
 $('candidate').replaceChildren(...Object.keys(GROUPS[group]).map(name=>{const o=document.createElement('option');o.value=o.textContent=name;return o;}));
+// Keep the historical softening selector's intrinsic width so longer core ids
+// do not move the canvas/raster phase. The runner independently checks all bounds.
+if(group==='core'){
+  const selector=$('candidate'),sizer=selector.cloneNode(false);sizer.removeAttribute('id');
+  Object.assign(sizer.style,{position:'absolute',visibility:'hidden',left:'-10000px',top:'0'});
+  for(const name of Object.keys(GROUPS.softening)){const option=document.createElement('option');option.textContent=name;sizer.append(option);}
+  selector.parentElement.append(sizer);const width=sizer.getBoundingClientRect().width;sizer.remove();selector.style.width=`${width}px`;
+}
 $('off').disabled=group!=='legacy';
 const get=id=>frames.find(f=>f.id===id);
 function choose(id,candidate,off=false){$('frame').value=id;$('candidate').value=candidate;$('width').value=get(id).consoleWidth;$('off').checked=group!=='legacy'||off;return draw(get(id),candidate,{maskOff:off});}

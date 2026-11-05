@@ -1,0 +1,6 @@
+{
+  "commit": "3ecab09",
+  "effectsPath": "evidence/vs3-model/softening/softening-600-dpr1-80-reverse-effects.json",
+  "effectsSha256": "ed1a068792233a959f67962ce2b47fc687c6a4286def48e9df3b0c76fa62d83e",
+  "geometry": { "x": 29, "y": 152.28125, "width": 542, "height": 406.5, "dpr": 1, "zoom": 1 }
+}
