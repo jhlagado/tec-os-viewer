@@ -1,2 +1,9 @@
 Previous HEAD position was fe2097f Keep the default TAS compiler manifest within its qualified pin
 HEAD is now at 78127ec Merge kf8-boot into ke-fixes-8: prepareCard reports a read-only STARTUP.CMD; not yet checked
+prior-ROM-build 0 True
+Previous HEAD position was 78127ec Merge kf8-boot into ke-fixes-8: prepareCard reports a read-only STARTUP.CMD; not yet checked
+HEAD is now at fe2097f Keep the default TAS compiler manifest within its qualified pin
+VG9-prior-ROM 1 True
+VG11-prior-palette 1 True
+quick-restored 0 True
+VG11-restored 0 True

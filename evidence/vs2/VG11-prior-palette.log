@@ -1,0 +1,183 @@
+mem-guard 19:19:26 P6-VS2-VG11-prior-palette: started, limit 600 MB, heap 450 MB, memory free 35 percent, load 4.19, waited 0 s
+✖ VG11: cold boot, palette and reverse glyphs at 32 columns (493.706667ms)
+✖ VG11: cold boot, palette and reverse glyphs at 40 columns (193.13575ms)
+✖ VG11: cold boot, palette and reverse glyphs at 80 columns (183.449167ms)
+✖ VG11: directed width switch 32 to 40 (241.732625ms)
+✖ VG11: directed width switch 32 to 80 (212.990917ms)
+✖ VG11: directed width switch 40 to 32 (204.885667ms)
+✖ VG11: directed width switch 40 to 80 (201.255667ms)
+✖ VG11: directed width switch 80 to 32 (194.025417ms)
+✖ VG11: directed width switch 80 to 40 (191.530667ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 0
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2316.315958
+
+✖ failing tests:
+
+test at test/green-console.test.mjs:72:29
+✖ VG11: cold boot, palette and reverse glyphs at 32 columns (493.706667ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  241 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:73:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 241,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:72:29
+✖ VG11: cold boot, palette and reverse glyphs at 40 columns (193.13575ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:73:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:72:29
+✖ VG11: cold boot, palette and reverse glyphs at 80 columns (183.449167ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:73:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 32 to 40 (241.732625ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 32 to 80 (212.990917ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 40 to 32 (204.885667ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  241 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 241,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 40 to 80 (201.255667ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 80 to 32 (194.025417ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  241 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 241,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/green-console.test.mjs:76:3
+✖ VG11: directed width switch 80 to 40 (191.530667ms)
+  AssertionError [ERR_ASSERTION]: VG11: register 7 selects light green (3) on black (1)
+  
+  244 !== 49
+  
+      at checkConsole (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:42:10)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/green-console.test.mjs:82:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 244,
+    expected: 49,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+mem-guard 19:19:29 P6-VS2-VG11-prior-palette: exit 1, peak 198 MB, 4 processes at most, 2.7 s

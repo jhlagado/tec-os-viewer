@@ -1,0 +1,4 @@
+mem-guard 19:19:26 P6-VS2-VG9-prior-ROM: started, limit 600 MB, heap 450 MB, memory free 34 percent, load 4.19, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os/dist/tecos.rom has SHA-256 8cad40923ce1c3c6079d3201a1a8cc294dbe501838ed54505ca12287672f8b9f, not the pinned a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb
+mem-guard 19:19:26 P6-VS2-VG9-prior-ROM: exit 1, peak 10 MB, 1 processes at most, 0.3 s

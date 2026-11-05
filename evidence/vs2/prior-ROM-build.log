@@ -3,3 +3,5 @@ mem-guard 19:18:37 P6-VS2-prior-ROM-build: started, limit 600 MB, heap 450 MB, m
 > tec-os@0.1.0 build
 > node tools/build.mjs
 
+tecos: ROM 16018/16384 bytes, TPA $0100-$B9A3 (47268 bytes), sha256 8cad40923ce1c3c6
+mem-guard 19:19:26 P6-VS2-prior-ROM-build: exit 0, peak 152 MB, 2 processes at most, 48.9 s

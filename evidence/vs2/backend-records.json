@@ -1,0 +1,119 @@
+{
+  "inputs": [
+    {
+      "backend": "atom",
+      "phase": "probe",
+      "target": "tecos.rom",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "tecos.rom",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "MOUNT.COM",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "GLCD.SVC",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "DEMO.COM",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "media",
+      "target": "tecos.rom",
+      "root": "/Users/johnhardy/projects/tec-os-viewer/tec-os/build/tecos",
+      "sha256": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb"
+    }
+  ],
+  "VG9-clean-1": [
+    {
+      "backend": "atom",
+      "phase": "probe",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "MOUNT.COM",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "GLCD.SVC",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "DEMO.COM",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "media",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-1/tec-os/build/tecos",
+      "sha256": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb"
+    }
+  ],
+  "VG9-clean-2": [
+    {
+      "backend": "atom",
+      "phase": "probe",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os/src"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "MOUNT.COM",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "GLCD.SVC",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "final",
+      "target": "DEMO.COM",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os"
+    },
+    {
+      "backend": "atom",
+      "phase": "media",
+      "target": "tecos.rom",
+      "root": "/private/tmp/p6-vs2/clean-2/tec-os/build/tecos",
+      "sha256": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb"
+    }
+  ]
+}

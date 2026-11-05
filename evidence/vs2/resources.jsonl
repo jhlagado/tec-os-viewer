@@ -43,3 +43,12 @@
 {"name":"P6-VS2-VG9-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:16:46.074Z","freePercent":34,"load":4.9,"waitedSeconds":0}
 {"name":"P6-VS2-VG9-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:17:47.438Z","outcome":"exit 0","code":0,"peakMB":335,"processes":10,"seconds":61.4,"freePercentAtEnd":34}
 {"name":"P6-VS2-prior-ROM-build","command":"npm run build","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:18:37.153Z","freePercent":35,"load":3,"waitedSeconds":0}
+{"name":"P6-VS2-prior-ROM-build","command":"npm run build","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:26.018Z","outcome":"exit 0","code":0,"peakMB":152,"processes":2,"seconds":48.9,"freePercentAtEnd":34}
+{"name":"P6-VS2-VG9-prior-ROM","command":"node build.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:19:26.321Z","freePercent":34,"load":4.19,"waitedSeconds":0}
+{"name":"P6-VS2-VG9-prior-ROM","command":"node build.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:26.612Z","outcome":"exit 1","code":1,"peakMB":10,"processes":1,"seconds":0.3,"freePercentAtEnd":35}
+{"name":"P6-VS2-VG11-prior-palette","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:19:26.740Z","freePercent":35,"load":4.19,"waitedSeconds":0}
+{"name":"P6-VS2-VG11-prior-palette","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:29.449Z","outcome":"exit 1","code":1,"peakMB":198,"processes":4,"seconds":2.7,"freePercentAtEnd":32}
+{"name":"P6-VS2-quick-restored","command":"npm run quick","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:19:29.579Z","freePercent":33,"load":4.17,"waitedSeconds":0}
+{"name":"P6-VS2-quick-restored","command":"npm run quick","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:31.310Z","outcome":"exit 0","code":0,"peakMB":186,"processes":3,"seconds":1.7,"freePercentAtEnd":33}
+{"name":"P6-VS2-VG11-restored","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:19:31.435Z","freePercent":33,"load":4.17,"waitedSeconds":0}
+{"name":"P6-VS2-VG11-restored","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:34.127Z","outcome":"exit 0","code":0,"peakMB":191,"processes":2,"seconds":2.7,"freePercentAtEnd":33}
