@@ -4,6 +4,14 @@ Source only, prepared for independent review and a new compute allocation. No ne
 
 The earlier local model URL with no query remains the legacy R/S/G/L page, initially raw 80-reading. The separate `?group=softening` URL has R/F/B1/B2/H and starts raw 80-reverse. It does not change a production default. The softening group always has the row mask off.
 
+## Chosen direction and this trial's boundary
+
+TEC Compact remains the chosen font direction (VD-13, P3: KS48), with 40 columns as the primary working direction for TEC-OS and software including TED and TDB. This bounded detector trial does not reopen that choice or select an alternative font or working width. The Viewer takes the chosen font through its pin process after the TEC-OS study qualifies it.
+
+The accepted fe2097f4 fixtures deliberately remain this old-font trial's baseline. At 80 columns, the 6 by 8 source-cell grid, glyph source bytes, spacing, raster dimensions and aspect ratio must remain exact before presentation effects. The chosen-font qualification must retain those source-byte and geometry constraints and explicitly assess 80-column readability as well as the primary 40-column workflow. An old-font 80-column detector result cannot qualify final TEC Compact readability, choose a presentation default for that font or substitute for its production qualification.
+
+VS4 generated-output and recipe integrity remains required after presentation work. It must still address VE-4 and VE-5, including the standalone page helper, web-build source/output identity and recipe checks. This detector preparation does not close or defer that obligation.
+
 ## Fixed trial inputs
 
 All candidates keep the existing nearest-neighbour 1024 by 768 canvas enlargement after decode. Only the final CSS rendering and the explicitly listed layers differ. The raw font, VRAM, character grid and aspect ratio are unchanged.
