@@ -1,0 +1,31 @@
+mem-guard 18:55:54 P6-VG2: started, limit 700 MB, heap 525 MB, memory free 42 percent, load 8.33, waited 0 s
+✔ the web build starts clean: a file left in dist from an older build doesn't reach the page (235.169791ms)
+✔ browser stages the whole import before saving or publishing (13.367375ms)
+✔ browser import restores running=true after success (4.57175ms)
+✔ browser import restores running=true after read (1.495542ms)
+✔ browser import restores running=true after save (5.122625ms)
+✔ browser import restores running=false after success (1.999292ms)
+✔ browser import restores running=false after read (1.199458ms)
+✔ browser import restores running=false after save (4.025917ms)
+✔ browser import guard excludes competing operations, running=true, failure=false (3.399958ms)
+✔ browser import guard excludes competing operations, running=true, failure=true (5.455834ms)
+✔ browser import guard excludes competing operations, running=false, failure=false (2.1275ms)
+✔ browser import guard excludes competing operations, running=false, failure=true (3.839209ms)
+✔ a width chosen while an import's files are read is the width on the card the import publishes (KE-168) (17.447084ms)
+✔ the web page's bundle uses no Node globals (51.923042ms)
+✔ the real store's saveCard throws when IndexedDB can't open, or a put fails (KE-153) (7.545333ms)
+✔ the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153) (9319.544583ms)
+✔ the page saves one card at a time, and after three failures says saving keeps failing (D2, D3) (3.743625ms)
+✔ a file import during a timer's save saves after it, so the stored card holds the copied files (KE-163) (2.751208ms)
+✔ the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164) (5.933042ms)
+✔ a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so (KE-164) (11431.817958ms)
+✔ on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory (3083.479583ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25088.417625
+mem-guard 18:56:19 P6-VG2: exit 0, peak 523 MB, 6 processes at most, 25.4 s

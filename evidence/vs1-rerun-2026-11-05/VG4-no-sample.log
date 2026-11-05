@@ -1,0 +1,27 @@
+mem-guard 18:57:23 P6-VG4-no-sample: started, limit 600 MB, heap 450 MB, memory free 41 percent, load 7.29, waited 0 s
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11308.39175ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11511.494208
+
+✖ failing tests:
+
+test at test/worked-example.test.mjs:35:1
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11308.39175ms)
+  Error: TAS's build: not within 400000000 cycles, 0 keys unread
+  TEC-OS 0.1 for TEC-1G
+  A: SYSTEM
+  B: WORK
+  A>tas sample
+  cannot read file
+  A>
+      at keys (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:31:11)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:40:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+mem-guard 18:57:34 P6-VG4-no-sample: exit 1, peak 189 MB, 4 processes at most, 11.8 s

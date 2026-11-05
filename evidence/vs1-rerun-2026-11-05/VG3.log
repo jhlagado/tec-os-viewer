@@ -1,0 +1,18 @@
+mem-guard 18:55:44 P6-VG3: started, limit 600 MB, heap 450 MB, memory free 42 percent, load 8.96, waited 0 s
+✔ the page's card reaches A> on the serial board at 80 (738.440875ms)
+✔ the page's card reaches A> on the serial board at 40 (217.481792ms)
+✔ the page's card reaches A> on the PICO9918 board at 80 (228.183292ms)
+✔ the page's card reaches A> on the PICO9918 board at 40 (247.7595ms)
+✔ the page's card reaches A> on the PICO9918 board at 32 (259.083333ms)
+✔ the page's card reaches A> on the GLCD board at 80 (316.331167ms)
+✔ the page's card reaches A> on the board with both displays at 80 (207.703625ms)
+✔ with no card the serial board gives CARD? and no prompt (40.993833ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2462.381834
+mem-guard 18:55:47 P6-VG3: exit 0, peak 180 MB, 4 processes at most, 2.8 s

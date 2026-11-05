@@ -1,0 +1,5 @@
+mem-guard 18:57:55 P6-review-untracked: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 6.05, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os has untracked files:
+?? vs1-untracked-control.txt
+mem-guard 18:57:56 P6-review-untracked: exit 1, peak 8 MB, 1 processes at most, 0.3 s

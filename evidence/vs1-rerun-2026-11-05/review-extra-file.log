@@ -1,0 +1,4 @@
+mem-guard 18:57:56 P6-review-extra-file: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 6.05, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os/dist/files/UNPINNED.COM is not named in pins.json
+mem-guard 18:57:56 P6-review-extra-file: exit 1, peak 9 MB, 1 processes at most, 0.3 s

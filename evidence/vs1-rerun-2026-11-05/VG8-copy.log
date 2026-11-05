@@ -1,0 +1,37 @@
+mem-guard 18:57:55 P6-VG8-copy: started, limit 600 MB, heap 450 MB, memory free 37 percent, load 6.05, waited 0 s
+✖ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (54.095ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 209.712875
+
+✖ failing tests:
+
+test at test/no-copy.test.mjs:25:1
+✖ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (54.095ms)
+  AssertionError [ERR_ASSERTION]: copies of TEC-OS's files:
+  host/card.mjs is tec-os/host/card.mjs
+  + actual - expected
+  
+  + [
+  +   'host/card.mjs is tec-os/host/card.mjs'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/no-copy.test.mjs:27:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.start (node:internal/test_runner/test:1191:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'host/card.mjs is tec-os/host/card.mjs' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+mem-guard 18:57:55 P6-VG8-copy: exit 1, peak 103 MB, 3 processes at most, 0.6 s

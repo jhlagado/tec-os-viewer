@@ -1,0 +1,37 @@
+mem-guard 18:53:18 P6-VS1-inputs: started, limit 600 MB, heap 450 MB, memory free 30 percent, load 5.58, waited 0 s
+
+> tec-os-viewer@0.1.0 tecos
+> node tools/tecos.mjs
+
+
+added 7 packages, and audited 10 packages in 3s
+
+1 moderate severity vulnerability
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.24.2 (postinstall: node install.js)
+npm warn allow-scripts   fsevents@2.3.2 (install: (install scripts present))
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+
+> tec-os@0.1.0 inputs
+> node tools/inputs.mjs
+
+TAS.COM: /Users/johnhardy/projects/tec-os-viewer/tec-os/.inputs/TAS.COM, as pinned
+TED.COM: /Users/johnhardy/projects/tec-os-viewer/tec-os/.inputs/TED.COM, as pinned
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+
+tecos: ROM 16018/16384 bytes, TPA $0100-$B9A3 (47268 bytes), sha256 8cad40923ce1c3c6
+
+> tec-os@0.1.0 media
+> node tools/media.mjs
+
+dist: 1 ROM profiles, 6 starter files, starter.img
+tec-os: ROM and the page card's files match pins.json
+mem-guard 18:55:20 P6-VS1-inputs: exit 0, peak 277 MB, 5 processes at most, 122.6 s

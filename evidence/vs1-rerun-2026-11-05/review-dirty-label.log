@@ -1,0 +1,4 @@
+mem-guard 18:57:57 P6-review-dirty-label: started, limit 600 MB, heap 450 MB, memory free 38 percent, load 5.72, waited 0 s
+No page: the viewer's tree has changes, so its commit wouldn't name what built the page:
+?? vs1-dirty-control.txt
+mem-guard 18:57:57 P6-review-dirty-label: exit 1, peak 10 MB, 1 processes at most, 0.3 s

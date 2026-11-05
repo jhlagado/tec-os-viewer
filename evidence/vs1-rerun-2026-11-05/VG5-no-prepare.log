@@ -1,0 +1,51 @@
+mem-guard 18:57:35 P6-VG5-no-prepare: started, limit 700 MB, heap 525 MB, memory free 41 percent, load 6.85, waited 0 s
+✖ stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words (3258.199667ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3496.580792
+
+✖ failing tests:
+
+test at test/stored-cards.test.mjs:62:1
+✖ stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words (3258.199667ms)
+  AssertionError [ERR_ASSERTION]: and not PICO.SVC's:
+  
+  TEC-OS 0.1 for TEC-1G
+  A: SYSTEM
+  B: WORK
+  
+  A>PICO.SVC
+  PICO.SVC?
+  
+  A>USER 0
+  A>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/stored-cards.test.mjs:84:10)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+mem-guard 18:57:38 P6-VG5-no-prepare: exit 1, peak 618 MB, 6 processes at most, 3.8 s

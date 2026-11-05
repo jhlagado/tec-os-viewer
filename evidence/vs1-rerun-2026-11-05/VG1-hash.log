@@ -1,0 +1,4 @@
+mem-guard 18:57:21 P6-VG1-hash: started, limit 600 MB, heap 450 MB, memory free 41 percent, load 7.49, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os/dist/files/SAMPLE.ASM has SHA-256 4b002efc71fa7ba835e3c361466e390ab8b667b86426629713a4062fb23b271b, not the pinned 0b002efc71fa7ba835e3c361466e390ab8b667b86426629713a4062fb23b271b
+mem-guard 18:57:21 P6-VG1-hash: exit 1, peak 10 MB, 1 processes at most, 0.3 s

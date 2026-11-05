@@ -1,0 +1,11 @@
+mem-guard 18:56:25 P6-VG6: started, limit 700 MB, heap 525 MB, memory free 36 percent, load 6.62, waited 0 s
+✔ the single page boots to A> with no request but its own, and names both commits (3086.666625ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3315.38675
+mem-guard 18:56:29 P6-VG6: exit 0, peak 503 MB, 6 processes at most, 3.7 s

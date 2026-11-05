@@ -1,0 +1,4 @@
+mem-guard 18:57:56 P6-review-off-pin: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 6.05, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os is checked out at 3d4f2145f9c49c5247cbdb2ac354bca8a988ec93, not the viewer's pin 78127ec63a2478c544af7fa96bfa73345f9df824
+mem-guard 18:57:57 P6-review-off-pin: exit 1, peak 11 MB, 1 processes at most, 0.3 s

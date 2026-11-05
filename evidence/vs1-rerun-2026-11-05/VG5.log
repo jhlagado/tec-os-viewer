@@ -1,0 +1,11 @@
+mem-guard 18:56:19 P6-VG5: started, limit 700 MB, heap 525 MB, memory free 37 percent, load 6.94, waited 0 s
+✔ stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words (4636.077541ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4928.023291
+mem-guard 18:56:25 P6-VG5: exit 0, peak 625 MB, 6 processes at most, 5.4 s

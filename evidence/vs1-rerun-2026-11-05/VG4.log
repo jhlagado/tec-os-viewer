@@ -1,0 +1,11 @@
+mem-guard 18:55:47 P6-VG4: started, limit 600 MB, heap 450 MB, memory free 39 percent, load 8.88, waited 0 s
+✔ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (5591.764459ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5800.650208
+mem-guard 18:55:53 P6-VG4: exit 0, peak 132 MB, 2 processes at most, 6.1 s

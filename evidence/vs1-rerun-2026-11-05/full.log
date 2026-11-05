@@ -1,0 +1,48 @@
+mem-guard 18:56:29 P6-full: started, limit 700 MB, heap 525 MB, memory free 37 percent, load 8.17, waited 0 s
+
+> tec-os-viewer@0.1.0 test
+> node --test --test-concurrency=1 test/*.test.mjs
+
+✔ the page's card reaches A> on the serial board at 80 (784.999834ms)
+✔ the page's card reaches A> on the serial board at 40 (301.658209ms)
+✔ the page's card reaches A> on the PICO9918 board at 80 (296.118542ms)
+✔ the page's card reaches A> on the PICO9918 board at 40 (332.747833ms)
+✔ the page's card reaches A> on the PICO9918 board at 32 (436.569375ms)
+✔ the page's card reaches A> on the GLCD board at 80 (358.630416ms)
+✔ the page's card reaches A> on the board with both displays at 80 (217.492ms)
+✔ with no card the serial board gives CARD? and no prompt (42.297709ms)
+✔ the web build starts clean: a file left in dist from an older build doesn't reach the page (269.690541ms)
+✔ Download of a file whose entry names a block past DSM says why, and the page throws nothing (VE-2) (2104.647958ms)
+✔ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (65.449917ms)
+✔ browser stages the whole import before saving or publishing (15.043625ms)
+✔ browser import restores running=true after success (6.291875ms)
+✔ browser import restores running=true after read (2.480541ms)
+✔ browser import restores running=true after save (5.734375ms)
+✔ browser import restores running=false after success (2.82275ms)
+✔ browser import restores running=false after read (4.062125ms)
+✔ browser import restores running=false after save (2.469334ms)
+✔ browser import guard excludes competing operations, running=true, failure=false (8.748292ms)
+✔ browser import guard excludes competing operations, running=true, failure=true (2.858459ms)
+✔ browser import guard excludes competing operations, running=false, failure=false (5.832792ms)
+✔ browser import guard excludes competing operations, running=false, failure=true (2.084042ms)
+✔ a width chosen while an import's files are read is the width on the card the import publishes (KE-168) (31.302042ms)
+✔ the single page boots to A> with no request but its own, and names both commits (4368.195209ms)
+✔ stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words (4957.179917ms)
+✔ the web page's bundle uses no Node globals (59.941708ms)
+✔ the real store's saveCard throws when IndexedDB can't open, or a put fails (KE-153) (7.26775ms)
+✔ the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153) (7007.033ms)
+✔ the page saves one card at a time, and after three failures says saving keeps failing (D2, D3) (2.332375ms)
+✔ a file import during a timer's save saves after it, so the stored card holds the copied files (KE-163) (2.362583ms)
+✔ the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164) (5.862875ms)
+✔ a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so (KE-164) (11548.671292ms)
+✔ on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory (2892.64ms)
+✔ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (6354.929583ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44951.005583
+mem-guard 18:57:14 P6-full: exit 0, peak 661 MB, 7 processes at most, 45.7 s

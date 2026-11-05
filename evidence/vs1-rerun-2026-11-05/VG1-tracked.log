@@ -1,0 +1,5 @@
+mem-guard 18:57:21 P6-VG1-tracked: started, limit 600 MB, heap 450 MB, memory free 41 percent, load 7.49, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os has changes to tracked files:
+ M README.md
+mem-guard 18:57:22 P6-VG1-tracked: exit 1, peak 10 MB, 1 processes at most, 0.3 s
