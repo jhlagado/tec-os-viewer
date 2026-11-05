@@ -52,3 +52,5 @@
 {"name":"P6-VS2-quick-restored","command":"npm run quick","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:31.310Z","outcome":"exit 0","code":0,"peakMB":186,"processes":3,"seconds":1.7,"freePercentAtEnd":33}
 {"name":"P6-VS2-VG11-restored","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:19:31.435Z","freePercent":33,"load":4.17,"waitedSeconds":0}
 {"name":"P6-VS2-VG11-restored","command":"node --test green-console.test.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:19:34.127Z","outcome":"exit 0","code":0,"peakMB":191,"processes":2,"seconds":2.7,"freePercentAtEnd":33}
+{"name":"P6-VS2-copy-boundary-evidence","command":"node --test no-copy.test.mjs","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T08:23:29.549Z","freePercent":33,"load":2.88,"waitedSeconds":12}
+{"name":"P6-VS2-copy-boundary-evidence","command":"node --test no-copy.test.mjs","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T08:23:30.148Z","outcome":"exit 0","code":0,"peakMB":95,"processes":2,"seconds":0.6,"freePercentAtEnd":35}

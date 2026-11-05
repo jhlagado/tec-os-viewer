@@ -1,0 +1,12 @@
+mem-guard 19:23:17 waiting: ke9-quick-tests holds the lock, pid 96809, since 2026-11-05T08:23:16.051Z
+mem-guard 19:23:29 P6-VS2-copy-boundary-evidence: started, limit 700 MB, heap 525 MB, memory free 33 percent, load 2.88, waited 12 s
+✔ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (77.305208ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 256.945459
+mem-guard 19:23:30 P6-VS2-copy-boundary-evidence: exit 0, peak 95 MB, 2 processes at most, 0.6 s

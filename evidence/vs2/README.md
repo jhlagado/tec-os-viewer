@@ -26,7 +26,7 @@ The new green-console test checks three cold widths and all six directed width p
 
 Both VG9 runs started from fresh remote clones, with no node_modules, build, dist or .inputs in either repository. Each checked out product code d193838 and its offered gitlink, then ran `TECOS_ROM_ASSEMBLER=atom npm run page` under the 600 MB guard. `manifest-1.json` and `manifest-2.json` show byte-identical complete dist trees: all 15 files, including the 266,205-byte self-contained page. The ROM, sample and six unchanged card hashes match their pins. Backend traces confirm ATOM in both builds.
 
-VG10 has two assertions groups: exact card source/coordinates and the prompt/TED workflow. VG11's 17 cases comprise seven VS1 board configurations, the no-card assertion, three cold PICO widths and six directed switches. The full suite passes 44 tests, zero failed and zero skipped. It includes moved tests, stored-card upgrade/refusal, keyboard/touch, damaged-entry download handling, the copy boundary and an offline page labelled with both commits, with every external request blocked.
+VG10 has two test cases: exact card source/coordinates and the prompt/TED workflow. VG11's 17 cases comprise seven VS1 board configurations, the no-card assertion, three cold PICO widths and six directed switches. The full suite passes 44 tests, zero failed and zero skipped. It includes moved tests, stored-card upgrade/refusal, keyboard/touch, damaged-entry download handling, the copy boundary and an offline page labelled with both commits, with every external request blocked.
 
 The initial runs below preceded a tightening of the cursor assertions: a word boundary now prevents column 27 matching column 270. The registered exact coordinates did not change. VG10 and the full suite were rerun at the final product code. VG11's pin, ROM, decoder and harness were unchanged. Its nine green-console cases were also rerun after the palette control was restored.
 
@@ -82,8 +82,9 @@ The controls restore mutated files, checkout and package in finally blocks. The 
 | quick-cursor | 0 | 4 / 0 / 0 | 2 | 243 | 600 |
 | quick-restored | 0 | 4 / 0 / 0 | 1.7 | 186 | 600 |
 | VG11-restored | 0 | 9 / 0 / 0 | 2.7 | 191 | 600 |
+| copy-boundary-evidence | 0 | 1 / 0 / 0 | 0.6 | 95 | 700 |
 
-All 27 recorded heavy jobs used the global guard serially at their registered 600 or 700 MB limit. Their total measured run time is 429.6 seconds, excluding queue waits and clone setup outside the guard. The highest sampled peak is 673 MB. No limit was exceeded. Peaks are sampled lower bounds. resources.jsonl retains each start, end, limit, duration and queue wait.
+All 28 recorded heavy jobs used the global guard serially at their registered 600 or 700 MB limit. Their total measured run time is 430.2 seconds, excluding queue waits and clone setup outside the guard. The highest sampled peak is 673 MB. No limit was exceeded. Peaks are sampled lower bounds. resources.jsonl retains each start, end, limit, duration and queue wait.
 
 Exact commands, working directories, selected environment and exit codes are in commands.jsonl. run.py contains the guard invocation, clean.py the clone/checkout and clean-directory checks, controls.py the failure controls and prior.py the prior-ROM/palette check. Log output is retained unchanged, including whitespace in screen diagnostics. The scripts use /tmp/p6-vs2 as their evidence directory. All qualifying assembly commands and subprocesses explicitly inherit TECOS_ROM_ASSEMBLER=atom.
 
