@@ -51,3 +51,7 @@ All 72 required scene comparison cells remain: four scene types times three widt
 No foreground performance timing cell has been measured. All eight candidate/workload jobs remain: R/S/G/L with frozen and changing content, each with 60 warm-up and 300 measured frames, JavaScript draw time, browser delivery and incremental memory. The browser module has a sampling hook, but it is unmeasured and not an accepted performance harness. The full visual matrix, resize/moiré observations, exact reading transcriptions, dense line-spacing assessment, touch focus, production regression checks and complete live-overlay boundary proof remain pending. No limits or gates have been set from these partial costs.
 
 No publication, hardware work, production effect build or source repin was performed. Origo records were not edited.
+
+## Prepared next source-only segment
+
+The separate [softening plan](../../tools/phosphor-model/softening.md) specifies R/F/B1/B2/H, the exact one-cell command and the new source/glow/style/mask/final-image and unchanged-reference decoded controls. Legacy URL defaults and existing measurements remain unchanged. This is unrun source preparation during the P3 allocation hold, with syntax checks only. Its 15–30-second cost is an estimate based on the earlier 3.4-second/495 MB batch. Independent source review and allocation precede execution.

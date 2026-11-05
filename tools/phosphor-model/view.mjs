@@ -4,7 +4,7 @@ import { GROUPS, settings, maskRows } from './settings.mjs';
 import { parseFont, checkGlyphPixels, enlarge, decodedMutations } from './oracle.mjs';
 const $=id=>document.getElementById(id);
 const group=new URLSearchParams(location.search).get('group')??'legacy';
-if(!GROUPS[group])throw Error('unknown model group: '+group);
+if(!Object.hasOwn(GROUPS,group))throw Error('unknown model group: '+group);
 const fixture=await fetch('/evidence/vs3-model/fixtures.json').then(r=>r.json());
 const frames=fixture.frames.map(f=>({...f,snapshot:{registers:Uint8Array.from(f.snapshot.registers),vram:Uint8Array.from(f.snapshot.vram)}}));
 const sharp=$('sharp'),glow=$('glow'),mask=$('mask'),ctx=sharp.getContext('2d'),gc=glow.getContext('2d');
@@ -15,7 +15,8 @@ if(await hash(fontSource)!==fixture.identity.fontSourceSha256)throw Error('pinne
 const font=parseFont(new TextDecoder().decode(fontSource));
 if(await hash(font)!==fixture.identity.fontBytesSha256)throw Error('pinned font bytes identity mismatch');
 const maskSvg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 192" preserveAspectRatio="none">${maskRows().map(r=>`<rect x="${r.x}" y="${r.y}" width="${r.width}" height="${r.height}" fill="${r.fill}" fill-opacity="${r.opacity}"/>`).join('')}</svg>`;
-mask.style.backgroundImage=`url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
+const maskImage=`url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
+mask.style.backgroundImage=maskImage;
 let current,variant='R',maskOff=false;
 function buffer(width){
   if(!buffers.has(width)){
@@ -59,7 +60,7 @@ function draw(f,candidate='R',options={}){
     gc.imageSmoothingEnabled=false;gc.drawImage(halo.raw,0,0,1024,768);
     if(options.glowFrame)decode(f);
   }
-  const g=geometry();Object.assign(mask.style,{display:g.maskActive?'block':'none',transform:'none'});
+  const g=geometry();Object.assign(mask.style,{display:g.maskActive?'block':'none',transform:'none',backgroundImage:maskImage});
   $('status').textContent=`${f.id} ${candidate} | source ${f.sourceWidth} × 192 | mask ${g.maskActive?'on':'off'}`;
   return g;
 }
@@ -86,15 +87,16 @@ function verifyMask(g){
   const svg=new DOMParser().parseFromString(decodeURIComponent(match[1].split(',').slice(1).join(',')),'image/svg+xml');
   equal(svg.documentElement.getAttribute('viewBox'),'0 0 1 192','mask source viewBox');
   equal(svg.documentElement.getAttribute('preserveAspectRatio'),'none','mask source stretch');
-  const rows=[...svg.querySelectorAll('rect')],want=maskRows();equal(rows.length,192,'mask source row count');
+  const rows=[...svg.querySelectorAll('rect')];equal(rows.length,192,'mask source row count');
   for(let i=0;i<192;i++){
-    for(const field of ['x','y','width','height'])near(Number(rows[i].getAttribute(field)),want[i][field],`mask row ${i} ${field}`);
+    // Oracle fractions are independent of the SVG construction table.
+    for(const [field,value] of Object.entries({x:0,y:i+3/4,width:1,height:1/4}))near(Number(rows[i].getAttribute(field)),value,`mask row ${i} ${field}`);
     equal(rows[i].getAttribute('fill'),'black',`mask row ${i} fill`);
     near(Number(rows[i].getAttribute('fill-opacity')),.12,`mask row ${i} opacity`);
   }
   const box=g.maskActive?alignment(mask,'mask overlay'):null;
   return{active:g.maskActive,sourceRows:192,sourceLastQuarter:true,computedBackgroundSize:cs.backgroundSize,bounds:box,
-    projectedBands:box?want.map(r=>({top:box.y+r.y*box.height/192,bottom:box.y+(r.y+r.height)*box.height/192})):[],
+    projectedBands:box?rows.map(r=>({top:box.y+Number(r.getAttribute('y'))*box.height/192,bottom:box.y+(Number(r.getAttribute('y'))+Number(r.getAttribute('height')))*box.height/192})):[],
     suppressionThresholdDevicePixels:2};
 }
 function verifyStyles(){
@@ -163,6 +165,7 @@ window.model={group,candidates:Object.keys(GROUPS[group]),frames:frames.map(({sn
       controls.push(await reject('disabled-glow-filter',async()=>{draw(f,halo);glow.style.filter='none';await verify(f);},'computed glow filter'));
       controls.push(await reject('shifted-glow-overlay',async()=>{draw(f,halo);glow.style.transform='translateX(1px)';await verify(f);},'glow overlay alignment mismatch'));
       if(group==='legacy')controls.push(await reject('shifted-mask-overlay',async()=>{draw(f,'L');mask.style.transform='translateY(1px)';await verify(f);},'computed mask transform'));
+      if(group==='legacy')controls.push(await reject('shifted-mask-band',async()=>{draw(f,'L');mask.style.backgroundImage=`url("data:image/svg+xml,${encodeURIComponent(maskSvg.replace('y="0.75"','y="0.5"'))}")`;await verify(f);},'mask row 0 y'));
       decode(f);
       for(const mutation of decodedMutations(f,new Uint8ClampedArray(buffer(f.sourceWidth).image.data))){
         controls.push(await reject(mutation.name,async()=>{

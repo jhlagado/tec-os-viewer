@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { GROUPS } from './settings.mjs';
 import { ROOT,fromTecos } from '../../test/lib/root.mjs';
 const opts=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-const group=opts.group??'legacy';assert.ok(GROUPS[group],'unknown capture group');
+const group=opts.group??'legacy';assert.ok(Object.hasOwn(GROUPS,group),'unknown capture group');
 const viewport=Number(opts.viewport??600),dpr=Number(opts.dpr??1),frame=opts.frame??(group==='softening'?'80-reverse':'80-reading');
 if(group==='softening')assert.deepEqual({viewport,dpr,frame},{viewport:600,dpr:1,frame:'80-reverse'},'softening allocation is one bounded 600/DPR1/80-reverse cell');
 const base=resolve(ROOT,'evidence/vs3-model'),out=group==='legacy'?base:resolve(base,'softening');
@@ -51,6 +51,7 @@ try{
       await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);return window.model.verify();
     },{frame,variant});
     assert.equal(proof.geometry.dpr,dpr);assert.equal(proof.geometry.zoom,1);
+    if(cells.length)for(const key of ['x','y','width','height'])assert.ok(Math.abs(proof.geometry[key]-cells[0].proof.geometry[key])<.05,'candidate capture bounds changed: '+key);
     if(group==='softening')assert.equal(proof.geometry.maskActive,false,'softening cell must keep mask off');
     const file=`${name}-${label}.png`;
     await page.locator('#surface').screenshot({path:resolve(out,'screenshots',file),animations:'disabled',scale:'device',timeout:Math.min(10_000,left())});
@@ -84,7 +85,7 @@ try{
   tiny=await page.evaluate(()=>window.model.choose('80-reading','L'));
   assert.ok(tiny.rowDevicePixels<2&&!tiny.maskActive,'mask suppressed below two device pixels per row');
   assert.deepEqual(errors,[]);
-  const result={name,group,toolsCommit:git('rev-parse','HEAD'),sourceIdentity,headless:true,browserVersion:browser.version(),viewport:{width:viewport,height:900},dpr,frame,cells,staleControl:stale,controls,legacyMaskProbe,
+  const result={name,group,configuredCandidates:GROUPS[group],toolsCommit:git('rev-parse','HEAD'),sourceIdentity,headless:true,browserVersion:browser.version(),viewport:{width:viewport,height:900},dpr,frame,cells,staleControl:stale,controls,legacyMaskProbe,
     modelChecks:{isolation:true,rawSwitch:true,keyboardFocus:true,scope:'mock model page only; production workflow proof pending'},tinyMaskFallback:tiny,
     reading:{expectedRows:frozen.frames.find(f=>f.id===frame).textRows,expected:frame.endsWith('-reading')?'0O 1Il []{} () ,.;: !? /\\ -_=+ SAMPLE.ASM 186':null,source:'frozen '+frame,transcription:null,errorCount:null,joinedStrokes:null,washedOutReverse:null,resizeMoire:null,status:'awaiting independent visual review'},
     estimate:{seconds:[15,30],peakCapMB:700,source:'prior 3.4-second/495 MB batch plus extra controls; estimate, not measurement'},workBudgetMs:budget};

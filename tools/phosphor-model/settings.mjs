@@ -5,7 +5,8 @@ export const GROUPS=Object.freeze({
   softening:Object.freeze({R:setting(false,'pixelated'),F:setting(true,'auto'),B1:setting(true,'auto',.25),B2:setting(true,'auto',.45),H:setting(true,'auto',.25,.22,1.6)})
 });
 export function settings(group,candidate){
-  const value=GROUPS[group]?.[candidate];
+  const members=Object.hasOwn(GROUPS,group)?GROUPS[group]:null;
+  const value=members&&Object.hasOwn(members,candidate)?members[candidate]:null;
   if(!value)throw Error(`unknown model candidate: ${group}/${candidate}`);
   return value;
 }
