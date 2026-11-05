@@ -1,0 +1,2 @@
+{"name":"P6-VS3-softening80","command":"node capture.mjs --group=softening --viewport=600 --dpr=1 --frame=80-reverse","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T14:46:47.092Z","freePercent":42,"load":1.77,"waitedSeconds":0}
+{"name":"P6-VS3-softening80","command":"node capture.mjs --group=softening --viewport=600 --dpr=1 --frame=80-reverse","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T14:46:52.088Z","outcome":"exit 0","code":0,"peakMB":599,"processes":5,"seconds":5,"freePercentAtEnd":37}

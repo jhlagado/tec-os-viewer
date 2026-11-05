@@ -1,0 +1,75 @@
+{
+  "tool": "Pillow",
+  "version": "11.3.0",
+  "inputs": [
+    {
+      "label": "A",
+      "file": "softening-600-dpr1-80-reverse-A.png",
+      "sha256": "46f9a3b1acd11db1d66cb4886c26a8c6e156e5c0f1216165e3ebf0a528a61cf9",
+      "rect": [
+        0,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "B",
+      "file": "softening-600-dpr1-80-reverse-B.png",
+      "sha256": "c6d1ea3ab11cc0fefb420fe7efa08caf20b239267ab3b888662a3517a463c463",
+      "rect": [
+        566,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "C",
+      "file": "softening-600-dpr1-80-reverse-C.png",
+      "sha256": "46f9a3b1acd11db1d66cb4886c26a8c6e156e5c0f1216165e3ebf0a528a61cf9",
+      "rect": [
+        0,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "D",
+      "file": "softening-600-dpr1-80-reverse-D.png",
+      "sha256": "1a600b0c6dc2811686a4d0463bcc565a1c44b06ff2399669618254fb8820259a",
+      "rect": [
+        566,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "E",
+      "file": "softening-600-dpr1-80-reverse-E.png",
+      "sha256": "663ca52ccfb87907746bf1a2c4560473b01643b814d700bf2b0d8605e3ab3bd6",
+      "rect": [
+        0,
+        952,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    }
+  ],
+  "output": "sheets/softening-600-dpr1-80-reverse.png",
+  "outputSha256": "d59b26bc4abb50fad7da762aa0d1e89f4dbed7c2c83c312bfaf06976911bcf80",
+  "size": [
+    1108,
+    1383
+  ],
+  "seconds": 0.05514850000000002,
+  "peakMB": 38.31,
+  "scope": "native-pixel composition, no browser, no resizing"
+}
