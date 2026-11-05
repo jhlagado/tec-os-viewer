@@ -9,6 +9,9 @@ import { GROUPS } from './settings.mjs';
 import { ROOT,fromTecos } from '../../test/lib/root.mjs';
 const opts=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 const group=opts.group??'legacy';assert.ok(Object.hasOwn(GROUPS,group),'unknown capture group');
+if(group==='core'){
+  const {captureCore}=await import('./core-capture.mjs');await captureCore(opts);
+}else{
 const viewport=Number(opts.viewport??600),dpr=Number(opts.dpr??1),frame=opts.frame??(group==='softening'?'80-reverse':'80-reading');
 if(group==='softening')assert.deepEqual({viewport,dpr,frame},{viewport:600,dpr:1,frame:'80-reverse'},'softening allocation is one bounded 600/DPR1/80-reverse cell');
 const base=resolve(ROOT,'evidence/vs3-model'),out=group==='legacy'?base:resolve(base,'softening');
@@ -119,3 +122,5 @@ try{
   if(deadlineExpired||Date.now()-began>budget)throw Error('model capture exceeded 110-second work budget');
   console.log(JSON.stringify({name,group,cells:cells.map(c=>({label:c.label,variant:c.variant,geometry:c.proof.geometry})),stale,controls,legacyMaskProbe,readingStatus:result.reading.status,composition,effects}));
 }finally{clearTimeout(deadline);await browser?.close();server.close();if(deadlineExpired)throw Error('model capture exceeded 110-second work budget');}
+
+}
