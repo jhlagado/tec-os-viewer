@@ -1,10 +1,15 @@
-// VG4: the page card's worked example, on the PICO9918 board at 80 columns.
+// VG10 (VS1 VG4): the page card's worked example, on the PICO9918 board at 80 columns.
 // At the prompt, TAS SAMPLE and SAMPLE print SAMPLE's three lines, as TEC-OS's
 // sample.test.mjs reads them. Then in TED the hello line is edited, ^T B builds
 // it and ^T R runs it, and the edited line is printed. Emulator evidence.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
+import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
+import { ROOT } from "./lib/root.mjs";
 import { card, power } from "./lib/page.mjs";
 
 const LIMIT = 400_000_000; // each step's cycles: a stall fails, naming the step
@@ -32,8 +37,35 @@ function keys(m, s, what, done = () => true) {
   }
 }
 
+/** Exact on-card text, including CRLF, EOF and record padding, and TED coordinates. */
+function samplePosition(image) {
+  const source = readFileSync(resolve(ROOT, "tec-os/programs/SAMPLE.ASM"), "utf8");
+  const expected = Buffer.from(source.replace(/\n/g, "\r\n") + "\x1a", "latin1");
+  const v = findVolume(parseContainer(image), "A");
+  const bytes = Buffer.from(new CpmVolume(volumePayload(image, v), v.g).read("SAMPLE.ASM"));
+  const padded = Buffer.alloc(Math.ceil(expected.length / 128) * 128);
+  expected.copy(padded);
+  assert.deepEqual(bytes, padded, "VG10: card source equals pinned source with CRLF, EOF and zero record padding");
+  const lines = bytes.subarray(0, bytes.indexOf(0x1a)).toString("latin1").split("\r\n");
+  const line = lines.findIndex((l) => l.startsWith('HELLO: DB "Hello from TEC-OS."')) + 1;
+  assert.equal(line, 186, "VG10: the qualified greeting line");
+  const text = lines[line - 1];
+  assert.ok(!text.includes("\t"), "the compact greeting has no tabs to expand");
+  const insertAt = text.indexOf("TEC-OS.");
+  assert.ok(insertAt > 0);
+  return { line, insertAt, cursor: `L${line} C${insertAt + "the ".length + 1}`,
+    edited: text.slice(0, insertAt) + "the " + text.slice(insertAt) };
+}
+
+test("VG10: the card's compact source has the qualified bytes and greeting coordinates", async (t) => {
+  const position = samplePosition(await card());
+  assert.equal(position.cursor, "L186 C27");
+  t.diagnostic(JSON.stringify(position));
+});
+
 test("the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited", { timeout: 300_000 }, async () => {
-  const m = power(await card(), "pico", 80);
+  const image = await card();
+  const m = power(image, "pico", 80);
   const screen = () => m.screen().map((l) => l.trimEnd());
   m.runUntilChecked(() => m.ready() && screen().some((l) => l === "A>"), LIMIT, "the prompt");
 
@@ -41,16 +73,17 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   keys(m, "sample\r", "SAMPLE's run", () => m.ready() && screen().includes("Back to the prompt."));
   assert.match(screen().join("\n"), /Hello from TEC-OS\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA>/);
 
-  keys(m, "ted sample.asm 128\r", "TED at the hello line", () => /SAMPLE\.ASM +L128 C1\b/.test(screen()[23]));
-  keys(m, `${RIGHT.repeat(22)}the `, "the edit", () => /L128 C33\b/.test(screen()[23]));
-  assert.ok(screen().some((l) => /^HELLO:\s+DB\s+"Hello from the TEC-OS\.",13,10,"\$"$/.test(l)), `the edited line:\n${screen().join("\n")}`);
+  const { line, insertAt, cursor, edited } = samplePosition(image);
+  keys(m, `ted sample.asm ${line}\r`, "TED at the hello line", () => screen()[23].includes(`L${line} C1`));
+  keys(m, `${RIGHT.repeat(insertAt)}the `, "the edit", () => screen()[23].includes(cursor));
+  assert.ok(screen().includes(edited), `the edited line:\n${screen().join("\n")}`);
   let mark = m.output.length;
   keys(m, "\x14b", "^T B's build", () => /TED\r\n/.test(m.text(mark)) && /SAMPLE\.ASM/.test(screen()[23]));
   assert.match(m.text(mark), /SAMPLE\.COM written/);
   mark = m.output.length;
   keys(m, "\x14r", "^T R's run", () => /Press a key/.test(m.text(mark)));
   assert.match(m.text(mark), /Hello from the TEC-OS\.\r\n/, "the edited line printed");
-  keys(m, " ", "TED again", () => /L128 C33\b/.test(screen()[23]));
+  keys(m, " ", "TED again", () => screen()[23].includes(cursor));
   keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A>"));
   assert.deepEqual(m.violations, []);
 });
