@@ -1,13 +1,15 @@
 """Final native screenshot sanity checks, after Chromium has closed. No resizing."""
 import hashlib,json,pathlib,resource,sys,time
 from PIL import Image,ImageChops,ImageFilter,__version__
+from edge_profiles import analyse
 root=pathlib.Path(__file__).resolve().parents[2]
 name=sys.argv[1]
 out=root/'evidence/vs3-model/softening'
 start=time.perf_counter()
 record=json.loads((out/(name+'.json')).read_text())
 assert record['group']=='softening' and record['frame']=='80-reverse'
-frames=json.loads((root/'evidence/vs3-model/fixtures.json').read_text())['frames']
+manifest=json.loads((root/'evidence/vs3-model/fixtures.json').read_text())
+frames=manifest['frames']
 f=next(f for f in frames if f['id']==record['frame'])
 raw=(root/'evidence/vs3-model/frames'/(f['id']+'.rgba')).read_bytes()
 assert hashlib.sha256(raw).hexdigest()==f['rgbaSha256']
@@ -45,6 +47,7 @@ blur={v:diff(images[v],images['F']) for v in ['B1','B2']}
 for value in blur.values():
  value['rasterObservable']=bool(value['changedPixels'])
  value['interpretation']='Raster difference only, not a softness or reading ranking' if value['changedPixels'] else 'No raster-observable blur at this size; not a visual pass'
+edge_profiles=analyse(root,f,manifest['identity'],raw,images,g)
 halo=diff(images['H'],images['B1'])
 assert halo['maxDecrease']>=-1,'screen halo unexpectedly darkens the B1 image'
 outside=0
@@ -66,7 +69,7 @@ assert mask['changedPixels']>0,'active legacy mask made no final screenshot diff
 result={'scope':'final screenshot effect sanity only, not legibility, production or timing acceptance',
  'group':'softening','name':name,'referenceRgbaSha256':f['rgbaSha256'],'floorSamples':floor_samples,
  'channelRoundingAllowance':1,'sourceInkMarginPixels':1,'floorIsolationMarginSourcePixels':8,
- 'blurVersusFloor':blur,'haloVersusB1':halo,'legacyMaskOnVersusOff':mask,
+ 'blurVersusFloor':blur,'sourceAnchoredEdgeProfiles':edge_profiles,'haloVersusB1':halo,'legacyMaskOnVersusOff':mask,
  'pillowVersion':__version__,'seconds':time.perf_counter()-start,
  'peakMB':round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/(1024*1024 if sys.platform=='darwin' else 1024),2)}
 (out/(name+'-effects.json')).write_text(json.dumps(result,indent=2)+'\n')
