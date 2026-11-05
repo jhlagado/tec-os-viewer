@@ -105,7 +105,7 @@ def _anchors(frame,raw,font,geometry,image_size):
     'axis':axis,'profileDirection':'horizontal across a vertical edge' if axis=='x' else 'vertical across a horizontal edge',
     'source':{'row':row,'column':col,'code':code,'glyphRows':glyph,'boundaryPixel':[ax,ay],
      'negativeBit':before,'positiveBit':after,'negativeRunSourcePx':negative,'positiveRunSourcePx':positive},
-    'nativePixelCoordinates':points,'offsetsCssPx':[(p+.5-edge)/geometry['dpr'] for p in values],
+    'nativeEdgeCoordinate':edge,'fixedCrossPixel':cross,'nativePixelCoordinates':points,'offsetsCssPx':[(p+.5-edge)/geometry['dpr'] for p in values],
     'captureBoundsCss':{k:geometry[k] for k in ['x','y','width','height']},
     'mapping':'native screenshot pixel centres relative to unchanged CSS clip; no sample interpolation or resizing'})
  return anchors
@@ -127,14 +127,14 @@ def analyse(root,frame,identity,raw,images,geometry):
      'no observable edge broadening at these native samples; not a visual pass'}
  candidates={name:compare(profiles[name]) for name in ['B1','B2']}
  controls=[]
- control_images=[('identical-reference',images['F']),('blur-disabled',images['F'].copy())]
+ control_images=[('identical-reference',images['F'],{'kind':'identical'}),('blur-disabled',images['F'].copy(),{'kind':'no-filter F raster'})]
  for name,gain,offset in [('affine-dimmer-offset',.8,7),('affine-brighter-offset',1.1,2)]:
   assert all(0<=gain*lo+offset and gain*hi+offset<=255 for lo,hi in images['F'].getextrema()),'affine control would clip'
-  control_images.append((name,images['F'].point(lambda v:int(round(gain*v+offset)))))
- for name,image in control_images:
+  control_images.append((name,images['F'].point(lambda v:int(round(gain*v+offset))),{'kind':'uniform RGB affine','gain':gain,'offset':offset,'quantized':True,'clipped':False}))
+ for name,image,transform in control_images:
   samples={a['id']:_samples(image,a) for a in anchors};detected=compare(samples)
   assert detected['observableProfiles']==0,('edge detector accepted a non-blur control',name)
-  controls.append({'name':name,'rejected':True,'imagePixelsSha256':_sha(image.tobytes()),'samples':samples,'detector':detected,
+  controls.append({'name':name,'rejected':True,'transform':transform,'imagePixelsSha256':_sha(image.tobytes()),'samples':samples,'detector':detected,
    'construction':'F pixels; blur-disabled is the F/no-filter raster' if name in ['identical-reference','blur-disabled'] else 'uniform RGB gain/offset with quantisation, no clipping, no blur'})
  calibration=images['F'].filter(ImageFilter.GaussianBlur(geometry['dpr']))
  calibration_samples={a['id']:_samples(calibration,a) for a in anchors};calibration_result=compare(calibration_samples)
@@ -142,9 +142,9 @@ def analyse(root,frame,identity,raw,images,geometry):
  assert _sha(bytes(frame['snapshot']['vram']))==vram_before and _sha(font)==identity['fontBytesSha256']
  return {'scope':'four native source-anchored profiles, not a whole-font or reading acceptance',
   'expectedVramSha256':vram_before,'expectedFontSha256':_sha(font),'expectedRgbaSha256':_sha(raw),'expectedReferencesUnchanged':True,
-  'luminanceWeights':list(Y_WEIGHTS),'anchors':anchors,'samples':profiles,'candidatesVersusF':candidates,
+  'signal':'weighted encoded-RGB luma proxy, no linear-light conversion','luminanceWeights':list(Y_WEIGHTS),'anchors':anchors,'samples':profiles,'candidatesVersusF':candidates,
   'negativeControls':controls,'positiveCalibration':{'construction':'F image with Pillow Gaussian radius one CSS pixel, not a browser candidate',
-   'samples':calibration_samples,'detector':calibration_result,'imagePixelsSha256':_sha(calibration.tobytes())},
+   'radiusCssPx':1,'radiusNativePx':geometry['dpr'],'samples':calibration_samples,'detector':calibration_result,'imagePixelsSha256':_sha(calibration.tobytes())},
   'detectorRules':{'minimumContrastLuminanceLevels':16,'affineResidualAllowanceLuminanceLevels':1,
    'normalizedShapeAllowance':'two luminance levels divided by lower profile contrast',
    'broadening':'non-affine shape change plus increased effective gradient width and reduced normalized peak',
