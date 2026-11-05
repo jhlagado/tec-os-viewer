@@ -2,6 +2,7 @@
 const setting=(floor,imageRendering,sharpBlur=0,glowOpacity=0,glowBlur=0,mask=false)=>Object.freeze({floor,imageRendering,sharpBlur,glowOpacity,glowBlur,glowBlend:'screen',mask});
 export const GROUPS=Object.freeze({
   legacy:Object.freeze({R:setting(false,'pixelated'),S:setting(false,'auto'),G:setting(true,'auto',0,.16,1.2),L:setting(true,'auto',0,.16,1.2,true)}),
+  core:Object.freeze({R:setting(false,'pixelated'),F:setting(true,'auto'),C75:setting(true,'auto',.75),C100:setting(true,'auto',1)}),
   softening:Object.freeze({R:setting(false,'pixelated'),F:setting(true,'auto'),B1:setting(true,'auto',.25),B2:setting(true,'auto',.45),H:setting(true,'auto',.25,.22,1.6)})
 });
 export function settings(group,candidate){

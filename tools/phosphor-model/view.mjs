@@ -49,7 +49,7 @@ function geometry(){
 const blur=n=>n?`blur(${n}px)`:'none';
 function draw(f,candidate='R',options={}){
   if(!f)throw Error('unknown frozen frame');
-  const s=settings(group,candidate);current=f;variant=candidate;maskOff=group==='softening'||Boolean(options.maskOff);
+  const s=settings(group,candidate);current=f;variant=candidate;maskOff=group!=='legacy'||Boolean(options.maskOff);
   const b=decode(f),visible=options.visibleFrame?decode(options.visibleFrame):b;
   ctx.imageSmoothingEnabled=false;ctx.drawImage(s.floor?floorCopy(visible):visible.raw,0,0,1024,768);
   if(options.visibleFrame)decode(f);
@@ -100,6 +100,11 @@ function verifyMask(g){
     projectedBands:box?rows.map(r=>({top:box.y+Number(r.getAttribute('y'))*box.height/192,bottom:box.y+(Number(r.getAttribute('y'))+Number(r.getAttribute('height')))*box.height/192})):[],
     suppressionThresholdDevicePixels:2};
 }
+function verifyCoreMaskOff(){
+  equal(getComputedStyle(mask).display,'none','core mask must remain off');
+  equal(geometry().maskActive,false,'core mask activation');
+  return{active:false,scope:'inactive only; no legacy row-mask probe in core packet'};
+}
 function verifyStyles(){
   const s=settings(group,variant),main=getComputedStyle(sharp),halo=getComputedStyle(glow),g=geometry();
   filterCheck(main.filter,s.sharpBlur,'computed sharp filter');equal(main.imageRendering,s.imageRendering,'computed sharp scaling');
@@ -109,7 +114,7 @@ function verifyStyles(){
   equal(halo.pointerEvents,'none','computed glow pointer events');equal(halo.imageRendering,'auto','computed glow scaling');
   const glowBounds=s.glowOpacity?alignment(glow,'glow overlay'):null;equal(halo.transform,'none','computed glow transform');
   return{sharp:{filter:main.filter,opacity:main.opacity,blend:main.mixBlendMode,imageRendering:main.imageRendering,bounds:bounds(sharp)},
-    glow:{filter:halo.filter,opacity:halo.opacity,blend:halo.mixBlendMode,display:halo.display,bounds:glowBounds},mask:verifyMask(g)};
+    glow:{filter:halo.filter,opacity:halo.opacity,blend:halo.mixBlendMode,display:halo.display,bounds:glowBounds},mask:group==='core'?verifyCoreMaskOff():verifyMask(g)};
 }
 async function verify(f=current){
   const b=buffer(f.sourceWidth),raw=b.rc.getImageData(0,0,f.sourceWidth,192).data,sourceSha=await hash(raw);
@@ -134,9 +139,9 @@ for(const f of frames){
   const option=document.createElement('option');option.value=f.id;option.textContent=f.id;$('frame').append(option);
 }
 $('candidate').replaceChildren(...Object.keys(GROUPS[group]).map(name=>{const o=document.createElement('option');o.value=o.textContent=name;return o;}));
-$('off').disabled=group==='softening';
+$('off').disabled=group!=='legacy';
 const get=id=>frames.find(f=>f.id===id);
-function choose(id,candidate,off=false){$('frame').value=id;$('candidate').value=candidate;$('width').value=get(id).consoleWidth;$('off').checked=group==='softening'||off;return draw(get(id),candidate,{maskOff:off});}
+function choose(id,candidate,off=false){$('frame').value=id;$('candidate').value=candidate;$('width').value=get(id).consoleWidth;$('off').checked=group!=='legacy'||off;return draw(get(id),candidate,{maskOff:off});}
 $('candidate').onchange=()=>choose(current.id,$('candidate').value,$('off').checked);
 $('frame').onchange=()=>choose($('frame').value,variant,$('off').checked);
 $('width').onchange=()=>choose(`${$('width').value}-${current.kind}`,variant,$('off').checked);
@@ -153,7 +158,7 @@ async function reject(name,action,expected){
 // Verify the repaired effect pipeline, then leave the legacy/raw control available.
 async function restoreAndVerify(f,result){
   let effect;
-  try{choose(f.id,group==='legacy'?'L':'H');effect=await verify(f);}
+  try{choose(f.id,group==='core'?'C100':group==='legacy'?'L':'H');effect=await verify(f);}
   finally{
     choose(f.id,'R');const raw=await verify(f);
     if(result)result.restorationProof={effect,raw};
@@ -161,8 +166,8 @@ async function restoreAndVerify(f,result){
 }
 window.model={group,candidates:Object.keys(GROUPS[group]),frames:frames.map(({snapshot,...f})=>f),choose,verify,verifyStyles,geometry,identity:fixture.identity,
   async staleControl(){
-    const f=get('80-reverse'),old=get('80-prompt'),candidate=group==='legacy'?'G':'H';let result;
-    try{return result={...await reject('stale-sharp',async()=>{draw(f,candidate,{visibleFrame:old});await verify(f);},'visible sharp frame mismatch'),expected:f.id,stale:old.id};}
+    const f=get('80-reverse'),old=get('80-prompt'),candidate=group==='core'?'C100':group==='legacy'?'G':'H';let result;
+    try{return result={...await reject(group==='core'?'stale-main':'stale-sharp',async()=>{draw(f,candidate,{visibleFrame:old});await verify(f);},'visible sharp frame mismatch'),expected:f.id,stale:old.id};}
     finally{await restoreAndVerify(f,result);}
   },
   async controls(){
@@ -170,12 +175,16 @@ window.model={group,candidates:Object.keys(GROUPS[group]),frames:frames.map(({sn
     const vramBefore=await hash(f.snapshot.vram),fontBefore=await hash(font);
     equal(vramBefore,f.vramSha256,'control frozen VRAM precondition');equal(fontBefore,fixture.identity.fontBytesSha256,'control pinned font precondition');
     try{
+      if(group==='core'){
+        controls.push(await reject('disabled-main-filter',async()=>{draw(f,'C100');sharp.style.filter='none';await verify(f);},'computed sharp filter'));
+      }else{
       controls.push(await reject('stale-glow',async()=>{draw(f,halo,{glowFrame:old});await verify(f);},'glow current frame mismatch'));
       if(group==='softening')controls.push(await reject('disabled-sharp-filter',async()=>{draw(f,'B1');sharp.style.filter='none';await verify(f);},'computed sharp filter'));
       controls.push(await reject('disabled-glow-filter',async()=>{draw(f,halo);glow.style.filter='none';await verify(f);},'computed glow filter'));
       controls.push(await reject('shifted-glow-overlay',async()=>{draw(f,halo);glow.style.transform='translateX(1px)';await verify(f);},'glow overlay alignment mismatch'));
       if(group==='legacy')controls.push(await reject('shifted-mask-overlay',async()=>{draw(f,'L');mask.style.transform='translateY(1px)';await verify(f);},'computed mask transform'));
       if(group==='legacy')controls.push(await reject('shifted-mask-band',async()=>{draw(f,'L');mask.style.backgroundImage=`url("data:image/svg+xml,${encodeURIComponent(maskSvg.replace('y="0.75"','y="0.5"'))}")`;await verify(f);},'mask row 0 y'));
+      }
       decode(f);
       for(const mutation of decodedMutations(f,new Uint8ClampedArray(buffer(f.sourceWidth).image.data))){
         controls.push(await reject(mutation.name,async()=>{
