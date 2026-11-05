@@ -1,0 +1,11 @@
+mem-guard 19:03:24 P6-VG8-evidence: started, limit 600 MB, heap 450 MB, memory free 31 percent, load 4.5, waited 0 s
+✔ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (53.924166ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 202.257708
+mem-guard 19:03:25 P6-VG8-evidence: exit 0, peak 104 MB, 3 processes at most, 0.6 s

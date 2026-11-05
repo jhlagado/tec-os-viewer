@@ -40,3 +40,13 @@
 {"name":"P6-VG1-clean-1","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:00:08.899Z","outcome":"exit 0","code":0,"peakMB":336,"processes":10,"seconds":67.8,"freePercentAtEnd":32}
 {"name":"P6-VG1-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:00:16.054Z","freePercent":34,"load":4.68,"waitedSeconds":0}
 {"name":"P6-VG1-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:01:39.085Z","outcome":"exit 0","code":0,"peakMB":337,"processes":10,"seconds":83,"freePercentAtEnd":35}
+{"name":"P6-old-ROM-build","command":"npm run build","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:02:02.004Z","freePercent":35,"load":8.09,"waitedSeconds":18}
+{"name":"P6-old-ROM-build","command":"npm run build","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:02:48.222Z","outcome":"exit 0","code":0,"peakMB":175,"processes":2,"seconds":46.2,"freePercentAtEnd":33}
+{"name":"P6-VG1-old-ROM","command":"node build.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:02:48.389Z","freePercent":33,"load":5.7,"waitedSeconds":0}
+{"name":"P6-VG1-old-ROM","command":"node build.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:02:48.677Z","outcome":"exit 1","code":1,"peakMB":10,"processes":1,"seconds":0.3,"freePercentAtEnd":34}
+{"name":"P6-VG8-evidence","command":"node --test no-copy.test.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:03:24.725Z","freePercent":31,"load":4.5,"waitedSeconds":0}
+{"name":"P6-VG8-evidence","command":"node --test no-copy.test.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:03:25.305Z","outcome":"exit 0","code":0,"peakMB":104,"processes":3,"seconds":0.6,"freePercentAtEnd":31}
+{"name":"P6-VG3-no-card","command":"node --test --test-name-pattern=with no card boards.test.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:03:25.433Z","freePercent":31,"load":4.5,"waitedSeconds":0}
+{"name":"P6-VG3-no-card","command":"node --test --test-name-pattern=with no card boards.test.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:03:26.378Z","outcome":"exit 0","code":0,"peakMB":189,"processes":4,"seconds":0.9,"freePercentAtEnd":31}
+{"name":"P6-quick","command":"npm run quick","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:03:26.520Z","freePercent":31,"load":4.5,"waitedSeconds":0}
+{"name":"P6-quick","command":"npm run quick","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:03:28.092Z","outcome":"exit 0","code":0,"peakMB":195,"processes":3,"seconds":1.6,"freePercentAtEnd":31}

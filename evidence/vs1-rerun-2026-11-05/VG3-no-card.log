@@ -1,0 +1,11 @@
+mem-guard 19:03:25 P6-VG3-no-card: started, limit 600 MB, heap 450 MB, memory free 31 percent, load 4.5, waited 0 s
+✔ with no card the serial board gives CARD? and no prompt (375.790667ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 575.451625
+mem-guard 19:03:26 P6-VG3-no-card: exit 0, peak 189 MB, 4 processes at most, 0.9 s

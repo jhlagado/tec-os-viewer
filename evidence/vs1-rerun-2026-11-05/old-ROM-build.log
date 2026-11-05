@@ -1,0 +1,8 @@
+mem-guard 19:01:43 waiting: ke9-bounded-survey holds the lock, pid 60673, since 2026-11-05T08:01:05.315Z
+mem-guard 19:02:02 P6-old-ROM-build: started, limit 600 MB, heap 450 MB, memory free 35 percent, load 8.09, waited 18 s
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+
+tecos: ROM 15981/16384 bytes, TPA $0100-$B9A3 (47268 bytes), sha256 1f9eb404c7146902
+mem-guard 19:02:48 P6-old-ROM-build: exit 0, peak 175 MB, 2 processes at most, 46.2 s

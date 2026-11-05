@@ -1,0 +1,4 @@
+Previous HEAD position was 78127ec Merge kf8-boot into ke-fixes-8: prepareCard reports a read-only STARTUP.CMD; not yet checked
+HEAD is now at 1b9c51f ke-fixes-7's figures: ROM 15,981 used, 403 free (+39 on 621201d: KE-AR2 +8, KE-AR3 +12, KE-AR4 +19, KE-AR1 none), sha256 1f9eb404c7146902; the memory map and rom-services.md regenerated, its rows from the build's spans summing to the census; TPA 47,268 unchanged; not yet checked
+Previous HEAD position was 1b9c51f ke-fixes-7's figures: ROM 15,981 used, 403 free (+39 on 621201d: KE-AR2 +8, KE-AR3 +12, KE-AR4 +19, KE-AR1 none), sha256 1f9eb404c7146902; the memory map and rom-services.md regenerated, its rows from the build's spans summing to the census; TPA 47,268 unchanged; not yet checked
+HEAD is now at 78127ec Merge kf8-boot into ke-fixes-8: prepareCard reports a read-only STARTUP.CMD; not yet checked
