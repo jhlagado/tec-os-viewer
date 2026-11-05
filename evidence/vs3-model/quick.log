@@ -1,0 +1,18 @@
+mem-guard 19:42:55 P6-VS3-quick: started, limit 600 MB, heap 450 MB, memory free 34 percent, load 2.86, waited 0 s
+
+> tec-os-viewer@0.1.0 quick
+> node --test --test-concurrency=1 --test-name-pattern="bundle|serial board" test/web-bundle.test.mjs test/boards.test.mjs
+
+✔ the page's card reaches A> on the serial board at 80 (574.368291ms)
+✔ the page's card reaches A> on the serial board at 40 (288.554541ms)
+✔ with no card the serial board gives CARD? and no prompt (38.527042ms)
+✔ the web page's bundle uses no Node globals (56.137125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1308.664208
+mem-guard 19:42:57 P6-VS3-quick: exit 0, peak 237 MB, 5 processes at most, 2 s

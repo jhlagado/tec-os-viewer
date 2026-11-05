@@ -1,0 +1,24 @@
+{
+  "source": "Independent blind review reported by the driver, 5 November 2026",
+  "labels": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "sharedAmbiguities": [
+    "0/O",
+    "1/I/l",
+    "brackets"
+  ],
+  "readable": [
+    "filename",
+    "digits"
+  ],
+  "reliableSharpnessOrGlowRanking": false,
+  "lineSeparationAssessed": false,
+  "transcriptions": null,
+  "errorCounts": null,
+  "conclusion": "Reading limitation at this size, not a visual pass. No default selected."
+}

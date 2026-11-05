@@ -1,0 +1,75 @@
+{
+  "tool": "Pillow",
+  "version": "11.3.0",
+  "inputs": [
+    {
+      "label": "A",
+      "file": "600-dpr1-80-reading-A.png",
+      "sha256": "8aa06cccef26dc9a1ac9c396ecba2f98c0fd20b50154dfdfa1e58c886b9321eb",
+      "rect": [
+        0,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "B",
+      "file": "600-dpr1-80-reading-B.png",
+      "sha256": "baefa048c7172b65b63b516848de87114372884ff007362abf72b33e788034be",
+      "rect": [
+        566,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "C",
+      "file": "600-dpr1-80-reading-C.png",
+      "sha256": "872cb5e3afb60a45904047e4d75b49867347d3ed63321ffd040ecede106f68a6",
+      "rect": [
+        0,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "D",
+      "file": "600-dpr1-80-reading-D.png",
+      "sha256": "baefa048c7172b65b63b516848de87114372884ff007362abf72b33e788034be",
+      "rect": [
+        566,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "E",
+      "file": "600-dpr1-80-reading-E.png",
+      "sha256": "c12fa8c2df09d2cf3faab3436f512ed58d6b75bf84e89ac91cb099261d31ce17",
+      "rect": [
+        0,
+        952,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    }
+  ],
+  "output": "sheets/600-dpr1-80-reading.png",
+  "outputSha256": "88d15f692ab2ed48d0e599d4183c60f5ef6c9eb60c8b8a689452be4e1956dfd8",
+  "size": [
+    1108,
+    1383
+  ],
+  "seconds": 0.09387458300000001,
+  "peakMB": 40.42,
+  "scope": "light offline native-pixel composition, no browser, no resizing; permitted after heavy-slot hold"
+}

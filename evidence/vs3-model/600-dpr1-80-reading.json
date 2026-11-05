@@ -1,0 +1,231 @@
+{
+  "name": "600-dpr1-80-reading",
+  "toolsCommit": "db15c3af20384f27f5c8b66f25b462d26edfb3ba",
+  "sourceIdentity": {
+    "baselineViewer": "76c4aa0",
+    "toolsCommit": "387e35e7ad8594f05d625aa4ba20742c6cf757e9",
+    "tecos": "fe2097f4bad3f7578aa41b8bce8aa571c451dbc7",
+    "pins": {
+      "rom": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb",
+      "files": {
+        "DEMO.COM": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d",
+        "GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
+        "MOUNT.COM": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc",
+        "SAMPLE.ASM": "0544eba7fbdb498d8d9114e64ad3ddbf48825e5430ee4665940ce82098ab6776",
+        "STARTUP.CMD": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d",
+        "TAS.COM": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2",
+        "TED.COM": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f"
+      }
+    },
+    "fontSource": "tec-os/format/font5x7.txt",
+    "fontSourceSha256": "ba4aaea026956d45e384de39e622a02d5b672e3df17f74714732bb05a27c3c3e",
+    "fontBytesSha256": "43eb0ec9a8513a670df112948435801b9ae91874e1d17f1283d8990e586e0fb0",
+    "selectedAssembler": "atom",
+    "reading": "0O 1Il []{} () ,.;: !? /\\ -_=+ SAMPLE.ASM 186"
+  },
+  "headless": true,
+  "browserVersion": "151.0.7922.34",
+  "viewport": {
+    "width": 600,
+    "height": 900
+  },
+  "dpr": 1,
+  "frame": "80-reading",
+  "cells": [
+    {
+      "label": "A",
+      "variant": "R",
+      "file": "600-dpr1-80-reading-A.png",
+      "proof": {
+        "sourceSha": "a43be0074543100e1ce50f9c4ed0ac49e5a1d33733a14fc97613c5394f4da789",
+        "visibleSharpSha": "9a1c3f3413aad101b17d122350be693739708ae7f2af13ad79d45094efa7fb05",
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "settings": {
+          "candidate": "R",
+          "floor": null,
+          "glowOpacity": 0,
+          "blurCssPixels": 0,
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "B",
+      "variant": "G",
+      "file": "600-dpr1-80-reading-B.png",
+      "proof": {
+        "sourceSha": "a43be0074543100e1ce50f9c4ed0ac49e5a1d33733a14fc97613c5394f4da789",
+        "visibleSharpSha": "44ef50e9e7bd2ed2dba2cac1f851a3352d81bcb9eedc4cb9741391e5f8557384",
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "settings": {
+          "candidate": "G",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "glowOpacity": 0.16,
+          "blurCssPixels": 1.2,
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "C",
+      "variant": "L",
+      "file": "600-dpr1-80-reading-C.png",
+      "proof": {
+        "sourceSha": "a43be0074543100e1ce50f9c4ed0ac49e5a1d33733a14fc97613c5394f4da789",
+        "visibleSharpSha": "44ef50e9e7bd2ed2dba2cac1f851a3352d81bcb9eedc4cb9741391e5f8557384",
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": true
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "settings": {
+          "candidate": "L",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "glowOpacity": 0.16,
+          "blurCssPixels": 1.2,
+          "maskOpacity": 0.12
+        }
+      }
+    },
+    {
+      "label": "D",
+      "variant": "L-off",
+      "file": "600-dpr1-80-reading-D.png",
+      "proof": {
+        "sourceSha": "a43be0074543100e1ce50f9c4ed0ac49e5a1d33733a14fc97613c5394f4da789",
+        "visibleSharpSha": "44ef50e9e7bd2ed2dba2cac1f851a3352d81bcb9eedc4cb9741391e5f8557384",
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "settings": {
+          "candidate": "L",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "glowOpacity": 0.16,
+          "blurCssPixels": 1.2,
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "E",
+      "variant": "S",
+      "file": "600-dpr1-80-reading-E.png",
+      "proof": {
+        "sourceSha": "a43be0074543100e1ce50f9c4ed0ac49e5a1d33733a14fc97613c5394f4da789",
+        "visibleSharpSha": "9a1c3f3413aad101b17d122350be693739708ae7f2af13ad79d45094efa7fb05",
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "settings": {
+          "candidate": "S",
+          "floor": null,
+          "glowOpacity": 0,
+          "blurCssPixels": 0,
+          "maskOpacity": 0
+        }
+      }
+    }
+  ],
+  "staleControl": {
+    "rejected": true,
+    "diagnostic": "visible sharp frame mismatch",
+    "expected": "80-reverse",
+    "stale": "80-prompt"
+  },
+  "modelChecks": {
+    "isolation": true,
+    "rawSwitch": true,
+    "keyboardFocus": true,
+    "scope": "mock model page only; production workflow proof pending"
+  },
+  "tinyMaskFallback": {
+    "x": 29,
+    "y": 260.40625,
+    "width": 142,
+    "height": 106.5,
+    "dpr": 1,
+    "zoom": 1,
+    "rowDevicePixels": 0.5546875,
+    "fractionalRows": true,
+    "sourceXScale": 0.27734375,
+    "maskActive": false
+  },
+  "reading": {
+    "expected": "0O 1Il []{} () ,.;: !? /\\ -_=+ SAMPLE.ASM 186",
+    "transcription": null,
+    "errorCount": null,
+    "joinedStrokes": null,
+    "washedOutReverse": null,
+    "resizeMoire": null,
+    "status": "awaiting blinded human review"
+  }
+}

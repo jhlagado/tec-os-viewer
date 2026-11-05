@@ -1,0 +1,15 @@
+mem-guard 19:36:28 P6-VS3-freeze: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 3.17, waited 0 s
+32-prompt 256 7811f521aff891915f0291dbfcfbee9e314c8791196ce55b035d6d265b76d17d
+32-ted 256 36e20203e2f2646a200572366998894e64b910ecc2b6f793b83c0bccd96b438e
+32-reverse 256 3779759f744f49c1052317f954d954fc857bae8278d067824c751af58416bb1c
+node:internal/test_runner/harness:122
+      throw err;
+      ^
+
+Error: no demo within 300000000 cycles; pc=f644
+    at Machine.runUntilChecked (file:///Users/johnhardy/projects/tec-os-viewer/tec-os/host/machine.mjs:290:15)
+    at command (file:///Users/johnhardy/projects/tec-os-viewer/tools/phosphor-model/freeze.mjs:31:5)
+    at file:///Users/johnhardy/projects/tec-os-viewer/tools/phosphor-model/freeze.mjs:76:5
+
+Node.js v24.18.0
+mem-guard 19:36:37 P6-VS3-freeze: exit 7, peak 133 MB, 3 processes at most, 9.2 s

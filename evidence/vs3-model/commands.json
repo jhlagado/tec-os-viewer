@@ -1,0 +1,131 @@
+[
+  {
+    "name": "freeze",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "env": {
+      "TECOS_ROM_ASSEMBLER": "atom"
+    },
+    "argv": [
+      "node",
+      "/Users/johnhardy/projects/origo/tools/mem-guard.mjs",
+      "--limit",
+      "600",
+      "--name",
+      "P6-VS3-freeze",
+      "--log",
+      "/tmp/p6-vs3/resources.jsonl",
+      "--",
+      "node",
+      "tools/phosphor-model/freeze.mjs"
+    ],
+    "exit": 7
+  },
+  {
+    "name": "freeze-corrected",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "env": {
+      "TECOS_ROM_ASSEMBLER": "atom"
+    },
+    "argv": [
+      "node",
+      "/Users/johnhardy/projects/origo/tools/mem-guard.mjs",
+      "--limit",
+      "600",
+      "--name",
+      "P6-VS3-freeze-corrected",
+      "--log",
+      "/tmp/p6-vs3/resources.jsonl",
+      "--",
+      "node",
+      "tools/phosphor-model/freeze.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "narrow80",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "env": {
+      "TECOS_ROM_ASSEMBLER": "atom"
+    },
+    "argv": [
+      "node",
+      "/Users/johnhardy/projects/origo/tools/mem-guard.mjs",
+      "--limit",
+      "700",
+      "--name",
+      "P6-VS3-narrow80",
+      "--log",
+      "/tmp/p6-vs3/resources.jsonl",
+      "--",
+      "node",
+      "tools/phosphor-model/capture.mjs",
+      "--viewport=600",
+      "--dpr=1",
+      "--frame=80-reading"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "quick",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "env": {
+      "TECOS_ROM_ASSEMBLER": "atom"
+    },
+    "argv": [
+      "node",
+      "/Users/johnhardy/projects/origo/tools/mem-guard.mjs",
+      "--limit",
+      "600",
+      "--name",
+      "P6-VS3-quick",
+      "--log",
+      "/tmp/p6-vs3/resources.jsonl",
+      "--",
+      "npm",
+      "run",
+      "quick"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "narrow80-png",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "env": {
+      "TECOS_ROM_ASSEMBLER": "atom"
+    },
+    "argv": [
+      "node",
+      "/Users/johnhardy/projects/origo/tools/mem-guard.mjs",
+      "--limit",
+      "700",
+      "--name",
+      "P6-VS3-narrow80-png",
+      "--log",
+      "/tmp/p6-vs3/resources.jsonl",
+      "--",
+      "node",
+      "tools/phosphor-model/capture.mjs",
+      "--viewport=600",
+      "--dpr=1",
+      "--frame=80-reading"
+    ],
+    "exit": 1
+  },
+  {
+    "name": "quick-export",
+    "status": "withdrawn before guard acquisition under allocation hold",
+    "shellExit": 143,
+    "followingCaptureStarted": false,
+    "log": "quick-export.log"
+  },
+  {
+    "name": "offline-contact",
+    "cwd": "/Users/johnhardy/projects/tec-os-viewer",
+    "argv": [
+      "python3",
+      "tools/phosphor-model/contact.py"
+    ],
+    "exit": 0,
+    "scope": "light native-pixel composition explicitly permitted without browser under hold"
+  }
+]

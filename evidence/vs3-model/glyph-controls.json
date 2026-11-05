@@ -1,0 +1,44 @@
+[
+  {
+    "width": 32,
+    "mutation": "flipped-bit",
+    "rejected": true,
+    "diagnostic": "known glyph bit\n\n240 !== 112\n",
+    "mutatedRgbaSha256": "ffe579783de58baa22080088fe4953c0cddf54384f7e33011f16ac90723e01ac"
+  },
+  {
+    "width": 32,
+    "mutation": "displaced",
+    "rejected": true,
+    "diagnostic": "known glyph position\n\n32 !== 65\n",
+    "mutatedRgbaSha256": "0aa883d051c8396f54743ad105cb3f635d156479e0e76ee079b0d31956982398"
+  },
+  {
+    "width": 40,
+    "mutation": "flipped-bit",
+    "rejected": true,
+    "diagnostic": "known glyph bit\n\n240 !== 112\n",
+    "mutatedRgbaSha256": "87b0f828f1a01ff506429d196418d284bfeb4c73aa46673eaa8b9ecbfdf7642a"
+  },
+  {
+    "width": 40,
+    "mutation": "displaced",
+    "rejected": true,
+    "diagnostic": "known glyph position\n\n32 !== 65\n",
+    "mutatedRgbaSha256": "e2fe2fa82e19cc070d94db5a23e561df48cac15acd951e191230be56ca346810"
+  },
+  {
+    "width": 80,
+    "mutation": "flipped-bit",
+    "rejected": true,
+    "diagnostic": "known glyph bit\n\n240 !== 112\n",
+    "mutatedRgbaSha256": "cf271a39be29f0bdb223e4e61874778c0d388bdf8a0fe9d8d99982671298243e"
+  },
+  {
+    "width": 80,
+    "mutation": "displaced",
+    "rejected": true,
+    "diagnostic": "known glyph position\n\n32 !== 65\n",
+    "mutatedRgbaSha256": "5c077027fbfa6844854e53519ee33b43d473eb9d9f8b1967991debb2f2761d63"
+  }
+]

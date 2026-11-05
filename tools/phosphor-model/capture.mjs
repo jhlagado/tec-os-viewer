@@ -57,12 +57,9 @@ try{
   const w=Math.ceil(cells[0].proof.geometry.width*dpr),h=Math.ceil(cells[0].proof.geometry.height*dpr),gap=24,labelHeight=30;
   const images=cells.map((c,i)=>{const x=(i%2)*(w+gap),y=Math.floor(i/2)*(h+labelHeight+gap);return `<text x="${x}" y="${y+22}" fill="white">${c.label}</text><image x="${x}" y="${y+labelHeight}" width="${w}" height="${h}" href="../screenshots/${c.file}"/>`;}).join('');
   await writeFile(resolve(out,'sheets',name+'.svg'),`<svg xmlns="http://www.w3.org/2000/svg" width="${2*w+gap}" height="${3*(h+labelHeight+gap)}"><rect width="100%" height="100%" fill="#16191a"/>${images}</svg>\n`);
-  await page.setViewportSize({width:2*w+gap,height:Math.min(1600,3*(h+labelHeight+gap))});
-  const sheetHeight=3*(h+labelHeight+gap);
-  const tiles=cells.map((c,i)=>{const x=(i%2)*(w+gap),y=Math.floor(i/2)*(h+labelHeight+gap);return `<span style="position:absolute;left:${x}px;top:${y}px;color:white;font:20px monospace">${c.label}</span><img style="position:absolute;left:${x}px;top:${y+labelHeight}px;width:${w}px;height:${h}px" src="http://127.0.0.1:${server.address().port}/evidence/vs3-model/screenshots/${c.file}">`;}).join('');
-  await page.goto('about:blank');
-  await page.setContent(`<body style="margin:0;background:#16191a;width:${2*w+gap}px;height:${sheetHeight}px">${tiles}</body>`);
-  await page.evaluate(()=>Promise.all([...document.images].map(img=>img.decode())));
-  await page.screenshot({path:resolve(out,'sheets',name+'.png'),fullPage:true});
-  console.log(JSON.stringify({name,cells:cells.map(c=>({label:c.label,variant:c.variant,geometry:c.proof.geometry})),stale,readingStatus:result.reading.status}));
+  // Finish the browser phase before composing native pixels. Both phases stay
+  // inside the caller's one guard, without retaining browser memory for the PNG.
+  await browser.close();browser=undefined;
+  const composition=JSON.parse(execFileSync('python3',[resolve(ROOT,'tools/phosphor-model/contact.py'),name],{cwd:ROOT,encoding:'utf8'}));
+  console.log(JSON.stringify({name,cells:cells.map(c=>({label:c.label,variant:c.variant,geometry:c.proof.geometry})),stale,readingStatus:result.reading.status,composition}));
 }finally{await browser?.close();server.close();}

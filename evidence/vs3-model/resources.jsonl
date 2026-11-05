@@ -1,0 +1,10 @@
+{"name":"P6-VS3-freeze","command":"node freeze.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:36:28.590Z","freePercent":36,"load":3.17,"waitedSeconds":0}
+{"name":"P6-VS3-freeze","command":"node freeze.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:36:37.741Z","outcome":"exit 7","code":7,"peakMB":133,"processes":3,"seconds":9.2,"freePercentAtEnd":35}
+{"name":"P6-VS3-freeze-corrected","command":"node freeze.mjs","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:39:14.934Z","freePercent":34,"load":2.41,"waitedSeconds":0}
+{"name":"P6-VS3-freeze-corrected","command":"node freeze.mjs","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:39:21.915Z","outcome":"exit 0","code":0,"peakMB":168,"processes":2,"seconds":7,"freePercentAtEnd":33}
+{"name":"P6-VS3-narrow80","command":"node capture.mjs --viewport=600 --dpr=1 --frame=80-reading","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T08:39:57.918Z","freePercent":37,"load":1.85,"waitedSeconds":0}
+{"name":"P6-VS3-narrow80","command":"node capture.mjs --viewport=600 --dpr=1 --frame=80-reading","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T08:40:01.303Z","outcome":"exit 0","code":0,"peakMB":495,"processes":5,"seconds":3.4,"freePercentAtEnd":35}
+{"name":"P6-VS3-quick","command":"npm run quick","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:42:55.881Z","freePercent":34,"load":2.86,"waitedSeconds":0}
+{"name":"P6-VS3-quick","command":"npm run quick","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:42:57.903Z","outcome":"exit 0","code":0,"peakMB":237,"processes":5,"seconds":2,"freePercentAtEnd":33}
+{"name":"P6-VS3-narrow80-png","command":"node capture.mjs --viewport=600 --dpr=1 --frame=80-reading","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T08:43:13.829Z","freePercent":35,"load":2.66,"waitedSeconds":2}
+{"name":"P6-VS3-narrow80-png","command":"node capture.mjs --viewport=600 --dpr=1 --frame=80-reading","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T08:43:46.951Z","outcome":"exit 1","code":1,"peakMB":501,"processes":5,"seconds":33.1,"freePercentAtEnd":37}

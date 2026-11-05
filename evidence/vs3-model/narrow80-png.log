@@ -1,0 +1,23 @@
+mem-guard 19:43:11 waiting: p3-ks40-release-clear holds the lock, pid 5369, since 2026-11-05T08:43:09.454Z
+mem-guard 19:43:13 P6-VS3-narrow80-png: started, limit 700 MB, heap 525 MB, memory free 35 percent, load 2.66, waited 2 s
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Timeout 30000ms exceeded.
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at /Users/johnhardy/projects/tec-os-viewer/tools/phosphor-model/capture.mjs:63:14 {
+  log: [
+    '  - taking page screenshot',
+    '  - waiting for fonts to load...',
+    '  - fonts loaded'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v24.18.0
+mem-guard 19:43:46 P6-VS3-narrow80-png: exit 1, peak 501 MB, 5 processes at most, 33.1 s
