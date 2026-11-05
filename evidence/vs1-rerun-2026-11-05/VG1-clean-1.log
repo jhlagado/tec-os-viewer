@@ -1,0 +1,48 @@
+mem-guard 18:58:36 waiting: P6-VG6-missing-embed holds the lock, pid 43766, since 2026-11-05T07:57:57.874Z
+mem-guard 18:59:01 P6-VG1-clean-1: started, limit 600 MB, heap 450 MB, memory free 34 percent, load 5.08, waited 24 s
+
+> tec-os-viewer@0.1.0 page
+> npm run tecos && npm run web && node tools/page.mjs
+
+
+> tec-os-viewer@0.1.0 tecos
+> node tools/tecos.mjs
+
+
+added 7 packages, and audited 10 packages in 2s
+
+1 moderate severity vulnerability
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.24.2 (postinstall: node install.js)
+npm warn allow-scripts   fsevents@2.3.2 (install: (install scripts present))
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+
+> tec-os@0.1.0 inputs
+> node tools/inputs.mjs
+
+TAS.COM: fetched from jhlagado/thorium dbee66a dist/TAS.COM, as pinned
+TED.COM: fetched from jhlagado/thorium 128edb7 dist/TED.COM, as pinned
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+
+tecos: ROM 16018/16384 bytes, TPA $0100-$B9A3 (47268 bytes), sha256 8cad40923ce1c3c6
+
+> tec-os@0.1.0 media
+> node tools/media.mjs
+
+dist: 1 ROM profiles, 6 starter files, starter.img
+tec-os: ROM and the page card's files match pins.json
+
+> tec-os-viewer@0.1.0 web
+> node tools/build.mjs
+
+dist: page, 1 ROMs, starter files
+/private/tmp/p6-vs1-rerun/clean-1/dist/tec-os-viewer.html: 265305 bytes, 10 files embedded
+mem-guard 19:00:08 P6-VG1-clean-1: exit 0, peak 336 MB, 10 processes at most, 67.8 s

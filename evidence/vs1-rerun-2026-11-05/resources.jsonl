@@ -37,3 +37,6 @@
 {"name":"P6-VG6-missing-embed","command":"node --test VG6-missing-embed.test.mjs","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T07:57:57.882Z","freePercent":37,"load":5.72,"waitedSeconds":0}
 {"name":"P6-VG6-missing-embed","command":"node --test VG6-missing-embed.test.mjs","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T07:59:00.202Z","outcome":"exit 1","code":1,"peakMB":452,"processes":6,"seconds":62.3,"freePercentAtEnd":33}
 {"name":"P6-VG1-clean-1","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T07:59:01.089Z","freePercent":34,"load":5.08,"waitedSeconds":24}
+{"name":"P6-VG1-clean-1","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:00:08.899Z","outcome":"exit 0","code":0,"peakMB":336,"processes":10,"seconds":67.8,"freePercentAtEnd":32}
+{"name":"P6-VG1-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"start","at":"2026-11-05T08:00:16.054Z","freePercent":34,"load":4.68,"waitedSeconds":0}
+{"name":"P6-VG1-clean-2","command":"npm run page","limitMB":600,"heapMB":450,"event":"end","at":"2026-11-05T08:01:39.085Z","outcome":"exit 0","code":0,"peakMB":337,"processes":10,"seconds":83,"freePercentAtEnd":35}
