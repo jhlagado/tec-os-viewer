@@ -26,6 +26,8 @@ The stale-frame control keeps the current pre-effect source but supplies the pri
 
 The mock model page checks raw/effect switches, width selection, canvas keyboard focus and unchanged GLCD/serial sentinels. These are explicitly **model-page checks**. Production keyboard/touch, live width/effect switching, GLCD/serial isolation and the offline single-page workflow have not been rerun for VS3. Production renderer code and APIs remain unchanged.
 
+Independent model review (Origo `136fe215`) supports the source and sharp-layer proof only. Glow source/current-frame consumption, computed CSS settings, mask alignment and the final live-layer composition still require independent checks. The configured settings in the result JSON are not a substitute for computed-style validation. The existing flipped-bit control mutates VRAM. A separate post-decode pixel mutation with expected VRAM unchanged is also required. These remain VS3 model obligations under the heavy-work hold, with no default or legibility acceptance.
+
 ## Costs, failed attempts and allocation hold
 
 | Job | Exit | Seconds | Sampled peak MB | Cap MB |
