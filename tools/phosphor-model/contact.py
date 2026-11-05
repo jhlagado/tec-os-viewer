@@ -2,7 +2,10 @@
 import hashlib,json,pathlib,resource,time,sys
 from PIL import Image,ImageDraw,ImageFont,__version__
 root=pathlib.Path(__file__).resolve().parents[2]
+group=sys.argv[2] if len(sys.argv)>2 else 'legacy'
+assert group in ['legacy','softening']
 out=root/'evidence/vs3-model'
+if group=='softening':out=out/'softening'
 name=sys.argv[1] if len(sys.argv)>1 else '600-dpr1-80-reading'
 start=time.perf_counter()
 data=json.loads((out/(name+'.json')).read_text())
@@ -29,6 +32,6 @@ with Image.open(path) as reopened:
 result={'tool':'Pillow','version':__version__,'inputs':inputs,'output':str(path.relative_to(out)),
  'outputSha256':hashlib.sha256(path.read_bytes()).hexdigest(),'size':list(sheet.size),'seconds':time.perf_counter()-start,
  'peakMB':round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/(1024*1024),2),
- 'scope':'light offline native-pixel composition, no browser, no resizing; permitted after heavy-slot hold'}
-(out/'contact-composition.json').write_text(json.dumps(result,indent=2)+'\n')
+ 'scope':'native-pixel composition, no browser, no resizing'}
+(out/('contact-composition.json' if group=='legacy' else name+'-composition.json')).write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result))
