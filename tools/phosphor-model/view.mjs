@@ -82,6 +82,7 @@ function verifyMask(g){
   equal(cs.transform,'none','computed mask transform');equal(cs.backgroundSize,'100% 100%','computed mask size');
   equal(cs.backgroundPosition,'0% 0%','computed mask position');equal(cs.pointerEvents,'none','computed mask pointer events');
   near(Number(cs.opacity),1,'computed mask element opacity');
+  equal(cs.filter,'none','computed mask filter');equal(cs.mixBlendMode,'normal','computed mask blend');equal(cs.position,'absolute','computed mask position mode');
   const match=/^url\(["']?(data:image\/svg\+xml,[^"']+)["']?\)$/.exec(cs.backgroundImage);
   if(!match)throw Error('computed mask source is not the cached SVG');
   const svg=new DOMParser().parseFromString(decodeURIComponent(match[1].split(',').slice(1).join(',')),'image/svg+xml');

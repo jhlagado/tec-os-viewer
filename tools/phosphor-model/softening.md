@@ -42,6 +42,8 @@ The target is one job under two minutes at the unchanged 700 MB cap. Estimated e
 
 The PNG analyser is prepared to check final isolated floor pixels, halo change beyond a one-source-pixel ink margin, and active legacy mask darkening. It records B1/B2 raster differences relative to F. If a small blur has no raster-observable effect at this size, it records that limit rather than inventing a visual pass. Final comparisons allow one channel level for rounding. Floor samples exclude an eight-source-pixel ink neighbourhood and rounded borders. These detector rules, pixel-mapping assumptions and tolerances are unrun and submitted for source review, not acceptance thresholds.
 
+Fourteen diagnostic cases are prepared: stale sharp, six softening controls and seven legacy controls. The capture caller checks their exact names, refusals and reference hashes against its own frozen metadata.
+
 The planned native captures comprise five shuffled softening candidates A–E plus two legacy mask control captures. Each candidate retains its computed properties, source/glow proof and actual bounds. The native contact PNG is composed only after Chromium closes, within the same guard, to avoid overlapping browser and composition memory. No input screenshot is resized and pasted pixel rectangles are checked after encoding.
 
 ## Outputs and limits of this preparation

@@ -14,6 +14,13 @@ if(group==='softening')assert.deepEqual({viewport,dpr,frame},{viewport:600,dpr:1
 const base=resolve(ROOT,'evidence/vs3-model'),out=group==='legacy'?base:resolve(base,'softening');
 const name=(group==='legacy'?'':'softening-')+`${viewport}-dpr${dpr}-${frame}`;
 const frozen=JSON.parse(await readFile(resolve(base,'fixtures.json'),'utf8'));
+function checkControls(result,names){
+  assert.deepEqual(result.controls.map(c=>c.name).sort(),[...names].sort(),'control coverage differs');
+  assert.ok(result.controls.every(c=>c.rejected),'control was not refused');
+  assert.equal(result.expectedReferencesUnchanged,true);
+  assert.equal(result.expectedVramSha256,frozen.frames.find(f=>f.id==='80-reverse').vramSha256);
+  assert.equal(result.expectedFontSha256,frozen.identity.fontBytesSha256);
+}
 assert.equal(frozen.identity.baselineViewer,'76c4aa0');
 assert.equal(frozen.identity.tecos,'fe2097f4bad3f7578aa41b8bce8aa571c451dbc7');
 assert.deepEqual(frozen.identity.pins,JSON.parse(await readFile(resolve(ROOT,'pins.json'),'utf8')));
@@ -60,6 +67,7 @@ try{
   }
   const stale=await page.evaluate(()=>window.model.staleControl());
   const controls=group==='softening'?await page.evaluate(()=>window.model.controls()):null;
+  if(controls)checkControls(controls,['stale-glow','disabled-sharp-filter','disabled-glow-filter','shifted-glow-overlay','decoded-pixel','decoded-placement']);
   const sourceIdentity=await page.evaluate(()=>window.model.identity);
   const glcd=await page.locator('#glcd').evaluate(c=>c.toDataURL());
   await page.evaluate(candidates=>{for(const width of [32,40,80])for(const candidate of candidates)window.model.choose(`${width}-reading`,candidate);},Object.keys(GROUPS[group]));
@@ -80,6 +88,7 @@ try{
     assert.equal(offProof.geometry.maskActive,false);
     await page.locator('#surface').screenshot({path:resolve(out,'screenshots',off),animations:'disabled',scale:'device',timeout:Math.min(10_000,left())});
     legacyMaskProbe={scope:'legacy mask controls, not another complete comparison cell',on,off,proof,offProof,controls:await page.evaluate(()=>window.model.controls())};
+    checkControls(legacyMaskProbe.controls,['stale-glow','disabled-glow-filter','shifted-glow-overlay','shifted-mask-overlay','shifted-mask-band','decoded-pixel','decoded-placement']);
   }
   await page.setViewportSize({width:200,height:900});
   tiny=await page.evaluate(()=>window.model.choose('80-reading','L'));
