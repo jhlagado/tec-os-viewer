@@ -9,10 +9,14 @@ at the pin gives them.
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
-npm run page
+TECOS_ROM_ASSEMBLER=atom npm run page
 ```
 
-- `npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
+The Viewer selects ATOM explicitly for its ROM build and passes that selection to subprocesses.
+An unavailable ATOM stops the build. TEC-OS also documents a TAS default and its host/compiler
+inputs in its README. This Viewer qualification uses ATOM.
+
+- `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. With `TAS_COM` and `TED_COM` set, it reads the Thorium inputs from them; otherwise it fetches them.
 - `npm run web` bundles the page into `dist/`, with the ROM and the card's files.
 - `npm run page` runs both, then writes `dist/tec-os-viewer.html`, one page with everything embedded, labelled with this

@@ -55,6 +55,11 @@ export function check() {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   if (!process.argv.includes("--check")) {
+    if (process.env.TECOS_ROM_ASSEMBLER && process.env.TECOS_ROM_ASSEMBLER !== "atom") {
+      throw new Error("The viewer build requires TECOS_ROM_ASSEMBLER=atom");
+    }
+    process.env.TECOS_ROM_ASSEMBLER = "atom";
+    console.log("tec-os: assembling with TECOS_ROM_ASSEMBLER=atom (no fallback)");
     const npm = (...args) => execFileSync("npm", args, { cwd: TECOS, stdio: "inherit" });
     npm("ci");
     if (!(process.env.TAS_COM && process.env.TED_COM)) npm("run", "inputs");
