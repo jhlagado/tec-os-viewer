@@ -73,7 +73,7 @@ for (const width of [32,40,80]) for (const kind of ['prompt','ted','reverse','de
     assert.equal(m.read(m.sym('VCOL')), READING.length % width);
   }
   if (kind === 'demo') {
-    command(m, 'demo', () => m.read(m.sym('VCLAIM')) === 1 && (m.tec1g.state.display.tms9918.stateSnapshot().registers[1] & 0x10) === 0);
+    command(m, 'demo', () => m.read(m.sym('VCLAIM')) !== 0 && (m.tec1g.state.display.tms9918.stateSnapshot().registers[1] & 0x10) === 0);
     const until = m.cycles + 2_000_000; m.runUntil(() => m.cycles >= until, 2_100_000, 'demo settling');
   }
   const snapshot = m.tec1g.state.display.tms9918.stateSnapshot();
