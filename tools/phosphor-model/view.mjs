@@ -150,14 +150,23 @@ async function reject(name,action,expected){
   if(!error?.startsWith(expected))throw Error(`negative control not detected: ${name}: ${error??'no refusal'}`);
   return{name,rejected:true,diagnostic:error};
 }
+// Verify the repaired effect pipeline, then leave the legacy/raw control available.
+async function restoreAndVerify(f,result){
+  let effect;
+  try{choose(f.id,group==='legacy'?'L':'H');effect=await verify(f);}
+  finally{
+    choose(f.id,'R');const raw=await verify(f);
+    if(result)result.restorationProof={effect,raw};
+  }
+}
 window.model={group,candidates:Object.keys(GROUPS[group]),frames:frames.map(({snapshot,...f})=>f),choose,verify,verifyStyles,geometry,identity:fixture.identity,
   async staleControl(){
-    const f=get('80-reverse'),old=get('80-prompt'),candidate=group==='legacy'?'G':'H';
-    try{return{...await reject('stale-sharp',async()=>{draw(f,candidate,{visibleFrame:old});await verify(f);},'visible sharp frame mismatch'),expected:f.id,stale:old.id};}
-    finally{choose(f.id,'R');}
+    const f=get('80-reverse'),old=get('80-prompt'),candidate=group==='legacy'?'G':'H';let result;
+    try{return result={...await reject('stale-sharp',async()=>{draw(f,candidate,{visibleFrame:old});await verify(f);},'visible sharp frame mismatch'),expected:f.id,stale:old.id};}
+    finally{await restoreAndVerify(f,result);}
   },
   async controls(){
-    const f=get('80-reverse'),old=get('80-prompt'),halo=group==='legacy'?'G':'H',controls=[];
+    const f=get('80-reverse'),old=get('80-prompt'),halo=group==='legacy'?'G':'H',controls=[];let result;
     const vramBefore=await hash(f.snapshot.vram),fontBefore=await hash(font);
     equal(vramBefore,f.vramSha256,'control frozen VRAM precondition');equal(fontBefore,fixture.identity.fontBytesSha256,'control pinned font precondition');
     try{
@@ -175,8 +184,8 @@ window.model={group,candidates:Object.keys(GROUPS[group]),frames:frames.map(({sn
         },'decoded glyph pixel mismatch'));
       }
       equal(await hash(f.snapshot.vram),vramBefore,'control expected VRAM changed');equal(await hash(font),fontBefore,'control expected font changed');
-      return{controls,expectedVramSha256:vramBefore,expectedFontSha256:fontBefore,expectedReferencesUnchanged:true,scope:'mock model only'};
-    }finally{choose(f.id,'R');}
+      return result={controls,expectedVramSha256:vramBefore,expectedFontSha256:fontBefore,expectedReferencesUnchanged:true,scope:'mock model only'};
+    }finally{await restoreAndVerify(f,result);}
   },
   async benchmark(candidate,workload){
     const sequence=workload==='frozen'?[get('80-ted')]:['80-prompt','80-ted','80-reverse','80-demo'].map(get),js=[],cadence=[];let prior;

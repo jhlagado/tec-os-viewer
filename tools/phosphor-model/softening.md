@@ -23,12 +23,12 @@ The halo is copied from raw source pixels before the floor. Legacy G/L remain at
 Run from `/Users/johnhardy/projects/tec-os-viewer` on the reviewed `vs3-phosphor-model` commit:
 
 ```sh
-TECOS_ROM_ASSEMBLER=atom node /Users/johnhardy/projects/origo/tools/mem-guard.mjs --limit 700 --name P6-VS3-softening80 --log /tmp/p6-vs3-softening-resources.jsonl -- node tools/phosphor-model/capture.mjs --group=softening --viewport=600 --dpr=1 --frame=80-reverse > /tmp/p6-vs3-softening-capture.log 2>&1
+TECOS_ROM_ASSEMBLER=atom node /Users/johnhardy/projects/origo/tools/mem-guard.mjs --limit 700 --wait 0 --name P6-VS3-softening80 --log /tmp/p6-vs3-softening-resources.jsonl -- node tools/phosphor-model/capture.mjs --group=softening --viewport=600 --dpr=1 --frame=80-reverse > /tmp/p6-vs3-softening-capture.log 2>&1
 ```
 
 This command is prepared, not run or queued. Source review must close and the coordinator must return allocation first. The group refuses a different viewport, DPR or scene so this is one bounded cell, not an implicit matrix run. ATOM remains explicitly selected even though this job performs no assembly.
 
-The target is one job under two minutes at the unchanged 700 MB cap. Estimated elapsed time is **15–30 seconds**, based on the earlier **3.4-second / 495 MB** batch plus the new checks. That is an estimate, not a new measurement. There is a 110-second internal work deadline, shorter browser-operation timeouts and a remaining-budget timeout for the Python children. Actual memory, elapsed time and cleanup behaviour remain unmeasured.
+The target is one job under two minutes at the unchanged 700 MB cap. Estimated elapsed time is **15–30 seconds**, based on the earlier **3.4-second / 495 MB** batch plus the new checks. That is an estimate, not a new measurement. At 110 seconds a timer requests `browser.close()`. This is a cooperative browser-close deadline, not a proved hard process kill or a guarantee that all cleanup completes by two minutes. Browser-operation timeouts and remaining-budget Python-child timeouts are also prepared. Actual memory, elapsed time and termination behaviour remain unmeasured. The zero-wait guard refuses a busy allocation instead of entering its queue.
 
 ## Prepared checks and refusals
 

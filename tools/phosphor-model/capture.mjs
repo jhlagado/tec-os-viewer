@@ -14,10 +14,17 @@ if(group==='softening')assert.deepEqual({viewport,dpr,frame},{viewport:600,dpr:1
 const base=resolve(ROOT,'evidence/vs3-model'),out=group==='legacy'?base:resolve(base,'softening');
 const name=(group==='legacy'?'':'softening-')+`${viewport}-dpr${dpr}-${frame}`;
 const frozen=JSON.parse(await readFile(resolve(base,'fixtures.json'),'utf8'));
+function checkRestoration(result){
+  const expected=frozen.frames.find(f=>f.id==='80-reverse').rgbaSha256;
+  assert.equal(result.restorationProof.effect.sourceSha,expected,'effect restoration was not positively verified');
+  assert.equal(result.restorationProof.raw.sourceSha,expected,'raw restoration was not positively verified');
+  assert.equal(result.restorationProof.raw.settings.candidate,'R');
+}
 function checkControls(result,names){
   assert.deepEqual(result.controls.map(c=>c.name).sort(),[...names].sort(),'control coverage differs');
   assert.ok(result.controls.every(c=>c.rejected),'control was not refused');
   assert.equal(result.expectedReferencesUnchanged,true);
+  checkRestoration(result);
   assert.equal(result.expectedVramSha256,frozen.frames.find(f=>f.id==='80-reverse').vramSha256);
   assert.equal(result.expectedFontSha256,frozen.identity.fontBytesSha256);
 }
@@ -65,7 +72,7 @@ try{
     cells.push({label,variant,file,proof});
     if(group==='softening')await writeFile(resolve(out,name+'-progress.json'),JSON.stringify({status:'partial capture; not acceptance',name,group,frame,cells},null,2)+'\n');
   }
-  const stale=await page.evaluate(()=>window.model.staleControl());
+  const stale=await page.evaluate(()=>window.model.staleControl());checkRestoration(stale);
   const controls=group==='softening'?await page.evaluate(()=>window.model.controls()):null;
   if(controls)checkControls(controls,['stale-glow','disabled-sharp-filter','disabled-glow-filter','shifted-glow-overlay','decoded-pixel','decoded-placement']);
   const sourceIdentity=await page.evaluate(()=>window.model.identity);
@@ -97,7 +104,7 @@ try{
   const result={name,group,configuredCandidates:GROUPS[group],toolsCommit:git('rev-parse','HEAD'),sourceIdentity,headless:true,browserVersion:browser.version(),viewport:{width:viewport,height:900},dpr,frame,cells,staleControl:stale,controls,legacyMaskProbe,
     modelChecks:{isolation:true,rawSwitch:true,keyboardFocus:true,scope:'mock model page only; production workflow proof pending'},tinyMaskFallback:tiny,
     reading:{expectedRows:frozen.frames.find(f=>f.id===frame).textRows,expected:frame.endsWith('-reading')?'0O 1Il []{} () ,.;: !? /\\ -_=+ SAMPLE.ASM 186':null,source:'frozen '+frame,transcription:null,errorCount:null,joinedStrokes:null,washedOutReverse:null,resizeMoire:null,status:'awaiting independent visual review'},
-    estimate:{seconds:[15,30],peakCapMB:700,source:'prior 3.4-second/495 MB batch plus extra controls; estimate, not measurement'},workBudgetMs:budget};
+    estimate:{seconds:[15,30],peakCapMB:700,source:'prior 3.4-second/495 MB batch plus extra controls; estimate, not measurement'},browserCloseRequestAfterMs:budget,deadlineMechanism:'timer requests browser.close, not a proved hard process termination; child timeouts use remaining budget'};
   await writeFile(resolve(out,name+'.json'),JSON.stringify(result,null,2)+'\n');
   const w=Math.ceil(cells[0].proof.geometry.width*dpr),h=Math.ceil(cells[0].proof.geometry.height*dpr),gap=24,labelHeight=30;
   const images=cells.map((c,i)=>{const x=(i%2)*(w+gap),y=Math.floor(i/2)*(h+labelHeight+gap);return `<text x="${x}" y="${y+22}" fill="white">${c.label}</text><image x="${x}" y="${y+labelHeight}" width="${w}" height="${h}" href="../screenshots/${c.file}"/>`;}).join('');
