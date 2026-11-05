@@ -1,0 +1,68 @@
+mem-guard 19:10:30 P6-VS2-VG12: started, limit 700 MB, heap 525 MB, memory free 32 percent, load 3, waited 0 s
+
+> tec-os-viewer@0.1.0 test
+> node --test --test-concurrency=1 test/*.test.mjs
+
+✔ the page's card reaches A> on the serial board at 80 (441.811708ms)
+✔ the page's card reaches A> on the serial board at 40 (230.431625ms)
+✔ the page's card reaches A> on the PICO9918 board at 80 (229.815125ms)
+✔ the page's card reaches A> on the PICO9918 board at 40 (210.504667ms)
+✔ the page's card reaches A> on the PICO9918 board at 32 (222.97025ms)
+✔ the page's card reaches A> on the GLCD board at 80 (266.55025ms)
+✔ the page's card reaches A> on the board with both displays at 80 (188.13275ms)
+✔ with no card the serial board gives CARD? and no prompt (34.399625ms)
+✔ the web build starts clean: a file left in dist from an older build doesn't reach the page (237.237459ms)
+✔ Download of a file whose entry names a block past DSM says why, and the page throws nothing (VE-2) (2682.020583ms)
+✔ VG11: cold boot, palette and reverse glyphs at 32 columns (426.617541ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: cold boot, palette and reverse glyphs at 40 columns (253.265708ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+✔ VG11: cold boot, palette and reverse glyphs at 80 columns (191.347375ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"19ce38cc1dd1c5ad85c10eee2cc227e198ec1046be1d2b5e90bce6c84038a186"}
+✔ VG11: directed width switch 32 to 40 (206.730125ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+✔ VG11: directed width switch 32 to 80 (207.647542ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"5ec51f74dcf1fc187192cf41dc1b89c79885a7e59812c2dc2db7e3648a0ef837"}
+✔ VG11: directed width switch 40 to 32 (194.931209ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: directed width switch 40 to 80 (198.944834ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"5ec51f74dcf1fc187192cf41dc1b89c79885a7e59812c2dc2db7e3648a0ef837"}
+✔ VG11: directed width switch 80 to 32 (192.064458ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: directed width switch 80 to 40 (182.89325ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+✔ VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (50.199417ms)
+✔ browser stages the whole import before saving or publishing (12.336541ms)
+✔ browser import restores running=true after success (5.607708ms)
+✔ browser import restores running=true after read (1.704917ms)
+✔ browser import restores running=true after save (4.617875ms)
+✔ browser import restores running=false after success (2.076083ms)
+✔ browser import restores running=false after read (3.119584ms)
+✔ browser import restores running=false after save (1.768292ms)
+✔ browser import guard excludes competing operations, running=true, failure=false (5.180917ms)
+✔ browser import guard excludes competing operations, running=true, failure=true (1.876541ms)
+✔ browser import guard excludes competing operations, running=false, failure=false (4.724417ms)
+✔ browser import guard excludes competing operations, running=false, failure=true (1.659791ms)
+✔ a width chosen while an import's files are read is the width on the card the import publishes (KE-168) (19.461458ms)
+✔ the single page boots to A> with no request but its own, and names both commits (2514.875375ms)
+✔ stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words (3604.670833ms)
+✔ the web page's bundle uses no Node globals (46.901ms)
+✔ the real store's saveCard throws when IndexedDB can't open, or a put fails (KE-153) (6.928666ms)
+✔ the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153) (6746.28775ms)
+✔ the page saves one card at a time, and after three failures says saving keeps failing (D2, D3) (2.268375ms)
+✔ a file import during a timer's save saves after it, so the stored card holds the copied files (KE-163) (1.827ms)
+✔ the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164) (4.408875ms)
+✔ a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so (KE-164) (10830.065791ms)
+✔ on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory (2546.960875ms)
+✔ VG10: the card's compact source has the qualified bytes and greeting coordinates (253.061334ms)
+ℹ {"line":186,"insertAt":22,"cursor":"L186 C27","edited":"HELLO: DB \"Hello from the TEC-OS.\",13,10,\"$\""}
+✔ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (3948.180584ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39466.301458
+mem-guard 19:11:10 P6-VS2-VG12: exit 0, peak 668 MB, 7 processes at most, 40.1 s

@@ -1,0 +1,36 @@
+mem-guard 19:10:25 P6-VS2-VG11: started, limit 600 MB, heap 450 MB, memory free 33 percent, load 2.57, waited 0 s
+✔ the page's card reaches A> on the serial board at 80 (426.61ms)
+✔ the page's card reaches A> on the serial board at 40 (213.329333ms)
+✔ the page's card reaches A> on the PICO9918 board at 80 (206.291625ms)
+✔ the page's card reaches A> on the PICO9918 board at 40 (236.949084ms)
+✔ the page's card reaches A> on the PICO9918 board at 32 (192.392417ms)
+✔ the page's card reaches A> on the GLCD board at 80 (253.965416ms)
+✔ the page's card reaches A> on the board with both displays at 80 (175.855667ms)
+✔ with no card the serial board gives CARD? and no prompt (32.217792ms)
+✔ VG11: cold boot, palette and reverse glyphs at 32 columns (418.715083ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: cold boot, palette and reverse glyphs at 40 columns (213.041292ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+✔ VG11: cold boot, palette and reverse glyphs at 80 columns (209.261166ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"19ce38cc1dd1c5ad85c10eee2cc227e198ec1046be1d2b5e90bce6c84038a186"}
+✔ VG11: directed width switch 32 to 40 (216.661416ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+✔ VG11: directed width switch 32 to 80 (213.992708ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"5ec51f74dcf1fc187192cf41dc1b89c79885a7e59812c2dc2db7e3648a0ef837"}
+✔ VG11: directed width switch 40 to 32 (203.818166ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: directed width switch 40 to 80 (203.045625ms)
+ℹ {"width":80,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"5ec51f74dcf1fc187192cf41dc1b89c79885a7e59812c2dc2db7e3648a0ef837"}
+✔ VG11: directed width switch 80 to 32 (233.179458ms)
+ℹ {"width":32,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"a4cd448f6d8e2ae61d4e1ac1df652e6974eab90f609b110ae1482e2ffdd93804"}
+✔ VG11: directed width switch 80 to 40 (187.622125ms)
+ℹ {"width":40,"register7":49,"normal":[112,136,136,136,248,136,136,0],"reverse":[143,119,119,119,7,119,119,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"1d7810953cc4be2de8eed9b5ca66203c809256cd9612b1d2b3dddb4f51658ee6"}
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4169.676292
+mem-guard 19:10:30 P6-VS2-VG11: exit 0, peak 190 MB, 4 processes at most, 4.5 s

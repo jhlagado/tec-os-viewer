@@ -1,0 +1,27 @@
+mem-guard 19:13:36 P6-VS2-VG12-null-read: started, limit 700 MB, heap 525 MB, memory free 35 percent, load 2.87, waited 0 s
+✖ the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164) (7.371ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 202.014458
+
+✖ failing tests:
+
+test at test/web-store.test.mjs:188:1
+✖ the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164) (7.371ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection: a failed read throws
+      at async TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/web-store.test.mjs:196:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /read failed/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+mem-guard 19:13:36 P6-VS2-VG12-null-read: exit 1, peak 100 MB, 2 processes at most, 0.6 s

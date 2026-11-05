@@ -1,0 +1,44 @@
+mem-guard 19:07:08 P6-VS2-inputs: started, limit 600 MB, heap 450 MB, memory free 32 percent, load 2.65, waited 0 s
+
+> tec-os-viewer@0.1.0 tecos
+> node tools/tecos.mjs
+
+tec-os: assembling with TECOS_ROM_ASSEMBLER=atom (no fallback)
+
+added 7 packages, and audited 10 packages in 2s
+
+1 moderate severity vulnerability
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.24.2 (postinstall: node install.js)
+npm warn allow-scripts   fsevents@2.3.2 (install: (install scripts present))
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+
+> tec-os@0.1.0 inputs
+> node tools/inputs.mjs
+
+TAS.COM: /Users/johnhardy/projects/tec-os-viewer/tec-os/.inputs/TAS.COM, as pinned
+TED.COM: /Users/johnhardy/projects/tec-os-viewer/tec-os/.inputs/TED.COM, as pinned
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+
+tecos ROM {"backend":"atom","phase":"probe","target":"tecos.rom","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os/src"}
+tecos ROM {"backend":"atom","phase":"final","target":"tecos.rom","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os/src"}
+tecos: ROM 16018/16384 bytes, TPA $0100-$B9A3 (47268 bytes), sha256 a3dd9ee9763d94ef
+
+> tec-os@0.1.0 media
+> node tools/media.mjs
+
+tecos ROM {"backend":"atom","phase":"final","target":"MOUNT.COM","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os"}
+tecos ROM {"backend":"atom","phase":"final","target":"GLCD.SVC","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os"}
+tecos ROM {"backend":"atom","phase":"final","target":"DEMO.COM","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os"}
+tecos ROM {"backend":"atom","phase":"media","target":"tecos.rom","root":"/Users/johnhardy/projects/tec-os-viewer/tec-os/build/tecos","sha256":"a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb"}
+dist: 1 ROM profiles, 6 starter files, starter.img
+tec-os: ROM and the page card's files match pins.json
+mem-guard 19:08:04 P6-VS2-inputs: exit 0, peak 266 MB, 5 processes at most, 56.4 s

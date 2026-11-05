@@ -1,0 +1,7 @@
+mem-guard 19:13:35 P6-VS2-VG9-no-ATOM: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 2.87, waited 0 s
+
+> tec-os@0.1.0 build
+> node tools/build.mjs
+
+ Cannot find package 'atom-z80' imported from /Users/johnhardy/projects/tec-os-viewer/tec-os/tools/build.mjs
+mem-guard 19:13:36 P6-VS2-VG9-no-ATOM: exit 1, peak 65 MB, 1 processes at most, 0.6 s

@@ -1,0 +1,20 @@
+mem-guard 19:14:06 P6-VS2-VG12-missing-embed: started, limit 700 MB, heap 525 MB, memory free 36 percent, load 2.78, waited 0 s
+✖ the single page boots to A> with no request but its own, and names both commits (61548.169459ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 61806.2775
+
+✖ failing tests:
+
+test at ../../../../private/tmp/p6-vs2/VG12-missing-embed.test.mjs:16:1
+✖ the single page boots to A> with no request but its own, and names both commits (61548.169459ms)
+  page.waitForFunction: Timeout 60000ms exceeded.
+      at TestContext.<anonymous> (/private/tmp/p6-vs2/VG12-missing-embed.test.mjs:40:14) {
+    name: 'TimeoutError',
+    log: []
+  }

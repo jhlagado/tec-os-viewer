@@ -1,0 +1,13 @@
+mem-guard 19:12:30 P6-VS2-VG10-exact-cursor: started, limit 600 MB, heap 450 MB, memory free 32 percent, load 2.46, waited 0 s
+✔ VG10: the card's compact source has the qualified bytes and greeting coordinates (259.678792ms)
+ℹ {"line":186,"insertAt":22,"cursor":"L186 C27","edited":"HELLO: DB \"Hello from the TEC-OS.\",13,10,\"$\""}
+✔ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (4007.506041ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4442.708459
+mem-guard 19:12:35 P6-VS2-VG10-exact-cursor: exit 0, peak 147 MB, 2 processes at most, 4.8 s

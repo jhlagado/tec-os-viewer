@@ -1,0 +1,14 @@
+VG9-hash 1 True
+VG9-tracked 1 True
+VG9-untracked 1 True
+Previous HEAD position was fe2097f Keep the default TAS compiler manifest within its qualified pin
+HEAD is now at 1636f66 Refuse dangling selected local inputs without sibling fallback
+VG9-off-pin 1 True
+Previous HEAD position was 1636f66 Refuse dangling selected local inputs without sibling fallback
+HEAD is now at fe2097f Keep the default TAS compiler manifest within its qualified pin
+VG9-no-ATOM 1 True
+VG12-null-read 1 True
+VG10-no-sample 1 True
+VG10-old-line 1 True
+VG12-no-prepare 1 True
+VG12-copy 1 True

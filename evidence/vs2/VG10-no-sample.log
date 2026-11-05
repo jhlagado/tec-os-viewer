@@ -1,0 +1,37 @@
+mem-guard 19:13:36 P6-VS2-VG10-no-sample: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 2.87, waited 0 s
+✖ VG10: the card's compact source has the qualified bytes and greeting coordinates (476.910625ms)
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11266.064708ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11944.922042
+
+✖ failing tests:
+
+test at test/worked-example.test.mjs:60:1
+✖ VG10: the card's compact source has the qualified bytes and greeting coordinates (476.910625ms)
+  Error: 0/SAMPLE.ASM not found
+      at CpmVolume.read (file:///Users/johnhardy/projects/tec-os-viewer/tec-os/tools/lib/cpmfs.mjs:130:19)
+      at samplePosition (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:45:73)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:61:20)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at test/worked-example.test.mjs:66:1
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11266.064708ms)
+  Error: TAS's build: not within 400000000 cycles, 0 keys unread
+  TEC-OS 0.1 for TEC-1G
+  A: SYSTEM
+  B: WORK
+  A>tas sample
+  cannot read file
+  A>
+      at keys (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:36:11)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:72:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7)
+mem-guard 19:13:49 P6-VS2-VG10-no-sample: exit 1, peak 172 MB, 4 processes at most, 12.3 s

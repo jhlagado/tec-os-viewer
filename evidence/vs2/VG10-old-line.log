@@ -1,0 +1,45 @@
+mem-guard 19:13:49 P6-VS2-VG10-old-line: started, limit 600 MB, heap 450 MB, memory free 37 percent, load 2.83, waited 0 s
+✔ VG10: the card's compact source has the qualified bytes and greeting coordinates (323.769042ms)
+ℹ {"line":186,"insertAt":22,"cursor":"L186 C27","edited":"HELLO: DB \"Hello from the TEC-OS.\",13,10,\"$\""}
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11245.936541ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11748.072709
+
+✖ failing tests:
+
+test at test/worked-example.test.mjs:66:1
+✖ the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited (11245.936541ms)
+  Error: TED at the hello line: not within 400000000 cycles, 0 keys unread
+    ld de,400
+    ld c,TNTONE
+    call ABICALL
+    ld de,DONE     ; and say so
+  ; Print DE's message, then return to the
+  ; CCP, which shows the prompt.
+  OTHER:
+    call SAY
+  ; the CCP's return address is on the
+  ; stack
+    ret
+  ; SAY: print the string at DE, up to its
+  ; $. Changes AF, BC, DE, HL.
+  SAY:
+    ld c,9         ; BDOS function 9
+    jp BDOS        ; which returns to
+                   ; SAY's caller
+  ; DECIMAL: print A, 0 to 255, in decimal
+  ; without leading zeros. Changes
+  ; AF, BC, DE, HL.
+  DECIMAL:
+  TED  SAMPLE.ASM    L128 C1  ^S Save  ^Q Quit
+      at keys (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:36:11)
+      at TestContext.<anonymous> (file:///Users/johnhardy/projects/tec-os-viewer/test/worked-example.test.mjs:77:3)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7)
+mem-guard 19:14:01 P6-VS2-VG10-old-line: exit 1, peak 140 MB, 2 processes at most, 12.1 s

@@ -1,0 +1,4 @@
+mem-guard 19:13:35 P6-VS2-VG9-off-pin: started, limit 600 MB, heap 450 MB, memory free 36 percent, load 2.87, waited 0 s
+TEC-OS doesn't match pins.json:
+- tec-os is checked out at 1636f6606032dbe4a1d209eea7667627b33ef273, not the viewer's pin fe2097f4bad3f7578aa41b8bce8aa571c451dbc7
+mem-guard 19:13:35 P6-VS2-VG9-off-pin: exit 1, peak 9 MB, 1 processes at most, 0.3 s
