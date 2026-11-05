@@ -74,8 +74,8 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   assert.match(screen().join("\n"), /Hello from TEC-OS\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA>/);
 
   const { line, insertAt, cursor, edited } = samplePosition(image);
-  keys(m, `ted sample.asm ${line}\r`, "TED at the hello line", () => screen()[23].includes(`L${line} C1`));
-  keys(m, `${RIGHT.repeat(insertAt)}the `, "the edit", () => screen()[23].includes(cursor));
+  keys(m, `ted sample.asm ${line}\r`, "TED at the hello line", () => new RegExp(`L${line} C1\\b`).test(screen()[23]));
+  keys(m, `${RIGHT.repeat(insertAt)}the `, "the edit", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
   assert.ok(screen().includes(edited), `the edited line:\n${screen().join("\n")}`);
   let mark = m.output.length;
   keys(m, "\x14b", "^T B's build", () => /TED\r\n/.test(m.text(mark)) && /SAMPLE\.ASM/.test(screen()[23]));
@@ -83,7 +83,7 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   mark = m.output.length;
   keys(m, "\x14r", "^T R's run", () => /Press a key/.test(m.text(mark)));
   assert.match(m.text(mark), /Hello from the TEC-OS\.\r\n/, "the edited line printed");
-  keys(m, " ", "TED again", () => screen()[23].includes(cursor));
+  keys(m, " ", "TED again", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
   keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A>"));
   assert.deepEqual(m.violations, []);
 });
