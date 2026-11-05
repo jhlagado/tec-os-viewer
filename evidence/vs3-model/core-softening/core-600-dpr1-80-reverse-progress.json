@@ -1,0 +1,314 @@
+{
+  "status": "partial, not acceptance",
+  "group": "core",
+  "cells": [
+    {
+      "label": "A",
+      "variant": "C100",
+      "file": "core-600-dpr1-80-reverse-A.png",
+      "synthetic": false,
+      "sourceKind": "browser capture",
+      "proof": {
+        "sourceSha": "7344b8824465ebfb024fa47a03bf6b0ec49f9838de01937ba032ae1104ef53fd",
+        "visibleSharpSha": "69ac0340a097843ac7531c4817f3af22983dc30de0896ba01cc2c8f94d3c5d98",
+        "glowBufferSha256": null,
+        "glowExpectedBufferSha256": null,
+        "glowSourceFrameId": null,
+        "glowSourceRgbaSha256": null,
+        "expectedVramSha256": "0dbaa4919c28516f384e72a0b9f56fc2c6d0d343ee1c703c7a3587bf9c3da81e",
+        "glyphProof": {
+          "row": 4,
+          "columns": [
+            3,
+            4
+          ],
+          "pixels": 96,
+          "reference": "unchanged frozen VRAM and pinned font"
+        },
+        "computed": {
+          "sharp": {
+            "filter": "blur(1px)",
+            "opacity": "1",
+            "blend": "normal",
+            "imageRendering": "auto",
+            "bounds": {
+              "x": 29,
+              "y": 152.28125,
+              "width": 542,
+              "height": 406.5
+            }
+          },
+          "glow": {
+            "filter": "none",
+            "opacity": "0",
+            "blend": "screen",
+            "display": "none",
+            "bounds": null
+          },
+          "mask": {
+            "active": false,
+            "scope": "inactive only; no legacy row-mask probe in core packet"
+          }
+        },
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "group": "core",
+        "settings": {
+          "candidate": "C100",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "sharpBlurCssPixels": 1,
+          "glowOpacity": 0,
+          "glowBlurCssPixels": 0,
+          "glowBlend": "screen",
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "B",
+      "variant": "C75",
+      "file": "core-600-dpr1-80-reverse-B.png",
+      "synthetic": false,
+      "sourceKind": "browser capture",
+      "proof": {
+        "sourceSha": "7344b8824465ebfb024fa47a03bf6b0ec49f9838de01937ba032ae1104ef53fd",
+        "visibleSharpSha": "69ac0340a097843ac7531c4817f3af22983dc30de0896ba01cc2c8f94d3c5d98",
+        "glowBufferSha256": null,
+        "glowExpectedBufferSha256": null,
+        "glowSourceFrameId": null,
+        "glowSourceRgbaSha256": null,
+        "expectedVramSha256": "0dbaa4919c28516f384e72a0b9f56fc2c6d0d343ee1c703c7a3587bf9c3da81e",
+        "glyphProof": {
+          "row": 4,
+          "columns": [
+            3,
+            4
+          ],
+          "pixels": 96,
+          "reference": "unchanged frozen VRAM and pinned font"
+        },
+        "computed": {
+          "sharp": {
+            "filter": "blur(0.75px)",
+            "opacity": "1",
+            "blend": "normal",
+            "imageRendering": "auto",
+            "bounds": {
+              "x": 29,
+              "y": 152.28125,
+              "width": 542,
+              "height": 406.5
+            }
+          },
+          "glow": {
+            "filter": "none",
+            "opacity": "0",
+            "blend": "screen",
+            "display": "none",
+            "bounds": null
+          },
+          "mask": {
+            "active": false,
+            "scope": "inactive only; no legacy row-mask probe in core packet"
+          }
+        },
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "group": "core",
+        "settings": {
+          "candidate": "C75",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "sharpBlurCssPixels": 0.75,
+          "glowOpacity": 0,
+          "glowBlurCssPixels": 0,
+          "glowBlend": "screen",
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "C",
+      "variant": "F",
+      "file": "core-600-dpr1-80-reverse-C.png",
+      "synthetic": false,
+      "sourceKind": "browser capture",
+      "proof": {
+        "sourceSha": "7344b8824465ebfb024fa47a03bf6b0ec49f9838de01937ba032ae1104ef53fd",
+        "visibleSharpSha": "69ac0340a097843ac7531c4817f3af22983dc30de0896ba01cc2c8f94d3c5d98",
+        "glowBufferSha256": null,
+        "glowExpectedBufferSha256": null,
+        "glowSourceFrameId": null,
+        "glowSourceRgbaSha256": null,
+        "expectedVramSha256": "0dbaa4919c28516f384e72a0b9f56fc2c6d0d343ee1c703c7a3587bf9c3da81e",
+        "glyphProof": {
+          "row": 4,
+          "columns": [
+            3,
+            4
+          ],
+          "pixels": 96,
+          "reference": "unchanged frozen VRAM and pinned font"
+        },
+        "computed": {
+          "sharp": {
+            "filter": "none",
+            "opacity": "1",
+            "blend": "normal",
+            "imageRendering": "auto",
+            "bounds": {
+              "x": 29,
+              "y": 152.28125,
+              "width": 542,
+              "height": 406.5
+            }
+          },
+          "glow": {
+            "filter": "none",
+            "opacity": "0",
+            "blend": "screen",
+            "display": "none",
+            "bounds": null
+          },
+          "mask": {
+            "active": false,
+            "scope": "inactive only; no legacy row-mask probe in core packet"
+          }
+        },
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "group": "core",
+        "settings": {
+          "candidate": "F",
+          "floor": [
+            0,
+            8,
+            2
+          ],
+          "sharpBlurCssPixels": 0,
+          "glowOpacity": 0,
+          "glowBlurCssPixels": 0,
+          "glowBlend": "screen",
+          "maskOpacity": 0
+        }
+      }
+    },
+    {
+      "label": "D",
+      "variant": "R",
+      "file": "core-600-dpr1-80-reverse-D.png",
+      "synthetic": false,
+      "sourceKind": "browser capture",
+      "proof": {
+        "sourceSha": "7344b8824465ebfb024fa47a03bf6b0ec49f9838de01937ba032ae1104ef53fd",
+        "visibleSharpSha": "b10af4d2d43929403a4a349c75e85f854f2663c33a1164c92d083a0045c45d66",
+        "glowBufferSha256": null,
+        "glowExpectedBufferSha256": null,
+        "glowSourceFrameId": null,
+        "glowSourceRgbaSha256": null,
+        "expectedVramSha256": "0dbaa4919c28516f384e72a0b9f56fc2c6d0d343ee1c703c7a3587bf9c3da81e",
+        "glyphProof": {
+          "row": 4,
+          "columns": [
+            3,
+            4
+          ],
+          "pixels": 96,
+          "reference": "unchanged frozen VRAM and pinned font"
+        },
+        "computed": {
+          "sharp": {
+            "filter": "none",
+            "opacity": "1",
+            "blend": "normal",
+            "imageRendering": "pixelated",
+            "bounds": {
+              "x": 29,
+              "y": 152.28125,
+              "width": 542,
+              "height": 406.5
+            }
+          },
+          "glow": {
+            "filter": "none",
+            "opacity": "0",
+            "blend": "screen",
+            "display": "none",
+            "bounds": null
+          },
+          "mask": {
+            "active": false,
+            "scope": "inactive only; no legacy row-mask probe in core packet"
+          }
+        },
+        "geometry": {
+          "x": 29,
+          "y": 152.28125,
+          "width": 542,
+          "height": 406.5,
+          "dpr": 1,
+          "zoom": 1,
+          "rowDevicePixels": 2.1171875,
+          "fractionalRows": true,
+          "sourceXScale": 1.05859375,
+          "maskActive": false
+        },
+        "sourceWidth": 512,
+        "sourceHeight": 192,
+        "group": "core",
+        "settings": {
+          "candidate": "R",
+          "floor": null,
+          "sharpBlurCssPixels": 0,
+          "glowOpacity": 0,
+          "glowBlurCssPixels": 0,
+          "glowBlend": "screen",
+          "maskOpacity": 0
+        }
+      }
+    }
+  ]
+}

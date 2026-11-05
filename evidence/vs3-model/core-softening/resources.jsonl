@@ -1,0 +1,2 @@
+{"name":"P6-VS3-core80","command":"node capture.mjs --group=core --viewport=600 --dpr=1 --frame=80-reverse","limitMB":700,"heapMB":525,"event":"start","at":"2026-11-05T15:25:42.892Z","freePercent":39,"load":1.7,"waitedSeconds":0}
+{"name":"P6-VS3-core80","command":"node capture.mjs --group=core --viewport=600 --dpr=1 --frame=80-reverse","limitMB":700,"heapMB":525,"event":"end","at":"2026-11-05T15:25:45.526Z","outcome":"exit 0","code":0,"peakMB":478,"processes":5,"seconds":2.6,"freePercentAtEnd":34}

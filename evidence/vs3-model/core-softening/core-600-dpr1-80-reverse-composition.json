@@ -1,0 +1,75 @@
+{
+  "tool": "Pillow",
+  "version": "11.3.0",
+  "inputs": [
+    {
+      "label": "A",
+      "file": "core-600-dpr1-80-reverse-A.png",
+      "sha256": "75dac7c01a96f865e44eccc187666338115d2f73f360de3fcabdec1c8e4beffb",
+      "rect": [
+        0,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "B",
+      "file": "core-600-dpr1-80-reverse-B.png",
+      "sha256": "46f9a3b1acd11db1d66cb4886c26a8c6e156e5c0f1216165e3ebf0a528a61cf9",
+      "rect": [
+        566,
+        30,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "C",
+      "file": "core-600-dpr1-80-reverse-C.png",
+      "sha256": "1a600b0c6dc2811686a4d0463bcc565a1c44b06ff2399669618254fb8820259a",
+      "rect": [
+        0,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "D",
+      "file": "core-600-dpr1-80-reverse-D.png",
+      "sha256": "663ca52ccfb87907746bf1a2c4560473b01643b814d700bf2b0d8605e3ab3bd6",
+      "rect": [
+        566,
+        491,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    },
+    {
+      "label": "E",
+      "file": "core-600-dpr1-80-reverse-Q.png",
+      "sha256": "5d284d2c6970c1ce145d4ac6f900f1b50f5615891d995adaa2743cbf8128f035",
+      "rect": [
+        0,
+        952,
+        542,
+        407
+      ],
+      "pixelCopyEqual": true
+    }
+  ],
+  "output": "sheets/core-600-dpr1-80-reverse.png",
+  "outputSha256": "bc3c63971b9a4c7973bbc561a936d70ce5ce0e3d158a56f560f4375f186f045b",
+  "size": [
+    1108,
+    1383
+  ],
+  "seconds": 0.03942629199999999,
+  "peakMB": 38.39,
+  "scope": "native-pixel composition, no browser, no resizing"
+}
