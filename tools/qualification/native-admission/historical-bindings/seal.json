@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "status": "INACTIVE_SOURCE_ONLY_NOT_RUNTIME_QUALIFIED_NOT_ALLOCATED",
+  "sealReview": "PENDING_INDEPENDENT_COMPLETE_IMPLEMENTATION_REVIEW",
+  "sourceAllocation": "fb19b40b",
+  "reviewedDesign": "60776726",
+  "supportedFiniteRegistration": "3d649d33",
+  "sourceManifest": {
+    "path": "source-manifest.json",
+    "bytes": 4589,
+    "sha256": "6b02a5e32e93e8b99e0b6187a0fcd63f3b1db9e655bb26c010fe0c1d512531f4"
+  },
+  "roles": {
+    "native-membership-caller.py": {
+      "actualWorkspacePath": "/workspace/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py",
+      "prospectiveMacPath": "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py",
+      "bytes": 65450,
+      "sha256": "3588cd488dfc6edd49dda91ef22944e7e2503ad34a4e6429d8cbfc873cfcfa7e",
+      "sourceReaderBound": 65536,
+      "observedMode": "0o600",
+      "canonicalHistoricalModeNotLiveMode": "100644 versus restored0600; historical live0644 not reproduced"
+    },
+    "native-membership-host-finalize.py": {
+      "actualWorkspacePath": "/workspace/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py",
+      "prospectiveMacPath": "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py",
+      "bytes": 49594,
+      "sha256": "40b7d494b788d674cd2922abdefaa3bf631ea8f714f035394ace5bcfff8a39b0",
+      "sourceReaderBound": 65536,
+      "observedMode": "0o600",
+      "canonicalHistoricalModeNotLiveMode": "100644 versus restored0600; historical live0644 not reproduced"
+    }
+  },
+  "referenceNativeC": {
+    "path": "native-membership.c",
+    "bytes": 13251,
+    "sha256": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+    "actualFutureBuildUsesUnchangedOriginalMacPath": true
+  },
+  "unchangedGuardSha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+  "unchangedProviderManifestSha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+  "unchangedProviderLinksSha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+  "limits": {
+    "memoryBytes": 734003200,
+    "callerLogicalGrowthChargeBytes": 1048576,
+    "ownerProofCeilingBytes": 2048,
+    "permitBytes": 16384,
+    "reservationBytes": 4096,
+    "sourceReaderBytes": 65536,
+    "pidSlots": 128,
+    "diagnosticPayloadBytes": 16640,
+    "diagnosticFds": 3,
+    "diagnosticNames": 4,
+    "BSeconds": 60,
+    "releaseSeconds": 2,
+    "RSetupSeconds": 60,
+    "RSeconds": 2,
+    "nativeWindowNs": 150000000,
+    "wait": 0
+  },
+  "inventories": {
+    "build": [
+      "compile",
+      "link",
+      "linked-images",
+      "load-commands",
+      "signature",
+      "kernel-build"
+    ],
+    "run": [
+      "trial"
+    ],
+    "emptyNormalRetirementAllowed": false
+  },
+  "controlsDeclared": 25,
+  "criteria": {
+    "A1_A2_A3_A3z_A4": "REGISTERED_FINITE_SCOPE_ONLY",
+    "A5": "UNREGISTERED_INCOMPLETE_NATIVE_PAIR_UNSHOWN"
+  },
+  "qualification": {
+    "runtimeAuthority": false,
+    "sourceAccepted": false,
+    "syntaxChecked": false,
+    "candidateImported": false,
+    "sourceParserOrCheckerExecuted": false,
+    "modelOrControlExecuted": false,
+    "nativeApiProbed": false,
+    "nativeBuildPerformed": false,
+    "nativeRPerformed": false,
+    "startupQualified": false,
+    "canonicalConsumerQualified": false,
+    "livePermitCreated": false,
+    "reservationCreated": false,
+    "supportedMacExecutorPresent": false,
+    "productOrPinChanged": false,
+    "GitMutation": false,
+    "nativeBuild": "REQUIRED_UNRUN"
+  },
+  "publicationOwner": "Root alone; current manifests are source preparation, not self-acceptance"
+}

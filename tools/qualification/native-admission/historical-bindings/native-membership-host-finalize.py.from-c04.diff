@@ -1,0 +1,349 @@
+diff --git a/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-host-finalize.py b/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py
+index 57aefaf6..12676449 100644
+--- a/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-host-finalize.py
++++ b/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py
+@@ -23,14 +23,128 @@ STARTUP_PROFILE = (
+     (b'__CF_USER_TEXT_ENCODING', 10, 'e52237f479d2cd94721174896f277346c9e3191b21edfbd3bf2f35f71db48e60'),
+ )
+ 
+-BASE = Path('/tmp/p6-membership-failure-04')
++BASE = Path('/tmp/p6-membership-vd14-01')
+ LOCK = Path('/Users/johnhardy/.origo/heavy.lock')
+ 
+ 
+-SOURCE=Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04')
++SOURCE=Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01')
+ PYROOT=Path('/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9')
+ INTERPRETER=PYROOT/'Resources/Python.app/Contents/MacOS/Python'
+ CALLER=SOURCE/'native-membership-caller.py'
++_OWNER_GROUP=None
++_GROUP_PROC=None
++
++
++def _owner_row(pid):
++    global _GROUP_PROC
++    if _GROUP_PROC is None:
++        _GROUP_PROC=C.CDLL('/usr/lib/libproc.dylib',use_errno=True)
++        _GROUP_PROC.proc_pidinfo.argtypes=[C.c_int,C.c_int,C.c_uint64,C.c_void_p,C.c_int]
++        _GROUP_PROC.proc_pidinfo.restype=C.c_int
++        _GROUP_PROC.proc_listpgrppids.argtypes=[C.c_int,C.c_void_p,C.c_int]
++        _GROUP_PROC.proc_listpgrppids.restype=C.c_int
++    def read():
++        buf=C.create_string_buffer(136); C.set_errno(0)
++        n=_GROUP_PROC.proc_pidinfo(pid,3,1,buf,136); error=C.get_errno()
++        status=struct.unpack_from('<I',buf.raw,4)[0]
++        pid_read,ppid,uid=struct.unpack_from('<III',buf.raw,12)
++        if n!=136 or error or pid_read!=pid or status==5:
++            raise RuntimeError('owner group BSD pid=%d return=%d errno=%d payloadPid=%d status=%d'%(pid,n,error,pid_read,status))
++        sec,usec=struct.unpack_from('<QQ',buf.raw,120)
++        if not 2<=pid<=2147483647 or not 0<=usec<1000000:
++            raise RuntimeError('owner group birth range')
++        return {'pid':pid,'ppid':ppid,'uid':uid,'pgid':struct.unpack_from('<I',buf.raw,100)[0],
++                'sec':sec,'usec':usec}
++    before=read(); sid=os.getsid(pid); pgid=os.getpgid(pid)
++    if before!=read() or pgid!=before['pgid'] or sid<2:
++        raise RuntimeError('owner group native bracket changed')
++    before['sid']=sid
++    return before
++
++
++def _owner_members(pid):
++    values=(C.c_int*128)(); C.set_errno(0)
++    count=_GROUP_PROC.proc_listpgrppids(pid,values,C.sizeof(values)); error=C.get_errno()
++    if error or not 0<count<128:
++        raise RuntimeError('owner group pid=%d count=%d errno=%d capacity=128'%(pid,count,error))
++    members=[int(values[i]) for i in range(count)]
++    if len(set(members))!=count or any(p<2 for p in members):
++        raise RuntimeError('owner group invalid PID list')
++    return set(members)
++
++
++def _owner_continuity():
++    if _OWNER_GROUP is None: return
++    if _owner_row(os.getpid())!=_OWNER_GROUP['singletonMembers'][0]:
++        raise RuntimeError('original owner birth/UID/SID/PGID changed')
++
++
++def _owner_singleton(now, deadline=None):
++    _owner_continuity(); pid=os.getpid()
++    if (deadline is not None and now()>=deadline) or _owner_members(pid)!={pid}:
++        raise RuntimeError('pre-caller owner group not singleton')
++    _owner_continuity()
++    if _owner_members(pid)!={pid} or (deadline is not None and now()>=deadline):
++        raise RuntimeError('pre-caller singleton changed/late')
++
++
++def _establish_owner_group(now, deadline):
++    global _OWNER_GROUP
++    pid=os.getpid(); row=_owner_row(pid)
++    if (row['sid'],row['pgid'])!=(pid,pid):
++        if row['pgid']==pid: raise RuntimeError('group leader cannot establish private session')
++        os.setsid()  # One eligible in-place establishment, never a replacement owner.
++    row=_owner_row(pid)
++    if row['sid']!=pid or row['pgid']!=pid or row['uid']!=os.getuid():
++        raise RuntimeError('private owner SID/PGID/UID unavailable')
++    _OWNER_GROUP={'version':1,'ownerIdentity':{k:row[k] for k in ('pid','sec','usec')},
++        'uid':row['uid'],'sid':pid,'pgid':pid,'singletonMembers':[row],
++        'singletonObservedNs':str(now()),'premise':'COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE'}
++    if len((json.dumps(_OWNER_GROUP,sort_keys=True)+'\n').encode())>2048:
++        raise RuntimeError('owner proof byte bound')
++    _owner_singleton(now,deadline)
++    _OWNER_GROUP['singletonObservedNs']=str(now())
++    if now()>=deadline: raise RuntimeError('owner establishment original deadline')
++
++
++def _proof_shape(proof):
++    if (not isinstance(proof,dict) or set(proof)!={'version','ownerIdentity','uid','sid','pgid','singletonMembers','singletonObservedNs','premise'} or
++        len((json.dumps(proof,sort_keys=True)+'\n').encode())>2048): raise RuntimeError('owner proof schema/bound')
++    rows=proof['singletonMembers']; stamp=proof['singletonObservedNs']; birth=proof['ownerIdentity']
++    if (type(proof['version']) is not int or proof['version']!=1 or
++        not isinstance(rows,list) or len(rows)!=1 or not isinstance(rows[0],dict) or
++        set(rows[0])!={'pid','ppid','uid','pgid','sid','sec','usec'} or
++        any(type(v) is not int for v in rows[0].values()) or
++        not isinstance(birth,dict) or set(birth)!={'pid','sec','usec'} or any(type(v) is not int for v in birth.values()) or
++        not isinstance(stamp,str) or not stamp.isascii() or not stamp.isdecimal() or not 1<=len(stamp)<=24 or
++        proof['premise']!='COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE'): raise RuntimeError('owner proof shape')
++    row=rows[0]
++    if (not 2<=row['pid']<=2147483647 or not 1<=row['ppid']<=2147483647 or
++        not 0<=row['uid']<2**32 or not 0<=row['sec']<2**64 or not 0<=row['usec']<1000000 or
++        birth!={k:row[k] for k in ('pid','sec','usec')} or
++        any(type(proof[k]) is not int or proof[k]!=row[k] for k in ('uid','sid','pgid')) or
++        row['sid']!=row['pid'] or row['pgid']!=row['pid']): raise RuntimeError('owner proof invariant')
++
++
++def _pair_shape(pair, proof, child):
++    _proof_shape(proof)
++    if (not isinstance(child,dict) or set(child)!={'pid','sec','usec'} or
++        any(type(v) is not int for v in child.values())): raise RuntimeError('pair child schema')
++    if not isinstance(pair,dict) or set(pair)!={'observedNs','members'}: raise RuntimeError('pair schema')
++    rows=pair['members']; stamp=pair['observedNs']; pid=proof['ownerIdentity']['pid']
++    if (not isinstance(stamp,str) or not stamp.isascii() or not stamp.isdecimal() or not 1<=len(stamp)<=24 or
++        not isinstance(rows,list) or len(rows)!=2 or any(not isinstance(r,dict) or
++        set(r)!={'pid','ppid','uid','pgid','sid','sec','usec'} or any(type(v) is not int for v in r.values()) for r in rows)):
++        raise RuntimeError('pair shape')
++    if ({r['pid'] for r in rows}!={pid,child['pid']} or child['pid']==pid or
++        any(r['uid']!=proof['uid'] or r['sid']!=pid or r['pgid']!=pid for r in rows) or
++        next(r for r in rows if r['pid']==pid)!=proof['singletonMembers'][0]): raise RuntimeError('pair joins')
++    row=next(r for r in rows if r['pid']==child['pid'])
++    if row['ppid']!=pid or {k:row[k] for k in ('pid','sec','usec')}!=child:
++        raise RuntimeError('pair direct child incarnation')
++    if (any(type(v) is not int for v in child.values()) or not 2<=child['pid']<=2147483647 or
++        not 0<=child['sec']<2**64 or not 0<=child['usec']<1000000 or
++        int(stamp)<int(proof['singletonObservedNs'])): raise RuntimeError('pair birth/time range')
+ 
+ 
+ def _clock():
+@@ -87,6 +201,8 @@ def launch_managed_phase(phase, allocation):
+     global _HOST_MANAGED,_OWNER_ACTIVE
+     now=_clock(); t0=(_ENTRY_SETUP_NS if phase!='release' and _ENTRY_SETUP_NS is not None else now()); copied=dict(allocation)
+     copied['allocationT0Ns']=str(t0); copied['trustedHostIdentity']=_birth(os.getpid())
++    _owner_singleton(now,t0+(2_000_000_000 if phase=='release' else 60_000_000_000))
++    copied['ownerGroupProof']=_OWNER_GROUP
+     # Check the entire actual Python provider tree BEFORE executing the caller.
+     manifest=Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-files.sha256')
+     if _hash(manifest,1048576)!=copied['providerManifestSha256']: raise RuntimeError('host provider manifest pin')
+@@ -103,7 +219,7 @@ def launch_managed_phase(phase, allocation):
+         if _hash(Path(name),65536)!=copied['reviewedInputs'].get(name): raise RuntimeError('host source pin')
+     limit=2_000_000_000 if phase=='release' else 60_000_000_000
+     if now()>=t0+limit: raise RuntimeError('pre-start setup original deadline')
+-    permits=Path('/tmp/p6-membership-failure-04-permits')
++    permits=Path('/tmp/p6-membership-vd14-01-permits')
+     if phase=='build': permits.mkdir(mode=0o700)
+     info=permits.lstat()
+     if not stat.S_ISDIR(info.st_mode) or info.st_uid!=os.getuid() or info.st_mode&0o077: raise RuntimeError('private permit directory')
+@@ -124,6 +240,7 @@ def launch_managed_phase(phase, allocation):
+     try:
+         for suffix in ('stdout','stderr'):
+             logs.append(os.open(str(permits/(tag+'-'+suffix)),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600))
++        _owner_singleton(now,t0+limit)
+         _HOST_MANAGED=True
+         managed=subprocess.Popen([str(INTERPRETER),'-I','-S','-B',str(CALLER),phase,str(permit_path)],
+             env={},cwd=str(SOURCE),stdin=subprocess.DEVNULL,stdout=logs[0],stderr=logs[1],
+@@ -171,14 +288,18 @@ def observe_managed_phase(managed, phase, allocation):
+     suffix='-finished.json' if managed.returncode==0 else '-failed-retired.json'
+     finish_raw=_read(BASE/(phase+suffix),16384); record=json.loads(finish_raw)
+     if record['ownerIdentity']['pid']!=managed.pid: raise RuntimeError('actual phase wait/identity mismatch')
++    if record.get('ownerGroupProof')!=_OWNER_GROUP: raise RuntimeError('phase owner proof mismatch')
++    _owner_singleton(now)  # Late retired work remains failed; no new qualifying time window.
++    group_at=now()
+     if phase=='run' and managed.returncode==0: deadline=int(record['operatorDeadlineNs'])
+-    is_late=late or at>=deadline
++    is_late=late or at>=deadline or group_at>=deadline
+     classification=('QUALIFIED_BUILD' if phase=='build' else 'OBSERVED_ONLY_FOR_REQUESTED_PIDS')
+     if managed.returncode!=0 or is_late: classification='FAILED_QUALIFICATION_COHORT_RETIRED'
+     observed={'ownerIdentity':record['ownerIdentity'],'hostWaitReturncode':managed.returncode,
+             'hostObservedCallerExit':True,'hostExitObservedNs':str(at),'hostExitLate':is_late,
+             'classification':classification,'managedFinishSha256':hashlib.sha256(finish_raw).hexdigest(),
+-            'retirementReceipts':record['retirementReceipts'],'commandInventory':record['commandInventory']}
++            'retirementReceipts':record['retirementReceipts'],'commandInventory':record['commandInventory'],
++            'ownerGroupProof':_OWNER_GROUP,'ownerGroupCompletedNs':str(group_at)}
+     data=(json.dumps(observed,sort_keys=True)+'\n').encode()
+     if len(data)>16384: raise RuntimeError('host observation bound')
+     fd=os.open(str(BASE/(phase+'-host-observed.json')),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+@@ -236,6 +357,12 @@ def finalize_after_actual_wait(managed_release, completed_phase, prepared_sha256
+         raise RuntimeError('actual handle/incarnation binding')
+     if prepared.get('reservationHostIdentity')!=_birth(os.getpid()):
+         raise RuntimeError('actual still-live global reservation owner differs')
++    if prepared.get('ownerGroupProof')!=_OWNER_GROUP:
++        raise RuntimeError('release owner group proof mismatch')
++    if prepared.get('hostObservedSha256')!=allocation.get('hostObservedSha256'):
++        raise RuntimeError('release original host observation mismatch')
++    _pair_shape(prepared.get('releaseGroupProof'),_OWNER_GROUP,prepared['releaseIdentity'])
++    _owner_continuity()
+     if managed_release.returncode is not None: raise RuntimeError('release handle already consumed')
+     expected_prefix=[str(INTERPRETER),'-I','-S','-B',str(CALLER),'release']
+     if list(managed_release.args)[:6]!=expected_prefix: raise RuntimeError('release role argv differs')
+@@ -256,12 +383,14 @@ def finalize_after_actual_wait(managed_release, completed_phase, prepared_sha256
+     if code!=0 or actual_exit_observed>=deadline: raise RuntimeError('actual release exit failed/late; hold gate')
+     # Do not accept a different prepared receipt after the actual wait.
+     if _read(path,16384)!=raw: raise RuntimeError('prepared receipt changed across wait')
++    _owner_singleton(now,deadline)
+     gate=Path(str(LOCK)+'.clearing'); directory=gate.lstat()
+     if not stat.S_ISDIR(directory.st_mode) or (directory.st_dev,directory.st_ino)!=(prepared['gateDev'],prepared['gateIno']):
+         raise RuntimeError('published nonempty gate identity changed')
+     gate_owner=json.loads(_read(gate/'owner.json',4096))
+     if gate_owner['releaseIdentity']!=prepared['releaseIdentity'] or gate_owner['oldOwnerIdentity']!=prepared['oldOwnerIdentity']:
+         raise RuntimeError('nonempty gate authority mismatch')
++    if gate_owner.get('ownerGroupProof')!=_OWNER_GROUP: raise RuntimeError('gate owner proof mismatch')
+     lockraw=_read(LOCK,4096); lockstat=LOCK.lstat()
+     if (lockstat.st_dev,lockstat.st_ino,hashlib.sha256(lockraw).hexdigest())!=(prepared['lockDev'],prepared['lockIno'],prepared['lockSha256']):
+         raise RuntimeError('canonical old lock identity changed')
+@@ -277,7 +406,8 @@ def finalize_after_actual_wait(managed_release, completed_phase, prepared_sha256
+     os.unlink(retired/'owner.json'); os.rmdir(retired)
+     receipt={'state':'EXTERNAL_EXACT_EXIT_AND_COHORT_RECONCILED','classification':prepared['classification'],
+              'resourceReleaseOnly':True,
+-             'oldOwnerIdentity':prepared['oldOwnerIdentity'],
++             'oldOwnerIdentity':prepared['oldOwnerIdentity'],'ownerGroupProof':_OWNER_GROUP,
++             'hostObservedSha256':allocation['hostObservedSha256'],
+              'releaseIdentity':prepared['releaseIdentity'],'actualReleaseReturncode':code,
+              'actualReleaseExitObservedNs':str(actual_exit_observed),'operatorDeadlineNs':str(deadline)}
+     data=(json.dumps(receipt,sort_keys=True)+'\n').encode()
+@@ -305,7 +435,7 @@ def _retain_live_host_on_error(operation):
+                 data=(json.dumps({'state':'UNKNOWN_HELD','operation':operation.__name__,
+                     'hostPid':os.getpid(),'errorType':type(error).__name__,'error':str(error)[:512],
+                     'release':False},sort_keys=True)+'\n').encode()
+-                path=Path('/tmp/p6-membership-failure-04-permits/host-unknown-held.json')
++                path=Path('/tmp/p6-membership-vd14-01-permits/host-unknown-held.json')
+                 fd=os.open(str(path),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+                 try:
+                     if len(data)<=2048: os.write(fd,data)
+@@ -339,6 +469,7 @@ def _owner_memory_checkpoint():
+     """
+     global _OWNER_SAMPLE_COUNT,_OWNER_MEMORY_PEAK,_OWNER_USAGE_LIB
+     if _OWNER_INTERRUPTED: raise RuntimeError('operator interruption; retain exact ownership')
++    _owner_continuity()
+     if _OWNER_USAGE_LIB is None:
+         _OWNER_USAGE_LIB=C.CDLL('/usr/lib/libproc.dylib',use_errno=True)
+         _OWNER_USAGE_LIB.proc_pid_rusage.argtypes=[C.c_int,C.c_int,C.c_void_p]
+@@ -401,7 +532,7 @@ def require_startup_qualification(allocation, now, deadline):
+     def is_hash(value):
+         return isinstance(value,str) and len(value)==64 and all(ch in '0123456789abcdef' for ch in value)
+     if not is_hash(expected): raise RuntimeError('reviewed Q evidence hash required; NOT_QUALIFIED refuses')
+-    raw = _read(Path('/tmp/p6-membership-native-failure-Q04-reviewed.json'),16384)
++    raw = _read(Path('/tmp/p6-membership-vd14-Q01-reviewed.json'),16384)
+     if hashlib.sha256(raw).hexdigest() != expected: raise RuntimeError('reviewed Q evidence pin mismatch')
+     evidence = json.loads(raw)
+     if (set(evidence) != {'version','kind','reviewDisposition','reviewRecordSha256','ownerExternal','qualification'} or
+@@ -421,14 +552,20 @@ def require_startup_qualification(allocation, now, deadline):
+         {'path':str(PYROOT/'bin/python3'),'kind':'symlink','target':'python3.9','noFollowOpenRejectedEloop':True},
+     ]
+     if q['noFollowControls'] != expected_controls:
+-        raise RuntimeError('fresh failure-Q04 no-follow qualification controls required')
++        raise RuntimeError('fresh vd14-Q01 no-follow qualification controls required')
+     environment = [{'key':key.decode('ascii'),'valueUtf8Bytes':size,'valueSha256':pin}
+                    for key,size,pin in STARTUP_PROFILE]
+     inputs = {'reviewedInputs':allocation['reviewedInputs'],
+               'providerManifestSha256':allocation['providerManifestSha256'],
+               'providerLinksSha256':allocation['providerLinksSha256'],
+               'profileSha256':hashlib.sha256(json.dumps(environment,sort_keys=True,separators=(',',':')).encode()).hexdigest()}
+-    launch = {'argv':[str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup'],
++    group=q['ownerGroupProof']
++    proof_arg=json.dumps(group,sort_keys=True,separators=(',',':'))
++    _proof_shape(group)
++    if (group['uid']!=os.getuid() or len((proof_arg+'\n').encode())>2048 or group['ownerIdentity']!=q['ownerIdentity'] or
++        group['singletonMembers'][0]['pid']!=q['ownerIdentity']['pid']):
++        raise RuntimeError('fresh Q owner proof binding')
++    launch = {'argv':[str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup',proof_arg],
+               'environment':{},'cwd':str(SOURCE)}
+     if (q['kind'] != 'STARTUP_QUALIFICATION_ONLY' or q['inputs'] != inputs or q['launch'] != launch or
+         q['bootstrapTimeMeasured'] is not False or q['buildAllocated'] is not False or q['runAllocated'] is not False or
+@@ -437,6 +574,15 @@ def require_startup_qualification(allocation, now, deadline):
+         not is_hash(q['rawCallerSha256'])):
+         raise RuntimeError('Q source/provider/profile/launch or actual exit mismatch')
+     caller = q['caller']; owner = q['ownerIdentity']
++    _pair_shape(caller.get('quietGroupProof'),group,caller['identity'])
++    quiet=caller['quietGroupProof']
++    members=quiet['members']
++    if (caller.get('ownerGroupProof')!=group or len(members)!=2 or
++        {row['pid'] for row in members}!={owner['pid'],caller['pid']} or
++        any(row['uid']!=group['uid'] or row['sid']!=owner['pid'] or row['pgid']!=owner['pid'] for row in members) or
++        next(row for row in members if row['pid']==owner['pid'])!=group['singletonMembers'][0] or
++        next(row for row in members if row['pid']==caller['pid'])['ppid']!=owner['pid']):
++        raise RuntimeError('fresh Q native quiet group joins')
+     if hashlib.sha256((json.dumps(caller,sort_keys=True)+'\n').encode()).hexdigest() != q['rawCallerSha256']:
+         raise RuntimeError('reviewed Q raw caller report hash mismatch')
+     if (caller['kind'] != 'CALLER_STARTUP_PROFILE' or caller['version'] != 1 or caller['passed'] is not True or
+@@ -460,6 +606,8 @@ def require_startup_qualification(allocation, now, deadline):
+     start,end,exit_at,complete = map(int,stamps)
+     if end-start != 60_000_000_000 or not start <= exit_at <= complete < end or now() >= deadline:
+         raise RuntimeError('reviewed Q lateness/deadline outcome invalid')
++    if not start<=int(group['singletonObservedNs'])<=int(quiet['observedNs'])<=exit_at:
++        raise RuntimeError('Q group observation timing order')
+ 
+ 
+ def qualify_startup(input_path, now, started):
+@@ -512,8 +660,10 @@ def qualify_startup(input_path, now, started):
+         nofollow_controls = qualify_nofollow(now,deadline)
+         if pass_number: break
+         signal.signal(signal.SIGCHLD,signal.SIG_DFL)
++        _owner_singleton(now,deadline)
++        proof_arg=json.dumps(_OWNER_GROUP,sort_keys=True,separators=(',',':'))
+         _HOST_MANAGED = True
+-        child = subprocess.Popen([str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup'],
++        child = subprocess.Popen([str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup',proof_arg],
+             env={},cwd=str(SOURCE),stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
+             stderr=subprocess.PIPE,close_fds=True)
+         _QUALIFICATION_CHILD = child  # Strong ownership survives a failing Q stack.
+@@ -548,11 +698,14 @@ def qualify_startup(input_path, now, started):
+         expected_environment = [{'key':key.decode('ascii'),'valueUtf8Bytes':size,'valueSha256':expected}
+                                 for key,size,expected in STARTUP_PROFILE]
+         expected_flags = {'isolated':1,'noSite':1,'ignoreEnvironment':1,'noUserSite':1,'dontWriteBytecode':True}
+-        if (set(receipt) != {'version','kind','identity','pid','parentPid','passed','flags','environment','memorySamples'} or
++        if (set(receipt) != {'version','kind','identity','pid','parentPid','passed','flags','environment','memorySamples','ownerGroupProof','quietGroupProof'} or
+             receipt['version'] != 1 or receipt['kind'] != 'CALLER_STARTUP_PROFILE' or
+             receipt['pid'] != child.pid or receipt['parentPid'] != os.getpid() or receipt['passed'] is not True or
+             receipt['flags'] != expected_flags or receipt['environment'] != expected_environment):
+             raise RuntimeError('qualification exact caller metadata mismatch')
++        if receipt['ownerGroupProof']!=_OWNER_GROUP: raise RuntimeError('Q proof echo mismatch')
++        _pair_shape(receipt.get('quietGroupProof'),_OWNER_GROUP,receipt['identity'])
++        _owner_singleton(now,deadline)
+         birth = receipt['identity']
+         if (not isinstance(birth,dict) or set(birth) != {'pid','sec','usec'} or
+             birth['pid'] != child.pid or any(type(birth[k]) is not int for k in birth) or
+@@ -568,7 +721,8 @@ def qualify_startup(input_path, now, started):
+     answer = {'noFollowControls':nofollow_controls,'inputs':{'reviewedInputs':reviewed,'providerManifestSha256':allocation['providerManifestSha256'],
+                        'providerLinksSha256':allocation['providerLinksSha256'],
+                        'profileSha256':hashlib.sha256(json.dumps(expected_environment,sort_keys=True,separators=(',',':')).encode()).hexdigest()},
+-              'launch':{'argv':[str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup'],
++              'ownerGroupProof':_OWNER_GROUP,
++              'launch':{'argv':[str(INTERPRETER),'-I','-S','-B',str(CALLER),'qualify-startup',proof_arg],
+                         'environment':{},'cwd':str(SOURCE)},'ownerIdentity':_birth(os.getpid()),
+               'kind':'STARTUP_QUALIFICATION_ONLY','caller':receipt,'rawCallerSha256':hashlib.sha256(raw).hexdigest(),
+               'actualCallerReturncode':child.returncode,'actualCallerWaitStatus':status,
+@@ -618,6 +772,7 @@ def entry_main(argv):
+         _OWNER_INTERRUPTED=True
+     for sig in (signal.SIGINT,signal.SIGTERM,signal.SIGHUP): signal.signal(sig,interruption)
+     now=_clock(); first_measured=now(); _ENTRY_SETUP_NS=first_measured; _owner_memory_checkpoint()
++    _establish_owner_group(now,first_measured+60_000_000_000)
+     if argv[1]=='qualify-startup': return qualify_startup(Path(argv[3]),now,first_measured)
+     bundle=json.loads(_read(Path(argv[3]),16384))
+     if (set(bundle)!={'version','status','phase','bootstrapTimingTrustAccepted','releaseAllocated','allocation'} or
+@@ -648,7 +803,7 @@ def entry_main(argv):
+     released=finalize_after_actual_wait(release_child,phase,prepared_hash,release_allocation)
+     _owner_memory_checkpoint()
+     answer={'kind':'PINNED_CAPABILITY_OWNER','phase':phase,'classification':observed['classification'],
+-        'resourceReleaseCompleted':True,'ownerIdentity':_birth(os.getpid()),
++        'resourceReleaseCompleted':True,'ownerIdentity':_birth(os.getpid()),'ownerGroupProof':_OWNER_GROUP,
+         'firstMeasuredOwnerNs':str(first_measured),'bootstrapLaunchTimeMeasured':False,
+         'startupMemoryAccounting':'kernel RSS highwater and lifetime physical footprint at first checkpoint',
+         'ownerCoordinatorSamples':_OWNER_SAMPLE_COUNT,'ownerCallerPeakBytes':_OWNER_MEMORY_PEAK,

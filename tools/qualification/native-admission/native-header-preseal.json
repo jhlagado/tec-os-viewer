@@ -1,0 +1,15 @@
+{
+  "status": "STATIC_LITERAL_INCLUDE_UNION_NOT_PREPROCESSOR_EXECUTION",
+  "includeFiles": 332,
+  "bytesRead": 2303985,
+  "searchRoots": [
+    "/Library/Developer/CommandLineTools/usr/lib/clang/21/include",
+    "/Library/Developer/CommandLineTools/usr/lib/clang/21.0.0/include",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include"
+  ],
+  "inactiveOrUnresolvedLiteralIncludes": [
+    "AvailabilityInternalPrivate.h",
+    "AvailabilityProhibitedInternal.h"
+  ],
+  "rule": "Compiler actual dependency must be in presealed manifest; unrepresented macro/resolved includes refuse binary qualification before execution."
+}

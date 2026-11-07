@@ -1,0 +1,397 @@
+diff --git a/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-caller.py b/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py
+index 73f5e714..23da25b8 100644
+--- a/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-caller.py
++++ b/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py
+@@ -1,8 +1,5 @@
+-"""Unrun P3-trusted allocation caller; admission and external exact-child proof.
+-
+-Derived from the retained P3 observe.py path cited in the packet. No work on
+-import. Never removes its own live reservation. Release is a SEPARATE invocation
+-by the trusted external allocator after it observes this caller's exact exit.
++"""Unrun C04-derived phase/release caller. No work on import.
++Only the live owner unlinks after actual phase and separate release waits.
+ """
+ import ctypes as C
+ import errno
+@@ -23,12 +20,13 @@ STARTUP_PROFILE = (
+     (b'__CF_USER_TEXT_ENCODING', 10, 'e52237f479d2cd94721174896f277346c9e3191b21edfbd3bf2f35f71db48e60'),
+ )
+ 
+-BASE = Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04')
+-OUT = Path('/tmp/p6-membership-failure-04')
++BASE = Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01')
++OUT = Path('/tmp/p6-membership-vd14-01')
+ LOCK = Path('/Users/johnhardy/.origo/heavy.lock')
+ CC = '/Library/Developer/CommandLineTools/usr/bin/clang'
+ LD = '/Library/Developer/CommandLineTools/usr/bin/ld'
+ SDK = '/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk'
++NATIVE_SOURCE='/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c'
+ LIMIT = 700 * 1024 * 1024
+ lib = None
+ proc = None
+@@ -43,7 +41,9 @@ _IDLE_MEMORY_SAMPLES=0
+ _IDLE_MEMORY_PEAK=0
+ launched_labels=[]
+ trusted_host=None
+-PLANS={'build':['build-self-start','compile','link','linked-images','load-commands','signature','kernel-build'], 'run':['run-self-start','trial']}
++owner_group=None
++quiet_group=None
++PLANS={'build':['compile','link','linked-images','load-commands','signature','kernel-build'], 'run':['trial']}
+ # Exact SDK layout: rusage_info_v4 begins with UUID then five uint64 counters,
+ # followed by wired/resident/footprint. Full SDK structure storage is 1024 bytes.
+ 
+@@ -322,6 +322,96 @@ def key(row): return (row['pid'],row['sec'],row['usec'])
+ def precise(row): return {n:row[n] for n in ('pid','sec','usec')}
+ 
+ 
++def role_pins():
++    return {str(BASE/n):reviewed[str(BASE/n)] for n in ('native-membership-caller.py','native-membership-host-finalize.py')}
++
++
++def group_row(pid):
++    def read():
++        b=BSD(); C.set_errno(0)
++        n=proc.proc_pidinfo(pid,3,1,C.byref(b),136); error=C.get_errno()
++        _D_VALUES[43]=3; _D_VALUES[44]=1
++        _diag_native(1,pid,n,error,136)
++        if n!=136 or error: raise DiagnosticFailure(1,pid,n,error,136)
++        if b.pid!=pid or b.status==5 or not 0<=b.usec<1000000: raise PhaseFailure(196)
++        return {k:int(getattr(b,k)) for k in ('pid','ppid','uid','pgid','sec','usec')}
++    row=read(); values=[]
++    for op,code in (('getsid',30),('getpgid',31)):
++        C.set_errno(0); result=getattr(lib,op)(pid); error=C.get_errno()
++        _D_VALUES[43]=None; _D_VALUES[44]=None
++        _diag_native(code,pid,result,error,2)
++        if result<2 or error: raise DiagnosticFailure(code,pid,result,error,2)
++        values.append(result)
++    if row!=read() or values[1]!=row['pgid']: raise PhaseFailure(196)
++    row['sid']=values[0]
++    return row
++
++
++def bind_group(proof, current=True):
++    global owner_group
++    keys={'version','ownerIdentity','uid','sid','pgid','singletonMembers','singletonObservedNs','premise'}
++    if not isinstance(proof,dict) or set(proof)!=keys: raise PhaseFailure(195)
++    raw=(json.dumps(proof,sort_keys=True)+'\n').encode()
++    birth=proof['ownerIdentity']; rows=proof['singletonMembers']; stamp=proof['singletonObservedNs']
++    if (len(raw)>2048 or type(proof['version']) is not int or proof['version']!=1 or
++        (current and birth!=trusted_host) or not isinstance(rows,list) or len(rows)!=1 or
++        not isinstance(stamp,str) or not stamp.isascii() or not stamp.isdecimal() or not 1<=len(stamp)<=24 or
++        proof['premise']!='COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE'):
++        raise PhaseFailure(195)
++    row=rows[0]
++    if (not isinstance(birth,dict) or set(birth)!={'pid','sec','usec'} or
++        not isinstance(row,dict) or set(row)!={'pid','ppid','uid','pgid','sid','sec','usec'} or
++        any(type(v) is not int for v in row.values()) or any(type(v) is not int for v in birth.values()) or
++        not 2<=row['pid']<=2147483647 or not 0<=row['sec']<2**64 or not 0<=row['usec']<1000000 or
++        not 0<=row['uid']<2**32 or not 1<=row['ppid']<=2147483647 or
++        precise(row)!=birth or any(type(proof[k]) is not int or proof[k]!=row[k] for k in ('uid','sid','pgid')) or
++        row['sid']!=row['pid'] or row['pgid']!=row['pid'] or row['uid']!=os.getuid()):
++        raise PhaseFailure(195)
++    if current:
++        owner_group=proof
++        owner_continuity()
++
++
++def owner_continuity():
++    if owner_group is None: return
++    pid=trusted_host['pid']
++    if (os.getppid()!=pid or group_row(pid)!=owner_group['singletonMembers'][0] or
++        os.getsid(0)!=pid or os.getpgrp()!=pid): raise PhaseFailure(196)
++
++
++def quiet_pair(now, until):
++    owner_continuity(); pid=trusted_host['pid']; expected={pid,os.getpid()}
++    if now()>=until or int(owner_group['singletonObservedNs'])>now(): raise PhaseFailure(198)
++    if ids('proc_listpgrppids',pid)!=expected: raise PhaseFailure(197)
++    rows=[group_row(p) for p in sorted(expected)]
++    if (any(r['uid']!=owner_group['uid'] or r['sid']!=pid or r['pgid']!=pid for r in rows) or
++        next(r for r in rows if r['pid']==pid)!=owner_group['singletonMembers'][0] or
++        next(r for r in rows if r['pid']==os.getpid())['ppid']!=pid): raise PhaseFailure(197)
++    if ids('proc_listpgrppids',pid)!=expected or rows!=[group_row(p) for p in sorted(expected)]:
++        raise PhaseFailure(199)
++    stamp=now()
++    if stamp>=until: raise PhaseFailure(198)
++    return {'observedNs':str(stamp),'members':rows}
++
++
++def retained_pair(pair, child):
++    if (not isinstance(child,dict) or set(child)!={'pid','sec','usec'} or
++        any(type(v) is not int for v in child.values())): raise PhaseFailure(197)
++    if not isinstance(pair,dict) or set(pair)!={'observedNs','members'}: raise PhaseFailure(197)
++    stamp=pair['observedNs']; rows=pair['members']; pid=trusted_host['pid']
++    if (not isinstance(stamp,str) or not stamp.isascii() or not stamp.isdecimal() or not 1<=len(stamp)<=24 or
++        not isinstance(rows,list) or len(rows)!=2 or any(not isinstance(r,dict) or
++        set(r)!={'pid','ppid','uid','pgid','sid','sec','usec'} or any(type(v) is not int for v in r.values()) for r in rows)):
++        raise PhaseFailure(197)
++    if ({r['pid'] for r in rows}!={pid,child['pid']} or child['pid']==pid or
++        any(r['uid']!=owner_group['uid'] or r['sid']!=pid or r['pgid']!=pid for r in rows) or
++        next(r for r in rows if r['pid']==pid)!=owner_group['singletonMembers'][0]): raise PhaseFailure(197)
++    row=next(r for r in rows if r['pid']==child['pid'])
++    if precise(row)!=child or row['ppid']!=pid: raise PhaseFailure(197)
++    if (not 2<=child['pid']<=2147483647 or not 0<=child['sec']<2**64 or not 0<=child['usec']<1000000 or
++        int(stamp)<int(owner_group['singletonObservedNs'])): raise PhaseFailure(197)
++
++
+ def ids(operation, value):
+     buf=(C.c_int*128)(); C.set_errno(0)
+     n=getattr(proc,operation)(value,buf,C.sizeof(buf)); error=C.get_errno()
+@@ -336,6 +426,7 @@ def ids(operation, value):
+ 
+ 
+ def cohort(root, until, now):
++    owner_continuity()
+     # root is an unreaped private-session leader, never an ambient group number.
+     lease=ownership[root]; row=identity(root)
+     if key(row)!=lease['key'] or row['pgid']!=root: raise PhaseFailure(101)
+@@ -376,6 +467,7 @@ def cohort(root, until, now):
+     if ids('proc_listpgrppids',root)!=group: raise PhaseFailure(106)
+     for pid,birth in births.items():
+         if key(identity(pid))!=birth: raise PhaseFailure(116)
++    owner_continuity()
+     if now()>=until: raise PhaseFailure(107)
+     return total,candidates
+ 
+@@ -433,6 +525,8 @@ def initialize(qualification=False):
+     proc.proc_pidinfo.restype=C.c_int
+     for op in ('proc_listpgrppids','proc_listchildpids'):
+         getattr(proc,op).argtypes=[C.c_int,C.c_void_p,C.c_int]; getattr(proc,op).restype=C.c_int
++    for op in ('getsid','getpgid'):
++        getattr(lib,op).argtypes=[C.c_int]; getattr(lib,op).restype=C.c_int
+     lib.waitid.argtypes=[C.c_int,C.c_uint,C.POINTER(Siginfo),C.c_int]; lib.waitid.restype=C.c_int
+     if C.sizeof(BSD)!=136 or C.sizeof(Siginfo)!=104: raise RuntimeError('SDK ABI mismatch')
+     def remember(_signum, _frame):
+@@ -559,6 +653,7 @@ def idle_memory_checkpoint():
+     if _IDLE_CHECKING or proc is None: return
+     _IDLE_CHECKING=True
+     try:
++        owner_continuity()
+         own=memory(os.getpid()); total=own+_D_CHARGE
+         if trusted_host is not None:
+             if os.getppid()!=trusted_host['pid'] or precise(identity(trusted_host['pid']))!=trusted_host:
+@@ -723,6 +818,7 @@ def command(argv, until, now, label, capture=8192, trial=False, keep_on_failure=
+         code=os.waitstatus_to_exitcode(status)
+         verify(Path(argv[0]),512*1048576)
+         write(OUT/(label+'.json'), {'commandLabel':label,'argv':argv,'rootIdentity':row,'exactChildExit':True,
++            'ownerGroupProof':owner_group,
+             'scopeEmptyWhileAnchorRetained':True,'returncode':code,'startNs':str(start),
+             'capturedNs':str(now()),'stdoutHex':output.hex(),'stderrHex':errors.hex(),
+             'samples':samples,'peakSampleBytes':peak,'diagnosticGrowthChargeBytes':_D_CHARGE,'release':False})
+@@ -803,6 +899,7 @@ def command(argv, until, now, label, capture=8192, trial=False, keep_on_failure=
+                             try: _D_VALUES[11]=0; _D_VALUES[13]=1; _D_VALUES[14]=waited; _D_VALUES[15]=status
+                             except BaseException: pass
+                             write(OUT/(label+'-cleanup.json'),{'commandLabel':label,'rootIdentity':row,
++                                'ownerGroupProof':owner_group,
+                                 'exactChildExit':True,'scopeEmptyWhileAnchorRetained':True,
+                                 'returncode':os.waitstatus_to_exitcode(status),'qualification':'FAILED',
+                                 'firstFailure':'FIXED_DIAGNOSTIC_RECORD','signalErrno':signal_error,'release':False})
+@@ -825,12 +922,9 @@ def command(argv, until, now, label, capture=8192, trial=False, keep_on_failure=
+ 
+ 
+ def admission(now, until, phase):
+-    global reservation_live
+-    # Exact self-only lstart reading is required by EXISTING legacy holds/clearDead.
+-    raw = command(['/bin/ps', '-o', 'lstart=', '-p', str(trusted_host['pid'])], until, now, phase+'-self-start', 128)
+-    born = raw.decode('ascii').strip()
+-    if not born or len(born)>64 or any(not (c.isalnum() or c in ' :') for c in born):
+-        raise PhaseFailure(145)
++    global reservation_live,quiet_group
++    born='native:%d:%d:%d'%(trusted_host['pid'],trusted_host['sec'],trusted_host['usec'])
++    if len(born)>64: raise PhaseFailure(145)
+     queue = Path(str(LOCK)+'.queue'); clearing = Path(str(LOCK)+'.clearing')
+     if clearing.exists(): raise PhaseFailure(146)
+     if queue.exists():
+@@ -851,16 +945,18 @@ def admission(now, until, phase):
+             elif scan_primary is None: _diag_capture(finalizer)
+             raise
+     own=precise(identity(os.getpid()))
+-    obj = {'pid': trusted_host['pid'], 'started': born, 'group': 0,
++    obj = {'pid': trusted_host['pid'], 'started': born, 'group': trusted_host['pid'],
+            'name': 'P6 membership '+phase, 'since': datetime.now(timezone.utc).isoformat(), 'cwd': str(OUT)}
+     if LOCK.parent.is_symlink() or LOCK.parent.stat().st_uid!=os.getuid(): raise PhaseFailure(147)
+     temp = LOCK.parent / ('heavy.lock.p6-membership-'+str(os.getpid()))
+     write(temp, obj)
++    quiet_group=quiet_pair(now,until)
+     os.link(temp, LOCK, follow_symlinks=False)  # Atomic exact existing global authority; no fallback/recovery.
+     reservation_live=True
+     s = LOCK.stat(); sha = digest(LOCK, 4096)
+     write(OUT / (phase+'-reservation.json'), {'lock': str(LOCK), 'dev': s.st_dev, 'ino': s.st_ino,
+-          'sha256': sha, 'ownerPid': os.getpid(), 'ownerIdentity':own, 'reservationHostIdentity':trusted_host, 'phase': phase, 'release': False})
++          'sha256': sha, 'ownerPid': os.getpid(), 'ownerIdentity':own, 'reservationHostIdentity':trusted_host,
++          'ownerGroupProof':owner_group,'quietGroupProof':quiet_group,'phase': phase, 'release': False})
+     # Never unlink this lock or the owner temp here, including on exception/exit.
+     if clearing.exists(): raise PhaseFailure(148)
+     if queue.exists():
+@@ -882,7 +978,7 @@ def admission(now, until, phase):
+ 
+ 
+ def build(now, until):
+-    source = '/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c'; obj = str(OUT/'membership.o'); binary = str(OUT/'membership')
++    source = NATIVE_SOURCE; obj = str(OUT/'membership.o'); binary = str(OUT/'membership')
+     verify(Path(source),65536)
+     command([CC,'--no-default-config','-fintegrated-cc1','-fintegrated-as','-fno-crash-diagnostics','-std=c11','-O2','-Wall','-Wextra','-Werror','-arch','arm64',
+              '-isysroot',SDK,'-mmacosx-version-min=14.0','-MD','-MF',str(OUT/'headers.d'),
+@@ -910,6 +1006,8 @@ def build(now, until):
+         command([tool]+args,until,now,label)
+     verify_phase_inputs('build',until,now)  # ALL consumed compiler/linker/header/provider bytes, after use.
+     write(OUT/'built.json', {'binarySha256':digest(Path(binary),1048576),
++          'sourceFamily':'VD14_SUCCESSOR01_B6_R1',
++          'roleSourceSha256':role_pins(),
+           'objectSha256':digest(Path(obj),1048576),'sourceSha256':digest(Path(source),65536),
+           'compilerSha256':digest(Path(CC).resolve(),512*1048576),
+           'linkerSha256':digest(Path(LD).resolve(),64*1048576),
+@@ -921,7 +1019,7 @@ def build(now, until):
+ def release(permit, now, until):
+     # A DIFFERENT invocation, after trusted host's precise direct-child wait.
+     # No guard->true job, no numeric signal, no global process scan.
+-    phase=permit.get('completedPhase')
++    phase=permit.get('completedPhase'); release_group=quiet_pair(now,until)
+     if phase not in ('build','run') or permit.get('hostObservedCallerExit') is not True or permit.get('hostWaitReturncode') not in (0,70):
+         raise PhaseFailure(152)
+     reservation=OUT/(phase+'-reservation.json')
+@@ -931,7 +1029,7 @@ def release(permit, now, until):
+     if hashlib.sha256(raw_observed).hexdigest()!=permit.get('hostObservedSha256'):
+         raise PhaseFailure(153)
+     finish=json.loads(raw_observed)
+-    for field in ('ownerIdentity','hostWaitReturncode','hostExitLate','classification','retirementReceipts'):
++    for field in ('ownerIdentity','hostWaitReturncode','hostExitLate','classification','retirementReceipts','ownerGroupProof'):
+         if finish.get(field)!=permit.get(field): raise PhaseFailure(167)
+     failed_qualification=finish.get('classification')=='FAILED_QUALIFICATION_COHORT_RETIRED'
+     if not failed_qualification:
+@@ -942,6 +1040,9 @@ def release(permit, now, until):
+     if digest(OUT/managed_file,16384)!=finish.get('managedFinishSha256'):
+         raise PhaseFailure(154)
+     if proof.get('reservationHostIdentity')!=trusted_host: raise PhaseFailure(155)
++    if proof.get('ownerGroupProof')!=owner_group or finish.get('ownerGroupProof')!=owner_group:
++        raise PhaseFailure(196)
++    retained_pair(proof.get('quietGroupProof'),proof['ownerIdentity'])
+     if permit.get('ownerIdentity')!=proof['ownerIdentity'] or finish.get('ownerIdentity')!=proof['ownerIdentity']:
+         raise PhaseFailure(156)
+     for name,expected in permit.get('retirementReceipts',{}).items():
+@@ -959,16 +1060,19 @@ def release(permit, now, until):
+     for name in required:
+         row=json.loads(regular(OUT/name,65536))
+         labels.append(row.get('commandLabel'))
+-        if row.get('exactChildExit') is not True or row.get('scopeEmptyWhileAnchorRetained') is not True:
++        if (row.get('exactChildExit') is not True or row.get('scopeEmptyWhileAnchorRetained') is not True or
++            row.get('ownerGroupProof')!=owner_group):
+             raise PhaseFailure(171)
+     if sorted(labels)!=sorted(inv): raise PhaseFailure(160)
+     if permit.get('reservationSha256')!=digest(reservation,4096): raise PhaseFailure(161)
++    quiet_pair(now,until)
+     if memory(os.getpid())>LIMIT or now()>=until: raise PhaseFailure(162)
+     # Atomically publish a PREPOPULATED clearing gate. Existing clearDead's
+     # stale rmdir cannot remove a NONEMPTY gate, even across an OS stall.
+     staging=LOCK.parent/('heavy.lock.p6-release-'+str(os.getpid()))
+     staging.mkdir(mode=0o700)
+-    write(staging/'owner.json',{'releaseIdentity':precise(identity(os.getpid())),'oldOwnerIdentity':proof['ownerIdentity']})
++    write(staging/'owner.json',{'releaseIdentity':precise(identity(os.getpid())),'oldOwnerIdentity':proof['ownerIdentity'],
++          'ownerGroupProof':owner_group})
+     gate=Path(str(LOCK)+'.clearing')
+     lib.renameatx_np.argtypes=[C.c_int,C.c_char_p,C.c_int,C.c_char_p,C.c_uint]
+     lib.renameatx_np.restype=C.c_int
+@@ -984,7 +1088,9 @@ def release(permit, now, until):
+           'completedPhase':phase,'classification':finish['classification'],'oldOwnerIdentity':proof['ownerIdentity'],
+           'releaseIdentity':precise(identity(os.getpid())),'lockDev':proof['dev'],'lockIno':proof['ino'],
+           'lockSha256':proof['sha256'],'reservationSha256':permit['reservationSha256'],
+-          'reservationHostIdentity':proof['reservationHostIdentity'],
++          'hostObservedSha256':permit['hostObservedSha256'],
++          'reservationHostIdentity':proof['reservationHostIdentity'],'ownerGroupProof':owner_group,
++          'releaseGroupProof':release_group,
+           'gateDev':gate_stat.st_dev,'gateIno':gate_stat.st_ino,
+           'operatorDeadlineNs':str(until),'release':False})
+     if now()>=until: raise PhaseFailure(166)
+@@ -1006,17 +1112,16 @@ def verify_phase_inputs(phase,until,now):
+         if now()>=until: raise PhaseFailure(912)
+ 
+ 
+-def qualify_startup():
+-    """Only startup metadata. No signals, admission, permits, tools or children."""
+-    global proc
++def qualify_startup(proof_text):
++    """Startup and quiet native pair only; no admission, tools or children."""
++    global trusted_host
++    if len(proof_text.encode())>2048: raise PhaseFailure(195)
+     report = initialize(qualification=True)
+-    proc = C.CDLL('/usr/lib/libproc.dylib', use_errno=True)
+-    proc.proc_pid_rusage.argtypes = [C.c_int, C.c_int, C.c_void_p]
+-    proc.proc_pid_rusage.restype = C.c_int
+-    proc.proc_pidinfo.argtypes = [C.c_int,C.c_int,C.c_uint64,C.c_void_p,C.c_int]
+-    proc.proc_pidinfo.restype = C.c_int
++    now=initialize(); started=now(); trusted_host=precise(identity(os.getppid()))
++    bind_group(json.loads(proof_text)); pair=quiet_pair(now,started+60_000_000_000)
+     report.update(version=1, kind='CALLER_STARTUP_PROFILE', identity=precise(identity(os.getpid())), pid=os.getpid(),
+-                  parentPid=os.getppid(), passed=True, memorySamples=[memory(os.getpid())])
++                  parentPid=os.getppid(), passed=True, memorySamples=[memory(os.getpid())],
++                  ownerGroupProof=owner_group,quietGroupProof=pair)
+     raw = (json.dumps(report, sort_keys=True) + '\n').encode()
+     if len(raw) > 2048: raise RuntimeError('qualification metadata bound')
+     report['memorySamples'].append(memory(os.getpid()))
+@@ -1028,7 +1133,7 @@ def qualify_startup():
+ 
+ 
+ def main(argv):
+-    if argv[1:] == ['qualify-startup']: return qualify_startup()
++    if len(argv)==3 and argv[1]=='qualify-startup': return qualify_startup(argv[2])
+     global reviewed, phase_name, trusted_host
+     now=initialize(); entry=now(); os.umask(0o077)
+     if len(argv)!=3 or argv[1] not in ('build','run','release'): raise PhaseFailure(172)
+@@ -1039,6 +1144,7 @@ def main(argv):
+     if not isinstance(allocation_t0,str) or not allocation_t0.isascii() or not allocation_t0.isdecimal() or not 1<=len(allocation_t0)<=24: raise PhaseFailure(174)
+     entry=int(allocation_t0)
+     if entry>now(): raise PhaseFailure(175)
++    bind_group(permit.get('ownerGroupProof'))
+     reviewed=permit.get('reviewedInputs',{})
+     if not isinstance(reviewed,dict) or not reviewed: raise PhaseFailure(176)
+     verify(Path(__file__),65536)
+@@ -1056,7 +1162,7 @@ def main(argv):
+     if permit.get('status')!='EXPLICITLY_ALLOCATED' or permit.get('phase')!=phase or permit.get('platformTrustAccepted') is not True:
+         raise PhaseFailure(179)
+     if phase!='release':
+-        qualification = regular(Path('/tmp/p6-membership-native-failure-Q04-reviewed.json'),16384,private=True)
++        qualification = regular(Path('/tmp/p6-membership-vd14-Q01-reviewed.json'),16384,private=True)
+         if hashlib.sha256(qualification).hexdigest()!=permit.get('startupQualificationEvidenceSha256'):
+             raise PhaseFailure(187)
+         verify_phase_inputs(phase,entry+60_000_000_000,now)
+@@ -1069,10 +1175,22 @@ def main(argv):
+     if phase=='build': OUT.mkdir(mode=0o700)
+     else:
+         built=json.loads(regular(OUT/'built.json',4096))
++        if digest(OUT/'built.json',4096)!=permit.get('buildResultSha256'): raise PhaseFailure(200)
++        if built.get('sourceFamily')!='VD14_SUCCESSOR01_B6_R1' or built.get('roleSourceSha256')!=role_pins(): raise PhaseFailure(200)
++        if built.get('sourceSha256')!=reviewed.get(NATIVE_SOURCE): raise PhaseFailure(200)
+         build_observed=regular(OUT/'build-host-observed.json',16384)
+         if hashlib.sha256(build_observed).hexdigest()!=permit.get('buildHostObservedSha256'):
+             raise PhaseFailure(189)
+         build_status=json.loads(build_observed)
++        bind_group(build_status.get('ownerGroupProof'),False)
++        released=json.loads(regular(OUT/'build-released.json',4096,private=True))
++        if (digest(OUT/'build-released.json',4096)!=permit.get('buildReleasedSha256') or
++            released.get('ownerGroupProof')!=build_status['ownerGroupProof'] or
++            released.get('oldOwnerIdentity')!=build_status.get('ownerIdentity') or
++            released.get('hostObservedSha256')!=permit['buildHostObservedSha256'] or
++            released.get('resourceReleaseOnly') is not True or type(released.get('actualReleaseReturncode')) is not int or
++            released['actualReleaseReturncode']!=0 or released.get('classification')!='QUALIFIED_BUILD' or
++            build_status.get('commandInventory')!=PLANS['build']): raise PhaseFailure(200)
+         if build_status.get('classification')!='QUALIFIED_BUILD' or build_status.get('hostWaitReturncode')!=0 or build_status.get('hostExitLate') is not False:
+             raise PhaseFailure(190)
+         reviewed[str((OUT/'membership').resolve())]=permit.get('binarySha256')
+@@ -1104,7 +1222,7 @@ def main(argv):
+           'ownerIdentity':precise(identity(os.getpid())),'phase':phase,'atNs':str(now()),
+           'operatorT0Ns':str(trial_t0 if phase=='run' else entry),'operatorDeadlineNs':str(until),
+           'idleMemorySamples':_IDLE_MEMORY_SAMPLES,'idleMemoryPeakBytes':_IDLE_MEMORY_PEAK,'diagnosticGrowthChargeBytes':_D_CHARGE,
+-          'commandInventory':launched_labels,'retirementReceipts':retired,'release':False})
++          'commandInventory':launched_labels,'retirementReceipts':retired,'ownerGroupProof':owner_group,'release':False})
+     idle_memory_checkpoint()
+     if now()>=until: raise PhaseFailure(183)
+     return 0
+@@ -1126,7 +1244,7 @@ if __name__=='__main__':
+                 write(OUT/(phase_name+'-failed-retired.json'),{'state':'FAILED_QUALIFICATION_COHORT_RETIRED',
+                     'ownerIdentity':precise(identity(os.getpid())),'idleMemorySamples':_IDLE_MEMORY_SAMPLES,
+                     'idleMemoryPeakBytes':_IDLE_MEMORY_PEAK,'diagnosticGrowthChargeBytes':_D_CHARGE,
+-                    'commandInventory':launched_labels,'retirementReceipts':retired,'release':False})
++                    'commandInventory':launched_labels,'retirementReceipts':retired,'ownerGroupProof':owner_group,'release':False})
+             except BaseException as cleanup_error:
+                 _diag_cleanup_error(cleanup_error)
+                 _D_VALUES[46]=4; _diag_finish(1)

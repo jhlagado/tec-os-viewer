@@ -1,0 +1,548 @@
+{
+  "status": "SOURCE_ONLY_UNRUN_PENDING_INDEPENDENT_REVIEW",
+  "nativeCallFailure": 1,
+  "osApiException": 2,
+  "unclassifiedPythonException": 3,
+  "allocationFailure": 4,
+  "cleanupException": 4,
+  "cleanupDeadline": 5,
+  "cleanupWaitAuthorityLost": 6,
+  "cleanupUnreconciled": 7,
+  "nativePayloadValidation": 20,
+  "invariants": {
+    "100": {
+      "function": "ids",
+      "condition": "invalid cohort list"
+    },
+    "101": {
+      "function": "cohort",
+      "condition": "anchor identity changed"
+    },
+    "102": {
+      "function": "cohort",
+      "condition": "anchor missing from owned group"
+    },
+    "103": {
+      "function": "cohort",
+      "condition": "trusted host changed"
+    },
+    "104": {
+      "function": "cohort",
+      "condition": "trusted host memory bracket"
+    },
+    "105": {
+      "function": "cohort",
+      "condition": "known owned incarnation survives outside current cohort"
+    },
+    "106": {
+      "function": "cohort",
+      "condition": "group changed during sample"
+    },
+    "107": {
+      "function": "cohort",
+      "condition": "cohort sample late"
+    },
+    "108": {
+      "function": "cohort",
+      "condition": "cohort bound/deadline"
+    },
+    "109": {
+      "function": "cohort",
+      "condition": "tool violated no-detach/no-escape trust premise"
+    },
+    "110": {
+      "function": "cohort",
+      "condition": "owned PID reuse"
+    },
+    "111": {
+      "function": "cohort",
+      "condition": "cohort incarnation/membership changed"
+    },
+    "112": {
+      "function": "cohort",
+      "condition": "aggregate memory limit"
+    },
+    "113": {
+      "function": "cohort",
+      "condition": "known-birth reconciliation late"
+    },
+    "115": {
+      "function": "cohort",
+      "condition": "known birth reused outside current cohort"
+    },
+    "116": {
+      "function": "cohort",
+      "condition": "cohort changed during sample"
+    },
+    "117": {
+      "function": "regular",
+      "condition": "file bound/type"
+    },
+    "118": {
+      "function": "regular",
+      "condition": "partial/changed file"
+    },
+    "119": {
+      "function": "digest",
+      "condition": "hash bound/type"
+    },
+    "120": {
+      "function": "digest",
+      "condition": "hash changed"
+    },
+    "121": {
+      "function": "digest",
+      "condition": "hash grew"
+    },
+    "122": {
+      "function": "write",
+      "condition": "receipt bound"
+    },
+    "123": {
+      "function": "write",
+      "condition": "receipt write"
+    },
+    "124": {
+      "function": "idle_memory_checkpoint",
+      "condition": "idle coordinator aggregate memory"
+    },
+    "125": {
+      "function": "idle_memory_checkpoint",
+      "condition": "idle owner identity changed"
+    },
+    "126": {
+      "function": "quota",
+      "condition": "artifact type/file bound"
+    },
+    "127": {
+      "function": "quota",
+      "condition": "artifact reserve/headroom bound"
+    },
+    "128": {
+      "function": "quota",
+      "condition": "diagnostic artifact bound"
+    },
+    "129": {
+      "function": "command",
+      "condition": "original phase deadline"
+    },
+    "130": {
+      "function": "command",
+      "condition": "child not positively stopped before exec"
+    },
+    "131": {
+      "function": "command",
+      "condition": "private anchor binding"
+    },
+    "132": {
+      "function": "command",
+      "condition": "command iteration bound"
+    },
+    "133": {
+      "function": "command",
+      "condition": "final capture bound"
+    },
+    "134": {
+      "function": "command",
+      "condition": "command failed; no implicit cleanup/release"
+    },
+    "135": {
+      "function": "command",
+      "condition": "build diagnostic prevents qualification"
+    },
+    "136": {
+      "function": "command",
+      "condition": "pre-exec stop late"
+    },
+    "137": {
+      "function": "command",
+      "condition": "trial output bound"
+    },
+    "138": {
+      "function": "command",
+      "condition": "operator/deadline"
+    },
+    "139": {
+      "function": "command",
+      "condition": "output bound"
+    },
+    "140": {
+      "function": "command",
+      "condition": "actual direct child reap mismatch"
+    },
+    "141": {
+      "function": "command",
+      "condition": "descendant remains at root exit"
+    },
+    "142": {
+      "function": "command",
+      "condition": "retained private-session authority changed"
+    },
+    "143": {
+      "function": "command",
+      "condition": "cleanup reap mismatch"
+    },
+    "144": {
+      "function": "command",
+      "condition": "cleanup descendants remain"
+    },
+    "145": {
+      "function": "admission",
+      "condition": "native owner token exceeds unchanged64-character bound"
+    },
+    "146": {
+      "function": "admission",
+      "condition": "admission clearing uncertain; wait0"
+    },
+    "147": {
+      "function": "admission",
+      "condition": "global directory trust"
+    },
+    "148": {
+      "function": "admission",
+      "condition": "clearing raced admission; held"
+    },
+    "149": {
+      "function": "admission",
+      "condition": "queue identity"
+    },
+    "150": {
+      "function": "admission",
+      "condition": "existing ticket; wait0"
+    },
+    "151": {
+      "function": "admission",
+      "condition": "ticket raced admission; refuse work and remain held"
+    },
+    "152": {
+      "function": "release",
+      "condition": "trusted host actual successful caller wait required"
+    },
+    "153": {
+      "function": "release",
+      "condition": "actual host observation pin"
+    },
+    "154": {
+      "function": "release",
+      "condition": "actual managed finish/cleanup receipt changed"
+    },
+    "155": {
+      "function": "release",
+      "condition": "global reservation host changed"
+    },
+    "156": {
+      "function": "release",
+      "condition": "precise old caller incarnation mismatch"
+    },
+    "157": {
+      "function": "release",
+      "condition": "full retirement proof missing"
+    },
+    "158": {
+      "function": "release",
+      "condition": "exact phase command inventory missing/extra"
+    },
+    "159": {
+      "function": "release",
+      "condition": "receipt subset/extra"
+    },
+    "160": {
+      "function": "release",
+      "condition": "retirement labels not exact phase inventory"
+    },
+    "161": {
+      "function": "release",
+      "condition": "reservation receipt mismatch"
+    },
+    "162": {
+      "function": "release",
+      "condition": "release bound"
+    },
+    "163": {
+      "function": "release",
+      "condition": "exclusive existing clearing gate unavailable"
+    },
+    "164": {
+      "function": "release",
+      "condition": "canonical reservation changed; do not unlink"
+    },
+    "165": {
+      "function": "release",
+      "condition": "release original deadline; keep gate"
+    },
+    "166": {
+      "function": "release",
+      "condition": "release preparation late; canonical lock remains held"
+    },
+    "167": {
+      "function": "release",
+      "condition": "actual host observation/allocation mismatch"
+    },
+    "168": {
+      "function": "release",
+      "condition": "late/nonzero exit cannot remain qualification-success shaped"
+    },
+    "169": {
+      "function": "release",
+      "condition": "retirement receipt path"
+    },
+    "170": {
+      "function": "release",
+      "condition": "retirement receipt changed"
+    },
+    "171": {
+      "function": "release",
+      "condition": "retirement receipt missing exact exit, empty-anchor census or original owner group proof"
+    },
+    "172": {
+      "function": "main",
+      "condition": "build|run ABSOLUTE_ALLOCATION_JSON"
+    },
+    "173": {
+      "function": "main",
+      "condition": "actual trusted parent host binding"
+    },
+    "174": {
+      "function": "main",
+      "condition": "external pre-start clock input"
+    },
+    "175": {
+      "function": "main",
+      "condition": "external clock origin differs"
+    },
+    "176": {
+      "function": "main",
+      "condition": "reviewed pre-use input hashes required"
+    },
+    "177": {
+      "function": "main",
+      "condition": "reviewed provider manifest pin"
+    },
+    "178": {
+      "function": "main",
+      "condition": "provider symlink pin"
+    },
+    "179": {
+      "function": "main",
+      "condition": "external P3 allocation/trust decision missing"
+    },
+    "180": {
+      "function": "main",
+      "condition": "narrow tool no-detach trust decision required"
+    },
+    "181": {
+      "function": "main",
+      "condition": "caller setup/finalization deadline"
+    },
+    "182": {
+      "function": "main",
+      "condition": "exact successful phase command inventory"
+    },
+    "183": {
+      "function": "main",
+      "condition": "complete caller finalisation late"
+    },
+    "184": {
+      "function": "main",
+      "condition": "provider manifest schema"
+    },
+    "185": {
+      "function": "main",
+      "condition": "conflicting role/provider hash"
+    },
+    "186": {
+      "function": "main",
+      "condition": "provider symlink changed"
+    },
+    "187": {
+      "function": "main",
+      "condition": "reviewed startup qualification evidence pin required"
+    },
+    "188": {
+      "function": "main",
+      "condition": "release phase input"
+    },
+    "189": {
+      "function": "main",
+      "condition": "reviewed actual B host observation pin"
+    },
+    "190": {
+      "function": "main",
+      "condition": "failed/late build cannot authorise R"
+    },
+    "191": {
+      "function": "main",
+      "condition": "reviewed build pin missing/changed"
+    },
+    "192": {
+      "function": "main",
+      "condition": "R setup exhausted original60s; no trial"
+    },
+    "193": {
+      "function": "main",
+      "condition": "charged native sampled peak prevents qualification"
+    },
+    "194": {
+      "function": "main",
+      "condition": "unqualified native result"
+    },
+    "900": {
+      "function": "command",
+      "condition": "cleanup retained private birth or group comparison refused"
+    },
+    "901": {
+      "function": "verify",
+      "condition": "missing reviewed input pin"
+    },
+    "902": {
+      "function": "verify",
+      "condition": "reviewed hash mismatch"
+    },
+    "903": {
+      "function": "command",
+      "condition": "operator stop intent"
+    },
+    "904": {
+      "function": "command",
+      "condition": "final capture original deadline"
+    },
+    "905": {
+      "function": "cohort",
+      "condition": "cohort original deadline"
+    },
+    "910": {
+      "function": "verify_phase_inputs",
+      "condition": "provider count bound"
+    },
+    "911": {
+      "function": "verify_phase_inputs",
+      "condition": "pre/post provider byte/time bound"
+    },
+    "912": {
+      "function": "verify_phase_inputs",
+      "condition": "provider sealing late"
+    },
+    "195": {
+      "function": "bind_group",
+      "condition": "exact owner proof schema/type/range/2048-byte bound"
+    },
+    "196": {
+      "function": "group_row/owner_continuity",
+      "condition": "owner native birth/UID/SID/PGID/direct-parent or retained proof mismatch"
+    },
+    "197": {
+      "function": "quiet_pair/retained_pair",
+      "condition": "exact quiet or retained direct owner/caller pair rejected"
+    },
+    "198": {
+      "function": "quiet_pair",
+      "condition": "original deadline or future singleton timestamp"
+    },
+    "199": {
+      "function": "quiet_pair",
+      "condition": "native membership/identity changed within quiet pair bracket"
+    },
+    "200": {
+      "function": "main run setup",
+      "condition": "successor source/B6/build-result/released-observation handoff mismatch"
+    }
+  },
+  "nativeOperations": {
+    "1": "BSD_INFO",
+    "2": "GROUP_PID_LIST",
+    "3": "RUSAGE_V4",
+    "4": "WAITID",
+    "5": "WAITPID",
+    "6": "SIGNAL",
+    "7": "WRITE_OR_OPEN",
+    "8": "FSYNC",
+    "9": "LINK",
+    "11": "VERIFY",
+    "13": "OTHER_SETUP",
+    "14": "READ",
+    "16": "UNLINK_STAGING",
+    "18": "PIPE",
+    "19": "FORK",
+    "21": "CHILD_PID_LIST",
+    "22": "KNOWN_BIRTH_BSD_RECONCILIATION",
+    "23": "GETSID_CLEANUP_VALIDATION",
+    "15": "OPEN_FILE",
+    "24": "FSTAT",
+    "26": "PRE_CHILD_ALLOCATIONS",
+    "27": "CLOSE_FINALIZER",
+    "28": "SCANDIR_CONTEXT_EXIT",
+    "29": "SCANDIR_OPEN_OR_ITERATION",
+    "30": "OWNER_GROUP_GETSID",
+    "31": "OWNER_GROUP_GETPGID"
+  },
+  "commandCodes": {
+    "0": "NO_CURRENT_COMMAND_OR_UNKNOWN",
+    "1": "build-self-start",
+    "2": "compile",
+    "3": "link",
+    "4": "linked-images",
+    "5": "load-commands",
+    "6": "signature",
+    "7": "kernel-build",
+    "8": "run-self-start",
+    "9": "trial"
+  },
+  "failureClasses": {
+    "1": "native return/errno predicate failed",
+    "2": "Python OS API exception",
+    "3": "result or invariant validation",
+    "4": "unclassified Python/allocation exception"
+  },
+  "cleanupIdentity": {
+    "0": "not attempted",
+    "1": "attempt in progress or incomplete",
+    "2": "unchanged original checks matched",
+    "3": "comparison refused",
+    "4": "validation API unavailable"
+  },
+  "census": {
+    "0": "not attempted",
+    "1": "paired root-only check in progress",
+    "2": "paired root-only observations passed",
+    "3": "paired check failed/incomplete"
+  },
+  "authorityMeaning": "Conservative C03 local proof/control flag only; not actual kernel permission or authority derived from a birth key.",
+  "holdReason": {
+    "0": "no hold outcome yet",
+    "1": "authority/proof unavailable",
+    "2": "original deadline exhausted",
+    "3": "wait authority unavailable",
+    "4": "cleanup/receipt exception",
+    "5": "unreconciled cleanup"
+  },
+  "normalPublicationEnum": {
+    "0": "not attempted",
+    "1": "attempted but no successful return acknowledgement",
+    "2": "successful syscall return acknowledged"
+  },
+  "emergencyPublicationAckFields": [
+    "writeReturnedBytesOrNull",
+    "fileFsyncReturnAcknowledged",
+    "linkReturnAcknowledged",
+    "directoryFsyncReturnAcknowledged",
+    "failedOperation",
+    "errnoOrNull"
+  ],
+  "unknown": "null is unavailable/out of slot numeric range. Zero acknowledgement never proves absent publication. Signal success never proves delivery or exit.",
+  "nativePayloadValidationNote": "reason20 covers successful native calls whose PID/count/counter payload violates the original validation; it is not a native-call failure.",
+  "finalizerNote": "Body primary freezes before fallible finalization; later finalizer count/operation/errno/stage are separate cleanup facts. Expected caught failures do not freeze.",
+  "retiredCommandCodes": {
+    "1": "build-self-start; historical only, never launched by this source",
+    "8": "run-self-start; historical only, never launched by this source"
+  },
+  "unchangedDiagnosticPayload": {
+    "numericFields": 53,
+    "recordBytes": 8192,
+    "recordCount": 2,
+    "ackBytes": 256,
+    "persistentPayloadBytes": 16640,
+    "persistentFds": 3,
+    "names": 4,
+    "growthChargeBytes": 1048576
+  }
+}

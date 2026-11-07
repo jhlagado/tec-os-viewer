@@ -26,19 +26,28 @@ sealed source packets and historical results remain traceable in Origo's
 `studies/p6-viewer`; changing their location or paths must not silently change
 their recorded hashes or turn inactive templates into runnable authority.
 
-Pending source records there include:
+The [inactive qualification engineering sources](../tools/qualification/README.md)
+now live in this repository. Their [migration map](../tools/qualification/migration-map.json)
+binds the exact immutable Origo originals and every source-location edit. The
+guard, native caller/owner/C source, diagnostics and declarative controls are
+available here for further engineering; they are not enabled commands.
+
+Original source records in Origo include:
 
 - `intake.md`, `stages/compact-source.md` and `models/compact-receiver`: the
   receiving design, named inputs and proposed notice/default mechanisms.
-- `models/compact-receiver/guard-prototype`: source-only supervision work.
+- `models/compact-receiver/guard-prototype`: the original supervision source
+  packet, now mapped to `tools/qualification/compact-guard` here.
 - `models/native-admission/vd14-successor01`: proposed native membership
   caller, owner, C source and inactive command/bundle templates. These are
-  engineering source records, not installed viewer tools. Their Mac paths and
-  provider bindings need an explicit relocation and command review before use.
+  original engineering records, now mapped to `tools/qualification/native-admission`
+  here. Historical templates/seals remain separate from the relocated sources.
+  Changed source paths and complete command/provider bindings still require
+  independent review before use.
 
 Native source review does not supply a supported Mac executor, SDK/provider
 closure, native build/run evidence or the remaining A5 admission. Those
 prerequisites remain open. The partial phosphor model has no accepted product
 candidate/default. Generated recipe/map and standalone stale-output integrity
-work (VS4) also remains open. This documentation change implements none of
-those features and records no new runtime result.
+work (VS4) also remains open. Source relocation records no new runtime result
+and supplies no Mac qualification.

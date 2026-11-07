@@ -1,0 +1,23 @@
+{
+  "status": "INACTIVE_DESCRIPTION_NOT_AN_EXECUTION_OFFER",
+  "runtimeAuthority": false,
+  "initialEnvironment": {},
+  "initialEnvironmentMustBeObservedSeparately": true,
+  "prospectiveMacArgv": [
+    "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python",
+    "-I",
+    "-S",
+    "-B",
+    "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py",
+    "CHOOSE_ONE_FUTURE_ALLOCATED_PHASE",
+    "--input",
+    "FUTURE_EXCLUSIVE_ABSOLUTE_BUNDLE"
+  ],
+  "prospectiveMacCwd": "/Users/johnhardy/projects/origo",
+  "ownerAndDirectCallerSharePrivateOwnerGroup": true,
+  "toolPrivateGroupsUnchanged": true,
+  "captureAndExternalTerminal": "Exact complete captures, external actual owner terminal, fresh paths, no-follow/limits/price/consumer route require independent future command review. No command selected or allocated here.",
+  "supportedMacExecutorPresent": false,
+  "nativeBuild": "REQUIRED_UNRUN",
+  "nativeR": "REQUIRED_AFTER_REAL_B_AND_SEPARATE_ALLOCATION"
+}

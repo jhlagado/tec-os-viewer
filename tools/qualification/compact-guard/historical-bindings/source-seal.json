@@ -1,0 +1,154 @@
+{
+  "version": 2,
+  "status": "SNAPSHOT_DIAGNOSTIC_SOURCE_RECUT_UNRUN_REVIEW_REQUIRED",
+  "sourceFiles": {
+    "ack-check.mjs": {
+      "bytes": 1660,
+      "lines": 24,
+      "sha256": "65198088dd3f6e4590c8a0a184139c12f215b16c0ce2e6d190cdd3a9e362d461",
+      "mode": "0o644"
+    },
+    "authority-root.json": {
+      "bytes": 230,
+      "lines": 6,
+      "sha256": "789b411dd801b47ab80edc87ff9dc88ded85bb29cd7f59eb132dcdea44803457",
+      "mode": "0o644"
+    },
+    "bootstrap.c": {
+      "bytes": 486,
+      "lines": 13,
+      "sha256": "6ffaad56838932f90d2ef7aa93326e1e9dbfcdb43dd28d02f2f40faa3ea62f1b",
+      "mode": "0o644"
+    },
+    "broker.c": {
+      "bytes": 11893,
+      "lines": 242,
+      "sha256": "2d68c886bb9349adb2fd22eba5bd80dda527d27636256081dc860d84f1001a2e",
+      "mode": "0o644"
+    },
+    "commands.json": {
+      "bytes": 20910,
+      "lines": 661,
+      "sha256": "02cf3afd8eb32263fd8150e95d7bfdb171533d12083a6da89369ce975476e5dd",
+      "mode": "0o644"
+    },
+    "darwin-identity.c": {
+      "bytes": 7898,
+      "lines": 160,
+      "sha256": "5ae420224e1c57c569accb3385f369f68cef9aca2202ff221019d23fee4140a8",
+      "mode": "0o644"
+    },
+    "fixture.mjs": {
+      "bytes": 4750,
+      "lines": 64,
+      "sha256": "3d5c283cdc71501ca96c62931f287262636174ba163587f92c586ea91541a150",
+      "mode": "0o644"
+    },
+    "guard-entry.mjs": {
+      "bytes": 965,
+      "lines": 15,
+      "sha256": "0afd21109d4b7f469b9dfcd69f21a713ba6ffd512a8917674c50a6bbccde85bb",
+      "mode": "0o644"
+    },
+    "harness-lib.mjs": {
+      "bytes": 5693,
+      "lines": 86,
+      "sha256": "3aeed78d88a108b22ef236280b78cd8a6d0952a0416489b54c15dfa7a5d7f11f",
+      "mode": "0o644"
+    },
+    "lease-adapter.mjs": {
+      "bytes": 18823,
+      "lines": 310,
+      "sha256": "931584d5173e36732dfba7b52fbda79384b7066dcb6c9dc1869560f2fdd01d8e",
+      "mode": "0o644"
+    },
+    "mem-guard.baseline.mjs": {
+      "bytes": 11482,
+      "lines": 201,
+      "sha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+      "mode": "0o644"
+    },
+    "mem-guard.prototype.mjs": {
+      "bytes": 16426,
+      "lines": 286,
+      "sha256": "2cec46c711895a381959f10d8b27b9c567284f38ad93320a1739aa9745191a89",
+      "mode": "0o644"
+    },
+    "oracle.py": {
+      "bytes": 11564,
+      "lines": 158,
+      "sha256": "9fea088da6b7775f1e98da8ef5121af57b2f4ed3d8b15d3ed4f58e1da64bafab",
+      "mode": "0o644"
+    },
+    "peer.mjs": {
+      "bytes": 9764,
+      "lines": 138,
+      "sha256": "39ca3383b34bf2ce99a0755ad2220b00a2e3f9875ed133c06e09cf123238828f",
+      "mode": "0o644"
+    },
+    "root.py": {
+      "bytes": 47925,
+      "lines": 779,
+      "sha256": "f5bdd43bfac60fcfcb0e4a23553c27f13ce7682cfd10df4f66be9db0d3a908d6",
+      "mode": "0o755"
+    },
+    "run.mjs": {
+      "bytes": 22783,
+      "lines": 302,
+      "sha256": "9a4240d5947e9d4ff75a326f41be3ac4207921a0674b730de3728e3dc0c99575",
+      "mode": "0o644"
+    }
+  },
+  "files": {
+    "mem-guard.baseline.mjs": {
+      "bytes": 11482,
+      "lines": 201,
+      "sha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+      "mode": "0o644"
+    },
+    "mem-guard.prototype.mjs": {
+      "bytes": 16426,
+      "lines": 286,
+      "sha256": "2cec46c711895a381959f10d8b27b9c567284f38ad93320a1739aa9745191a89",
+      "mode": "0o644"
+    },
+    "lease-adapter.mjs": {
+      "bytes": 18823,
+      "lines": 310,
+      "sha256": "931584d5173e36732dfba7b52fbda79384b7066dcb6c9dc1869560f2fdd01d8e",
+      "mode": "0o644"
+    },
+    "authority-root.json": {
+      "bytes": 230,
+      "lines": 6,
+      "sha256": "789b411dd801b47ab80edc87ff9dc88ded85bb29cd7f59eb132dcdea44803457",
+      "mode": "0o644"
+    }
+  },
+  "executableCandidate": "root.py with Darwin POSIX/libproc ctypes; no compiler prerequisite",
+  "nativeReferencesOnly": [
+    "broker.c",
+    "bootstrap.c",
+    "darwin-identity.c"
+  ],
+  "sharedGuardSha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+  "SDKHeaderHashes": {
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/libproc.h": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/wait.h": "b77f7dd6f592eba8b0d51c15c7b975472fdad50c12ea296f74f062cbf98dcbf7",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/signal.h": "319fbc4555c1d39c95d8a5e3034956bfe8e0e1bd9142df95ab71ad3ac8bb1f54",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/resource.h": "7d16930e6b75f11ba203238faa5580d31d48fcd4230f2b3f604aaa5fd7e86b58",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/mach/mach_time.h": "d690e304ea595ca216ed51e20aa9747e0b3bcb07446d996abe0080a231c7065f",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/mach-o/dyld.h": "7c8583f2b4edcfcde7da60ffe02c75974ec87f885fecc4e8d40761fe0b553a80",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/mach-o/loader.h": "5862aeb7fbf183453080bc887c0d502fe25a86ff5bd81291bbcc408bd7fe6e74"
+  },
+  "nodeBinary": {
+    "path": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+    "sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f"
+  },
+  "clockDomain": "darwin-mach-continuous-ns-node24.18",
+  "nativeBinaryOutputsCreated": false,
+  "testKeysOrLeasesCreated": false,
+  "controlPaths": 20,
+  "runCountNow": 0
+}

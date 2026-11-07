@@ -1,0 +1,402 @@
+{
+  "status": "FINITE_DECLARATIONS_ONLY_ALL_UNRUN",
+  "fixtureOwner": {
+    "pid": 1001,
+    "ppid": 1000,
+    "uid": 501,
+    "pgid": 1001,
+    "sid": 1001,
+    "sec": 101,
+    "usec": 202
+  },
+  "fixtureCaller": {
+    "pid": 1002,
+    "ppid": 1001,
+    "uid": 501,
+    "pgid": 1001,
+    "sid": 1001,
+    "sec": 102,
+    "usec": 303
+  },
+  "fixtureOwnerGroupProof": {
+    "version": 1,
+    "ownerIdentity": {
+      "pid": 1001,
+      "sec": 101,
+      "usec": 202
+    },
+    "uid": 501,
+    "sid": 1001,
+    "pgid": 1001,
+    "singletonMembers": [
+      {
+        "pid": 1001,
+        "ppid": 1000,
+        "uid": 501,
+        "pgid": 1001,
+        "sid": 1001,
+        "sec": 101,
+        "usec": 202
+      }
+    ],
+    "singletonObservedNs": "1000000000",
+    "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+  },
+  "fixtureQuietPair": {
+    "observedNs": "1000000010",
+    "members": [
+      {
+        "pid": 1001,
+        "ppid": 1000,
+        "uid": 501,
+        "pgid": 1001,
+        "sid": 1001,
+        "sec": 101,
+        "usec": 202
+      },
+      {
+        "pid": 1002,
+        "ppid": 1001,
+        "uid": 501,
+        "pgid": 1001,
+        "sid": 1001,
+        "sec": 102,
+        "usec": 303
+      }
+    ]
+  },
+  "fixtureIdentitiesAreNotLiveAuthority": true,
+  "original32AndControls22Unchanged": true,
+  "cases": [
+    {
+      "id": "N01a",
+      "subject": "singleton",
+      "declaredInput": {
+        "nativeMembers": [
+          1001
+        ]
+      },
+      "expectedMeaning": "native complete singleton then sealed proof; not a fixture native result",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N01b",
+      "subject": "quiet_pair",
+      "declaredInput": {
+        "nativeMembers": [
+          1001,
+          1002
+        ]
+      },
+      "expectedMeaning": "quiet exact direct pair permits first publication with group1001",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N02a",
+      "subject": "establishment",
+      "declaredInput": {
+        "initialPgid": 1001,
+        "initialSid": 999
+      },
+      "expectedMeaning": "ineligible group leader refuses before caller/link",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N02b",
+      "subject": "establishment",
+      "declaredInput": {
+        "setsidReturn": -1,
+        "errno": 1
+      },
+      "expectedMeaning": "setsid failure refuses with no fallback owner",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N03a",
+      "subject": "identity",
+      "declaredInput": {
+        "ownerBirthUsec": 203
+      },
+      "expectedMeaning": "196 native owner mismatch, no first link",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N03b",
+      "subject": "identity",
+      "declaredInput": {
+        "ownerUid": 502
+      },
+      "expectedMeaning": "196 owner UID mismatch, no first link",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N03c",
+      "subject": "native_BSD",
+      "declaredInput": {
+        "return": 0,
+        "errno": 1
+      },
+      "expectedMeaning": "native failure1 with actual API fields; no first link",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N03d",
+      "subject": "native_group",
+      "declaredInput": {
+        "count": 128,
+        "errno": 0
+      },
+      "expectedMeaning": "full capacity rejects; no truncation-as-completeness",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N04",
+      "subject": "transition",
+      "declaredInput": {
+        "unresolvedToolChild": 1003,
+        "toolBeforeSetsid": true
+      },
+      "expectedMeaning": "do not apply quiet exact-pair predicate during owned transition; retain actual wait authority",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N05",
+      "subject": "canonical_consumer",
+      "declaredInput": {
+        "lockGroup": 1001,
+        "tableContainsGroup": true,
+        "route": "FUTURE_PINNED_ACTUAL_COMMON_LOCK_CONSUMER"
+      },
+      "expectedMeaning": "actual wait0 consumer must refuse; fixture declares requirement only",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N06a",
+      "subject": "pre_link",
+      "declaredInput": {
+        "queueNonempty": true
+      },
+      "expectedMeaning": "150 refuse before first link",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N06b",
+      "subject": "post_link",
+      "declaredInput": {
+        "clearingAppeared": true,
+        "launched": []
+      },
+      "expectedMeaning": "148 UNKNOWN_HELD, empty prefix cannot release",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "N07",
+      "subject": "consumer_visibility",
+      "declaredInput": {
+        "tableQuerySucceeded": true,
+        "tableContainsGroup": false,
+        "legacyStartedMatch": false
+      },
+      "expectedMeaning": "PREMISE_UNMET; unchanged guard can return false, no fail-closed credit",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B01",
+      "subject": "native_positive",
+      "declaredInput": {
+        "plan": [
+          "compile",
+          "link",
+          "linked-images",
+          "load-commands",
+          "signature",
+          "kernel-build"
+        ]
+      },
+      "expectedMeaning": "missing genuine cold Mac positive: real tools/provenance/receipts/waits required",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B02",
+      "subject": "source_pin",
+      "declaredInput": {
+        "sourceSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expectedMeaning": "902 intended pin refusal before compiler",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B03",
+      "subject": "dedicated_negative_compiler",
+      "declaredInput": {
+        "normalArgvChanged": false,
+        "separateFixtureInvalidArgument": "REQUIRES_SEPARATE_SOURCE_AND_ALLOCATION"
+      },
+      "expectedMeaning": "actual failed compile and nonempty retired prefix required; no normal B argv change",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B04",
+      "subject": "provenance_reader",
+      "declaredInput": {
+        "actualObjectDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "expectedObjectDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "expectedMeaning": "owned inert reader mismatch only; no installed provider mutation",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B05",
+      "subject": "published_empty",
+      "declaredInput": {
+        "launched": [],
+        "retirementReceipts": {}
+      },
+      "expectedMeaning": "UNKNOWN_HELD; no normal retirement or auto-abort",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B06a",
+      "subject": "receipt_join",
+      "declaredInput": {
+        "inventory": [
+          "compile"
+        ],
+        "receiptLabels": []
+      },
+      "expectedMeaning": "159/157 missing real receipt refuses",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B06b",
+      "subject": "receipt_join",
+      "declaredInput": {
+        "inventory": [
+          "compile",
+          "link"
+        ],
+        "receiptLabels": [
+          "compile",
+          "compile"
+        ]
+      },
+      "expectedMeaning": "160 duplicate labels refuse",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B06c",
+      "subject": "receipt_join",
+      "declaredInput": {
+        "inventory": [
+          "compile"
+        ],
+        "receiptLabels": [
+          "compile",
+          "link"
+        ]
+      },
+      "expectedMeaning": "159 extra receipt refuses",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "B06d",
+      "subject": "tool_retirement",
+      "declaredInput": {
+        "root": 1003,
+        "finalNativeMembers": [
+          1003,
+          1004
+        ]
+      },
+      "expectedMeaning": "141/144 residual tool group refuses and retains ownership",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "R01",
+      "subject": "native_R",
+      "declaredInput": {
+        "qualifiedBRequired": true,
+        "plan": [
+          "trial"
+        ],
+        "windowNs": 150000000,
+        "operatorNs": 2000000000
+      },
+      "expectedMeaning": "actual exact binary after qualified B, separately allocated; no source/model credit",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "R02",
+      "subject": "B_handoff",
+      "declaredInput": {
+        "buildSourceFamily": "HISTORICAL_C04"
+      },
+      "expectedMeaning": "200 old source/role/B6 handoff rejected",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    },
+    {
+      "id": "R03",
+      "subject": "B_handoff",
+      "declaredInput": {
+        "buildReleasedSha256": "NOT_QUALIFIED"
+      },
+      "expectedMeaning": "200 missing exact released B prerequisite rejects",
+      "actualOutcome": null,
+      "executed": false,
+      "accepted": false
+    }
+  ],
+  "nativeFaultInjectionImplemented": false,
+  "controlRunnerImplemented": false,
+  "controlExecutionAllocated": false,
+  "intentionalHoldRequiresSeparateContainmentAndEndingPlan": true,
+  "A5": "UNREGISTERED_INCOMPLETE_NATIVE_POSITIVE_AND_FAILING_REFERENCE_UNSHOWN"
+}

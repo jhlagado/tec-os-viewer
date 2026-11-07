@@ -1,0 +1,661 @@
+{
+  "version": 1,
+  "status": "SOURCE_REVIEW_REQUIRED_NO_ALLOCATION",
+  "logicalIDs": 14,
+  "paths": 20,
+  "runCountNow": 0,
+  "configuredHardTimeSumSeconds": 330,
+  "configuredOperatorEnvelopeSumSeconds": 430,
+  "runtimeEstimatesMeasured": false,
+  "vectors": [
+    {
+      "id": "D1",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D1",
+        "only",
+        "/tmp/p6-ve7-D1-only-attempt02",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D1-only-attempt02.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D1",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      },
+      "identityEvidence": {
+        "acknowledgement": "bootstrap-dual-ack-ready.json",
+        "lineageFields": [
+          "pid",
+          "birthSec",
+          "birthUsec",
+          "ppid",
+          "pgid",
+          "sid"
+        ],
+        "permittedExecTarget": "runtime-source-seal.json node path/SHA, matching lease guard executable and bootstrap argv target",
+        "readEvidence": "two proc_pid_rusage reads, each bracketed by full expected identity checks; raw read timestamps and user/system counters retained",
+        "minimumIntervalNs": 50000000,
+        "perObservationBudgetMs": 150,
+        "controls": [
+          {
+            "kind": "SYNTHETIC_SAME_PID_DIFFERENT_BIRTH",
+            "entry": "oracle.py:d1_different_birth_control",
+            "mutation": "second observation birthSec + 1 in both before/after identities; same PID and all other raw evidence retained",
+            "predicate": "d1_pair_valid rejects; oracle reconstructs and calls actual comparator",
+            "executionStatus": "SOURCE_PREPARED_UNRUN"
+          }
+        ]
+      },
+      "externalOutputRoot": "/tmp/p6-ve7-D1-only-attempt02-external",
+      "externalObserverLog": "/tmp/p6-ve7-D1-only-attempt02-observer.log",
+      "preservedPriorPaths": [
+        "/tmp/p6-ve7-D1-only",
+        "/tmp/p6-ve7-D1-only-external",
+        "/tmp/p6-ve7-D1-only-observer.log"
+      ],
+      "snapshotFailureDiagnostics": {
+        "firstOnly": true,
+        "file": "first-snapshot-failure.json",
+        "maximumSerializedBytesIncludingNewline": 16384,
+        "fixedBudget": "original snapshot deadlineNs; skip publication if expired or escalation due; no fresh window",
+        "captures": [
+          "phase and native operation",
+          "target PID and available identity",
+          "raw return and immediate errno",
+          "expected buffer size and usage offsets",
+          "sample start/end/original deadline",
+          "raw resident/footprint/usage bytes",
+          "accumulated bytes and unchanged threshold",
+          "partial table/cohort/read progress"
+        ],
+        "sampleUsable": false,
+        "publicationCaveat": "skipped or failed publication retains in-memory evidence only; broker reply may carry it to root incident, not durable proof by itself"
+      }
+    },
+    {
+      "id": "D2",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D2",
+        "only",
+        "/tmp/p6-ve7-D2-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D2-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D2",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D3",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D3",
+        "only",
+        "/tmp/p6-ve7-D3-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D3-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D3",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D4",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D4",
+        "only",
+        "/tmp/p6-ve7-D4-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D4-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D4",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D5",
+      "variant": "inherited",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D5",
+        "inherited",
+        "/tmp/p6-ve7-D5-inherited",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D5-inherited.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D5",
+        "variant": "inherited",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D5",
+      "variant": "session",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D5",
+        "session",
+        "/tmp/p6-ve7-D5-session",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D5-session.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D5",
+        "variant": "session",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D5",
+      "variant": "worker",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D5",
+        "worker",
+        "/tmp/p6-ve7-D5-worker",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D5-worker.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D5",
+        "variant": "worker",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D5",
+      "variant": "bootstrap",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D5",
+        "bootstrap",
+        "/tmp/p6-ve7-D5-bootstrap",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D5-bootstrap.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D5",
+        "variant": "bootstrap",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D6",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D6",
+        "only",
+        "/tmp/p6-ve7-D6-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D6-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D6",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D7",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D7",
+        "only",
+        "/tmp/p6-ve7-D7-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D7-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D7",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D8",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D8",
+        "only",
+        "/tmp/p6-ve7-D8-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D8-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D8",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D9",
+      "variant": "timeout",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D9",
+        "timeout",
+        "/tmp/p6-ve7-D9-timeout",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D9-timeout.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D9",
+        "variant": "timeout",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D9",
+      "variant": "malformed",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D9",
+        "malformed",
+        "/tmp/p6-ve7-D9-malformed",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D9-malformed.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D9",
+        "variant": "malformed",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D10",
+      "variant": "birth",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D10",
+        "birth",
+        "/tmp/p6-ve7-D10-birth",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D10-birth.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D10",
+        "variant": "birth",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D10",
+      "variant": "planned-group",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D10",
+        "planned-group",
+        "/tmp/p6-ve7-D10-planned-group",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D10-planned-group.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D10",
+        "variant": "planned-group",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D11",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D11",
+        "only",
+        "/tmp/p6-ve7-D11-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D11-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D11",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D12",
+      "variant": "death",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D12",
+        "death",
+        "/tmp/p6-ve7-D12-death",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D12-death.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D12",
+        "variant": "death",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "D12",
+      "variant": "channel-loss",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "D12",
+        "channel-loss",
+        "/tmp/p6-ve7-D12-channel-loss",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/D12-channel-loss.json"
+      ],
+      "hardOffsetsSeconds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "operatorEnvelopeSeconds": 10,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "D12",
+        "variant": "channel-loss",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "B1",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "B1",
+        "only",
+        "/tmp/p6-ve7-B1-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/B1-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        110,
+        115,
+        118,
+        120
+      ],
+      "operatorEnvelopeSeconds": 125,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "B1",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    },
+    {
+      "id": "B2",
+      "variant": "only",
+      "status": "SOURCE_PREPARED_NOT_ALLOCATED_OR_EXECUTED",
+      "argv": [
+        "/usr/bin/python3",
+        "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+        "B2",
+        "only",
+        "/tmp/p6-ve7-B2-only",
+        "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "/tmp/p6-ve7-allocations/B2-only.json"
+      ],
+      "hardOffsetsSeconds": [
+        110,
+        115,
+        118,
+        120
+      ],
+      "operatorEnvelopeSeconds": 125,
+      "sampledCohortLimitMiB": 700,
+      "guardWaitSeconds": 0,
+      "allocationRecordRequired": {
+        "case": "B2",
+        "variant": "only",
+        "owner": "must name actual external coordinator",
+        "status": "EXPLICITLY_ALLOCATED",
+        "sourceSealSha256": "must equal SHA-256 of source-seal.json at allocation"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "status": "UNPREPARED_BLOCKED",
+  "coordinatorPublicKey": null,
+  "reason": "No independently approved coordinator trust root or allocated controller harness exists. A lease cannot supply its own authority."
+}

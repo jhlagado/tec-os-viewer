@@ -1,0 +1,633 @@
+{
+  "version": 1,
+  "status": "INACTIVE_RELOCATED_ENGINEERING_SOURCE_NOT_QUALIFIED",
+  "sourceRepository": "jhlagado/origo",
+  "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+  "viewerBaseline": "f68e3e3a1b35904f00d85f410380e5cce041a738",
+  "runtimeAuthority": false,
+  "allocationIssued": false,
+  "nativeBuildPerformed": false,
+  "nativeRunPerformed": false,
+  "sdkCapabilityEstablished": false,
+  "gatesChanged": false,
+  "firmwarePinChanged": false,
+  "members": [
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/ack-check.mjs",
+      "sourceBytes": 1660,
+      "sourceSha256": "65198088dd3f6e4590c8a0a184139c12f215b16c0ce2e6d190cdd3a9e362d461",
+      "destination": "tools/qualification/compact-guard/ack-check.mjs",
+      "bytes": 1660,
+      "sha256": "65198088dd3f6e4590c8a0a184139c12f215b16c0ce2e6d190cdd3a9e362d461",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/authority-root.json",
+      "sourceBytes": 230,
+      "sourceSha256": "789b411dd801b47ab80edc87ff9dc88ded85bb29cd7f59eb132dcdea44803457",
+      "destination": "tools/qualification/compact-guard/authority-root.json",
+      "bytes": 230,
+      "sha256": "789b411dd801b47ab80edc87ff9dc88ded85bb29cd7f59eb132dcdea44803457",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/bootstrap.c",
+      "sourceBytes": 486,
+      "sourceSha256": "6ffaad56838932f90d2ef7aa93326e1e9dbfcdb43dd28d02f2f40faa3ea62f1b",
+      "destination": "tools/qualification/compact-guard/bootstrap.c",
+      "bytes": 486,
+      "sha256": "6ffaad56838932f90d2ef7aa93326e1e9dbfcdb43dd28d02f2f40faa3ea62f1b",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/broker.c",
+      "sourceBytes": 11893,
+      "sourceSha256": "2d68c886bb9349adb2fd22eba5bd80dda527d27636256081dc860d84f1001a2e",
+      "destination": "tools/qualification/compact-guard/broker.c",
+      "bytes": 11893,
+      "sha256": "2d68c886bb9349adb2fd22eba5bd80dda527d27636256081dc860d84f1001a2e",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/darwin-identity.c",
+      "sourceBytes": 7898,
+      "sourceSha256": "5ae420224e1c57c569accb3385f369f68cef9aca2202ff221019d23fee4140a8",
+      "destination": "tools/qualification/compact-guard/darwin-identity.c",
+      "bytes": 7898,
+      "sha256": "5ae420224e1c57c569accb3385f369f68cef9aca2202ff221019d23fee4140a8",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/fixture.mjs",
+      "sourceBytes": 4750,
+      "sourceSha256": "3d5c283cdc71501ca96c62931f287262636174ba163587f92c586ea91541a150",
+      "destination": "tools/qualification/compact-guard/fixture.mjs",
+      "bytes": 4750,
+      "sha256": "3d5c283cdc71501ca96c62931f287262636174ba163587f92c586ea91541a150",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/guard-entry.mjs",
+      "sourceBytes": 965,
+      "sourceSha256": "0afd21109d4b7f469b9dfcd69f21a713ba6ffd512a8917674c50a6bbccde85bb",
+      "destination": "tools/qualification/compact-guard/guard-entry.mjs",
+      "bytes": 965,
+      "sha256": "0afd21109d4b7f469b9dfcd69f21a713ba6ffd512a8917674c50a6bbccde85bb",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/harness-lib.mjs",
+      "sourceBytes": 5693,
+      "sourceSha256": "3aeed78d88a108b22ef236280b78cd8a6d0952a0416489b54c15dfa7a5d7f11f",
+      "destination": "tools/qualification/compact-guard/harness-lib.mjs",
+      "bytes": 5693,
+      "sha256": "3aeed78d88a108b22ef236280b78cd8a6d0952a0416489b54c15dfa7a5d7f11f",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/lease-adapter.mjs",
+      "sourceBytes": 18823,
+      "sourceSha256": "931584d5173e36732dfba7b52fbda79384b7066dcb6c9dc1869560f2fdd01d8e",
+      "destination": "tools/qualification/compact-guard/lease-adapter.mjs",
+      "bytes": 18823,
+      "sha256": "931584d5173e36732dfba7b52fbda79384b7066dcb6c9dc1869560f2fdd01d8e",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/mem-guard.baseline.mjs",
+      "sourceBytes": 11482,
+      "sourceSha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+      "destination": "tools/qualification/compact-guard/mem-guard.baseline.mjs",
+      "bytes": 11482,
+      "sha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/mem-guard.prototype.mjs",
+      "sourceBytes": 16426,
+      "sourceSha256": "2cec46c711895a381959f10d8b27b9c567284f38ad93320a1739aa9745191a89",
+      "destination": "tools/qualification/compact-guard/mem-guard.prototype.mjs",
+      "bytes": 16426,
+      "sha256": "2cec46c711895a381959f10d8b27b9c567284f38ad93320a1739aa9745191a89",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/oracle.py",
+      "sourceBytes": 11564,
+      "sourceSha256": "9fea088da6b7775f1e98da8ef5121af57b2f4ed3d8b15d3ed4f58e1da64bafab",
+      "destination": "tools/qualification/compact-guard/oracle.py",
+      "bytes": 11564,
+      "sha256": "9fea088da6b7775f1e98da8ef5121af57b2f4ed3d8b15d3ed4f58e1da64bafab",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/peer.mjs",
+      "sourceBytes": 9764,
+      "sourceSha256": "39ca3383b34bf2ce99a0755ad2220b00a2e3f9875ed133c06e09cf123238828f",
+      "destination": "tools/qualification/compact-guard/peer.mjs",
+      "bytes": 9764,
+      "sha256": "39ca3383b34bf2ce99a0755ad2220b00a2e3f9875ed133c06e09cf123238828f",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/root.py",
+      "sourceBytes": 47925,
+      "sourceSha256": "f5bdd43bfac60fcfcb0e4a23553c27f13ce7682cfd10df4f66be9db0d3a908d6",
+      "destination": "tools/qualification/compact-guard/root.py",
+      "bytes": 47925,
+      "sha256": "f5bdd43bfac60fcfcb0e4a23553c27f13ce7682cfd10df4f66be9db0d3a908d6",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/run.mjs",
+      "sourceBytes": 22783,
+      "sourceSha256": "9a4240d5947e9d4ff75a326f41be3ac4207921a0674b730de3728e3dc0c99575",
+      "destination": "tools/qualification/compact-guard/run.mjs",
+      "bytes": 22778,
+      "sha256": "f1cb325dd9c55fec04f99d9ce28b89c05f235e45d62fe71f9875c137431795f5",
+      "role": "engineering source",
+      "literalEdits": [
+        {
+          "before": "createRequire('/Users/johnhardy/projects/tec-os-viewer/tec-os/package.json')",
+          "after": "createRequire(new URL('../../../tec-os/package.json', import.meta.url))",
+          "occurrences": 1
+        }
+      ],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/lease-contract.md",
+      "sourceBytes": 8393,
+      "sourceSha256": "6b3e27eb46b647d674f5451aa4d61d7b9e249dd020de6d68284642615d0db84b",
+      "destination": "tools/qualification/compact-guard/design/lease-contract.md",
+      "bytes": 8393,
+      "sha256": "6b3e27eb46b647d674f5451aa4d61d7b9e249dd020de6d68284642615d0db84b",
+      "role": "historical contract or price, not relocated runtime qualification",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/source-price.json",
+      "sourceBytes": 2470,
+      "sourceSha256": "3a800d30a8c3c5487f7f2f204be0993adc24e4ff52d12b8d20d234bcd3159aca",
+      "destination": "tools/qualification/compact-guard/design/source-price.json",
+      "bytes": 2470,
+      "sha256": "3a800d30a8c3c5487f7f2f204be0993adc24e4ff52d12b8d20d234bcd3159aca",
+      "role": "historical contract or price, not relocated runtime qualification",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/d1-closed-profile-and-census.md",
+      "sourceBytes": 14317,
+      "sourceSha256": "f10574062d480058e5437891049e304ff7957ac452a0e483507567b527bfa67c",
+      "destination": "tools/qualification/compact-guard/design/d1-closed-profile-and-census.md",
+      "bytes": 14317,
+      "sha256": "f10574062d480058e5437891049e304ff7957ac452a0e483507567b527bfa67c",
+      "role": "historical contract or price, not relocated runtime qualification",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/snapshot-layout-review.md",
+      "sourceBytes": 3352,
+      "sourceSha256": "70ae08cbac2c5908cbb3164884cf8635926a35256853c3725456a6bfd0b24069",
+      "destination": "tools/qualification/compact-guard/design/snapshot-layout-review.md",
+      "bytes": 3352,
+      "sha256": "70ae08cbac2c5908cbb3164884cf8635926a35256853c3725456a6bfd0b24069",
+      "role": "historical contract or price, not relocated runtime qualification",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/source-seal.json",
+      "sourceBytes": 5602,
+      "sourceSha256": "5c2b9afe110c88d4b79061cedce9941f59d60be6c4c3f3c44f889e0cfbad2d6d",
+      "destination": "tools/qualification/compact-guard/historical-bindings/source-seal.json",
+      "bytes": 5602,
+      "sha256": "5c2b9afe110c88d4b79061cedce9941f59d60be6c4c3f3c44f889e0cfbad2d6d",
+      "role": "immutable original binding; not an effective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/commands.json",
+      "sourceBytes": 20910,
+      "sourceSha256": "02cf3afd8eb32263fd8150e95d7bfdb171533d12083a6da89369ce975476e5dd",
+      "destination": "tools/qualification/compact-guard/historical-bindings/commands.json",
+      "bytes": 20910,
+      "sha256": "02cf3afd8eb32263fd8150e95d7bfdb171533d12083a6da89369ce975476e5dd",
+      "role": "immutable original binding; not an effective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-startup-diagnostic.py",
+      "sourceBytes": 7876,
+      "sourceSha256": "4ab2ffc2d7e9d7d60ab64e9f724b5c220828d15192515c5dbafd7e44a0b12322",
+      "destination": "tools/qualification/native-admission/checks/native-startup-diagnostic.py",
+      "bytes": 7876,
+      "sha256": "4ab2ffc2d7e9d7d60ab64e9f724b5c220828d15192515c5dbafd7e44a0b12322",
+      "role": "unrun Mac-specific diagnostic source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/membership_capability_probe.py",
+      "sourceBytes": 8064,
+      "sourceSha256": "8793f3b2f36feabb0919c09723ca9458acc111a741e2513bc1a5f1d7a07ef6ac",
+      "destination": "tools/qualification/native-admission/checks/membership_capability_probe.py",
+      "bytes": 8064,
+      "sha256": "8793f3b2f36feabb0919c09723ca9458acc111a741e2513bc1a5f1d7a07ef6ac",
+      "role": "unrun Mac-specific diagnostic source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-files.sha256",
+      "sourceBytes": 492672,
+      "sourceSha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+      "destination": "tools/qualification/native-admission/native-provider-files.sha256",
+      "bytes": 492672,
+      "sha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+      "role": "historical Mac provider data, not installed capability",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-links.json",
+      "sourceBytes": 1325,
+      "sourceSha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+      "destination": "tools/qualification/native-admission/native-provider-links.json",
+      "bytes": 1325,
+      "sha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+      "role": "historical Mac provider data, not installed capability",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-closure.json",
+      "sourceBytes": 39514,
+      "sourceSha256": "4a40fb4c9e42a47104243bdce41e3837c63d3141f111129b76731cabdaf1504f",
+      "destination": "tools/qualification/native-admission/native-provider-closure.json",
+      "bytes": 39514,
+      "sha256": "4a40fb4c9e42a47104243bdce41e3837c63d3141f111129b76731cabdaf1504f",
+      "role": "historical Mac provider data, not installed capability",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-header-preseal.json",
+      "sourceBytes": 638,
+      "sourceSha256": "ec70a57586023ae21415790c4e2c8c9b14910c8f8f5274f6e8fa764c98dbfab8",
+      "destination": "tools/qualification/native-admission/native-header-preseal.json",
+      "bytes": 638,
+      "sha256": "ec70a57586023ae21415790c4e2c8c9b14910c8f8f5274f6e8fa764c98dbfab8",
+      "role": "historical Mac provider data, not installed capability",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/native-membership.c",
+      "sourceBytes": 13251,
+      "sourceSha256": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+      "destination": "tools/qualification/native-admission/native-membership.c",
+      "bytes": 13251,
+      "sha256": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+      "role": "engineering source",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py",
+      "sourceBytes": 65450,
+      "sourceSha256": "3588cd488dfc6edd49dda91ef22944e7e2503ad34a4e6429d8cbfc873cfcfa7e",
+      "destination": "tools/qualification/native-admission/native-membership-caller.py",
+      "bytes": 65030,
+      "sha256": "497c0ef2a04ab5a539fa283bf1969159726c060dd4cf691478710df1396646b8",
+      "role": "engineering source",
+      "literalEdits": [
+        {
+          "before": "BASE = Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01')",
+          "after": "BASE = Path(__file__).resolve().parent",
+          "occurrences": 1
+        },
+        {
+          "before": "NATIVE_SOURCE='/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c'",
+          "after": "NATIVE_SOURCE=str(BASE/'native-membership.c')",
+          "occurrences": 1
+        },
+        {
+          "before": "Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-files.sha256')",
+          "after": "BASE/'native-provider-files.sha256'",
+          "occurrences": 1
+        },
+        {
+          "before": "Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-links.json')",
+          "after": "BASE/'native-provider-links.json'",
+          "occurrences": 2
+        }
+      ],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py",
+      "sourceBytes": 49594,
+      "sourceSha256": "40b7d494b788d674cd2922abdefaa3bf631ea8f714f035394ace5bcfff8a39b0",
+      "destination": "tools/qualification/native-admission/native-membership-host-finalize.py",
+      "bytes": 49260,
+      "sha256": "ff02eaac048c4192176d55416c092a4f2c52eeea9cf321e756cf0bc10bbae1f5",
+      "role": "engineering source",
+      "literalEdits": [
+        {
+          "before": "SOURCE=Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01')",
+          "after": "SOURCE=Path(__file__).resolve().parent",
+          "occurrences": 1
+        },
+        {
+          "before": "Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-files.sha256')",
+          "after": "SOURCE/'native-provider-files.sha256'",
+          "occurrences": 2
+        },
+        {
+          "before": "Path('/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-links.json')",
+          "after": "SOURCE/'native-provider-links.json'",
+          "occurrences": 1
+        }
+      ],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/controls-data.json",
+      "sourceBytes": 10207,
+      "sourceSha256": "6698f9f0215f92a0b5f3d93dd649319ce38abacff98f43443b08e27e0e15822c",
+      "destination": "tools/qualification/native-admission/design/controls-data.json",
+      "bytes": 10207,
+      "sha256": "6698f9f0215f92a0b5f3d93dd649319ce38abacff98f43443b08e27e0e15822c",
+      "role": "original declarative controls/contract; references retain original context",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/diagnostic-reason-codes.json",
+      "sourceBytes": 14947,
+      "sourceSha256": "f0c9631dc94a9f36c235421d30452eb314e026b73fa11d1a078edc43e193e686",
+      "destination": "tools/qualification/native-admission/design/diagnostic-reason-codes.json",
+      "bytes": 14947,
+      "sha256": "f0c9631dc94a9f36c235421d30452eb314e026b73fa11d1a078edc43e193e686",
+      "role": "original declarative controls/contract; references retain original context",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/schema-and-joins.md",
+      "sourceBytes": 7411,
+      "sourceSha256": "e4956aa620fb86b88e904b5bd94bd6f7b47e98c101ba94f7368ff55ce6a8c89d",
+      "destination": "tools/qualification/native-admission/design/schema-and-joins.md",
+      "bytes": 7411,
+      "sha256": "e4956aa620fb86b88e904b5bd94bd6f7b47e98c101ba94f7368ff55ce6a8c89d",
+      "role": "original declarative controls/contract; references retain original context",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/api-price-and-bounds.md",
+      "sourceBytes": 9071,
+      "sourceSha256": "2cc58ed02f3229a46805aa2caa0db97981af3d33b05cdd99b1aae981788e1dca",
+      "destination": "tools/qualification/native-admission/design/api-price-and-bounds.md",
+      "bytes": 9071,
+      "sha256": "2cc58ed02f3229a46805aa2caa0db97981af3d33b05cdd99b1aae981788e1dca",
+      "role": "original declarative controls/contract; references retain original context",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/hook-account.md",
+      "sourceBytes": 6157,
+      "sourceSha256": "d7327003c6b12fdba85fd05d7385392a2ced29453878c89576dcd89622a3fb28",
+      "destination": "tools/qualification/native-admission/design/hook-account.md",
+      "bytes": 6157,
+      "sha256": "d7327003c6b12fdba85fd05d7385392a2ced29453878c89576dcd89622a3fb28",
+      "role": "original declarative controls/contract; references retain original context",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/seal.json",
+      "sourceBytes": 3776,
+      "sourceSha256": "4ac58668b5d9f6807bc955133628067bdb1da3ae754d41028ac1bc26d3170869",
+      "destination": "tools/qualification/native-admission/historical-bindings/seal.json",
+      "bytes": 3776,
+      "sha256": "4ac58668b5d9f6807bc955133628067bdb1da3ae754d41028ac1bc26d3170869",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/source-manifest.json",
+      "sourceBytes": 4589,
+      "sourceSha256": "6b02a5e32e93e8b99e0b6187a0fcd63f3b1db9e655bb26c010fe0c1d512531f4",
+      "destination": "tools/qualification/native-admission/historical-bindings/source-manifest.json",
+      "bytes": 4589,
+      "sha256": "6b02a5e32e93e8b99e0b6187a0fcd63f3b1db9e655bb26c010fe0c1d512531f4",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/reference-bindings.json",
+      "sourceBytes": 7096,
+      "sourceSha256": "a03446766b099ac3a7156a10b14e0c8f9808fac20faccf3ccfeaccc50b25f35d",
+      "destination": "tools/qualification/native-admission/historical-bindings/reference-bindings.json",
+      "bytes": 7096,
+      "sha256": "a03446766b099ac3a7156a10b14e0c8f9808fac20faccf3ccfeaccc50b25f35d",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/bounded-data-account.json",
+      "sourceBytes": 21116,
+      "sourceSha256": "5bc5a0b1c5c0d84588cd1fb231955ebd67cc3dd3b4b1191bbe2dccc54933b3ea",
+      "destination": "tools/qualification/native-admission/historical-bindings/bounded-data-account.json",
+      "bytes": 21116,
+      "sha256": "5bc5a0b1c5c0d84588cd1fb231955ebd67cc3dd3b4b1191bbe2dccc54933b3ea",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/build-bundle-template.json",
+      "sourceBytes": 2353,
+      "sourceSha256": "83b5b6a21888566f94ffbbbfd72f12c5d0603d145689dc5e0182d3935f7f9755",
+      "destination": "tools/qualification/native-admission/historical-bindings/build-bundle-template.json",
+      "bytes": 2353,
+      "sha256": "83b5b6a21888566f94ffbbbfd72f12c5d0603d145689dc5e0182d3935f7f9755",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/run-bundle-template.json",
+      "sourceBytes": 2617,
+      "sourceSha256": "0aa55b1374f2bf08eae5b73defc87725e45243c8cdc074324ed16fe3f11b25ac",
+      "destination": "tools/qualification/native-admission/historical-bindings/run-bundle-template.json",
+      "bytes": 2617,
+      "sha256": "0aa55b1374f2bf08eae5b73defc87725e45243c8cdc074324ed16fe3f11b25ac",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/startup-bundle-template.json",
+      "sourceBytes": 2218,
+      "sourceSha256": "7301e8ea4502fd514c2b1a71b2cbfad2497ba9d36e23e165a9969fc8a0dcbf14",
+      "destination": "tools/qualification/native-admission/historical-bindings/startup-bundle-template.json",
+      "bytes": 2218,
+      "sha256": "7301e8ea4502fd514c2b1a71b2cbfad2497ba9d36e23e165a9969fc8a0dcbf14",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/command-template.json",
+      "sourceBytes": 1110,
+      "sourceSha256": "2485a34ae88c150620e61aadae74b9f25763ab0c7864c67596923675b58089d3",
+      "destination": "tools/qualification/native-admission/historical-bindings/command-template.json",
+      "bytes": 1110,
+      "sha256": "2485a34ae88c150620e61aadae74b9f25763ab0c7864c67596923675b58089d3",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/README.md",
+      "sourceBytes": 2536,
+      "sourceSha256": "5a781c749bc7c3b7ba753b33566585b9e67316e77a053d0611204d3cfaed9d40",
+      "destination": "tools/qualification/native-admission/historical-bindings/README.md",
+      "bytes": 2536,
+      "sha256": "5a781c749bc7c3b7ba753b33566585b9e67316e77a053d0611204d3cfaed9d40",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/review-request.md",
+      "sourceBytes": 1712,
+      "sourceSha256": "57e390e1e124cb39cc72f15c27cc9753a2a3be7234048d24d4350ea9e864b5ce",
+      "destination": "tools/qualification/native-admission/historical-bindings/review-request.md",
+      "bytes": 1712,
+      "sha256": "57e390e1e124cb39cc72f15c27cc9753a2a3be7234048d24d4350ea9e864b5ce",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py.from-c04.diff",
+      "sourceBytes": 24870,
+      "sourceSha256": "c5adfef3658bf96fda291e9593f4ab662a82d7f3027cea995ffabbe51932147d",
+      "destination": "tools/qualification/native-admission/historical-bindings/native-membership-caller.py.from-c04.diff",
+      "bytes": 24870,
+      "sha256": "c5adfef3658bf96fda291e9593f4ab662a82d7f3027cea995ffabbe51932147d",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    },
+    {
+      "sourceCommit": "b022d0097851c34d7300e7843ac4cbc10b780299",
+      "sourcePath": "studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py.from-c04.diff",
+      "sourceBytes": 24707,
+      "sourceSha256": "162281b4a6741a6abe9f5925d3b335a8c1a125a3f7555c9bf2252ff9fce4c112",
+      "destination": "tools/qualification/native-admission/historical-bindings/native-membership-host-finalize.py.from-c04.diff",
+      "bytes": 24707,
+      "sha256": "162281b4a6741a6abe9f5925d3b335a8c1a125a3f7555c9bf2252ff9fce4c112",
+      "role": "immutable original inactive binding or history; not prospective relocated command",
+      "literalEdits": [],
+      "destinationMode": "100644"
+    }
+  ],
+  "originalCommandAuthorityTransfers": false,
+  "effectiveGuardSeal": {
+    "path": "tools/qualification/compact-guard/source-seal.json",
+    "sha256": "95831dc800b15bdd3ca5b034bd3edc5118783f8ff32df740cf47eeafb60e368c"
+  },
+  "exclusions": [
+    "Superseded native callers/owners in original guard-prototype and startup-profile-02/03/failure-evidence-04: latest VD14 selected instead; immutable originals remain historical.",
+    "Historical held-state and operator-abort scripts bind actual past PID/birth identities: retained in owning evidence, not reusable current controls.",
+    "Actual observations/results, captured archives, generated binaries, Mac provider files, SDK and allocations: not engineering source migration inputs."
+  ]
+}

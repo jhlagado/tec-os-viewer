@@ -54,6 +54,11 @@ The remaining receiving work belongs in this product repository:
 The source authority is Origo `studies/p6-viewer/intake.md`,
 `stages/compact-source.md`, `research_notes/compact-receiver-inputs.json` and
 `models/compact-receiver`, with P3's proposal18 and Compact result review.
+Viewer-owned guard/native engineering sources have been relocated into
+[tools/qualification](../tools/qualification/README.md), with an exact
+[original-to-product migration map](../tools/qualification/migration-map.json).
+They remain unrun and inactive; that relocation supplies no Mac provider,
+native qualification or receiving result.
 Those source-only preparations do not grant implementation or runtime
 acceptance. New receiving checks, exact command/closure/resource review and
 allocation precede qualification. Old screenshots, baseline fixtures and

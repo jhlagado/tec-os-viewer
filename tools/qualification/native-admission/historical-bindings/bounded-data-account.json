@@ -1,0 +1,520 @@
+{
+  "status": "INERT_LITERAL_SIZE_ARITHMETIC_ONLY",
+  "sourceImported": false,
+  "sourceParserOrPredicateExecuted": false,
+  "exactProofSchemaDomainMaximumBytes": 429,
+  "maximumQuietPairSchemaBytes": 344,
+  "shapes": [
+    {
+      "shape": "ownerGroupProof",
+      "declaredData": {
+        "version": 1,
+        "ownerIdentity": {
+          "pid": 2147483646,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "uid": 4294967295,
+        "sid": 2147483646,
+        "pgid": 2147483646,
+        "singletonMembers": [
+          {
+            "pid": 2147483646,
+            "ppid": 2147483647,
+            "uid": 4294967295,
+            "pgid": 2147483646,
+            "sid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          }
+        ],
+        "singletonObservedNs": "999999999999999999999999",
+        "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 429,
+      "existingReaderBound": 2048,
+      "dataSha256": "65f0fc165d885cffe469fa8877fda682f332486a0c0c679275dbdb8f82564d5f",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "quietGroupProof",
+      "declaredData": {
+        "observedNs": "999999999999999999999999",
+        "members": [
+          {
+            "pid": 2147483646,
+            "ppid": 2147483647,
+            "uid": 4294967295,
+            "pgid": 2147483646,
+            "sid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          {
+            "pid": 2147483647,
+            "ppid": 2147483646,
+            "uid": 4294967295,
+            "pgid": 2147483646,
+            "sid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          }
+        ]
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 344,
+      "existingReaderBound": null,
+      "dataSha256": "7d883baec50134f94c14cc3490adf29b292ecfba3e854ae51609d1134ae03ae2",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "QcallerReport",
+      "declaredData": {
+        "version": 1,
+        "kind": "CALLER_STARTUP_PROFILE",
+        "identity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "pid": 2147483647,
+        "parentPid": 2147483646,
+        "passed": true,
+        "flags": {
+          "isolated": 1,
+          "noSite": 1,
+          "ignoreEnvironment": 1,
+          "noUserSite": 1,
+          "dontWriteBytecode": true
+        },
+        "environment": [
+          {
+            "key": "LC_CTYPE",
+            "valueUtf8Bytes": 7,
+            "valueSha256": "99fed2d548c2eb1022f4067f97fe838a2c3ea60ee0e0f53086788505c3ababad"
+          },
+          {
+            "key": "__CF_USER_TEXT_ENCODING",
+            "valueUtf8Bytes": 10,
+            "valueSha256": "e52237f479d2cd94721174896f277346c9e3191b21edfbd3bf2f35f71db48e60"
+          }
+        ],
+        "memorySamples": [
+          734003200,
+          734003200
+        ],
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "quietGroupProof": {
+          "observedNs": "999999999999999999999999",
+          "members": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            },
+            {
+              "pid": 2147483647,
+              "ppid": 2147483646,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ]
+        }
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 1431,
+      "existingReaderBound": 2048,
+      "dataSha256": "52904f2a855b9cd0efc9bbdbda23e68734af23765cffeb260a693dc1575c58e8",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "phaseReservation",
+      "declaredData": {
+        "lock": "/Users/johnhardy/.origo/heavy.lock",
+        "dev": 18446744073709551615,
+        "ino": 18446744073709551615,
+        "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "ownerPid": 2147483647,
+        "ownerIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "reservationHostIdentity": {
+          "pid": 2147483646,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "quietGroupProof": {
+          "observedNs": "999999999999999999999999",
+          "members": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            },
+            {
+              "pid": 2147483647,
+              "ppid": 2147483646,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ]
+        },
+        "phase": "build",
+        "release": false
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 1232,
+      "existingReaderBound": 4096,
+      "dataSha256": "0d5b3ed67d33caa2cbd5bc1f28b103512f2d0c0dd52a64ae0b6d7fd3443ac523",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "phasePermitInactiveSizing",
+      "declaredData": {
+        "status": "NOT_ALLOCATED",
+        "phase": "build",
+        "platformTrustAccepted": false,
+        "toolNoDetachTrustAccepted": false,
+        "reviewedInputs": {
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python": "0b7aad9bf1adf74d3922cf351f7d2e908dae19edd5456299d162810ae083523d",
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Python3": "26422f0b21cb1e07236384afa4043c7401d39d09358c91df8bf3f5496f14712f",
+          "/Library/Developer/CommandLineTools/usr/bin/clang": "f30550eab15fdf5ab8c0dc54c52679711241e5d4b636b027e18c09fef531775d",
+          "/Library/Developer/CommandLineTools/usr/bin/ld": "28d85b9af18c923db12e0b4ce70b80ee217f2b7cade0e872baa9e8ddc396c08d",
+          "/bin/ps": "3bbba882e30d91fc4ff6e6844ca7c59fef4351b9a3fea35dca55708d6d487d1c",
+          "/usr/bin/otool": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+          "/usr/bin/codesign": "844d30a12929b59c9f2215e2a308c3e1db572831a478f35906e452a54025603e",
+          "/usr/sbin/sysctl": "0fb3ea0ef2b943cf56f290628bb26531c36f190094b28e22609d59839f146689",
+          "/usr/bin/env": "75690864f0e7397db05bcc0f4439915559ce24c2d834d530e4e619c14b938556",
+          "/bin/sh": "c0eaf44f9242d5bbc2e14f4e8b7dccc1eff7f2976d64dc18914d5ef9f373e100",
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py": "40b7d494b788d674cd2922abdefaa3bf631ea8f714f035394ace5bcfff8a39b0",
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py": "3588cd488dfc6edd49dda91ef22944e7e2503ad34a4e6429d8cbfc873cfcfa7e"
+        },
+        "providerManifestSha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+        "providerLinksSha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+        "startupQualificationEvidenceSha256": "NOT_QUALIFIED_REVIEWED_Q_EVIDENCE_SHA256",
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "allocationT0Ns": "999999999999999999999999",
+        "trustedHostIdentity": {
+          "pid": 2147483646,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        }
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 2662,
+      "existingReaderBound": 16384,
+      "dataSha256": "9c7f6df8d488bb91b135eee7b18ac728d7000b19aa0cdc4b036386082184d2c5",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "releasePermitInactiveSizing",
+      "declaredData": {
+        "status": "NOT_ALLOCATED",
+        "phase": "release",
+        "platformTrustAccepted": false,
+        "toolNoDetachTrustAccepted": false,
+        "reviewedInputs": {
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python": "0b7aad9bf1adf74d3922cf351f7d2e908dae19edd5456299d162810ae083523d",
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Python3": "26422f0b21cb1e07236384afa4043c7401d39d09358c91df8bf3f5496f14712f",
+          "/Library/Developer/CommandLineTools/usr/bin/clang": "f30550eab15fdf5ab8c0dc54c52679711241e5d4b636b027e18c09fef531775d",
+          "/Library/Developer/CommandLineTools/usr/bin/ld": "28d85b9af18c923db12e0b4ce70b80ee217f2b7cade0e872baa9e8ddc396c08d",
+          "/bin/ps": "3bbba882e30d91fc4ff6e6844ca7c59fef4351b9a3fea35dca55708d6d487d1c",
+          "/usr/bin/otool": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+          "/usr/bin/codesign": "844d30a12929b59c9f2215e2a308c3e1db572831a478f35906e452a54025603e",
+          "/usr/sbin/sysctl": "0fb3ea0ef2b943cf56f290628bb26531c36f190094b28e22609d59839f146689",
+          "/usr/bin/env": "75690864f0e7397db05bcc0f4439915559ce24c2d834d530e4e619c14b938556",
+          "/bin/sh": "c0eaf44f9242d5bbc2e14f4e8b7dccc1eff7f2976d64dc18914d5ef9f373e100",
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-host-finalize.py": "40b7d494b788d674cd2922abdefaa3bf631ea8f714f035394ace5bcfff8a39b0",
+          "/Users/johnhardy/projects/origo/studies/p6-viewer/models/native-admission/vd14-successor01/native-membership-caller.py": "3588cd488dfc6edd49dda91ef22944e7e2503ad34a4e6429d8cbfc873cfcfa7e"
+        },
+        "providerManifestSha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+        "providerLinksSha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+        "startupQualificationEvidenceSha256": "NOT_QUALIFIED_REVIEWED_Q_EVIDENCE_SHA256",
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "allocationT0Ns": "999999999999999999999999",
+        "trustedHostIdentity": {
+          "pid": 2147483646,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "completedPhase": "build",
+        "ownerIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "hostWaitReturncode": 70,
+        "hostObservedCallerExit": true,
+        "hostExitObservedNs": "999999999999999999999999",
+        "hostExitLate": true,
+        "classification": "FAILED_QUALIFICATION_COHORT_RETIRED",
+        "managedFinishSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "retirementReceipts": {
+          "compile.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "link.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "linked-images.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "load-commands.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "signature.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "kernel-build.json": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "commandInventory": [
+          "compile",
+          "link",
+          "linked-images",
+          "load-commands",
+          "signature",
+          "kernel-build"
+        ],
+        "hostObservedSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "reservationSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "ownerGroupCompletedNs": "999999999999999999999999"
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 3932,
+      "existingReaderBound": 16384,
+      "dataSha256": "c4047b210277de2de315d65d3e1ae2a2cc8eaaa73dae1742b2064f8a45147b0e",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "releasePrepared",
+      "declaredData": {
+        "state": "PREPARED_CANONICAL_LOCK_STILL_HELD",
+        "completedPhase": "build",
+        "classification": "FAILED_QUALIFICATION_COHORT_RETIRED",
+        "oldOwnerIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "releaseIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "lockDev": 18446744073709551615,
+        "lockIno": 18446744073709551615,
+        "lockSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "reservationSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "hostObservedSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "reservationHostIdentity": {
+          "pid": 2147483646,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "releaseGroupProof": {
+          "observedNs": "999999999999999999999999",
+          "members": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            },
+            {
+              "pid": 2147483647,
+              "ppid": 2147483646,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ]
+        },
+        "gateDev": 18446744073709551615,
+        "gateIno": 18446744073709551615,
+        "operatorDeadlineNs": "999999999999999999999999",
+        "release": false
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 1672,
+      "existingReaderBound": 16384,
+      "dataSha256": "b6ea956c47186f297f781aebaecb764921c81d2c9e8618fdc3f50ebc0e01999e",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    },
+    {
+      "shape": "ownerReleased",
+      "declaredData": {
+        "state": "EXTERNAL_EXACT_EXIT_AND_COHORT_RECONCILED",
+        "classification": "FAILED_QUALIFICATION_COHORT_RETIRED",
+        "resourceReleaseOnly": true,
+        "oldOwnerIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "ownerGroupProof": {
+          "version": 1,
+          "ownerIdentity": {
+            "pid": 2147483646,
+            "sec": 18446744073709551615,
+            "usec": 999999
+          },
+          "uid": 4294967295,
+          "sid": 2147483646,
+          "pgid": 2147483646,
+          "singletonMembers": [
+            {
+              "pid": 2147483646,
+              "ppid": 2147483647,
+              "uid": 4294967295,
+              "pgid": 2147483646,
+              "sid": 2147483646,
+              "sec": 18446744073709551615,
+              "usec": 999999
+            }
+          ],
+          "singletonObservedNs": "999999999999999999999999",
+          "premise": "COMPLETE_BOUNDED_GROUP_NOT_CONSUMER_TABLE"
+        },
+        "hostObservedSha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "releaseIdentity": {
+          "pid": 2147483647,
+          "sec": 18446744073709551615,
+          "usec": 999999
+        },
+        "actualReleaseReturncode": 0,
+        "actualReleaseExitObservedNs": "999999999999999999999999",
+        "operatorDeadlineNs": "999999999999999999999999"
+      },
+      "sortedJsonWithSpacesAndNewlineBytes": 990,
+      "existingReaderBound": 4096,
+      "dataSha256": "992583c1bc8dc4e778a9aa53bad35d33553caa9d6ed49ca9cac1963650c66686",
+      "meaning": "Inert literal serialization arithmetic only; not runtime, ABI, source predicate or control result. Placeholder allocation values remain NOT_ALLOCATED."
+    }
+  ],
+  "pythonObjectOrRssMaximumProved": false,
+  "allRuntimeQualificationFlags": false
+}

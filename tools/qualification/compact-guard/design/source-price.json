@@ -1,0 +1,72 @@
+{
+  "version": 2,
+  "kind": "static_source_arithmetic_no_runtime_measurement",
+  "guardBaselineBytes": 11482,
+  "guardPrototypeBytes": 16426,
+  "guardAdapterBytes": 18823,
+  "guardIncrementBytes": 23767,
+  "primaryExecutableSourcePaths": [
+    "ack-check.mjs",
+    "fixture.mjs",
+    "guard-entry.mjs",
+    "harness-lib.mjs",
+    "lease-adapter.mjs",
+    "mem-guard.prototype.mjs",
+    "oracle.py",
+    "peer.mjs",
+    "root.py",
+    "run.mjs"
+  ],
+  "primaryExecutableSourceBytes": 140353,
+  "retainedReferenceAndDeclaredInputSourceBytes": 193252,
+  "excludedFromBytes": [
+    "Markdown",
+    "guard.diff",
+    "source-seal.json",
+    "source-price.json"
+  ],
+  "guardDiff": {
+    "addedLines": 98,
+    "removedLines": 13,
+    "hunks": 6,
+    "bytes": 9667,
+    "semanticSites": 5
+  },
+  "logicalIDs": 14,
+  "variantPaths": 20,
+  "syntheticPaths": 18,
+  "browserPaths": 2,
+  "configuredHardTimeSumSeconds": 330,
+  "configuredOperatorEnvelopeSumSeconds": 430,
+  "eachJobSampledLimitMiB": 700,
+  "guardWaitSeconds": 0,
+  "startupPricing": "unmeasured; T0 includes source sealing, keys, readiness; missing activation fails incomplete; review cold5-second credibility before allocation",
+  "runtimeElapsedAndPeakMemory": "UNMEASURED",
+  "guardDefaultCompatibility": "source preservation checks only; no runtime proof",
+  "allocationStatus": "NONE",
+  "D1IdentityRecut": {
+    "baseline": "a3c00fd3",
+    "positiveObservations": 2,
+    "identityChecksPerCPURead": 2,
+    "syntheticDifferentBirthInputs": 1,
+    "additionalCasePaths": 0,
+    "additionalProcesses": 0,
+    "minimumReadIntervalNs": 50000000,
+    "perObservationBudgetMs": 150,
+    "executed": false,
+    "observationBudgetEnforcement": "post-operation acceptance check only; no timing or interruptibility proof"
+  },
+  "snapshotDiagnosticRecut": {
+    "baseline": "b71ad84b",
+    "evidenceBytesMaximumIncludingNewline": 16384,
+    "rawMemorySamplesRetainedMaximum": 8,
+    "cohortRowsRetainedMaximum": 32,
+    "publicationDeadline": "original snapshot deadline; no refreshed window",
+    "publication": "one existing owned helper at most, only with budget and before escalation; not proof of durability",
+    "layoutCorrection": "none; SDK usagev0 size/order matches; unused nice signedness unchanged",
+    "freshD1Attempt": "attempt02",
+    "priorFailure": "driver evidence preserved; no cause inferred or result reclassified",
+    "other19Vectors": "unchanged, unreviewed",
+    "sourceExecuted": false
+  }
+}

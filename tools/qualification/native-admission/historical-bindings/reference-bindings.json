@@ -1,0 +1,155 @@
+{
+  "sourceAllocation": "fb19b40b",
+  "reviewedPlan": "60776726",
+  "references": [
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-host-finalize.py",
+      "bytes": 40226,
+      "sha256": "dab086c667475dbf15062bf011915a03dca92c07606691da8a5eb6e044d3a545",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/native-membership-caller.py",
+      "bytes": 58529,
+      "sha256": "d96d88d2b5a0236c85854b80374e627506f7a2f1edbb90d4b3bc04a79c72d5d0",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/seal.json",
+      "bytes": 5212,
+      "sha256": "1ac4a88b19ca2b43e473d4078c35ebea07bc3270fe53d075ecf4bae7bba9b1fa",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/failure-evidence-04/diagnostic-reason-codes.json",
+      "bytes": 13541,
+      "sha256": "ff33029fd02c6b1b1b651c2f5cdc4ec419ff4de9b13bfa4edddaaf565bb6cc4a",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/startup-profile-03/native-membership-host-finalize.py",
+      "bytes": 40144,
+      "sha256": "837806520115815935879f44f8e251771cad10013aa9c98da266f9d8f3e3c7a4",
+      "role": "C03 historical comparison only",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/startup-profile-03/native-membership-caller.py",
+      "bytes": 41453,
+      "sha256": "686da100cac68a880b6d5adf1740736078d76340df546ef83f16aad4f25e1d4c",
+      "role": "C03 historical comparison only",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-membership.c",
+      "bytes": 13251,
+      "sha256": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-files.sha256",
+      "bytes": 492672,
+      "sha256": "9319c33b4c8b31954525133e149cb766463407dd91d0cfafe4c5bad0b0ac5adc",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/compact-receiver/guard-prototype/native-provider-links.json",
+      "bytes": 1325,
+      "sha256": "489caa5da7c66902c383beb8ab3f5818203ed52cffe75d705fae96ab6f132dd6",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/stages/native-admission.md",
+      "bytes": 8289,
+      "sha256": "88da03504737baf2bf09830a31879b62cd3e2f6cc5a69b1f44b555f670381714",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/models/native-admission/plan.md",
+      "bytes": 5754,
+      "sha256": "fa955803bd65e3e898623f326d2fb0f288c0783fef8190c95a7cf25ba0e8dafa",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "tools/mem-guard.mjs",
+      "bytes": 11482,
+      "sha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374",
+      "role": "read-only baseline/reference; not a current runtime qualification",
+      "localObservedMode": "0o600",
+      "canonicalGitMode": "100644",
+      "historicalLive0644Reproduced": false
+    },
+    {
+      "path": "studies/p6-viewer/reviews/vd14-successor-source-admission.md",
+      "bytes": 2082,
+      "sha256": "28f28b0f713e7e10c30855b5899d63a09746294e39be42bdd779cd6d14c0a215",
+      "role": "source allocation/review, no execution authority"
+    },
+    {
+      "path": "/workspace/scratch/p6-vd14-successor-source-plan-review.md",
+      "bytes": 15052,
+      "sha256": "17e5a9d8546dc052678cbb5b5c46ffca52e177cdd36e70a29c0c3c793fc1b9b5",
+      "role": "source allocation/review, no execution authority"
+    }
+  ],
+  "historicalSdkHeaders": [
+    {
+      "historicalMacPath": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/libproc.h",
+      "historicalExpectedSha256": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+      "currentlyInstalledOnLinux": false,
+      "liveMacReverificationRequired": true
+    },
+    {
+      "historicalMacPath": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/proc_info.h",
+      "historicalExpectedSha256": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+      "currentlyInstalledOnLinux": false,
+      "liveMacReverificationRequired": true
+    },
+    {
+      "historicalMacPath": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/sys/unistd.h",
+      "historicalExpectedSha256": "a3c7d6da838b8858cf04711dcbbab6e28fa5a58cc72175fcf4366158f548369a",
+      "currentlyInstalledOnLinux": false,
+      "liveMacReverificationRequired": true
+    },
+    {
+      "historicalMacPath": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/include/unistd.h",
+      "historicalExpectedSha256": "8d535079658f063bcef358ef4c1c1b52b8e88dacfc22cbf4db0f6bf8abe40637",
+      "currentlyInstalledOnLinux": false,
+      "liveMacReverificationRequired": true
+    }
+  ],
+  "providerBoundary": "Mac manifest/links are historical references. Linux restored files/modes are not current Mac provider/ABI/link observations. No provider hash was weakened or replaced.",
+  "nativeReferenceCopyEqualsOriginal": true,
+  "runtimeAuthority": false
+}

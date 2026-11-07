@@ -1,0 +1,140 @@
+{
+  "status": "SOURCE_ONLY_PENDING_INDEPENDENT_COMPLETE_REVIEW",
+  "members": [
+    {
+      "path": "README.md",
+      "bytes": 2536,
+      "sha256": "5a781c749bc7c3b7ba753b33566585b9e67316e77a053d0611204d3cfaed9d40",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "api-price-and-bounds.md",
+      "bytes": 9071,
+      "sha256": "2cc58ed02f3229a46805aa2caa0db97981af3d33b05cdd99b1aae981788e1dca",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "bounded-data-account.json",
+      "bytes": 21116,
+      "sha256": "5bc5a0b1c5c0d84588cd1fb231955ebd67cc3dd3b4b1191bbe2dccc54933b3ea",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "build-bundle-template.json",
+      "bytes": 2353,
+      "sha256": "83b5b6a21888566f94ffbbbfd72f12c5d0603d145689dc5e0182d3935f7f9755",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "command-template.json",
+      "bytes": 1110,
+      "sha256": "2485a34ae88c150620e61aadae74b9f25763ab0c7864c67596923675b58089d3",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "controls-data.json",
+      "bytes": 10207,
+      "sha256": "6698f9f0215f92a0b5f3d93dd649319ce38abacff98f43443b08e27e0e15822c",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "diagnostic-reason-codes.json",
+      "bytes": 14947,
+      "sha256": "f0c9631dc94a9f36c235421d30452eb314e026b73fa11d1a078edc43e193e686",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "hook-account.md",
+      "bytes": 6157,
+      "sha256": "d7327003c6b12fdba85fd05d7385392a2ced29453878c89576dcd89622a3fb28",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "native-membership-caller.py",
+      "bytes": 65450,
+      "sha256": "3588cd488dfc6edd49dda91ef22944e7e2503ad34a4e6429d8cbfc873cfcfa7e",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "native-membership-caller.py.from-c04.diff",
+      "bytes": 24870,
+      "sha256": "c5adfef3658bf96fda291e9593f4ab662a82d7f3027cea995ffabbe51932147d",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "native-membership-host-finalize.py",
+      "bytes": 49594,
+      "sha256": "40b7d494b788d674cd2922abdefaa3bf631ea8f714f035394ace5bcfff8a39b0",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "native-membership-host-finalize.py.from-c04.diff",
+      "bytes": 24707,
+      "sha256": "162281b4a6741a6abe9f5925d3b335a8c1a125a3f7555c9bf2252ff9fce4c112",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "native-membership.c",
+      "bytes": 13251,
+      "sha256": "2bc77004b79bb2bf52400e6f5637ec9f66022d25d93f2a2b5f727b39aa976b90",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "reference-bindings.json",
+      "bytes": 7096,
+      "sha256": "a03446766b099ac3a7156a10b14e0c8f9808fac20faccf3ccfeaccc50b25f35d",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "review-request.md",
+      "bytes": 1712,
+      "sha256": "57e390e1e124cb39cc72f15c27cc9753a2a3be7234048d24d4350ea9e864b5ce",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "run-bundle-template.json",
+      "bytes": 2617,
+      "sha256": "0aa55b1374f2bf08eae5b73defc87725e45243c8cdc074324ed16fe3f11b25ac",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "schema-and-joins.md",
+      "bytes": 7411,
+      "sha256": "e4956aa620fb86b88e904b5bd94bd6f7b47e98c101ba94f7368ff55ce6a8c89d",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    },
+    {
+      "path": "startup-bundle-template.json",
+      "bytes": 2218,
+      "sha256": "7301e8ea4502fd514c2b1a71b2cbfad2497ba9d36e23e165a9969fc8a0dcbf14",
+      "observedMode": "0o600",
+      "prospectiveGitMode": "100644"
+    }
+  ],
+  "memberCount": 18,
+  "memberBytes": 266423,
+  "inventoryExcludes": [
+    "source-manifest.json",
+    "seal.json"
+  ],
+  "sourceGeneration": "Manual patches to exact C04 copies; no generator/parser/import/checker/syntax/control execution. Standard-library JSON/hash/stat/read-only Git/literal operations authored data only.",
+  "runtimeAuthority": false,
+  "acceptance": false
+}
