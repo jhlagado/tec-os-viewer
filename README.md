@@ -2,6 +2,9 @@
 
 A TEC-1G running TEC-OS in a web page, with the cards and recipes that load it: the demo system for TEC-OS and its programs.
 
+[Reading the source](docs/reading.md) follows page startup, the controls, card
+storage and the build through their files.
+
 The checked-in firmware pin is the [VS2 qualified baseline](docs/qualification.md).
 The later [Compact font and cold 40-column firmware offer](docs/compact-source-offer.md)
 has not yet been adopted or qualified by this viewer. Those documents also identify
