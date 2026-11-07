@@ -9,6 +9,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "start": "tec-os/node_modules/.bin/esbuild --servedir=dist --serve=127.0.0.1:8765",
     "tecos": "node tools/tecos.mjs",
     "web": "node tools/build.mjs",
     "page": "npm run tecos && npm run web && node tools/page.mjs",

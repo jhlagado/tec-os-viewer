@@ -10,7 +10,11 @@ at the pin gives them.
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
 TECOS_ROM_ASSEMBLER=atom npm run page
+npm start
 ```
+
+Open `http://localhost:8765`. For an existing build, just run `npm start`.
+The local server uses esbuild from the submodule; Python is not needed.
 
 The Viewer selects ATOM explicitly for its ROM build and passes that selection to subprocesses.
 An unavailable ATOM stops the build. TEC-OS also documents a TAS default and its host/compiler
