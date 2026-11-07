@@ -2,6 +2,11 @@
 
 A TEC-1G running TEC-OS in a web page, with the cards and recipes that load it: the demo system for TEC-OS and its programs.
 
+The checked-in firmware pin is the [VS2 qualified baseline](docs/qualification.md).
+The later [Compact font and cold 40-column firmware offer](docs/compact-source-offer.md)
+has not yet been adopted or qualified by this viewer. Those documents also identify
+pending viewer work and its source records.
+
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
 `tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM and of each file on the page's card, as TEC-OS's build
