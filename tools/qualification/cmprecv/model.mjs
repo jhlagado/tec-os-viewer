@@ -53,13 +53,37 @@ export function notice(bytes, format) {
   return serialize(bytes.toString('utf8'), format);
 }
 
-// The order defines the first refusal.
-// Body fixtures are not HTTP observations.
+// Compare the resolved-file descriptor.
+// The driver joins its positive rows to
+// files before the dependency contrast.
+function dependency(actual, expected) {
+  const reject = () => { throw new Rejection('IDENTITY_DEPENDENCY'); };
+  if (!actual || !expected || typeof actual !== 'object' ||
+      typeof expected !== 'object') reject();
+  if (JSON.stringify(Object.keys(actual)) !== JSON.stringify(Object.keys(expected))) reject();
+  for (const key of Object.keys(expected).filter(key => key !== 'resolvedFiles')) {
+    if (JSON.stringify(actual[key]) !== JSON.stringify(expected[key])) reject();
+  }
+  if (!Array.isArray(actual.resolvedFiles) ||
+      actual.resolvedFiles.length !== expected.resolvedFiles.length) reject();
+  for (let index = 0; index < expected.resolvedFiles.length; index++) {
+    if (JSON.stringify(actual.resolvedFiles[index]) !==
+        JSON.stringify(expected.resolvedFiles[index])) reject();
+  }
+}
+
+// Each field has a named rejection.
+// Compound-fault ordering is untested.
+// Bodies are not HTTP observations.
 export function identity(actual, expected) {
   for (const [field, code] of [
     ['rom', 'IDENTITY_ROM'], ['font', 'IDENTITY_FONT'],
-    ['dependency', 'IDENTITY_DEPENDENCY'], ['app', 'IDENTITY_APP'],
-    ['recipe', 'IDENTITY_RECIPE'], ['notice', 'IDENTITY_NOTICE'],
+  ]) {
+    if (sha(actual[field]) !== expected[field]) throw new Rejection(code);
+  }
+  dependency(actual.dependency, expected.dependency);
+  for (const [field, code] of [
+    ['app', 'IDENTITY_APP'], ['recipe', 'IDENTITY_RECIPE'], ['notice', 'IDENTITY_NOTICE'],
   ]) {
     if (sha(actual[field]) !== expected[field]) throw new Rejection(code);
   }

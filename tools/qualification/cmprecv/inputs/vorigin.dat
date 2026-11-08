@@ -1,0 +1,17 @@
+{
+  "kind": "READ_ONLY_GIT_TREE_DATA_EXPORT",
+  "repository": "jhlagado/tec-os-viewer",
+  "commit": "628aeb221c53145a25f50f876c93c2c0cb6462ea",
+  "command": [
+    "git",
+    "ls-tree",
+    "-r",
+    "--full-tree",
+    "628aeb221c53145a25f50f876c93c2c0cb6462ea"
+  ],
+  "path": "viewer-628-tree.tsv",
+  "bytes": 16502,
+  "sha256": "79f6732c124acde869749fb5d96206a29f26bdabc63dfa0b2ac3e50737798d82",
+  "rows": 176,
+  "sourceExecution": false
+}
