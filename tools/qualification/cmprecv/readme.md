@@ -90,8 +90,13 @@ Viewer proof counts as this command's memory or timing result.
 
 Normal retention consists of every sealed source copy, 34 individual case
 readings, six notice files, the altered dependency descriptor and four aggregate
-files. `files.dat` inventories every other output. All files are exclusive,
-fsynced, singly linked and mode 0600 in private 0700 directories. The maintained packet is mode 0644. A first
+files. `files.dat` inventories every other output. The driver creates exclusive
+mode 0600 files in private 0700 directories using public Linux O_SYNC flags.
+A checked full-write loop requires positive progress and closes every owned FD.
+All 26 staged source files are nonempty with a smallest source of 441 bytes.
+JSON records include their final LF. Notice outputs have 24, 113, 2642 or 2721
+bytes. The positive-length check preserves every declared write path.
+The maintained packet is mode 0644. A first
 failure retains completed readings and a bounded failure record when the
 output directory exists. The failure record names the active case and phase,
 including positive setup and file joins. Earlier setup failures remain in raw
@@ -101,3 +106,17 @@ The original 44 Viewer tests, VS3/VS4 browser work, Mac B/R/700 MiB requirements
 and A5 native positive/failing pair remain unchanged and unresolved by M0.
 No D or B lifecycle proof, native success, browser pass, production witness
 or gate acceptance follows from this packet.
+
+The source03 writer replaces the permission-mode fsyncSync operation identified
+by VM0-02. It uses public fs.constants and writeSync under the same child-denied
+permission flags. No internal API or permission bypass is used. No M0 actual
+has established this successor's compatibility, time, price or semantics.
+After the actual writer wait, the Python outer fsyncs and reads each finite
+complete or partial evidence file through EOF, checks its stable identity and
+fsyncs the validated private directories. This precedes outer SELF. Raw capture
+FDs are set to 0600 before Popen. The guard log and final outer receipt are also
+0600. A failed or incomplete audit prevents normal acceptance and root retains
+the full actual tree and captures, including files absent from an inventory.
+The final outer receipt is fsynced through its owned FD in the bounded tail.
+Its parent directory is not covered by the worker evidence-directory audit.
+No physical-media or power-loss guarantee follows from these file operations.

@@ -57,10 +57,36 @@ most 64 KiB, prints a small summary and samples the clock. The unchanged
 8 MiB reserve covers this final tail. No source hash, tree walk or output
 read belongs after O.
 
-Captures are regular files, not pipes. They close and fsync after the actual
-wait chain and final ECHILD. The sealed normal source contains no detached
-writer or extra actor. This is the source basis for complete end-of-writer
-capture retention. It is not a separate pipe EOF observation.
+Captures are regular files, not pipes. Their owned FDs are set to 0600 before
+Popen. They close and fsync after the actual wait chain and final ECHILD.
+The outer then reopens each capture and guard log without following links,
+checks its stable inode, mode, link count and size, fsyncs and reads through
+actual regular-file EOF while hashing. The guard log inherits child umask077.
+The sealed normal source contains no detached writer or extra actor. This
+end-of-writer account does not claim a separate pipe EOF observation.
+
+The driver opens each nonempty exclusive output with the public wx flag bits
+plus O_SYNC and checks every positive writeSync result through full completion.
+It closes the FD in finally. This preserves the permission model and child
+denial. JSON plus LF and all finite source/notice bytes are nonempty. The old
+unsupported fsyncSync path is absent. Node source completion is not an outer
+post-wait durability receipt.
+
+After actual wait, the outer audits at most 72 declared files and four nested
+private directories. The normal set stays 71 files. The extra allowed name is
+the bounded failed.dat and it cannot satisfy the normal exact-set validator.
+Existing partial or empty files can be flushed and retained by this audit.
+Each opened file must match its lstat device, inode, mode, link count, size,
+mtime and ctime before and after fsync and actual EOF/hash. Bottom-up directory
+fsync uses exact opened identities. All file, guard and directory audits finish
+before SELF. Audit failure retains the actual files but supplies no completed
+audit or normal price. Unknown or held endings retain their existing ownership
+rules and cannot enter the normal price path.
+
+The final receipt's exclusive owned FD is set to 0600 before its bounded write,
+flush, fsync and close. Its parent directory is outside the evidence-directory
+audit. The 8 MiB final-tail reserve and 64 KiB receipt cap remain unchanged.
+No file operation here establishes physical-media or power-loss durability.
 
 The outer samples its 118-second deadline immediately after importing time.
 Python startup and that import precede this local sample. GNU timeout allows

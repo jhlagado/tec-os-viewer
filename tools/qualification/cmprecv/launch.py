@@ -207,6 +207,86 @@ def own_all_children():
         pending = None
 
 
+def durable_regular(path, maximum, mode):
+    value = path.lstat()
+    require(stat.S_ISREG(value.st_mode) and value.st_nlink == 1 and
+            stat.S_IMODE(value.st_mode) == mode and value.st_size <= maximum and
+            path.resolve() == path, 'bounded plain durable output')
+    def identity(info):
+        return (info.st_dev, info.st_ino, info.st_mode, info.st_nlink, info.st_size,
+                info.st_mtime_ns, info.st_ctime_ns)
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        before = os.fstat(fd)
+        require(identity(before) == identity(value), 'opened output identity')
+        os.fsync(fd)
+        count = 0; hashed = hashlib.sha256()
+        while True:
+            block = os.read(fd, min(131072, maximum + 1 - count))
+            if block == b'': break
+            count += len(block); require(count <= maximum, 'durable output cap')
+            hashed.update(block)
+        require(count == before.st_size and identity(os.fstat(fd)) == identity(before) ==
+                identity(path.lstat()), 'durable output stable through actual EOF')
+    finally:
+        os.close(fd)
+    return dict(bytes=count, sha256=hashed.hexdigest(), regularFileReadEOF=True, fsyncCompleted=True)
+
+
+def durable_directories(root, relatives):
+    ordered = sorted(relatives, key=lambda name: (len(Path(name).parts), name), reverse=True) + ['']
+    for relative in ordered:
+        path = root / relative; before = path.lstat()
+        require(stat.S_ISDIR(before.st_mode) and stat.S_IMODE(before.st_mode) == 0o700 and
+                path.resolve() == path, 'bounded plain output directory')
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            opened = os.fstat(fd)
+            expected = (before.st_dev, before.st_ino, before.st_mode)
+            require((opened.st_dev, opened.st_ino, opened.st_mode) == expected, 'opened directory identity')
+            os.fsync(fd)
+            after = path.lstat(); retained = os.fstat(fd)
+            require((after.st_dev, after.st_ino, after.st_mode) == expected ==
+                    (retained.st_dev, retained.st_ino, retained.st_mode), 'directory identity after fsync')
+        finally:
+            os.close(fd)
+    return len(ordered)
+
+
+def durable_outputs(offer):
+    root = Path(offer['work'])
+    if not root.exists():
+        return dict(rootCreated=False, files=0, directories=0)
+    require(root.resolve() == root and stat.S_ISDIR(root.lstat().st_mode) and
+            stat.S_IMODE(root.stat().st_mode) == 0o700, 'plain private output root')
+    limits = {'source/' + row['path']: offer['caps']['sourceFile'] for row in offer['sourceRows']}
+    limits['source/offer.dat'] = offer['caps']['sourceFile']
+    limits.update({'readings/c' + str(i).zfill(2) + '.dat': offer['caps']['caseFile'] for i in range(1, 35)})
+    limits.update({'notice/' + name: offer['caps']['noticeFile'] for name in offer['noticeOutputs']})
+    limits.update({name: offer['caps'][cap] for name, cap in
+                   [('readings.dat','readings'), ('inputs.dat','identities'), ('result.dat','result'),
+                    ('files.dat','inventory'), ('depnew.dat','dependencyFile'), ('failed.dat','failure')]})
+    require(len(limits) == 72, 'finite normal plus first-failure output bounds')
+    allowed_dirs = {'source', 'source/inputs', 'readings', 'notice'}
+    rows = []; seen_dirs = set()
+    for current, dirs, names in os.walk(root, followlinks=False):
+        require(len(dirs) + len(names) <= len(limits) + len(allowed_dirs), 'bounded directory entries')
+        for name in dirs + names:
+            path = Path(current) / name; relative = str(path.relative_to(root)); value = path.lstat()
+            if stat.S_ISDIR(value.st_mode):
+                require(relative in allowed_dirs and stat.S_IMODE(value.st_mode) == 0o700,
+                        'declared private evidence directory')
+                seen_dirs.add(relative)
+            else:
+                require(relative in limits, 'declared finite evidence file')
+                audited = durable_regular(path, limits[relative], 0o600)
+                rows.append(dict(path=relative, **audited))
+            require(len(rows) + len(seen_dirs) <= len(limits) + len(allowed_dirs), 'bounded evidence tree')
+    return dict(rootCreated=True, files=len(rows), directories=durable_directories(root, seen_dirs),
+                rows=rows, fileFsyncAndEOFCompleted=True, directoryFsyncCompleted=True,
+                scope='post-wait finite complete or partial evidence before outer SELF')
+
+
 def output_tree(offer):
     root = Path(offer['work'])
     require(stat.S_ISDIR(root.lstat().st_mode) and stat.S_IMODE(root.stat().st_mode) == 0o700,
@@ -381,6 +461,7 @@ def main():
     code = 70
     try:
         with paths[0].open('xb') as out, paths[1].open('xb') as err:
+            os.fchmod(out.fileno(), 0o600); os.fchmod(err.fileno(), 0o600)
             LAUNCH_STARTED = True
             DIRECT = subprocess.Popen(offer['argv'], cwd=offer['cwd'], env=dict(offer['environment'], M0_OFFER_SHA=digest(HERE/'offer.dat')),
                                       stdin=subprocess.DEVNULL, stdout=out, stderr=err, start_new_session=True, umask=0o077)
@@ -392,8 +473,10 @@ def main():
         require(len(WAITS) == 1 and WAITS[0]['pid'] == DIRECT.pid, 'normal sole direct wait topology')
         waited = WAITS[0]; code = waited['terminal']; receipt['terminal'] = code
         members(offer); receipt['runtimePostflight'] = verify_runtime()
-        receipt['captures'] = [dict(path=str(p), bytes=p.stat().st_size, sha256=digest(p)) for p in paths[:2]]
-        require(all(p.stat().st_size <= 4*1024*1024 for p in paths[:2]), 'complete capture caps')
+        receipt['captures'] = [dict(path=str(p), **durable_regular(p, 4*1024*1024, 0o600)) for p in paths[:2]]
+        guard_audit = durable_regular(paths[3], 65536, 0o600)
+        receipt['guardCapture'] = dict(path=str(paths[3]), **guard_audit)
+        receipt['durableOutputAudit'] = durable_outputs(offer)
         require(code == 0 and os.WIFEXITED(waited['rawStatus']) and os.WEXITSTATUS(waited['rawStatus']) == 0 and
                 waited['identity']['state'] == 'Z' and waited['identity']['cmdlineHex'] == '', 'normal exact raw terminal')
         require(paths[3].stat().st_size <= 65536, 'bounded complete guard log')
@@ -404,7 +487,6 @@ def main():
                 all(r['name'] == offer['guardName'] and r['command'] == offer['normalizedLeaf'] for r in guard_rows) and
                 guard_rows[0]['waitedSeconds'] == 0 and guard_rows[1]['code'] == 0 and guard_rows[1]['outcome'] == 'exit 0', 'normal guard joins')
         receipt['guardRows'] = [{k:r[k] for k in ('event','at','limitMB','heapMB')} for r in guard_rows]
-        receipt['guardCapture'] = dict(path=str(paths[3]), bytes=paths[3].stat().st_size, sha256=digest(paths[3]))
         receipt['outputRetention'] = output_tree(offer)
         descendant = waited['rusage']['ru_maxrss'] * 1024
         require(descendant > 0, 'specific waited descendant maximum')
@@ -433,6 +515,7 @@ def main():
         final_blob = (json.dumps(receipt,separators=(',', ':'),allow_nan=False)+'\n').encode('utf8')
         require(len(final_blob) <= 65536, '64 KiB final outer cap')
         with paths[2].open('xb') as target:
+            os.fchmod(target.fileno(), 0o600)
             target.write(final_blob); target.flush(); os.fsync(target.fileno())
         after = time.monotonic_ns()-BEGAN
         if LATCHED or after >= 118000000000:
