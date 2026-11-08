@@ -1,8 +1,9 @@
-// VG5: a card kept in the page's store from an older TEC-OS, in Chromium. One
-// with PICO.SVC and its startup line, at 40 columns, boots to A> with that line
-// gone and CON PICO 40 first in STARTUP.CMD, and is stored so. One with .DRV
-// files is refused in card.mjs's words. The reference is the same two cards
-// through prepareCard and cardProblem in Node. Needs npm run tecos first.
+// VG5: load older cards in Chromium.
+// Replace PICO.SVC and its startup line
+// with CON PICO 40, then check A> and
+// the stored image. Reject .DRV cards.
+// Compare both with the shared Node
+// card helpers. Run npm run tecos first.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -22,7 +23,7 @@ const driveA = (image) => {
 };
 const startup = (image) => Buffer.from(driveA(image).read("STARTUP.CMD", { text: true })).toString("latin1");
 
-/** The page's card as an older TEC-OS left it: PICO.SVC on A: and first in STARTUP.CMD. */
+/** Make a card with PICO.SVC startup. */
 async function picoSvcCard() {
   const image = await card();
   const a = driveA(image);
@@ -31,7 +32,10 @@ async function picoSvcCard() {
   return image;
 }
 
-/** The page's card from before the drivers were services: GLCD.DRV and PICO.DRV, and no GLCD.SVC. */
+/**
+ * Make a pre-service card with GLCD.DRV
+ * and PICO.DRV instead of GLCD.SVC.
+ */
 async function driverCard() {
   const image = await card();
   const a = driveA(image);
@@ -42,7 +46,7 @@ async function driverCard() {
   return image;
 }
 
-/** The SHA-256 of the page's stored card. */
+/** Hash the stored card with SHA-256. */
 const storedSha = (page) =>
   page.evaluate(
     () =>
@@ -70,7 +74,7 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   });
   const url = `http://127.0.0.1:${server.address().port}/`;
 
-  // The reference: the same card through prepareCard in Node.
+  // Prepare the reference card in Node.
   const old = await picoSvcCard();
   const want = old.slice();
   assert.equal(prepareCard(want, "tms", "40").problem, null);
@@ -79,7 +83,8 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   const upgraded = await open(browser, url, old, "tms", "40");
   await upgraded.page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
   const rows = await upgraded.page.evaluate(() => globalThis.tecos.screen());
-  // CON PICO 40 clears the screen as it takes the console; what follows is on it.
+  // Width selection clears the screen.
+  // Later startup output remains visible.
   assert.ok(rows.some((l) => /^A>USER 0\s*$/.test(l)), `the startup file's other line ran:\n${rows.join("\n")}`);
   assert.ok(!rows.some((l) => /PICO\.SVC/.test(l)), `and not PICO.SVC's:\n${rows.join("\n")}`);
   await upgraded.page.waitForFunction(() => !/not saved/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// One self-contained viewer page from dist/, for a private link:
-// dist/tec-os-viewer.html, labelled with the viewer's commit and TEC-OS's. The
-// page's files are embedded and served to its fetch calls by their relative
-// paths; the page's code is unchanged. It refuses a viewer tree with changes,
-// whose commit wouldn't name what built the page. Run after npm run web.
+// Embed dist/ in a standalone page:
+// dist/tec-os-viewer.html. Run after
+// npm run web. Preserve the app code and
+// serve embedded assets through fetch.
+// Label both repository commits and
+// reject a changed viewer checkout.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";

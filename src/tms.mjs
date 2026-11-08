@@ -1,7 +1,9 @@
-// TMS9918 screen rendering from VRAM and registers: text mode (40 columns of
-// 6-pixel cells) and Graphics I (32 columns) with its sprites, the modes the
-// TEC-OS console and its programs use. Other modes use the framebuffer the
-// runtime renders itself.
+// Render PICO9918 video from memory
+// and registers. Text at 80/40 columns
+// uses six-pixel cells. Graphics I uses
+// 32 columns with eight-pixel cells.
+// Other modes use the runtime's
+// supplied framebuffer.
 
 const PALETTE = [
   0x000000, 0x000000, 0x21c842, 0x5edc78, 0x5455ed, 0x7d76fc, 0xd4524d, 0x42ebf5,
@@ -17,10 +19,14 @@ function put(d, x, y, rgb) {
 }
 
 /**
- * Sprites over the background: up to 32 from the attribute table, ending at
- * a Y of D0h, 8 x 8 or 16 x 16 (register 1 bit 1), doubled with bit 0. Sprite
- * 0 is in front. The early clock bit moves a sprite 32 pixels left. The
- * four-per-line limit and collision flag are not modelled.
+ * Draw sprites over the background.
+ * Read up to 32 attribute entries or
+ * stop at Y=D0h. Register 1 bit 1 selects
+ * 8x8 or 16x16 pixels. Bit 0 doubles
+ * both dimensions. Sprite 0 is in front.
+ * Early clock moves a sprite 32 pixels
+ * left. No four-per-line limit or
+ * collision flag is modelled.
  */
 function drawSprites(d, r, vram) {
   const attrs = (r[5] & 0x7f) * 0x80;
@@ -51,14 +57,16 @@ function drawSprites(d, r, vram) {
   }
 }
 
-/** True when the registers select the PICO9918's 80-column text mode. */
+/** Test for 80-column text mode. */
 export function isText80(registers) {
   return (registers[0] & 0x04) !== 0 && (registers[1] & 0x10) !== 0;
 }
 
 /**
- * Fill a 512 x 192 image for 80-column text: 80 cells of 6 pixels between
- * 16-pixel borders, names at a 4 KiB boundary, colours from register 7.
+ * Render 80-column text to 512x192 pixels.
+ * Use six-pixel cells between 16-pixel
+ * borders. Names start at a 4 KiB
+ * boundary. Register 7 sets colours.
  */
 export function renderText80(image, snapshot) {
   const d = image.data;
@@ -93,7 +101,13 @@ export function renderText80(image, snapshot) {
   }
 }
 
-/** Fill image data (256 x 192) for the current mode. Returns false if blank. */
+/**
+ * Render the current mode to 256x192.
+ * Return false for an unsupported mode
+ * without a fallback framebuffer.
+ * A disabled display is filled with its
+ * backdrop colour and returns true.
+ */
 export function renderTms(image, snapshot, fallbackFramebuffer) {
   const d = image.data;
   const r = snapshot.registers;

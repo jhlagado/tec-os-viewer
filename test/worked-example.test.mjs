@@ -1,7 +1,8 @@
-// VG10 (VS1 VG4): the page card's worked example, on the PICO9918 board at 80 columns.
-// At the prompt, TAS SAMPLE and SAMPLE print SAMPLE's three lines, as TEC-OS's
-// sample.test.mjs reads them. Then in TED the hello line is edited, ^T B builds
-// it and ^T R runs it, and the edited line is printed. Emulator evidence.
+// VG10 (VS1 VG4): build and run SAMPLE
+// at the prompt on PICO9918, width 80.
+// Edit its greeting in TED, then build
+// with ^T B and run with ^T R. Check
+// the edited output in the emulator.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -12,13 +13,16 @@ import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { ROOT } from "./lib/root.mjs";
 import { card, power } from "./lib/page.mjs";
 
-const LIMIT = 400_000_000; // each step's cycles: a stall fails, naming the step
-const RIGHT = "\x1b[C"; // TED's cursor right
+const LIMIT = 400_000_000; // Per-step cycle limit.
+const RIGHT = "\x1b[C"; // TED cursor-right sequence.
 
 /**
- * Keys for M on the matrix keyboard, each when it waits for one, then until it
- * waits with nothing queued and DONE holds. DONE, which may read the screen, is
- * asked at most every EVERY cycles, so a wait that never ends reaches LIMIT soon.
+ * Queue matrix input and run until idle
+ * with no queued keys and done() true.
+ * Space calls to done() by at least
+ * EVERY cycles. Check only when input
+ * has drained and the machine waits.
+ * LIMIT bounds the whole step.
  */
 const EVERY = 20_000;
 function keys(m, s, what, done = () => true) {
@@ -37,7 +41,12 @@ function keys(m, s, what, done = () => true) {
   }
 }
 
-/** Exact on-card text, including CRLF, EOF and record padding, and TED coordinates. */
+/**
+ * Check delivered source bytes and TED
+ * coordinates. Preserve carriage-return/
+ * line-feed pairs, the end-of-file byte
+ * and zero record padding.
+ */
 function samplePosition(image) {
   const source = readFileSync(resolve(ROOT, "tec-os/programs/SAMPLE.ASM"), "utf8");
   const expected = Buffer.from(source.replace(/\n/g, "\r\n") + "\x1a", "latin1");

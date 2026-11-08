@@ -1,8 +1,10 @@
-// KE-153: the page's card store. A save that fails throws from the real
-// src/store.mjs, and the page keeps the card unsaved, says so and saves
-// again, until a save succeeds. IndexedDB's failure is injected: in Node by a
-// stand-in for the module, in Chromium by a script that runs before the page.
-// The page tests need npm run tecos first, as tools/build.mjs checks.
+// KE-153: check card-storage failures
+// and recovery. Use src/store.mjs in
+// Node with an IndexedDB stand-in.
+// Inject Chromium failures before page
+// startup. Check unsaved status and
+// successful retry. Run npm run tecos
+// before the browser tests.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -15,7 +17,10 @@ import { ROOT, fromTecos } from "./lib/root.mjs";
 import { serve } from "./lib/serve.mjs";
 
 let closes = 0;
-/** An IndexedDB whose open fails, or whose put's transaction fails, as asked. */
+/**
+ * Simulate IndexedDB open/read failures
+ * or a failed write transaction.
+ */
 function failing(where) {
   const later = (f) => setTimeout(f, 0);
   return {
@@ -78,7 +83,8 @@ test("the page keeps a card it couldn't save unsaved, says so, and saves it once
   const page = await browser.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  // Every put fails while window.failSaves is set; each attempt is counted.
+  // Count write transactions and abort
+  // them while window.failSaves is set.
   await page.addInitScript(() => {
     window.failSaves = true;
     window.saveTries = 0;
@@ -138,7 +144,7 @@ test("the page saves one card at a time, and after three failures says saving ke
     },
   };
   runInNewContext(`${source.slice(start, end)}\nthis.save = save;`, context);
-  const first = context.tick(); // a save under way
+  const first = context.tick(); // Start the first save.
   await Promise.resolve();
   context.state.cardDirty = true;
   assert.equal(await context.save(), false, "a second save while one runs doesn't start");
@@ -164,20 +170,23 @@ test("a file import during a timer's save saves after it, so the stored card hol
     $: () => ({ textContent: "" }),
     refreshCard: () => {},
     setInterval: (fn) => (context.tick = fn),
-    // A slow store: each save lands when the test releases it, in the order the test chooses.
+    // Complete each save only when the
+    // test releases its promise.
     saveCard: (image) => new Promise((ok) => releases.push(() => ((stored = image), ok()))),
   };
   runInNewContext(`${source.slice(start, end)}\nthis.importSave = typeof importSave === "function" ? importSave : (s) => saveCard(s);`, context);
-  const timer = context.tick(); // the old card's save, under way
+  const timer = context.tick(); // Start saving the old card.
   await Promise.resolve();
-  const imported = context.importSave(Uint8Array.of(2)); // the import's, with the copied files
+  const imported = context.importSave(Uint8Array.of(2)); // Queue the imported card.
   await new Promise((ok) => setTimeout(ok, 0));
-  // The import's save, if it has started, lands first; the timer's older one lands last.
+  // If saves overlap, complete the import
+  // first and the older timer save last.
   const concurrent = releases.length > 1;
   if (concurrent) releases[1]();
   releases[0]();
   await timer;
-  // Otherwise the import's save starts once the timer's has landed, and lands after it.
+  // Serial saves complete the timer first,
+  // then start and complete the import.
   while (releases.length < 2) await new Promise((ok) => setTimeout(ok, 0));
   if (!concurrent) releases[1]();
   await imported;
@@ -229,9 +238,10 @@ test("a saved card that won't read, or won't parse, is left as it is: the page r
   }), bytes);
   const context = await browser.newContext();
   for (const kind of ["read", "parse"]) {
-    // The marker stored by a page that is then closed, so that no other page's timer saves over it.
+    // Close the planting page before the
+    // test page can load or save the card.
     const planter = await context.newPage();
-    await planter.goto(`${url}missing`); // the origin, without the page's own code
+    await planter.goto(`${url}missing`); // Set the origin without running the app.
     await plant(planter, kind === "read" ? [...MARK, ...new Array(512).fill(0)] : MARK);
     await planter.close();
     const page = await context.newPage();
@@ -249,7 +259,7 @@ test("a saved card that won't read, or won't parse, is left as it is: the page r
       });
     await page.goto(url);
     await page.waitForFunction(() => /couldn't be read/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });
-    await page.waitForTimeout(5_000); // two of the timer's ticks
+    await page.waitForTimeout(5_000); // Allow two autosave intervals.
     assert.deepEqual(await record(page), MARK, `${kind}: the stored record is untouched`);
     await page.close();
   }

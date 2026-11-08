@@ -236,8 +236,8 @@ td:nth-child(3) {
   font-size: 0.85rem;
   margin: 0.5rem 0 0;
 }
-/* Phones and tablets: a hidden field the tapped screen focuses, so the
-   phone's keyboard comes up, and a row of the keys that keyboard lacks. */
+/* Use a hidden field for touch input.
+   Extra buttons supply missing keys. */
 .phonekeys {
   position: absolute;
   top: 0;
@@ -252,7 +252,7 @@ td:nth-child(3) {
   color: transparent;
   background: transparent;
   caret-color: transparent;
-  font-size: 16px; /* smaller makes iOS zoom in on focus */
+  font-size: 16px; /* Avoid iOS focus zoom. */
   pointer-events: none;
 }
 .touchkeys {

@@ -1,6 +1,6 @@
-// The web page's script, bundled as tools/build.mjs bundles it, must not refer
-// to Node's globals: a browser has no Buffer, process or require. And it holds
-// one runtime, TEC-OS's.
+// Check the browser bundle for Node
+// globals and duplicate runtime copies.
+// Resolve the runtime from tec-os/.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

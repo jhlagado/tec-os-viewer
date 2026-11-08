@@ -1,6 +1,6 @@
-// The viewer's root, for the tests that read its page, build it or serve dist/,
-// and a require that resolves from tec-os/, where esbuild and Playwright are
-// installed with the runtime.
+// Locate the viewer and resolve runtime,
+// esbuild and Playwright dependencies
+// from the TEC-OS submodule.
 
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";

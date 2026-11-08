@@ -1,5 +1,7 @@
-// VG11: the page's real card, ROM palette and glyphs through the Viewer decoder.
-// Emulator evidence. Calls PUTAT through ABI 5 to place normal/reverse cells.
+// VG11: check the page card's palette
+// and glyphs through the viewer decoder.
+// Use ABI 5 PUTAT for normal and reverse
+// cells. These are emulator checks.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -16,7 +18,11 @@ async function boot(width) {
   return m;
 }
 
-/** ABI 5 PUTAT, two characters at row 2 column 3, with the CCP state restored. */
+/**
+ * Write two cells at row 2, column 3
+ * through ABI 5 PUTAT. Restore the
+ * command processor's CPU registers.
+ */
 function putPair(m) {
   const cpu = m.cpu.cpu;
   const saved = Object.fromEntries(["a", "b", "c", "d", "e", "h", "l", "sp", "pc"].map((r) => [r, cpu[r]]));

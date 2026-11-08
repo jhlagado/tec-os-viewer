@@ -1,6 +1,7 @@
-// TEC-OS in the browser: the Debug80 TEC-1G runtime driving a TMS9918
-// screen, the front-panel displays, a serial terminal and an SD card kept in
-// IndexedDB. The machine wrapper is the one the tests use.
+// Run TEC-OS in a browser using the
+// shared Debug80 TEC-1G machine model.
+// Draw its displays and serial output.
+// Keep the SD card image in IndexedDB.
 
 import { Machine, symbolsFromD8 } from "../tec-os/host/machine.mjs";
 import { serializeTec1gUpdateFromRuntimeState } from "@jhlagado/debug80-runtime/platforms/tec1g/update-controller";
@@ -20,7 +21,7 @@ const state = {
   machine: null,
   card: null,
   cardDirty: false,
-  unsaved: false, // the last save failed (KE-153)
+  unsaved: false, // Last save failed (KE-153).
   importBusy: false,
   running: true,
   serialSeen: 0,
@@ -39,12 +40,12 @@ function localStorageSet(key, value) {
   try {
     localStorage.setItem(key, value);
   } catch {
-    // Not available: the choice lasts for this page only.
+    // Keep the session choice on failure.
   }
 }
 
 async function fetchBytes(url) {
-  const response = await fetch(url, { cache: "no-cache" }); // a rebuilt ROM or file is never served stale
+  const response = await fetch(url, { cache: "no-cache" }); // Revalidate cached files.
   if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
   return new Uint8Array(await response.arrayBuffer());
 }
@@ -62,12 +63,13 @@ async function starterCard() {
   return buildRecipe(recipe, fetchBytes);
 }
 
-// ---- Machine lifecycle ------------------------------------------------------
+// ---- Machine lifecycle
 
-// The card is changed by one thing at a time: a power on's preparation, which
-// may rewrite STARTUP.CMD for the display chosen, and an import's publication take
-// turns, so the later choice reaches both the running card and the saved one
-// (KE-168).
+// Serialise card preparation and import
+// publication. Preparation may rewrite
+// STARTUP.CMD for the chosen display.
+// Imports then use the current card,
+// preserving that choice (KE-168).
 let turn = Promise.resolve();
 function serial(fn) {
   const run = turn.then(fn);
@@ -110,13 +112,15 @@ setInterval(async () => {
 }, 2000);
 
 /**
- * Save the card; on failure it stays marked unsaved, the next tick tries again,
- * and the page says so, and after three failures in a row that saving keeps
- * failing (D2). One save at a time: a save asked for during another marks the
- * card dirty, and the next tick saves the newest copy (D3).
+ * Save one card image at a time.
+ * A concurrent request marks it dirty
+ * for the next timer tick (D3).
+ * Failure marks it unsaved for retry.
+ * Show a persistent-failure message
+ * after three consecutive failures (D2).
  */
 async function save(image = state.card) {
-  if (state.noSave) return false; // the stored record couldn't be read: kept as it is
+  if (state.noSave) return false; // Preserve the unread stored record.
   if (state.saving) {
     state.cardDirty = true;
     return false;
@@ -147,12 +151,14 @@ async function save(image = state.card) {
 }
 
 /**
- * A file import's save of STAGED: after any save under way has finished, and
- * under the same guard, so that an older card's save can't finish after it
- * and drop the copied files (KE-163). A failure throws, for "Not copied".
+ * Save the staged import after any
+ * pending save. Hold the save guard so
+ * an older card cannot overwrite the
+ * imported files (KE-163). Failure
+ * throws for the "Not copied" message.
  */
 async function importSave(staged) {
-  if (state.noSave) return; // the copy stays in memory only, as the card does
+  if (state.noSave) return; // Keep the imported copy in memory.
   while (state.saving) await state.saveDone;
   state.saving = true;
   let done;
@@ -165,7 +171,7 @@ async function importSave(staged) {
   }
 }
 
-// ---- Run loop -----------------------------------------------------------------
+// ---- Run loop
 
 let last = performance.now();
 let cyclesWindow = 0;
@@ -196,7 +202,7 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
-// ---- Rendering ------------------------------------------------------------------
+// ---- Rendering
 
 const tmsCanvas = $("tms");
 const tmsCtx = tmsCanvas.getContext("2d");
@@ -257,7 +263,8 @@ function drawTms(tms, device) {
   tmsCtx.drawImage(tmsBitmap, 0, 0, tmsCanvas.width, tmsCanvas.height);
 }
 
-// Segment bits on port 02h: 0 a, 1 f, 2 g, 3 b, 4 dp, 5 c, 6 e, 7 d.
+// Port 02h segment bits: 0 a, 1 f, 2 g,
+// 3 b, 4 dp, 5 c, 6 e and 7 d.
 const SEGMENTS = [
   ["a", 0, "M8 4h20l-3 4H11z"],
   ["f", 1, "M6 6l4 4v14l-4 3z"],
@@ -284,7 +291,7 @@ for (let i = 0; i < 6; i += 1) {
 }
 function drawDigits(digits) {
   for (let i = 0; i < 6; i += 1) {
-    const value = digits?.[5 - i] ?? 0; // index 5 is the leftmost digit
+    const value = digits?.[5 - i] ?? 0; // Index 5 is leftmost.
     for (const path of digitEls[i]) path.classList.toggle("on", (value & (1 << Number(path.dataset.bit))) !== 0);
   }
 }
@@ -295,8 +302,10 @@ for (let i = 0; i < 64; i += 1) {
   $("leds").appendChild(dot);
   ledEls.push(dot);
 }
-// The matrix is multiplexed: a program lights one row at a time. While it
-// keeps scanning, show the last complete scan; when it stops, the row latched.
+// Display the last complete matrix scan
+// while scanning continues. After 100 ms
+// without a new scan, display the current
+// latched rows instead.
 let ledScan = { id: -1, at: 0, rows: null };
 function drawLeds(p) {
   const last = p.matrixScanCycles?.at(-1);
@@ -353,7 +362,7 @@ function drawGlcd(bytes, glcdState) {
   glcdCtx.drawImage(glcdBitmap, 0, 0, glcdCanvas.width, glcdCanvas.height);
 }
 
-// ---- Serial terminal ---------------------------------------------------------------
+// ---- Serial terminal
 
 function pullSerial(m) {
   if (m.serial.length === state.serialSeen) return;
@@ -361,7 +370,7 @@ function pullSerial(m) {
   for (let i = state.serialSeen; i < m.serial.length; i += 1) {
     const b = m.serial[i];
     if (state.escape) {
-      // Skip ANSI sequences: ESC [ parameters final.
+      // Skip ESC [ parameters and final byte.
       if (state.escape === 1) state.escape = b === 0x5b ? 2 : 0;
       else if (b >= 0x40 && b <= 0x7e) state.escape = 0;
       continue;
@@ -385,7 +394,7 @@ function appendSerial(text) {
   if (atEnd) pre.scrollTop = pre.scrollHeight;
 }
 
-// ---- Keyboard ----------------------------------------------------------------------
+// ---- Keyboard
 
 const ARROWS = { ArrowUp: "A", ArrowDown: "B", ArrowRight: "C", ArrowLeft: "D" };
 
@@ -405,7 +414,8 @@ function keyText(e) {
   return e.key;
 }
 
-// The TEC-1G matrix keyboard's own arrow keys; TEC-OS turns them into ESC [ A-D.
+// Send matrix arrow-key codes. TEC-OS
+// converts them to ESC [ A-D sequences.
 const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\x05", ArrowRight: "\x06" };
 
 function onKey(route) {
@@ -426,14 +436,16 @@ $("tms").addEventListener("click", () => $("tms").focus());
 $("glcd").addEventListener("keydown", onKey(() => "matrix"));
 $("glcd").addEventListener("click", () => $("glcd").focus());
 
-// ---- Phones and tablets ------------------------------------------------------------
-// A canvas or pre brings up no on-screen keyboard. A tap on the screen, the
-// GLCD or the serial terminal focuses a hidden text field instead, and what
-// the phone's keyboard does to that field is turned into the key events the
-// tapped element would have had, for the same onKey. The field holds one
-// space, so that Backspace always has something to delete; each edit is
-// compared with what was there and the field is put back. A row of keys gives
-// the ones a phone keyboard lacks; Ctrl latches for the next key.
+// ---- Phones and tablets
+// Open the touch keyboard by focusing a
+// hidden text field when a screen or
+// terminal is tapped. Route its input
+// through onKey for the tapped target.
+// Keep one space for Backspace to delete.
+// Compare each edit, then reset the field.
+// Extra buttons supply missing keys.
+// The next key clears the Ctrl latch.
+// Apply Ctrl only to a character key.
 
 const phone = { target: "matrix", pointer: "", ctrl: false };
 const phoneInput = $("phonekeys");
@@ -457,9 +469,10 @@ function phoneRest() {
   phoneSent = PHONE_REST;
 }
 
-// Send the difference between what the field held and what it holds now: a
-// Backspace for each character taken off the end, then each one added. A
-// keyboard composing a word changes it in place, so this follows it as it goes.
+// Convert the changed suffix to keys:
+// Backspace for each removed character,
+// then each new character. This handles
+// replacements during word composition.
 function phoneEdited() {
   const now = phoneInput.value;
   let same = 0;
@@ -490,9 +503,9 @@ for (const [id, target] of [["tms", "matrix"], ["glcd", "matrix"], ["serial", "s
 }
 
 phoneInput.addEventListener("keydown", (e) => {
-  if (e.isComposing || e.keyCode === 229) return; // the keyboard is editing the field: see input
-  // A key with a name, as from a tablet's own keyboard, goes as it would to the
-  // tapped element; letters a phone keyboard sends this way go the same way.
+  if (e.isComposing || e.keyCode === 229) return; // Composition uses input events.
+  // Route named keys and characters to
+  // the target selected by the last tap.
   const ctrlKey = e.ctrlKey || (phone.ctrl && e.key.length === 1);
   if (keyText({ key: e.key, ctrlKey, metaKey: e.metaKey, altKey: e.altKey }) === null) return;
   e.preventDefault();
@@ -515,7 +528,7 @@ phoneInput.addEventListener("compositionend", () => {
 });
 
 for (const button of $("touchkeys").querySelectorAll("button")) {
-  button.addEventListener("mousedown", (e) => e.preventDefault()); // keep the field, and the keyboard
+  button.addEventListener("mousedown", (e) => e.preventDefault()); // Retain text-field focus.
   button.addEventListener("click", () => {
     if (button.dataset.key === "Control") setCtrl(!phone.ctrl);
     else phoneKey(button.dataset.key);
@@ -523,10 +536,10 @@ for (const button of $("touchkeys").querySelectorAll("button")) {
   });
 }
 
-// For tests: the PICO9918 screen as text rows.
+// Expose PICO9918 text rows to tests.
 globalThis.tecos = { screen: () => state.machine?.screen() ?? [] };
 
-// ---- Card ---------------------------------------------------------------------------
+// ---- Card
 
 function cardInfo() {
   try {
@@ -579,7 +592,7 @@ function refreshFiles() {
       try {
         bytes = fs.read(f.name, { user: f.user, text: $("astext").checked });
       } catch (err) {
-        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // a damaged entry, named (VE-2)
+        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // Report the damaged entry (VE-2).
         return;
       }
       download(bytes, f.name);
@@ -632,7 +645,8 @@ $("putfile").addEventListener("change", async (e) => {
   const wasRunning = state.running;
   state.running = false;
   try {
-    // The files read first; then, in the card's turn, staged on the card as it is then.
+    // Read files before taking the card
+    // turn. Stage them on its current copy.
     const files = [];
     for (const file of e.target.files) files.push([file.name.toUpperCase(), new Uint8Array(await file.arrayBuffer())]);
     await serial(async () => {
@@ -641,7 +655,7 @@ $("putfile").addEventListener("change", async (e) => {
       if (!v) return;
       const fs = new CpmVolume(volumePayload(staged, v), v.g, { readOnly: v.readOnly });
       for (const [name, bytes] of files) fs.write(name, bytes, { text: $("astext").checked });
-      await importSave(staged); // a failed save throws: "Not copied", and the card as it was
+      await importSave(staged); // Save failure leaves the card intact.
       state.card.set(staged);
       reset();
     });
@@ -656,7 +670,7 @@ $("putfile").addEventListener("change", async (e) => {
 });
 $("drive").addEventListener("change", refreshFiles);
 
-// ---- Controls -------------------------------------------------------------------------
+// ---- Controls
 
 $("display").value = state.display;
 $("display").addEventListener("change", async (e) => {
@@ -686,11 +700,12 @@ $("pause").addEventListener("click", () => {
 });
 setInterval(refreshFiles, 5000);
 
-// ---- Start ---------------------------------------------------------------------------
+// ---- Start
 
 (async () => {
-  // A record that won't read, or won't parse, is left as it is: a starter card
-  // runs, unsaved, and nothing is saved until a reload reads the record (KE-164).
+  // Preserve an unreadable stored record.
+  // Run a starter card without saving
+  // over it. Reload to retry (KE-164).
   try {
     state.card = await loadCard();
     if (state.card) parseContainer(state.card);

@@ -1,11 +1,11 @@
-// The web page on a phone (KE-125): tapping the PICO9918 screen must bring up
-// the phone's keyboard, and what that keyboard sends must reach TEC-OS. A
-// phone keyboard sends no keydown with a usable key; it edits a text field and
-// fires beforeinput and input. So the page is built, opened in Chromium at a
-// touch-enabled phone size, the screen is tapped, and `dir` and Enter are
-// typed as such edits to whatever the tap focused, never as keydown on the
-// canvas. The directory must then be on the PICO9918 screen. Needs npm run
-// tecos first, as tools/build.mjs checks.
+// KE-125: route touch-keyboard edits to
+// the PICO9918 screen in Chromium at a
+// phone-sized viewport. Tap the canvas,
+// then enter dir through beforeinput
+// and input on the focused text field.
+// Do not inject canvas keydown events.
+// Check the resulting directory output.
+// Run npm run tecos before this test.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -14,9 +14,12 @@ import { resolve } from "node:path";
 import { ROOT, fromTecos } from "./lib/root.mjs";
 import { serve } from "./lib/serve.mjs";
 
-/** In the page: edit the focused field as a phone keyboard does, one
- *  character at a time: beforeinput, then, unless that was cancelled, the
- *  change to the value and input. "\n" is the keyboard's Enter. */
+/**
+ * Simulate text-field keyboard edits.
+ * Dispatch beforeinput per character.
+ * Unless cancelled, update the value
+ * and dispatch input. "\n" means Enter.
+ */
 function phoneType(text) {
   const el = document.activeElement;
   for (const ch of text) {
@@ -59,7 +62,8 @@ test("on a phone, tapping the screen and typing dir on the phone's keyboard list
   assert.deepEqual([focused.autocorrect, focused.autocapitalize, focused.spellcheck], ["off", "off", false], "autocorrect, autocapitalise and spellcheck are off");
   assert.ok(await page.isVisible("#touchkeys"), "the row of keys a phone keyboard lacks is shown");
 
-  // The screen is read from the machine the page runs, through its test hook.
+  // Read the running machine's screen
+  // through the page's test hook.
   const screen = () => page.evaluate(() => globalThis.tecos.screen());
   await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>$/.test(l)), null, { timeout: 60_000 });
 

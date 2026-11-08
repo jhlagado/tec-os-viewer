@@ -1,7 +1,8 @@
-// VE-2: a file whose directory entry names a block past DSM is damage, and
-// TEC-OS's read throws on it, naming the entry. The page's Download says why
-// it failed, in the card's line, and nothing is thrown in the page. In
-// Chromium, with the card in the page's store. Needs npm run tecos first.
+// VE-2: report a damaged file entry in
+// the card-status line without a page
+// exception or download. Plant the card
+// in Chromium's store. Run npm run tecos
+// before this test.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -11,7 +12,11 @@ import { card, web } from "./lib/page.mjs";
 import { fromTecos } from "./lib/root.mjs";
 import { open, serve } from "./lib/serve.mjs";
 
-/** The page's card with DEMO.COM's first block number set past A:'s DSM, and the words TEC-OS's read gives for it. */
+/**
+ * Damage DEMO.COM with a block beyond
+ * A:'s maximum block number, DSM.
+ * Return the card and its read error.
+ */
 async function damagedCard() {
   const image = await card();
   const v = findVolume(parseContainer(image), "A");

@@ -1,5 +1,6 @@
-// The page's import and width cases, moved from TEC-OS's host-boundaries
-// (KE-163, KE-168): they read the page's own source and run its handlers.
+// Check imports and width changes using
+// the actual page handlers
+// (KE-163, KE-168).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -13,13 +14,17 @@ function card() {
   return { image, fs: new CpmVolume(volumePayload(image, v), v.g) };
 }
 
-/** The page's function NAME's text. */
+/** Extract the named page function. */
 function fn(source, name) {
   const at = source.indexOf(name);
   return source.slice(at, source.indexOf("\n}\n", at) + 3);
 }
 
-/** The page's code from START to END, after the helpers the import's handler calls: importSave (KE-163) and serial (KE-168). */
+/**
+ * Include importSave and serial before
+ * the requested page-source slice
+ * (KE-163, KE-168).
+ */
 function withImportSave(source, start, end) {
   const serial = source.includes("function serial(") ? `let turn = Promise.resolve();\n${fn(source, "function serial(")}` : "";
   return `${fn(source, "async function importSave")}\n${serial}\n${source.slice(start, end)}`;
@@ -89,7 +94,7 @@ for (const running of [true, false]) {
       } }] } });
       const pausedDuringRead = state.running;
       releaseRead();
-      // Allow the handler to reach the pending save without completing it.
+      // Advance to the blocked save.
       await new Promise(resolve => setImmediate(resolve));
       if (failure !== 'read') {
         assert.equal(saves, 1);
@@ -153,7 +158,8 @@ for (const running of [true, false]) {
       const autosaveRead = autosave();
       const savesDuringRead = saves;
       const dirtyDuringRead = state.cardDirty;
-      // The frame guard must hold even if another control changes running.
+      // Block machine stepping during imports,
+      // even if a control sets running.
       state.running = true;
       context.frame(10);
       const stepsDuringRead = steps;
@@ -206,17 +212,18 @@ test("a width chosen while an import's files are read is the width on the card t
     fetch: async () => ({ json: async () => ({}) }), fetchBytes: async () => new Uint8Array(0),
     loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
     Machine: class {},
-    // The card's driver stood in for by a file on A: naming the width it was prepared at.
+    // Record the prepared width on A:
+    // instead of configuring a driver.
     prepareCard: (img, _display, width) => { volumeOf(img).write('WIDTH.TXT', new TextEncoder().encode(width)); return { problem: null, note: null, changed: true }; },
   };
   const page = source.includes("let turn = Promise.resolve();")
     ? `${life}\n${fn(source, "async function importSave")}\n${source.slice(start, end)}\nthis.powerOn = powerOn;`
     : `${source.slice(source.indexOf("async function powerOn"), source.indexOf("\nfunction reset()"))}\n${withImportSave(source, start, end)}\nthis.powerOn = powerOn;`;
   runInNewContext(page, context);
-  await context.powerOn(); // power on at 80
+  await context.powerOn(); // Begin at 80 columns.
   const imported = handler({ target: { files: [{ name: 'new.txt', arrayBuffer: async () => { await readGate; return new Uint8Array([65]).buffer; } }], value: 'x' } });
   await new Promise((ok) => setTimeout(ok, 0));
-  state.width = '40'; // chosen, and the power on done, while the file is still read
+  state.width = '40'; // Change width while file input waits.
   await context.powerOn();
   releaseRead();
   await imported;

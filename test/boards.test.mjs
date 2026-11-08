@@ -1,24 +1,29 @@
-// VG3: the page's card, built as the page builds it, reaches A> on each board:
-// serial only, PICO9918 with the matrix keyboard at 80, 40 and 32 columns,
-// GLCD with the matrix keyboard, and both displays. The serial board at 40,
-// whose card has the page's CON PICO 40 line, says nothing of the width at
-// boot (P3: KE-191). With no card the same machine gives CARD? and no prompt.
-// Emulator evidence.
+// VG3: boot the page card on serial,
+// PICO9918, GLCD and dual-display boards.
+// Test PICO widths 80, 40 and 32.
+// A serial board at 40 must omit width
+// errors from startup (KE-191).
+// With no card, require CARD? and no A>.
+// Emulator checks. Run npm run tecos
+// before these tests.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { BOARDS, Machine, TEST_CLOCK, card, power, rom } from "./lib/page.mjs";
 
-const BOOT = 300_000_000; // cycles to the prompt, with startup's file run
+const BOOT = 300_000_000; // Boot and startup cycle limit.
 
-/** The console's rows on BOARD, as a person sees them. */
+/** Read the selected console as rows. */
 function rows(m, board) {
   if (BOARDS[board].tms) return m.screen(m.read(m.sym("PIWID")) || 80).map((l) => l.trimEnd());
   if (BOARDS[board].matrix) return m.glcdScreen().map((l) => l.trimEnd());
   return m.serialText().split(/\r?\n/).map((l) => l.trimEnd());
 }
 
-/** Boot the page's card on BOARD at WIDTH to the prompt, with startup's file finished. */
+/**
+ * Boot the page card at the chosen width.
+ * Wait for startup to finish at A>.
+ */
 async function boot(board, width = 80) {
   const m = power(await card(), board, width);
   m.runUntilChecked(() => m.ready() && rows(m, board).some((l) => /^A>$/.test(l)), BOOT, `${board} at ${width}: the prompt`);

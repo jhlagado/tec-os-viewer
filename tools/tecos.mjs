@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// The TEC-OS step: build TEC-OS's ROM and media in the submodule at its pin,
-// then check what they made against pins.json. TAS_COM and TED_COM, when both
-// are set, name the Thorium inputs; otherwise npm run inputs fetches them.
+// Build pinned firmware and media, then
+// check ROM and card-file digests.
+// TAS_COM and TED_COM select the Thorium
+// inputs when both are set. Otherwise
+// npm run inputs prepares them.
 //
-//   node tools/tecos.mjs           the whole step, then the check
-//   node tools/tecos.mjs --check   the check alone
+// node tools/tecos.mjs: build and check
+// node tools/tecos.mjs --check: check
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -16,7 +18,10 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TECOS = resolve(ROOT, "tec-os");
 const sha = (path) => createHash("sha256").update(readFileSync(path)).digest("hex");
 
-/** Each way TEC-OS's output differs from its pins, in words; none when it matches. */
+/**
+ * List checkout and output mismatches.
+ * Return an empty list on a match.
+ */
 export function problems() {
   const found = [];
   const git = (dir, ...args) => execFileSync("git", ["-C", dir, ...args], { encoding: "utf8" }).trimEnd();
@@ -44,7 +49,7 @@ export function problems() {
   return found;
 }
 
-/** Stop, naming each cause, unless TEC-OS's output matches its pins. */
+/** Report mismatches and exit on error. */
 export function check() {
   const found = problems();
   if (found.length) {

@@ -1,5 +1,6 @@
-// dist/ served on a free local port, as a static host serves the page, and the
-// page opened there with a card in its store.
+// Serve dist/ on a free local port.
+// Open a page with a stored card and
+// selected display preferences.
 
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -9,7 +10,10 @@ import { ROOT } from "./root.mjs";
 const DIST = resolve(ROOT, "dist");
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
 
-/** A server for dist/; its URL is http://127.0.0.1:<server.address().port>/. */
+/**
+ * Serve dist/ at 127.0.0.1 on the port
+ * returned by server.address().port.
+ */
 export function serve() {
   const server = createServer(async (req, res) => {
     const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
@@ -27,12 +31,16 @@ export function serve() {
   return new Promise((ok) => server.listen(0, "127.0.0.1", () => ok(server)));
 }
 
-/** The page at its own origin with IMAGE as its stored card, and DISPLAY and WIDTH chosen. */
+/**
+ * Plant the card and display/width
+ * preferences before opening the app
+ * at the same origin.
+ */
 export async function open(browser, url, image, display, width) {
   const context = await browser.newContext();
   await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
   const planter = await context.newPage();
-  await planter.goto(`${url}missing`); // the origin, without the page's own code
+  await planter.goto(`${url}missing`); // Set the origin without running the app.
   await planter.evaluate(
     async ([display, width]) => {
       localStorage.setItem("tecos.display", display);

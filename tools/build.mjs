@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Build the web page into dist/: bundle the script, copy the page, the ROM
-// image with its label map, and the page's recipe and files from TEC-OS's
-// dist/, once they match pins.json. Run after npm run tecos.
+// Bundle the page into dist/ and copy
+// its firmware, symbols and card assets.
+// Run after npm run tecos. Check the
+// ROM and card-file pins before copying.
 
 import { createRequire } from "node:module";
 import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync, readdirSync } from "node:fs";
@@ -12,10 +13,16 @@ import { check } from "./tecos.mjs";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TECOS = resolve(ROOT, "tec-os");
 const OUT = resolve(ROOT, "dist");
-const { build } = createRequire(resolve(TECOS, "package.json"))("esbuild"); // TEC-OS's, installed with the runtime
-const PROFILES = ["tecos"]; // one image; the width is a CON PICO 40 or 32 line in the card's STARTUP.CMD
+const { build } = createRequire(resolve(TECOS, "package.json"))("esbuild");
+const PROFILES = ["tecos"]; // One image for all widths.
+// prepareCard selects 40/32 through
+// STARTUP.CMD.
 
-/** Every import of the runtime, the page's and TEC-OS's, resolved from tec-os/ by its exports: one copy, at TEC-OS's version. */
+/**
+ * Resolve all runtime imports through
+ * the submodule's package exports.
+ * Keep one copy at its pinned version.
+ */
 const oneRuntime = {
   name: "one-runtime",
   setup(b) {
@@ -25,7 +32,7 @@ const oneRuntime = {
   },
 };
 
-/** The bundle's options: one runtime, TEC-OS's, and no filesystem in the browser. */
+/** Bundle with the browser fs stub. */
 export const bundleOptions = {
   entryPoints: [resolve(ROOT, "src/main.mjs")],
   bundle: true,
@@ -40,8 +47,8 @@ export const bundleOptions = {
 };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  check(); // what is copied is what pins.json names
-  rmSync(OUT, { recursive: true, force: true }); // nothing from an older build reaches the page
+  check(); // Check ROM and card-file pins.
+  rmSync(OUT, { recursive: true, force: true });
   mkdirSync(resolve(OUT, "roms"), { recursive: true });
   mkdirSync(resolve(OUT, "files"), { recursive: true });
 
@@ -56,7 +63,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       .map((s) => ({ name: s.name, address: s.address ?? s.value }));
     writeFileSync(resolve(OUT, `roms/${p}.symbols.json`), JSON.stringify(labels));
   }
-  // The page's card is the starter with DEMO.COM (KD-170), under the name the page fetches.
+  // The page recipe adds DEMO.COM to the
+  // starter card (KD-170). Copy it under
+  // the path fetched by the page.
   copyFileSync(resolve(TECOS, "dist/page.recipe.json"), resolve(OUT, "starter.recipe.json"));
   for (const f of readdirSync(resolve(TECOS, "dist/files"))) {
     copyFileSync(resolve(TECOS, "dist/files", f), resolve(OUT, "files", f));

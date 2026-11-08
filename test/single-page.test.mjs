@@ -1,6 +1,7 @@
-// VG6: dist/tec-os-viewer.html stands alone. Opened in Chromium with every
-// request but its own refused, it boots to A>, and its label names the viewer's
-// commit and TEC-OS's. Needs npm run tecos first.
+// VG6: boot the standalone HTML page
+// with all other requests blocked.
+// Check A> and both commit labels.
+// Run npm run tecos before this test.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

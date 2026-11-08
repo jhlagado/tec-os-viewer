@@ -1,5 +1,6 @@
-// Moved from TEC-OS's starter.test.mjs: the web build starts clean. Needs npm
-// run tecos first, as tools/build.mjs checks.
+// Check that the web build removes old
+// distribution files. Run npm run tecos
+// before this test.
 
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
