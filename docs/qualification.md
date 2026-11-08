@@ -20,7 +20,10 @@ The reformatted sample places the greeting on line 193, with the first `H` at
 column 18. The zero-based insertion offset is 28 and adding `the ` before
 `TEC-OS.` places
 the edited cursor at `L193 C33`. The VG10 assertions use these exact source
-coordinates. This source update awaits Viewer qualification.
+coordinates. The exact card-source checks and the TAS/TED edit, build and run
+workflow pass for this sample update. Clean bundle and distribution checks
+also pass. The historical full VS2 suite was not rerun for this source-only
+change; the ROM and all other card-file bytes remain identical.
 
 The session default remains 80 columns and the old font remains in use. The
 [upstream Compact offer](compact-source-offer.md) is separate receiving work.

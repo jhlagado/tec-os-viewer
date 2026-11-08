@@ -9,7 +9,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 The gitlink at `tec-os/` selects firmware commit
 `c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c`, a sample-only child of the
 previous `fe2097f4` pin. Its reformatted `SAMPLE.ASM` is the only firmware source
-change. Viewer qualification of this update is pending.
+change. The sample's exact card-source and TAS/TED workflow checks pass.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM and card-file digests.
 ROM means read-only memory, containing the firmware image.

@@ -12,7 +12,8 @@ not change the gitlink, card pins or qualified viewer baseline.
 
 The current dependency is a sample-only child of `fe2097f4`. It reformats
 `SAMPLE.ASM` and retains the existing ROM and font. Its greeting is on line 193
-with edited cursor `L193 C33`; Viewer qualification of that update is pending.
+with edited cursor `L193 C33`; exact card-source and TAS/TED workflow checks
+pass for that update. The historical full VS2 suite was not rerun.
 
 Canonical962 differs from tested8b8664a only in two qualification record files.
 The later be144 descendant changes README.md and package.json to add a local
