@@ -5,10 +5,14 @@ not change the gitlink, card pins or qualified viewer baseline.
 
 | Source role | Exact TEC-OS commit |
 | --- | --- |
-| Current viewer dependency | `fe2097f4bad3f7578aa41b8bce8aa571c451dbc7` |
+| Current viewer dependency | `c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c` |
 | Upstream tested Compact source | `8b8664a7d93c6dc2e8bce509b9770585e106eedc` |
 | Canonical qualified offer | `962853f499f05faf281f6cdff1deca8959f58c2b` |
 | Later local-server source descendant | `be144a5e154a2538905a90dd145075e6f4c546d9` |
+
+The current dependency is a sample-only child of `fe2097f4`. It reformats
+`SAMPLE.ASM` and retains the existing ROM and font. Its greeting is on line 193
+with edited cursor `L193 C33`; Viewer qualification of that update is pending.
 
 Canonical962 differs from tested8b8664a only in two qualification record files.
 The later be144 descendant changes README.md and package.json to add a local
@@ -38,15 +42,17 @@ default unchanged. This policy is not implemented here.
 The remaining receiving work belongs in this product repository:
 
 - Adopt an exact reviewed firmware pin and its complete regenerated input
-  hashes together; qualify the full delta from fe209, including earlier offers.
+  hashes together; qualify the full delta from the current dependency, including
+  earlier offers.
 - Implement and check the session-width policy, raw cold boot, saved and
   explicit widths, supported32 and every directed width transition.
 - Deliver the complete canonical font notices in both directory and offline
   standalone output. The prepared design uses `dist/FONT-NOTICES.txt` plus a
   discoverable complete inline disclosure; current build tools do not do this.
 - Derive greeting/insertion/cursor anchors from actual offered card bytes.
-  The source inventory predicts greeting line204 and edited `L204 C27`;
-  generated card, cursor and edit/save/build/run/reopen still need observation.
+  The canonical962 source inventory predicts greeting line204 and edited
+  `L204 C27`; generated card, cursor and edit/save/build/run/reopen still need
+  observation.
 - Verify ROM, recipe, card files, maps/symbols, font/import identity,
   normal/reverse/cursor behavior, GLCD/serial and card failure/atomicity paths;
   run the full viewer qualification and deterministic clean-clone builds.
