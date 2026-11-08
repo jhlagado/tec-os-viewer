@@ -13,7 +13,8 @@ not change the gitlink, card pins or qualified viewer baseline.
 The current dependency is a sample-only child of `fe2097f4`. It reformats
 `SAMPLE.ASM` and retains the existing ROM and font. Its greeting is on line 193
 with edited cursor `L193 C33`; exact card-source and TAS/TED workflow checks
-pass for that update. The historical full VS2 suite was not rerun.
+pass for that update. The later page-policy source at `479a3b9` passes all 50
+current Viewer tests, as recorded in [qualification](qualification.md).
 
 Canonical962 differs from tested8b8664a only in two qualification record files.
 The later be144 descendant changes README.md and package.json to add a local
@@ -36,18 +37,17 @@ the PICO record remainsv3. It provides no future debugger-support interface.
 
 The current viewer explicitly supplies its session width to `prepareCard`.
 Its page policy retains saved 32, 40 or 80-column choices and uses 40 for
-missing, invalid or unavailable storage. This page-policy update awaits
-qualification. It leaves the public host default unchanged and does not
-adopt the offered ROM's cold40 default.
+missing, invalid or unavailable storage. Its focused and full-suite checks pass;
+result review and public delivery remain separate checks. The public host
+default and the current ROM's cold default are unchanged.
 
 The remaining receiving work belongs in this product repository:
 
 - Adopt an exact reviewed firmware pin and its complete regenerated input
   hashes together; qualify the full delta from the current dependency, including
   earlier offers.
-- Qualify the page session-width policy separately, then check the offered
-  ROM's raw cold boot, saved and explicit widths, supported32 and every directed
-  width transition.
+- Check the offered ROM's raw cold boot, saved and explicit widths, supported32
+  and every directed width transition.
 - Deliver the complete canonical font notices in both directory and offline
   standalone output. The prepared design uses `dist/FONT-NOTICES.txt` plus a
   discoverable complete inline disclosure; current build tools do not do this.

@@ -18,19 +18,25 @@ fresh build, browser run or native capability in a new environment.
 VS2's greeting line 186 and edited cursor `L186 C27` remain historical results.
 The reformatted sample places the greeting on line 193, with the first `H` at
 column 18. The zero-based insertion offset is 28 and adding `the ` before
-`TEC-OS.` places
-the edited cursor at `L193 C33`. The VG10 assertions use these exact source
+`TEC-OS.` places the edited cursor at `L193 C33`. The VG10 assertions use these exact source
 coordinates. The exact card-source checks and the TAS/TED edit, build and run
 workflow pass for this sample update. Clean bundle and distribution checks
-also pass. The historical full VS2 suite was not rerun for this source-only
-change; the ROM and all other card-file bytes remain identical.
+also pass. That sample-only update did not rerun the historical full VS2 suite.
+The ROM and all other card-file bytes remain identical.
 
 The page retains saved 32, 40 or 80-column preferences and uses 40 columns
 when storage is missing, invalid or unavailable. A failed preference write
-leaves the current session choice in use. This page-policy update awaits
-qualification. The existing font and firmware pin remain unchanged. The
+leaves the current session choice in use. The existing font and firmware pin
+remain unchanged. The
 [upstream Compact offer](compact-source-offer.md) is separate receiving work,
 including its ROM, font and cold40 default.
+
+The complete current Viewer suite passed at
+`479a3b90f71b2e6c864c8a26b895addd60b262e1`: all 50 tests passed, with no failures,
+cancellations, skips or TODOs. The shared guard recorded 63.4 seconds,
+637 MB sampled peak, at most seven processes and zero wait. No native assembly
+or firmware rebuild was performed for this page-policy update. Result review,
+standalone delivery and public deployment remain separate checks.
 
 Viewer implementation belongs in this repository: page code in `src/`, build
 and delivery tools in `tools/`, and their checks in `test/`. Firmware, font and
