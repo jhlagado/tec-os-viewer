@@ -1,5 +1,5 @@
-// Check the page's actual startup and
-// width handler without a browser.
+// Check actual preference startup and
+// width handling without a browser.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -10,9 +10,13 @@ import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 
 const source = readFileSync(new URL("../src/main.mjs", import.meta.url), "utf8");
 
-function startup(code = source, saved = null, { readFails = false, writeFails = false } = {}) {
+function startup(code = source, saved = null, {
+  readFails = false, writeFails = false, savedDisplay = null,
+} = {}) {
   const reads = [], writes = [];
-  const stored = new Map(saved === null ? [] : [["tecos.width", saved]]);
+  const stored = new Map();
+  if (saved !== null) stored.set("tecos.width", saved);
+  if (savedDisplay !== null) stored.set("tecos.display", savedDisplay);
   const context = {
     localStorage: {
       getItem(key) {
@@ -33,6 +37,7 @@ function startup(code = source, saved = null, { readFails = false, writeFails = 
   assert.ok(marker >= 0 && start > marker && end > start, "page initialization boundaries");
   runInNewContext(`${code.slice(start, end)}\nthis.state = state;`, context);
   assert.equal(reads.filter((key) => key === "tecos.width").length, 1, "read the stored width once");
+  assert.equal(reads.filter((key) => key === "tecos.display").length, 1, "read the stored display once");
   return { context, state: context.state, writes, stored };
 }
 
@@ -105,4 +110,67 @@ test("an 80-column fallback fails the same fresh-session assertion", () => {
   const page = startup(oldDefault);
   expectWidth(page, "80");
   assert.throws(() => expectWidth(page, "40"), { name: "AssertionError", code: "ERR_ASSERTION", actual: "80", expected: "40" });
+});
+
+function displaySelector(page, code = source) {
+  const selector = {
+    addEventListener(type, handler) {
+      assert.equal(type, "change");
+      assert.equal(typeof handler, "function");
+    },
+  };
+  page.context.$ = (id) => { assert.equal(id, "display"); return selector; };
+  const start = code.indexOf('$("display").value =');
+  const end = code.indexOf('$("profile").value =', start);
+  assert.ok(start >= 0 && end > start, "page display selector boundaries");
+  runInNewContext(code.slice(start, end), page.context);
+  return selector;
+}
+
+function expectDisplay(page, expected, code = source) {
+  assert.equal(page.state.display, expected);
+  assert.equal(displaySelector(page, code).value, expected);
+}
+
+test("missing or invalid saved displays start with the PICO9918 selector", () => {
+  for (const savedDisplay of [null, "", "TMS", "GLCD", "tms ", " glcd", "garbage", "40"]) {
+    const page = startup(source, null, { savedDisplay });
+    expectDisplay(page, "tms");
+    expectWidth(page, "40");
+    assert.deepEqual(page.writes, [], "startup does not rewrite stored preferences");
+    assert.equal(page.stored.get("tecos.display"), savedDisplay ?? undefined);
+  }
+});
+
+test("valid saved displays retain their selector and independent width choice", () => {
+  for (const savedDisplay of ["tms", "glcd"]) {
+    for (const width of ["32", "40", "80"]) {
+      const page = startup(source, width, { savedDisplay });
+      expectDisplay(page, savedDisplay);
+      expectWidth(page, width);
+      assert.deepEqual(page.writes, []);
+    }
+  }
+});
+
+test("unavailable preference storage uses PICO9918 and 40 columns", () => {
+  const page = startup(source, "80", { savedDisplay: "glcd", readFails: true });
+  expectDisplay(page, "tms");
+  expectWidth(page, "40");
+  assert.deepEqual(page.writes, []);
+  assert.equal(page.stored.get("tecos.display"), "glcd");
+  assert.equal(page.stored.get("tecos.width"), "80");
+});
+
+test("an unsupported saved display fails the same startup assertion without validation", () => {
+  const unchecked = source.replace(
+    '["tms", "glcd"].includes(savedDisplay) ? savedDisplay : "tms"',
+    'savedDisplay ?? "tms"',
+  );
+  assert.notEqual(unchecked, source, "the control changes actual page initialization");
+  const page = startup(unchecked, null, { savedDisplay: "garbage" });
+  assert.equal(page.state.display, "garbage");
+  assert.throws(() => expectDisplay(page, "tms", unchecked), {
+    name: "AssertionError", code: "ERR_ASSERTION", actual: "garbage", expected: "tms",
+  });
 });
