@@ -2,7 +2,6 @@
 // width handler without a browser.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import { prepareCard } from "../tec-os/host/card.mjs";
@@ -100,11 +99,10 @@ test("the real width handler persists each choice and prepares the card even whe
   }
 });
 
-test("the original page fails the same fresh-session 40-column assertion", () => {
-  const original = execFileSync("git", ["show", "9414ef118516421ea1624d844bea6f1cdc848429:src/main.mjs"], {
-    cwd: new URL("..", import.meta.url), encoding: "utf8",
-  });
-  const page = startup(original);
+test("an 80-column fallback fails the same fresh-session assertion", () => {
+  const oldDefault = source.replace('includes(savedWidth) ? savedWidth : "40"', 'includes(savedWidth) ? savedWidth : "80"');
+  assert.notEqual(oldDefault, source, "the fallback control changes actual page initialization");
+  const page = startup(oldDefault);
   expectWidth(page, "80");
   assert.throws(() => expectWidth(page, "40"), { name: "AssertionError", code: "ERR_ASSERTION", actual: "80", expected: "40" });
 });
