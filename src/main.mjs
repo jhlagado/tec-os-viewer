@@ -16,9 +16,10 @@ const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
 
 const savedWidth = localStorageGet("tecos.width");
+const savedDisplay = localStorageGet("tecos.display");
 const state = {
   width: ["32", "40", "80"].includes(savedWidth) ? savedWidth : "40",
-  display: localStorageGet("tecos.display") ?? "tms",
+  display: ["tms", "glcd"].includes(savedDisplay) ? savedDisplay : "tms",
   machine: null,
   card: null,
   cardDirty: false,
