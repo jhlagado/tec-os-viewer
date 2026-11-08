@@ -2,6 +2,12 @@
 
 A TEC-1G running TEC-OS in a web page, with the cards and recipes that load it: the demo system for TEC-OS and its programs.
 
+[Open the live demo](https://jhlagado.github.io/tec-os-viewer/).
+GitHub Pages serves the standalone build from the `gh-pages` branch. Its
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json) identify
+the Viewer source and firmware pin. Changes to `main` need a new demo build
+before they appear on that site.
+
 [Reading the source](docs/reading.md) follows page startup, the controls, card
 storage and the build through their files.
 
