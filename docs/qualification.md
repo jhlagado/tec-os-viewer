@@ -17,7 +17,8 @@ fresh build, browser run or native capability in a new environment.
 
 VS2's greeting line 186 and edited cursor `L186 C27` remain historical results.
 The reformatted sample places the greeting on line 193, with the first `H` at
-column 18. The insertion zero-based insertion offset is 28 and adding `the ` before `TEC-OS.` places
+column 18. The zero-based insertion offset is 28 and adding `the ` before
+`TEC-OS.` places
 the edited cursor at `L193 C33`. The VG10 assertions use these exact source
 coordinates. This source update awaits Viewer qualification.
 
