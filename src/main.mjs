@@ -15,8 +15,9 @@ import { isText80, renderText80, renderTms } from "./tms.mjs";
 const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
 
+const savedWidth = localStorageGet("tecos.width");
 const state = {
-  width: localStorageGet("tecos.width") ?? "80",
+  width: ["32", "40", "80"].includes(savedWidth) ? savedWidth : "40",
   display: localStorageGet("tecos.display") ?? "tms",
   machine: null,
   card: null,

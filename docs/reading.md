@@ -7,15 +7,17 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`fe2097f4bad3f7578aa41b8bce8aa571c451dbc7`.
+`c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c`, a sample-only child of the
+previous `fe2097f4` pin. Its reformatted `SAMPLE.ASM` is the only firmware source
+change. The sample's exact card-source and TAS/TED workflow checks pass.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM and card-file digests.
 ROM means read-only memory, containing the firmware image.
 
 The later [Compact font and cold 40-column offer](compact-source-offer.md)
-is separate receiving work. The current page defaults to 80 columns when no
-width is saved. A newer firmware checkout elsewhere does not change this page's
-dependency.
+is separate receiving work. The page retains a saved width of 32, 40 or 80
+columns and uses 40 when that preference is missing, invalid or unavailable.
+A newer firmware checkout elsewhere does not change this page's dependency.
 
 ## 2. Follow page startup
 

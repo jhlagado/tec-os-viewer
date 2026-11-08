@@ -56,19 +56,20 @@ function samplePosition(image) {
   expected.copy(padded);
   assert.deepEqual(bytes, padded, "VG10: card source equals pinned source with CRLF, EOF and zero record padding");
   const lines = bytes.subarray(0, bytes.indexOf(0x1a)).toString("latin1").split("\r\n");
-  const line = lines.findIndex((l) => l.startsWith('HELLO: DB "Hello from TEC-OS."')) + 1;
-  assert.equal(line, 186, "VG10: the qualified greeting line");
+  const line = lines.findIndex((l) => l === 'HELLO:    DB    "Hello from TEC-OS."') + 1;
+  assert.equal(line, 193, "VG10: the pinned greeting line");
   const text = lines[line - 1];
+  assert.equal(text.indexOf("Hello") + 1, 18, "VG10: the pinned greeting text column");
   assert.ok(!text.includes("\t"), "the compact greeting has no tabs to expand");
   const insertAt = text.indexOf("TEC-OS.");
-  assert.ok(insertAt > 0);
+  assert.equal(insertAt, 28, "VG10: the pinned insertion offset");
   return { line, insertAt, cursor: `L${line} C${insertAt + "the ".length + 1}`,
     edited: text.slice(0, insertAt) + "the " + text.slice(insertAt) };
 }
 
 test("VG10: the card's compact source has the qualified bytes and greeting coordinates", async (t) => {
   const position = samplePosition(await card());
-  assert.equal(position.cursor, "L186 C27");
+  assert.equal(position.cursor, "L193 C33");
   t.diagnostic(JSON.stringify(position));
 });
 

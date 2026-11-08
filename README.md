@@ -2,10 +2,21 @@
 
 A TEC-1G running TEC-OS in a web page, with the cards and recipes that load it: the demo system for TEC-OS and its programs.
 
+[Open the live demo](https://jhlagado.github.io/tec-os-viewer/).
+GitHub Pages serves the standalone build from the `gh-pages` branch. Its
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json) identify
+the Viewer source and firmware pin. Changes to `main` need a new demo build
+before they appear on that site.
+
 [Reading the source](docs/reading.md) follows page startup, the controls, card
 storage and the build through their files.
 
-The checked-in firmware pin is the [VS2 qualified baseline](docs/qualification.md).
+New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
+The width selector still provides all three choices. Missing, invalid or
+unavailable saved preferences use 40 columns.
+
+The checked-in firmware pin preserves the [VS2 qualified ROM](docs/qualification.md)
+and updates only the starter sample's source layout.
 The later [Compact font and cold 40-column firmware offer](docs/compact-source-offer.md)
 has not yet been adopted or qualified by this viewer. Those documents also identify
 pending viewer work and its source records.
