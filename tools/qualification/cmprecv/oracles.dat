@@ -9,19 +9,84 @@
   "noticeBytes": 2642,
   "noticeSha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
   "noticeMutations": {
-    "missing": {"operation": "null", "reason": "NOTICE_MISSING"},
-    "truncated": {"operation": "remove-final-byte", "reason": "NOTICE_LENGTH"},
-    "changed": {"operation": "xor-byte", "offset": 0, "xor": 1, "reason": "NOTICE_HASH"}
+    "missing": {
+      "operation": "null",
+      "reason": "NOTICE_MISSING"
+    },
+    "truncated": {
+      "operation": "remove-final-byte",
+      "reason": "NOTICE_LENGTH"
+    },
+    "changed": {
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "NOTICE_HASH"
+    }
   },
-  "identityOrder": ["rom", "font", "dependency", "app", "recipe", "notice", "picoVersion"],
+  "identityOrder": [
+    "rom",
+    "font",
+    "dependency",
+    "app",
+    "recipe",
+    "notice",
+    "picoVersion"
+  ],
   "identityMutations": {
-    "wrong-rom": {"field": "rom", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_ROM"},
-    "wrong-font": {"field": "font", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_FONT"},
-    "dependency-tree-changed": {"field": "dependency", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_DEPENDENCY"},
-    "served-app-changed": {"field": "app", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_APP"},
-    "served-recipe-changed": {"field": "recipe", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_RECIPE"},
-    "served-notice-changed": {"field": "notice", "operation": "xor-byte", "offset": 0, "xor": 1, "reason": "IDENTITY_NOTICE"},
-    "pico-v4-unoffered": {"field": "picoVersion", "operation": "set-integer", "from": 3, "to": 4, "reason": "IDENTITY_PICO_VERSION"}
+    "wrong-rom": {
+      "field": "rom",
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "IDENTITY_ROM"
+    },
+    "wrong-font": {
+      "field": "font",
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "IDENTITY_FONT"
+    },
+    "dependency-tree-changed": {
+      "field": "dependency",
+      "operation": "replace-resolved-row-hash",
+      "rowId": "host:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "originalSha256": "61ab14cd750fc24d5db53490ec5fc40f756e4b6e136b78cf7004265471d9bd1d",
+      "alteredSha256": "71ab14cd750fc24d5db53490ec5fc40f756e4b6e136b78cf7004265471d9bd1d",
+      "reason": "IDENTITY_DEPENDENCY"
+    },
+    "served-app-changed": {
+      "field": "app",
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "IDENTITY_APP"
+    },
+    "served-recipe-changed": {
+      "field": "recipe",
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "IDENTITY_RECIPE"
+    },
+    "served-notice-changed": {
+      "field": "notice",
+      "operation": "xor-byte",
+      "offset": 0,
+      "xor": 1,
+      "reason": "IDENTITY_NOTICE"
+    },
+    "pico-v4-unoffered": {
+      "field": "picoVersion",
+      "operation": "set-integer",
+      "from": 3,
+      "to": 4,
+      "reason": "IDENTITY_PICO_VERSION"
+    }
   },
-  "meaning": "Literal source oracles fixed before model authoring. The served fields are host body fixtures, not actual HTTP or DOM observations. Synthetic escaping is separate from canonical notice content."
+  "meaning": "Literal source oracles fixed before model authoring. The served fields are host body fixtures, not actual HTTP or DOM observations. Synthetic escaping is separate from canonical notice content.",
+  "dependencyDescriptorSha256": "cc374fc3c63775714c93fff86142c7b789987572002f5628086f222534044894",
+  "identityOrderMeaning": "Source evaluation order only. The34 single-field cases do not qualify compound-fault precedence."
 }

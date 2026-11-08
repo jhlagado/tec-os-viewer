@@ -213,7 +213,7 @@ def output_tree(offer):
             'private plain model output')
     sources = offer['sourceRows'] + [dict(path='offer.dat', bytes=(HERE/'offer.dat').stat().st_size,
                                         sha256=digest(HERE/'offer.dat'))]
-    expected = {'readings.dat', 'inputs.dat', 'result.dat', 'files.dat'}
+    expected = {'readings.dat', 'inputs.dat', 'result.dat', 'files.dat', 'depnew.dat'}
     expected.update('source/' + row['path'] for row in sources)
     expected.update('readings/c' + str(i).zfill(2) + '.dat' for i in range(1, 35))
     expected.update('notice/' + name for name in offer['noticeOutputs'])
@@ -243,7 +243,7 @@ def output_tree(offer):
         cap = offer['caps']['sourceFile'] if name.startswith('source/') else (
             offer['caps']['caseFile'] if name.startswith('readings/') else (
             offer['caps']['noticeFile'] if name.startswith('notice/') else offer['caps'].get(
-            {'readings.dat':'readings','inputs.dat':'identities','result.dat':'result'}[name])))
+            {'readings.dat':'readings','inputs.dat':'identities','result.dat':'result','depnew.dat':'dependencyFile'}[name])))
         require(0 < path.stat().st_size <= cap and path.stat().st_size == row['bytes'] and digest(path) == row['sha256'], 'retained bytes ' + name)
     for row in sources:
         path = root/'source'/row['path']
@@ -255,6 +255,10 @@ def output_tree(offer):
     declarations = cases['widths'] + cases['notices'] + cases['identities']
     require(report['kind'] == 'M0_MODEL_READINGS' and report['total'] == 34 and len(rows) == 34 and
             [row['id'] for row in rows] == [item['id'] for item in declarations], 'all 34 ordered readings')
+    dependency_raw = (HERE/'deps.dat').read_bytes()
+    descriptor = json.loads(dependency_raw)
+    require(hashlib.sha256(dependency_raw).hexdigest() == offer['identityExpected']['dependency'] ==
+            oracles['dependencyDescriptorSha256'], 'positive structured dependency seal')
     canonical = (HERE/'inputs/notice.txt').read_text()
     notice_paths = {'directory-positive':['dir.html','dir.txt'], 'standalone-positive':['one.html'],
                     'directory-escaping':['escdir.html','escdir.txt'], 'standalone-escaping':['escone.html']}
@@ -289,11 +293,27 @@ def output_tree(offer):
             require(row['family'] == 'identity' and row['mutation'] == spec and
                     result == dict(rejected=True, firstReason=spec['reason']), 'specific identity first reason')
             require(row['observedPicoVersion'] == (4 if spec['field']=='picoVersion' else 3), 'one version mutation')
-            if spec['field'] != 'picoVersion':
+            if spec['field'] == 'dependency':
+                changed = json.loads(dependency_raw)
+                matches = [item for item in changed['resolvedFiles'] if item['id'] == spec['rowId']]
+                require(len(matches) == 1 and matches[0]['path'] == spec['path'] and matches[0]['sha256'] == spec['originalSha256'], 'named actual original dependency row')
+                original = dict(matches[0]); matches[0]['sha256'] = spec['alteredSha256']
+                require(row['originalRow'] == original and row['alteredRow'] == matches[0] and
+                        json.loads((root/'depnew.dat').read_bytes()) == changed, 'sole resolved-row hash contrast')
+                artifact = row['descriptorArtifact']
+                require(artifact == dict(path='depnew.dat', bytes=(root/'depnew.dat').stat().st_size,
+                        sha256=digest(root/'depnew.dat')) and row['actualHash'] is None, 'complete altered descriptor retained')
+                joins = row['positiveDependencyJoins']
+                require(joins == dict(descriptorSha256=hashlib.sha256(dependency_raw).hexdigest(),
+                        actualFileJoins=len(descriptor['resolvedFiles']), viewerFiles=175, hostOnly=True,
+                        browserInstallQualified=False), 'actual positive file-join completion before contrast')
+            elif spec['field'] != 'picoVersion':
                 body = bytearray((HERE/offer['identityBodies'][spec['field']]).read_bytes()); body[0] ^= 1
-                require(row['actualHash'] == hashlib.sha256(body).hexdigest(), 'one-byte identity mutation')
+                require(row['actualHash'] == hashlib.sha256(body).hexdigest() and row['originalRow'] is None and
+                        row['alteredRow'] is None and row['descriptorArtifact'] is None and row['positiveDependencyJoins'] is None, 'one-byte body mutation')
             else:
-                require(row['actualHash'] is None, 'version-only mutation')
+                require(row['actualHash'] is None and row['originalRow'] is None and row['alteredRow'] is None and
+                        row['descriptorArtifact'] is None and row['positiveDependencyJoins'] is None, 'version-only mutation')
     inputs = json.loads((root/'inputs.dat').read_bytes())
     require(inputs['kind'] == 'M0_ACTUAL_SOURCE_IDENTITIES' and inputs['sourceRows'] == sources and
             inputs['identityExpected'] == offer['identityExpected'] and inputs['noticeBytes'] == 2642 and
@@ -306,6 +326,8 @@ def output_tree(offer):
     require(type(result['pid']) is int and type(result['guardPid']) is int and result['pid'] > 1 and
             result['guardPid'] == result['ppid'] and result['guardPid'] > 1 and result['pid'] != result['guardPid'] and
             result['pid'] != DIRECT.pid and result['guardPid'] != DIRECT.pid, 'direct guard parent metadata')
+    require(result['dependencyJoins'] == dict(descriptorSha256=hashlib.sha256(dependency_raw).hexdigest(),
+            actualFileJoins=len(descriptor['resolvedFiles']), viewerFiles=175, hostOnly=True, browserInstallQualified=False), 'final positive dependency joins')
     environment = dict(offer['environment'], M0_OFFER_SHA=digest(HERE/'offer.dat'), ORIGO_GUARD=str(result['guardPid']),
                        NODE_OPTIONS='--max-old-space-size=64')
     require(result['environment'] == environment and all(result[key] is False for key in

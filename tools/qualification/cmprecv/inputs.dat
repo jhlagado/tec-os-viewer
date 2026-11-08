@@ -305,10 +305,40 @@
       "bytes": 4874,
       "sha256": "916357ae8e71b2264f0dc73f79ba801b44ea408cc39910d27de6dce41daf2d52",
       "mode": "0o644"
+    },
+    {
+      "path": "inputs/viewpkg.dat",
+      "bytes": 679,
+      "sha256": "492d088a6c12f30e012218bea7eab44e28635a584e2d239dc447737c0f8062f7",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/ospkg.dat",
+      "bytes": 815,
+      "sha256": "cafa9c6cf938e57c1db43f3799afcad98156e5aff84f266e01885ac447c44469",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/oslock.dat",
+      "bytes": 17364,
+      "sha256": "2615ff7b36345318ab310673f630e9b38b49dd296146e70e22bab4c90b22f69c",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/vtree.dat",
+      "bytes": 16502,
+      "sha256": "79f6732c124acde869749fb5d96206a29f26bdabc63dfa0b2ac3e50737798d82",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/vorigin.dat",
+      "bytes": 441,
+      "sha256": "b0724933cd900904fc04dfe9abb7fdcd2b36627b3fc9d6eab7359a0be01d4575",
+      "mode": "0o644"
     }
   ],
   "sampleRecovery": "Remove one final EOF1A, replace CRLF with LF. Exact old source hash and line204 matched. No live SAMPLE substitution.",
-  "dependencyFixture": "runtime.dat is a retained host inventory body. It is not browser dependency execution.",
+  "dependencyFixture": "Structured deps.dat joins full175-file Viewer baseline and fe209 gitlink, actual package/lock bytes, finite effective M0 source and resolved host providers. One declared Node-file row hash changes. No installed file or browser tree is mutated or qualified.",
   "sourceAdmission": "Origo VD-15 b1af49a9",
   "oldProofSlots": {
     "D": false,
@@ -334,7 +364,12 @@
     "inputs/app.dat": "inputs/archive.bin :: output/artifacts/web/dist/app.js",
     "inputs/recipe.dat": "inputs/archive.bin :: output/artifacts/dist/page.recipe.json",
     "inputs/sample.bin": "inputs/archive.bin :: output/artifacts/dist/files/SAMPLE.ASM",
-    "inputs/sample.asm": "inputs/sample.bin :: remove final EOF1A then CRLF to LF"
+    "inputs/sample.asm": "inputs/sample.bin :: remove final EOF1A then CRLF to LF",
+    "inputs/viewpkg.dat": "/workspace/tec-os-viewer/package.json",
+    "inputs/ospkg.dat": "/workspace/tec-os-viewer/tec-os/package.json",
+    "inputs/oslock.dat": "/workspace/tec-os-viewer/tec-os/package-lock.json",
+    "inputs/vtree.dat": "/workspace/scratch/viewer-m0-source02/viewer-628-tree.tsv",
+    "inputs/vorigin.dat": "/workspace/scratch/viewer-m0-source02/viewer-628-tree.json"
   },
   "noticeSourceAccount": {
     "bytes": 2642,
@@ -344,5 +379,6 @@
     "inlineHtmlBytes": 2721,
     "directoryHtmlPlusTextBytes": 5363,
     "licenceText": "Complete original notice preserved, including unresolved legacy glyph provenance. No attribution change."
-  }
+  },
+  "correctionSourceAdmission": "Origo VD-16 c9ca25a0; preserve original ccddacdd unrun packet and all34 cases."
 }
