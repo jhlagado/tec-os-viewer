@@ -25,9 +25,12 @@ workflow pass for this sample update. Clean bundle and distribution checks
 also pass. The historical full VS2 suite was not rerun for this source-only
 change; the ROM and all other card-file bytes remain identical.
 
-The session default remains 80 columns and the old font remains in use. The
-[upstream Compact offer](compact-source-offer.md) is separate receiving work.
-The sample-only child does not adopt its ROM, font or cold40 default.
+The page retains saved 32, 40 or 80-column preferences and uses 40 columns
+when storage is missing, invalid or unavailable. A failed preference write
+leaves the current session choice in use. This page-policy update awaits
+qualification. The existing font and firmware pin remain unchanged. The
+[upstream Compact offer](compact-source-offer.md) is separate receiving work,
+including its ROM, font and cold40 default.
 
 Viewer implementation belongs in this repository: page code in `src/`, build
 and delivery tools in `tools/`, and their checks in `test/`. Firmware, font and

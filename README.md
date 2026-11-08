@@ -11,6 +11,10 @@ before they appear on that site.
 [Reading the source](docs/reading.md) follows page startup, the controls, card
 storage and the build through their files.
 
+New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
+The width selector still provides all three choices. Missing, invalid or
+unavailable saved preferences use 40 columns.
+
 The checked-in firmware pin preserves the [VS2 qualified ROM](docs/qualification.md)
 and updates only the starter sample's source layout.
 The later [Compact font and cold 40-column firmware offer](docs/compact-source-offer.md)

@@ -35,18 +35,19 @@ supported. The public host argument still defaults to80, ABI remains5.1 and
 the PICO record remainsv3. It provides no future debugger-support interface.
 
 The current viewer explicitly supplies its session width to `prepareCard`.
-Therefore the new ROM's cold40 default alone cannot give a fresh viewer
-session40. The receiving design proposes preserving saved32/40/80 choices,
-using40 for missing/invalid/unavailable storage, and keeping the public host
-default unchanged. This policy is not implemented here.
+Its page policy retains saved 32, 40 or 80-column choices and uses 40 for
+missing, invalid or unavailable storage. This page-policy update awaits
+qualification. It leaves the public host default unchanged and does not
+adopt the offered ROM's cold40 default.
 
 The remaining receiving work belongs in this product repository:
 
 - Adopt an exact reviewed firmware pin and its complete regenerated input
   hashes together; qualify the full delta from the current dependency, including
   earlier offers.
-- Implement and check the session-width policy, raw cold boot, saved and
-  explicit widths, supported32 and every directed width transition.
+- Qualify the page session-width policy separately, then check the offered
+  ROM's raw cold boot, saved and explicit widths, supported32 and every directed
+  width transition.
 - Deliver the complete canonical font notices in both directory and offline
   standalone output. The prepared design uses `dist/FONT-NOTICES.txt` plus a
   discoverable complete inline disclosure; current build tools do not do this.

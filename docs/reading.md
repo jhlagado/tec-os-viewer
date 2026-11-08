@@ -15,9 +15,9 @@ change. The sample's exact card-source and TAS/TED workflow checks pass.
 ROM means read-only memory, containing the firmware image.
 
 The later [Compact font and cold 40-column offer](compact-source-offer.md)
-is separate receiving work. The current page defaults to 80 columns when no
-width is saved. A newer firmware checkout elsewhere does not change this page's
-dependency.
+is separate receiving work. The page retains a saved width of 32, 40 or 80
+columns and uses 40 when that preference is missing, invalid or unavailable.
+A newer firmware checkout elsewhere does not change this page's dependency.
 
 ## 2. Follow page startup
 
