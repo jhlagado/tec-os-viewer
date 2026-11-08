@@ -70,14 +70,22 @@ Eleven prospective observations do not extend historical M0 coverage.
 
 ## Capture and pending command
 
-The isolated adapter takes one output pathname. It exclusively creates a
-single aggregate with a 65536-byte bound, writes every byte and fsyncs the
-file and parent directory. It retains partial observations, the active
-case and first error on failure. A missing parent or I/O error terminates
-unsuccessfully. Output inside the fixture directory is rejected. Capture
-paths and source identities still require a separately sealed offer.
-The adapter imports only the helper and Node builtins. No package script,
-default test, pin, page, build or historical model imports it.
+The prospective capture successor takes one output pathname. Its exclusive
+public O_SYNC writer checks the full wx flags, writes every byte and closes
+in finally. It calls no Node fsync API under --permission. The separately
+reviewed notecmd Python owner must complete stable-FD EOF/hash/file fsync and
+capture-parent directory fsync after actual wait and before final SELF.
+Adapter return alone does not attest that parent durability step. This
+transfer needs its own source allocation and full combined-command review;
+original component source at 7eb2adc remains historical and unchanged.
+
+The 65536-byte aggregate bound, partial observations, active case and first
+error remain. Missing-parent/capture-I/O errors can leave an absent or
+partial aggregate and must fail the whole command. Only an output whose
+direct parent equals this module directory is rejected here. Descendants
+and symlink aliases are not a filesystem sandbox. The exact owner must seal
+a fresh external output and every actual parent. No package script, default
+test, pin, page, build or historical model imports this isolated adapter.
 
 There is no launcher, provider inventory, live permit or actual authority
 in this packet. A different complete implementation and command review

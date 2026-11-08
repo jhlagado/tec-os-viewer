@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {readFileSync, openSync, writeSync, fsyncSync, closeSync} from 'node:fs';
+import {readFileSync, openSync, writeSync, closeSync, constants} from 'node:fs';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateNotice, serializeNotice} from '../../notices.mjs';
@@ -135,16 +135,16 @@ catch (error) {
 }
 const bytes = Buffer.from(JSON.stringify(record, null, 2) + '\n');
 requireValue(bytes.length <= 65536, 'CAPTURE_BOUND');
-const fd = openSync(output, 'wx', 0o600);
+const bits = [constants.O_TRUNC, constants.O_CREAT, constants.O_WRONLY,
+  constants.O_EXCL, constants.O_SYNC];
+requireValue(bits.every(n => Number.isInteger(n) && n > 0), 'CAPTURE_SYNC_FLAGS');
+const fd = openSync(output, bits.reduce((flags, n) => flags | n, 0), 0o600);
 try {
   let offset = 0;
   while (offset < bytes.length) {
     const written = writeSync(fd, bytes, offset, bytes.length - offset);
-    requireValue(written > 0, 'CAPTURE_ZERO_WRITE');
+    requireValue(Number.isInteger(written) && written > 0 &&
+      written <= bytes.length - offset, 'CAPTURE_ZERO_WRITE');
     offset += written;
   }
-  fsyncSync(fd);
 } finally { closeSync(fd); }
-const directory = openSync(dirname(output), 'r');
-try { fsyncSync(directory); }
-finally { closeSync(directory); }
