@@ -1,0 +1,494 @@
+{
+  "state": "SOURCE_ONLY_UNRUN_NOT_ALLOCATED",
+  "runtimeAuthority": false,
+  "allocationIssued": false,
+  "sourceBasisCommit": "628aeb221c53145a25f50f876c93c2c0cb6462ea",
+  "sourceAuthority": {
+    "repository": "jhlagado/origo",
+    "decision": "VD-15",
+    "commitAbbreviation": "b1af49a9",
+    "scope": "M0 source construction only"
+  },
+  "packetRepository": "jhlagado/tec-os-viewer",
+  "publicationBinding": "Separate actual allocation binds full published packet and exact offer/launcher hashes after independent review.",
+  "cwd": "/workspace/tec-os-viewer",
+  "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+  "work": "/workspace/scratch/viewm001",
+  "allocation": "/workspace/scratch/viewm001.alc",
+  "stdout": "/workspace/scratch/viewm001.out",
+  "stderr": "/workspace/scratch/viewm001.err",
+  "receipt": "/workspace/scratch/viewm001.rcp",
+  "guardLog": "/workspace/scratch/viewm001.gua",
+  "lock": "/workspace/.origo/heavy.lock",
+  "runtimePreflight": "/workspace/scratch/viewm001.hst",
+  "runtimeManifest": "/workspace/tec-os-viewer/tools/qualification/cmprecv/runtime.dat",
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/tmp"
+  },
+  "allocationKind": "VIEWER_M0_34_ALLOCATION",
+  "budget": {
+    "wholeSeconds": 120,
+    "launcherAlarmSeconds": 118,
+    "timeoutSeconds": 112,
+    "killAfterSeconds": 1,
+    "sampledMB": 600,
+    "nodeHeapMB": 64,
+    "waitSeconds": 0,
+    "jobs": 1,
+    "wholeMiB": 600,
+    "normalActorBound": 5,
+    "finalIoReserveMiB": 8
+  },
+  "sourceRows": [
+    {
+      "path": "cases.dat",
+      "bytes": 8322,
+      "mode": "0o644",
+      "sha256": "97cdd685e712a4b14daa0c7e1f2e38aa2f573f795ba8bcca142dbf8fe6650fd8"
+    },
+    {
+      "path": "driver.mjs",
+      "bytes": 9545,
+      "mode": "0o644",
+      "sha256": "5a0187f312b3765fad4fb025436886e282d0198a2dcd346c638ca52b12a3d4ac"
+    },
+    {
+      "path": "inputs/app.dat",
+      "bytes": 125460,
+      "mode": "0o644",
+      "sha256": "3f4d788329cd195c8fe00b7d23755382a630441bb2abfb6f2538cf1b6e865f71"
+    },
+    {
+      "path": "inputs/archive.bin",
+      "bytes": 815563,
+      "mode": "0o644",
+      "sha256": "52c8d0314ad6f1e160327eda9480a60928e07412ae6f2d4f5f20d37bff113494"
+    },
+    {
+      "path": "inputs/artifact.dat",
+      "bytes": 3785,
+      "mode": "0o644",
+      "sha256": "89f727fe8fa705860b1db50c95a679083318674075c50f05141e07dc721fdff1"
+    },
+    {
+      "path": "inputs/font.bin",
+      "bytes": 768,
+      "mode": "0o644",
+      "sha256": "5d732cefca4013fe6082728a00cae5e3aceaf3e6eb99aaa31e0289c0b3efe1d8"
+    },
+    {
+      "path": "inputs/notice.txt",
+      "bytes": 2642,
+      "mode": "0o644",
+      "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41"
+    },
+    {
+      "path": "inputs/p6.dat",
+      "bytes": 4437,
+      "mode": "0o644",
+      "sha256": "edb421d823d5a5689d9cc8046dfdb93f385f856feb2eb42f74f72ede261c17fe"
+    },
+    {
+      "path": "inputs/recipe.dat",
+      "bytes": 3357,
+      "mode": "0o644",
+      "sha256": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9"
+    },
+    {
+      "path": "inputs/rom.bin",
+      "bytes": 16384,
+      "mode": "0o644",
+      "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d"
+    },
+    {
+      "path": "inputs/sample.asm",
+      "bytes": 4874,
+      "mode": "0o644",
+      "sha256": "916357ae8e71b2264f0dc73f79ba801b44ea408cc39910d27de6dce41daf2d52"
+    },
+    {
+      "path": "inputs/sample.bin",
+      "bytes": 5106,
+      "mode": "0o644",
+      "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95"
+    },
+    {
+      "path": "inputs.dat",
+      "bytes": 14230,
+      "mode": "0o644",
+      "sha256": "d7f6239a3243fbe0f8c0ab52366b0f36c2e8b9009c90cb9da8046916b5871d5d"
+    },
+    {
+      "path": "launch.py",
+      "bytes": 26996,
+      "mode": "0o644",
+      "sha256": "82827d5e72e5a263494dc941987fa69341ee96a39036422c1bd8a927e1d501bb"
+    },
+    {
+      "path": "model.mjs",
+      "bytes": 2477,
+      "mode": "0o644",
+      "sha256": "462eae6af5a6b33bcfbe90bba8c7f378b36d70569ed72bf4c0f3dc81edbc92f8"
+    },
+    {
+      "path": "oracles.dat",
+      "bytes": 2026,
+      "mode": "0o644",
+      "sha256": "c2426b00702e1e77c268e17795f8314a2bfab35896082dceadb8acac697fb666"
+    },
+    {
+      "path": "readme.md",
+      "bytes": 4410,
+      "mode": "0o644",
+      "sha256": "56a99da94ee291bbce8eb6b5be92d496e6a58feafd5ec73fdd07fe0f01886cc4"
+    },
+    {
+      "path": "runtime.dat",
+      "bytes": 426453,
+      "mode": "0o644",
+      "sha256": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d"
+    },
+    {
+      "path": "tail.md",
+      "bytes": 4375,
+      "mode": "0o644",
+      "sha256": "adac0fa54b59f6833f9dc761cb61902c6e6a7a760d429007b0d1440b8b27cd36"
+    }
+  ],
+  "nodeFlags": [
+    "--permission",
+    "--allow-fs-read=*",
+    "--allow-fs-write=*"
+  ],
+  "leafArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--permission",
+    "--allow-fs-read=*",
+    "--allow-fs-write=*",
+    "/workspace/tec-os-viewer/tools/qualification/cmprecv/driver.mjs"
+  ],
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=1s",
+    "112s",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "/workspace/origo/tools/mem-guard.mjs",
+    "--limit",
+    "600",
+    "--heap",
+    "64",
+    "--wait",
+    "0",
+    "--lock",
+    "/workspace/.origo/heavy.lock",
+    "--log",
+    "/workspace/scratch/viewm001.gua",
+    "--name",
+    "viewer-m0-34-source-policy",
+    "--",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--permission",
+    "--allow-fs-read=*",
+    "--allow-fs-write=*",
+    "/workspace/tec-os-viewer/tools/qualification/cmprecv/driver.mjs"
+  ],
+  "guardName": "viewer-m0-34-source-policy",
+  "normalizedLeaf": "node --permission --allow-fs-read=* --allow-fs-write=* driver.mjs",
+  "identityBodies": {
+    "rom": "inputs/rom.bin",
+    "font": "inputs/font.bin",
+    "dependency": "runtime.dat",
+    "app": "inputs/app.dat",
+    "recipe": "inputs/recipe.dat",
+    "notice": "inputs/notice.txt"
+  },
+  "identityExpected": {
+    "rom": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d",
+    "font": "5d732cefca4013fe6082728a00cae5e3aceaf3e6eb99aaa31e0289c0b3efe1d8",
+    "dependency": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d",
+    "app": "3f4d788329cd195c8fe00b7d23755382a630441bb2abfb6f2538cf1b6e865f71",
+    "recipe": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9",
+    "notice": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41"
+  },
+  "noticeOutputs": [
+    "dir.html",
+    "dir.txt",
+    "one.html",
+    "escdir.html",
+    "escdir.txt",
+    "escone.html"
+  ],
+  "caps": {
+    "sourceFile": 2097152,
+    "caseFile": 16384,
+    "noticeFile": 8192,
+    "readings": 262144,
+    "identities": 131072,
+    "result": 16384,
+    "inventory": 131072,
+    "failure": 32768
+  },
+  "expected": {
+    "total": 34,
+    "widths": 17,
+    "notices": 10,
+    "identities": 7,
+    "sourceCopies": 20,
+    "regularOutputFiles": 64,
+    "terminal": 0,
+    "modelOnly": true,
+    "nativeExecution": false,
+    "browserExecution": false,
+    "productionWitness": false,
+    "D": false,
+    "B": false,
+    "A5": false,
+    "gateAccepted": false
+  },
+  "normalPrice": {
+    "formula": "O + 4*T + 8MiB <= 600MiB",
+    "actualMeasurements": null,
+    "actorBound": 5,
+    "actors": [
+      "outer Python",
+      "GNU timeout",
+      "shared guard Node",
+      "M0 Node",
+      "one synchronous guard query"
+    ],
+    "normalEnding": "One actual direct raw-zero wait, pre-reap zombie identity, final ECHILD, no adoption/status loss/signals/holds",
+    "tail": "tail.md"
+  },
+  "hostRuntimeProvenance": {
+    "source": "/workspace/thorium/tools/qualification/c5trim1/host-runtime.json",
+    "sha256": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d",
+    "byteIdentical": true,
+    "scope": "Unchanged 1022-file ELF/library/scoped stdlib inventory, links and absences; fresh actual verification required."
+  },
+  "retention": {
+    "rootMustRetain": [
+      "All source copies and canonical archive with every actual output including first failure",
+      "Original allocation/pre-start host observation, exact invocation and every response",
+      "Complete stdout/stderr/guard/outer receipt through final terminal",
+      "External whole interval from before env/Python startup through final receipt tail within120seconds"
+    ],
+    "archiveWriter": false,
+    "sourceOwnDigest": "Allocation binds offer digest. Driver separately archives actual offer. No self-cycle."
+  },
+  "limitations": [
+    "M0 finite host policy model only. No DOM, browser, HTTP, page build, Machine, native or Mac execution.",
+    "Old44 tests and old D/B/A5 proof requirements remain unchanged.",
+    "All host/source/runtime bindings require fresh original pre-start verification. No inherited measured price.",
+    "Failure/unknown ownership has no normal resource or extinction credit. No retry, queue or automatic execution."
+  ],
+  "members": [
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "bytes": 126939688,
+      "mode": "0o755",
+      "sha256": "61ab14cd750fc24d5db53490ec5fc40f756e4b6e136b78cf7004265471d9bd1d"
+    },
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "bytes": 30894944,
+      "mode": "0o755",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    },
+    {
+      "path": "/usr/bin/env",
+      "bytes": 56144,
+      "mode": "0o755",
+      "sha256": "eb1c64bbc9908afcdf8cb48524f17112d8dd76a249f80dee2f01da14747b3b6e"
+    },
+    {
+      "path": "/usr/bin/ps",
+      "bytes": 154552,
+      "mode": "0o755",
+      "sha256": "43b8d2d049183e9ebc409c86b89150b5a4a68fa19fe1815b16bed5561921a9c3"
+    },
+    {
+      "path": "/usr/bin/timeout",
+      "bytes": 47984,
+      "mode": "0o755",
+      "sha256": "6ca1891dfc0b05d7680770c2884c0391b92467c7bb6500a5c84677e6481739f1"
+    },
+    {
+      "path": "/workspace/origo/tools/mem-guard.mjs",
+      "bytes": 11482,
+      "mode": "0o600",
+      "sha256": "45e4edaee20eba1b2d8ec67983ed3acc06be31a64eb059e8bc4ad21257871374"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/cases.dat",
+      "bytes": 8322,
+      "mode": "0o644",
+      "sha256": "97cdd685e712a4b14daa0c7e1f2e38aa2f573f795ba8bcca142dbf8fe6650fd8"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/driver.mjs",
+      "bytes": 9545,
+      "mode": "0o644",
+      "sha256": "5a0187f312b3765fad4fb025436886e282d0198a2dcd346c638ca52b12a3d4ac"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/app.dat",
+      "bytes": 125460,
+      "mode": "0o644",
+      "sha256": "3f4d788329cd195c8fe00b7d23755382a630441bb2abfb6f2538cf1b6e865f71"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/archive.bin",
+      "bytes": 815563,
+      "mode": "0o644",
+      "sha256": "52c8d0314ad6f1e160327eda9480a60928e07412ae6f2d4f5f20d37bff113494"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/artifact.dat",
+      "bytes": 3785,
+      "mode": "0o644",
+      "sha256": "89f727fe8fa705860b1db50c95a679083318674075c50f05141e07dc721fdff1"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/font.bin",
+      "bytes": 768,
+      "mode": "0o644",
+      "sha256": "5d732cefca4013fe6082728a00cae5e3aceaf3e6eb99aaa31e0289c0b3efe1d8"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/notice.txt",
+      "bytes": 2642,
+      "mode": "0o644",
+      "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/p6.dat",
+      "bytes": 4437,
+      "mode": "0o644",
+      "sha256": "edb421d823d5a5689d9cc8046dfdb93f385f856feb2eb42f74f72ede261c17fe"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/recipe.dat",
+      "bytes": 3357,
+      "mode": "0o644",
+      "sha256": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/rom.bin",
+      "bytes": 16384,
+      "mode": "0o644",
+      "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/sample.asm",
+      "bytes": 4874,
+      "mode": "0o644",
+      "sha256": "916357ae8e71b2264f0dc73f79ba801b44ea408cc39910d27de6dce41daf2d52"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs/sample.bin",
+      "bytes": 5106,
+      "mode": "0o644",
+      "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/inputs.dat",
+      "bytes": 14230,
+      "mode": "0o644",
+      "sha256": "d7f6239a3243fbe0f8c0ab52366b0f36c2e8b9009c90cb9da8046916b5871d5d"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/launch.py",
+      "bytes": 26996,
+      "mode": "0o644",
+      "sha256": "82827d5e72e5a263494dc941987fa69341ee96a39036422c1bd8a927e1d501bb"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/model.mjs",
+      "bytes": 2477,
+      "mode": "0o644",
+      "sha256": "462eae6af5a6b33bcfbe90bba8c7f378b36d70569ed72bf4c0f3dc81edbc92f8"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/oracles.dat",
+      "bytes": 2026,
+      "mode": "0o644",
+      "sha256": "c2426b00702e1e77c268e17795f8314a2bfab35896082dceadb8acac697fb666"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/readme.md",
+      "bytes": 4410,
+      "mode": "0o644",
+      "sha256": "56a99da94ee291bbce8eb6b5be92d496e6a58feafd5ec73fdd07fe0f01886cc4"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/runtime.dat",
+      "bytes": 426453,
+      "mode": "0o644",
+      "sha256": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d"
+    },
+    {
+      "path": "/workspace/tec-os-viewer/tools/qualification/cmprecv/tail.md",
+      "bytes": 4375,
+      "mode": "0o644",
+      "sha256": "adac0fa54b59f6833f9dc761cb61902c6e6a7a760d429007b0d1440b8b27cd36"
+    }
+  ],
+  "launcherArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "-I",
+    "-S",
+    "-B",
+    "/workspace/tec-os-viewer/tools/qualification/cmprecv/launch.py",
+    "/workspace/scratch/viewm001.alc"
+  ],
+  "launchSurface": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin",
+    "LANG=C.UTF-8",
+    "LC_ALL=C.UTF-8",
+    "TMPDIR=/tmp",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "-I",
+    "-S",
+    "-B",
+    "/workspace/tec-os-viewer/tools/qualification/cmprecv/launch.py",
+    "/workspace/scratch/viewm001.alc"
+  ],
+  "futureAllocationTemplate": {
+    "kind": "VIEWER_M0_34_ALLOCATION",
+    "runtimeAuthority": false,
+    "offerSha256": null,
+    "launcherSha256": "82827d5e72e5a263494dc941987fa69341ee96a39036422c1bd8a927e1d501bb",
+    "budget": {
+      "wholeSeconds": 120,
+      "launcherAlarmSeconds": 118,
+      "timeoutSeconds": 112,
+      "killAfterSeconds": 1,
+      "sampledMB": 600,
+      "nodeHeapMB": 64,
+      "waitSeconds": 0,
+      "jobs": 1,
+      "wholeMiB": 600,
+      "normalActorBound": 5,
+      "finalIoReserveMiB": 8
+    },
+    "sourceBasisCommit": "628aeb221c53145a25f50f876c93c2c0cb6462ea",
+    "packetCommit": null,
+    "runtimePreflightSha256": null
+  },
+  "futurePreflightTemplate": {
+    "kind": "VIEWER_M0_ROOT_DATA_HOST_PREFLIGHT",
+    "completedBeforePythonLaunch": false,
+    "originalOuterGuardEnvironmentAbsent": false,
+    "runtimeManifestSha256": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d",
+    "allMemberBytesModesRealpathsVerified": false,
+    "allScopedTreeSetsTypesVerified": false,
+    "allRuntimeLinksAndAbsencesVerified": false
+  }
+}

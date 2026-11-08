@@ -1,0 +1,348 @@
+{
+  "kind": "M0_CANONICAL_INPUT_DATA_PREPARATION",
+  "runtimeAuthority": false,
+  "modelExecuted": false,
+  "canonicalSource": "962853f499f05faf281f6cdff1deca8959f58c2b",
+  "testedSource": "8b8664a7d93c6dc2e8bce509b9770585e106eedc",
+  "archive": {
+    "path": "inputs/archive.bin",
+    "sha256": "52c8d0314ad6f1e160327eda9480a60928e07412ae6f2d4f5f20d37bff113494",
+    "bytes": 815563,
+    "files": [
+      {
+        "path": "build/diag/FONT-NOTICES.txt",
+        "bytes": 2642,
+        "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41"
+      },
+      {
+        "path": "build/diag/diag.d8.json",
+        "bytes": 1255265,
+        "sha256": "ea22ff0c18072a81462e329f225a527bd00063de13b167e2b80c099378c9a4a0"
+      },
+      {
+        "path": "build/diag/diag.json",
+        "bytes": 290,
+        "sha256": "7a28933fa2a5522e22f04dc927e9efe72de7370d25931f48b5d4d3fec544551c"
+      },
+      {
+        "path": "build/diag/diag.rom",
+        "bytes": 16384,
+        "sha256": "17e4aae5e7944fef60997123b8c41ac7c8a06eea2564dc339ecfa38395911665"
+      },
+      {
+        "path": "build/tecos/census.json",
+        "bytes": 3004,
+        "sha256": "387fe196b03a09ddcfb49465bdba6f2a8a39458eac41280c1a732ccf656a79b6"
+      },
+      {
+        "path": "build/tecos/tecos.d8.json",
+        "bytes": 2394011,
+        "sha256": "9a87dec39a63efc8fdf38ae13d6ec6299763c833fc891de121e2b30f4a1a36ac"
+      },
+      {
+        "path": "build/tecos/tecos.rom",
+        "bytes": 16384,
+        "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d"
+      },
+      {
+        "path": "dist/FONT-NOTICES.txt",
+        "bytes": 2642,
+        "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41"
+      },
+      {
+        "path": "dist/abi.inc",
+        "bytes": 6242,
+        "sha256": "092ccf072bb559ba8efc5e55f576d303f2f98a3ea13ed2e821bbd102856a9357"
+      },
+      {
+        "path": "dist/files/DEMO.COM",
+        "bytes": 1191,
+        "sha256": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d"
+      },
+      {
+        "path": "dist/files/GLCD.SVC",
+        "bytes": 836,
+        "sha256": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736"
+      },
+      {
+        "path": "dist/files/MOUNT.COM",
+        "bytes": 671,
+        "sha256": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc"
+      },
+      {
+        "path": "dist/files/SAMPLE.ASM",
+        "bytes": 5106,
+        "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95"
+      },
+      {
+        "path": "dist/files/STARTUP.CMD",
+        "bytes": 11,
+        "sha256": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d"
+      },
+      {
+        "path": "dist/files/TAS.COM",
+        "bytes": 10295,
+        "sha256": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2"
+      },
+      {
+        "path": "dist/files/TED.COM",
+        "bytes": 11923,
+        "sha256": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f"
+      },
+      {
+        "path": "dist/manifest.json",
+        "bytes": 147,
+        "sha256": "805500b5efbaf851027b0c270eceda132c01a36dd4366c084589ab38bd6e6d27"
+      },
+      {
+        "path": "dist/page.recipe.json",
+        "bytes": 3357,
+        "sha256": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9"
+      },
+      {
+        "path": "dist/starter.img",
+        "bytes": 10485760,
+        "sha256": "0f3d9e33994ac30865b8675c8f8ce7fc493b13a0a840d8e84b7d708107d4266c"
+      },
+      {
+        "path": "dist/starter.recipe.json",
+        "bytes": 2932,
+        "sha256": "34f993528f5dd74cb371491221bb07d9e02f5b08d2058a96fe7e1a8cfa4a2cfc"
+      },
+      {
+        "path": "dist/tecos.census.json",
+        "bytes": 3004,
+        "sha256": "387fe196b03a09ddcfb49465bdba6f2a8a39458eac41280c1a732ccf656a79b6"
+      },
+      {
+        "path": "dist/tecos.d8.json",
+        "bytes": 2394011,
+        "sha256": "9a87dec39a63efc8fdf38ae13d6ec6299763c833fc891de121e2b30f4a1a36ac"
+      },
+      {
+        "path": "dist/tecos.rom",
+        "bytes": 16384,
+        "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d"
+      },
+      {
+        "path": "web/dist/app.js",
+        "bytes": 125460,
+        "sha256": "3f4d788329cd195c8fe00b7d23755382a630441bb2abfb6f2538cf1b6e865f71"
+      },
+      {
+        "path": "web/dist/app.js.map",
+        "bytes": 307369,
+        "sha256": "c8f10d4135c61d23dc95dc75bc58dd8adf513d8557d4de852b266804a9dbecaa"
+      },
+      {
+        "path": "web/dist/files/DEMO.COM",
+        "bytes": 1191,
+        "sha256": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d"
+      },
+      {
+        "path": "web/dist/files/GLCD.SVC",
+        "bytes": 836,
+        "sha256": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736"
+      },
+      {
+        "path": "web/dist/files/MOUNT.COM",
+        "bytes": 671,
+        "sha256": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc"
+      },
+      {
+        "path": "web/dist/files/SAMPLE.ASM",
+        "bytes": 5106,
+        "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95"
+      },
+      {
+        "path": "web/dist/files/STARTUP.CMD",
+        "bytes": 11,
+        "sha256": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d"
+      },
+      {
+        "path": "web/dist/files/TAS.COM",
+        "bytes": 10295,
+        "sha256": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2"
+      },
+      {
+        "path": "web/dist/files/TED.COM",
+        "bytes": 11923,
+        "sha256": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f"
+      },
+      {
+        "path": "web/dist/index.html",
+        "bytes": 4266,
+        "sha256": "5ec7cd5bbbfb6e1434e6449ab9b4e2cbfee094c7ade316bf8bd5810b1321cfb3"
+      },
+      {
+        "path": "web/dist/roms/tecos.rom",
+        "bytes": 16384,
+        "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d"
+      },
+      {
+        "path": "web/dist/roms/tecos.symbols.json",
+        "bytes": 48193,
+        "sha256": "347404c149f5d316bdae775b153a5be0fcef258e8c4321ef75b8c09303680995"
+      },
+      {
+        "path": "web/dist/starter.recipe.json",
+        "bytes": 3357,
+        "sha256": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9"
+      },
+      {
+        "path": "web/dist/style.css",
+        "bytes": 5050,
+        "sha256": "bb89b6202ab780f4b0ddf6b9862608d7ec55b062a10d96ec72c2ed712e782411"
+      }
+    ]
+  },
+  "unchangedP6GeneratedRows": {
+    "build/diag/FONT-NOTICES.txt": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+    "build/diag/diag.d8.json": "ea22ff0c18072a81462e329f225a527bd00063de13b167e2b80c099378c9a4a0",
+    "build/diag/diag.json": "7a28933fa2a5522e22f04dc927e9efe72de7370d25931f48b5d4d3fec544551c",
+    "build/diag/diag.rom": "17e4aae5e7944fef60997123b8c41ac7c8a06eea2564dc339ecfa38395911665",
+    "build/tecos/census.json": "387fe196b03a09ddcfb49465bdba6f2a8a39458eac41280c1a732ccf656a79b6",
+    "build/tecos/tecos.d8.json": "9a87dec39a63efc8fdf38ae13d6ec6299763c833fc891de121e2b30f4a1a36ac",
+    "build/tecos/tecos.rom": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d",
+    "dist/FONT-NOTICES.txt": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+    "dist/abi.inc": "092ccf072bb559ba8efc5e55f576d303f2f98a3ea13ed2e821bbd102856a9357",
+    "dist/files/DEMO.COM": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d",
+    "dist/files/GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
+    "dist/files/MOUNT.COM": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc",
+    "dist/files/SAMPLE.ASM": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95",
+    "dist/files/STARTUP.CMD": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d",
+    "dist/files/TAS.COM": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2",
+    "dist/files/TED.COM": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f",
+    "dist/manifest.json": "805500b5efbaf851027b0c270eceda132c01a36dd4366c084589ab38bd6e6d27",
+    "dist/page.recipe.json": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9",
+    "dist/starter.img": "0f3d9e33994ac30865b8675c8f8ce7fc493b13a0a840d8e84b7d708107d4266c",
+    "dist/starter.recipe.json": "34f993528f5dd74cb371491221bb07d9e02f5b08d2058a96fe7e1a8cfa4a2cfc",
+    "dist/tecos.census.json": "387fe196b03a09ddcfb49465bdba6f2a8a39458eac41280c1a732ccf656a79b6",
+    "dist/tecos.d8.json": "9a87dec39a63efc8fdf38ae13d6ec6299763c833fc891de121e2b30f4a1a36ac",
+    "dist/tecos.rom": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d",
+    "web/dist/roms/tecos.symbols.json": "347404c149f5d316bdae775b153a5be0fcef258e8c4321ef75b8c09303680995"
+  },
+  "sourceInputs": {
+    "format/font5x7.txt": "f0d75d14e08ce2028bf6b977b6f5d8983d277f1bdd924b79e7a5298766eca1ec",
+    "format/FONT-NOTICES.txt": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+    "format/font-original.bin": "43eb0ec9a8513a670df112948435801b9ae91874e1d17f1283d8990e586e0fb0",
+    "format/font5x7-original.txt": "ba4aaea026956d45e384de39e622a02d5b672e3df17f74714732bb05a27c3c3e",
+    "format/tec-compact/preview/x11.bdf": "6cdcaa87c2b22517a8265e3f5ea103a36d64642a9a727a7aeb6e1e9bc3961bdf",
+    "format/tec-compact/preview/spleen.bdf": "40488184d075d0c752cdd239b441c5ece51e50b353156f2496c756c384ab01cb",
+    "host/card.mjs": "80e74bc88cb5a366ac096f3b08f318838171cd5175a183f7eab199a67e651dfd",
+    "tools/lib/font.mjs": "8c637985340a35507e6bb50599d19c77cf1a8a15d576413266acb741fd50c0df",
+    "programs/SAMPLE.ASM": "916357ae8e71b2264f0dc73f79ba801b44ea408cc39910d27de6dce41daf2d52"
+  },
+  "copies": [
+    {
+      "path": "cases.dat",
+      "bytes": 8322,
+      "sha256": "97cdd685e712a4b14daa0c7e1f2e38aa2f573f795ba8bcca142dbf8fe6650fd8",
+      "mode": "0o644"
+    },
+    {
+      "path": "runtime.dat",
+      "bytes": 426453,
+      "sha256": "ae93d8a82e1d58bcf3ecd789bd15d8cd49fe42fde9ba465c2221ec6deb6c1d9d",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/p6.dat",
+      "bytes": 4437,
+      "sha256": "edb421d823d5a5689d9cc8046dfdb93f385f856feb2eb42f74f72ede261c17fe",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/artifact.dat",
+      "bytes": 3785,
+      "sha256": "89f727fe8fa705860b1db50c95a679083318674075c50f05141e07dc721fdff1",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/font.bin",
+      "bytes": 768,
+      "sha256": "5d732cefca4013fe6082728a00cae5e3aceaf3e6eb99aaa31e0289c0b3efe1d8",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/archive.bin",
+      "bytes": 815563,
+      "sha256": "52c8d0314ad6f1e160327eda9480a60928e07412ae6f2d4f5f20d37bff113494",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/rom.bin",
+      "bytes": 16384,
+      "sha256": "fa63989b65d1e7e7a07f45e2a2b33e52f785d74216a3fde38af86b2d913f302d",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/notice.txt",
+      "bytes": 2642,
+      "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/app.dat",
+      "bytes": 125460,
+      "sha256": "3f4d788329cd195c8fe00b7d23755382a630441bb2abfb6f2538cf1b6e865f71",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/recipe.dat",
+      "bytes": 3357,
+      "sha256": "0bf58428c07cee4d479cca5e858e0de9445e81e0cfce4bcc99a1b884785c92f9",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/sample.bin",
+      "bytes": 5106,
+      "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95",
+      "mode": "0o644"
+    },
+    {
+      "path": "inputs/sample.asm",
+      "bytes": 4874,
+      "sha256": "916357ae8e71b2264f0dc73f79ba801b44ea408cc39910d27de6dce41daf2d52",
+      "mode": "0o644"
+    }
+  ],
+  "sampleRecovery": "Remove one final EOF1A, replace CRLF with LF. Exact old source hash and line204 matched. No live SAMPLE substitution.",
+  "dependencyFixture": "runtime.dat is a retained host inventory body. It is not browser dependency execution.",
+  "sourceAdmission": "Origo VD-15 b1af49a9",
+  "oldProofSlots": {
+    "D": false,
+    "B": false,
+    "A5": false
+  },
+  "preparation": {
+    "elapsedNs": 1211703281,
+    "selfMaxRssKiB": 32352,
+    "subjectExecution": false,
+    "containingDataCommandWallSeconds": 1.298622965,
+    "snapshotMeaning": "elapsedNs and SELF cover original read/hash/archive verification/copies before account serialization. Containing command wall includes account writes. No model or provider was executed."
+  },
+  "copyOrigins": {
+    "cases.dat": "/workspace/origo/studies/p6-viewer/models/compact-receiver/cases.json",
+    "runtime.dat": "/workspace/thorium/tools/qualification/cmpcheck/runtime.dat",
+    "inputs/p6.dat": "/workspace/origo/studies/p6-viewer/research_notes/compact-receiver-inputs.json",
+    "inputs/artifact.dat": "/workspace/origo/studies/p3-tec-os/evidence/ks48-strict-successor-result/artifact-inventory.json",
+    "inputs/font.bin": "/workspace/tec-os/format/tec-compact/export/tec-compact.bin",
+    "inputs/archive.bin": "/workspace/origo/studies/p3-tec-os/evidence/ks48-strict-successor-result/complete-output.tar.gz",
+    "inputs/rom.bin": "inputs/archive.bin :: output/artifacts/dist/tecos.rom",
+    "inputs/notice.txt": "inputs/archive.bin :: output/artifacts/dist/FONT-NOTICES.txt",
+    "inputs/app.dat": "inputs/archive.bin :: output/artifacts/web/dist/app.js",
+    "inputs/recipe.dat": "inputs/archive.bin :: output/artifacts/dist/page.recipe.json",
+    "inputs/sample.bin": "inputs/archive.bin :: output/artifacts/dist/files/SAMPLE.ASM",
+    "inputs/sample.asm": "inputs/sample.bin :: remove final EOF1A then CRLF to LF"
+  },
+  "noticeSourceAccount": {
+    "bytes": 2642,
+    "sha256": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+    "unmodified": true,
+    "charactersNeedingEscaping": 0,
+    "inlineHtmlBytes": 2721,
+    "directoryHtmlPlusTextBytes": 5363,
+    "licenceText": "Complete original notice preserved, including unresolved legacy glyph provenance. No attribution change."
+  }
+}

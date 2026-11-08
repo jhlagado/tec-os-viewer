@@ -1,0 +1,121 @@
+{
+  "schema": "tecos-file-recipe-v1",
+  "id": "page",
+  "revision": "4",
+  "name": "TEC-OS starter, with the demo",
+  "instruction": "At A>, type DEMO to see the hardware, or TAS SAMPLE and SAMPLE to build and run a first program, or TED SAMPLE.ASM to read it. B: is an empty work disk, written behind: press ^C at A> before reset or power off.",
+  "profile": "tecos",
+  "volumes": [
+    {
+      "geometry": "G1M",
+      "label": "SYSTEM",
+      "mount": "A"
+    },
+    {
+      "geometry": "G8M",
+      "label": "WORK",
+      "mount": "B",
+      "writeBehind": true
+    }
+  ],
+  "components": [
+    {
+      "id": "mount-com",
+      "name": "MOUNT.COM",
+      "description": "lists the card's volumes, or mounts one on a drive: MOUNT, MOUNT B: NAME, MOUNT B: INDEX, MOUNT B: to unmount",
+      "files": [
+        {
+          "name": "MOUNT.COM",
+          "url": "files/MOUNT.COM",
+          "drive": "A",
+          "bytes": 671,
+          "sha256": "5273f0ba443817f9168a1909fe7c934a5ad186ba1480d35b7ab169c27ead83cc"
+        }
+      ]
+    },
+    {
+      "id": "glcd-svc",
+      "name": "GLCD.SVC",
+      "description": "the GLCD console, a driver",
+      "files": [
+        {
+          "name": "GLCD.SVC",
+          "url": "files/GLCD.SVC",
+          "drive": "A",
+          "bytes": 836,
+          "sha256": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736"
+        }
+      ]
+    },
+    {
+      "id": "startup-cmd",
+      "name": "STARTUP.CMD",
+      "description": "the commands run at cold boot",
+      "files": [
+        {
+          "name": "STARTUP.CMD",
+          "url": "files/STARTUP.CMD",
+          "drive": "A",
+          "bytes": 11,
+          "sha256": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d"
+        }
+      ]
+    },
+    {
+      "id": "ted-com",
+      "name": "TED.COM",
+      "description": "TED, the editor: TED NAME.ASM, ^S save, ^Q quit, ^T B build, ^T R run",
+      "files": [
+        {
+          "name": "TED.COM",
+          "url": "files/TED.COM",
+          "drive": "A",
+          "bytes": 11923,
+          "sha256": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f"
+        }
+      ]
+    },
+    {
+      "id": "sample-asm",
+      "name": "SAMPLE.ASM",
+      "description": "a first program to build: TAS SAMPLE, then SAMPLE",
+      "files": [
+        {
+          "name": "SAMPLE.ASM",
+          "url": "files/SAMPLE.ASM",
+          "drive": "A",
+          "bytes": 5106,
+          "sha256": "19bf328d58cf78cf7ad9d87dad21673ebf9e5bc77419b7d44fd7932f800cbe95"
+        }
+      ]
+    },
+    {
+      "id": "tas-com",
+      "name": "TAS.COM",
+      "description": "TAS, the assembler: TAS NAME, NAME.ASM to NAME.COM and NAME.DBG",
+      "files": [
+        {
+          "name": "TAS.COM",
+          "url": "files/TAS.COM",
+          "drive": "A",
+          "bytes": 10295,
+          "sha256": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2"
+        }
+      ]
+    },
+    {
+      "id": "demo-com",
+      "name": "DEMO.COM",
+      "description": "a demonstration of the hardware: LCD, digits, LEDs, PICO9918",
+      "files": [
+        {
+          "name": "DEMO.COM",
+          "url": "files/DEMO.COM",
+          "drive": "A",
+          "bytes": 1191,
+          "sha256": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d"
+        }
+      ]
+    }
+  ]
+}
