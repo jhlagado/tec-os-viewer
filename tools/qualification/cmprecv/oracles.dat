@@ -87,6 +87,6 @@
     }
   },
   "meaning": "Literal source oracles fixed before model authoring. The served fields are host body fixtures, not actual HTTP or DOM observations. Synthetic escaping is separate from canonical notice content.",
-  "dependencyDescriptorSha256": "cc374fc3c63775714c93fff86142c7b789987572002f5628086f222534044894",
+  "dependencyDescriptorSha256": "3a9c107882e3f73e05adf65aaad73cab2abaac9e3374458af4283f2f40aee53e",
   "identityOrderMeaning": "Source evaluation order only. The34 single-field cases do not qualify compound-fault precedence."
 }

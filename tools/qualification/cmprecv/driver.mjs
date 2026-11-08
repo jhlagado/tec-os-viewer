@@ -40,9 +40,22 @@ function checkSources() {
 }
 function write(name, bytes, cap) {
   const raw = Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes);
-  require(raw.length <= cap, 'retention cap ' + name);
-  const fd = fs.openSync(join(root, name), 'wx', 0o600);
-  try { fs.writeFileSync(fd, raw); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
+  require(raw.length > 0 && raw.length <= cap, 'retention cap ' + name);
+  // Complete each exclusive O_SYNC write.
+  // The outer then flushes closed evidence.
+  const bits = [fs.constants.O_TRUNC, fs.constants.O_CREAT, fs.constants.O_WRONLY,
+    fs.constants.O_EXCL, fs.constants.O_SYNC];
+  require(bits.every(n => Number.isInteger(n) && n > 0), 'Linux synchronous exclusive-create flags');
+  const fd = fs.openSync(join(root, name), bits.reduce((flags, n) => flags | n, 0), 0o600);
+  try {
+    let offset = 0;
+    while (offset < raw.length) {
+      const count = fs.writeSync(fd, raw, offset, raw.length - offset);
+      require(Number.isInteger(count) && count > 0 && count <= raw.length - offset,
+        'synchronous output write made invalid progress');
+      offset += count;
+    }
+  } finally { fs.closeSync(fd); }
   files.push({path: name, bytes: raw.length, sha256: sha(raw)});
 }
 function save(name, value, cap) { write(name, JSON.stringify(value) + '\n', cap); }
