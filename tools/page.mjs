@@ -61,7 +61,7 @@ const shim = `<script>
   };
 })();
 </script>`;
-html = html.replace(/<link rel="stylesheet" href="style.css" \/>/, `<style>\n${css}\n</style>`);
+html = html.replace(/<link rel="stylesheet" href="style.css" \/>/, () => `<style>\n${css}\n</style>`);
 html = html.replace(/<script type="module" src="app.js"><\/script>/, () => `${shim}\n<script type="module">\n${app}\n</script>`);
 html = html.replace("</h1>", ` <span class="sub">built from tec-os-viewer ${viewer} and tec-os ${tecos}</span></h1>`);
 if (!html.includes(shim) || html.includes('src="app.js"') || html.includes('href="style.css"')) throw new Error("page not assembled");
