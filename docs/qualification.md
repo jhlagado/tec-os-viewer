@@ -1,12 +1,15 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c`. This is a single-file child of
-`fe2097f4bad3f7578aa41b8bce8aa571c451dbc7` that reformats `programs/SAMPLE.ASM`.
-Every other firmware source file is unchanged. The separate TEC-OS checkout
-used for firmware development does not change that pin. `pins.json` binds the
-resulting ROM and seven card files; its ROM SHA-256 is
-`a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb`.
+`a1023bd0cbb4879c37ae61e6f670b442e1e60abe`: TEC-OS release 1, with the Compact
+font, a cold 40-column console, the debugger-support interfaces and the
+repaired TED. `pins.json` binds the resulting ROM and seven card files. Its
+ROM SHA-256 is `0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484`,
+and `TED.COM` is `75fd6c64…`. The other six card files are byte-identical to the
+previous pin, `c8c4a3e3`. The build ships the font notices as
+`FONT-NOTICES.txt` and inline in the page, checked by `tools/notices.mjs`.
+All 85 Viewer tests pass on this pin. Of these, `test/build-manifest.test.mjs`
+covers the VS4 build manifest and `test/font-notices.test.mjs` the notices.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
 product `d193838`, with firmware `fe2097f4`; its completed evidence landed at

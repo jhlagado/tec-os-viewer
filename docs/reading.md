@@ -7,9 +7,9 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c`, a sample-only child of the
-previous `fe2097f4` pin. Its reformatted `SAMPLE.ASM` is the only firmware source
-change. The sample's exact card-source and TAS/TED workflow checks pass.
+`a1023bd0cbb4879c37ae61e6f670b442e1e60abe`, TEC-OS release 1: the Compact font,
+a 40-column cold console and the repaired TED. Its `SAMPLE.ASM` is the same
+40-column sample the previous pin carried.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM and card-file digests.
 ROM means read-only memory, containing the firmware image.

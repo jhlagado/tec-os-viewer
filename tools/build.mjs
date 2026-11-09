@@ -16,6 +16,7 @@ import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { check } from "./tecos.mjs";
+import { validateNotice } from "./notices.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TECOS = resolve(ROOT, "tec-os");
@@ -89,6 +90,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await build(bundleOptions);
 
   for (const f of ["index.html", "style.css"]) copyFileSync(resolve(ROOT, f), resolve(OUT, f));
+  // The Compact font's notices ship with
+  // the page: the checked text beside it
+  // and inline, escaped, before </main>.
+  const notice = validateNotice(new Uint8Array(readFileSync(resolve(TECOS, "dist/FONT-NOTICES.txt"))), "directory");
+  writeFileSync(resolve(OUT, "FONT-NOTICES.txt"), notice.external);
+  const pageHtml = readFileSync(resolve(OUT, "index.html"), "utf8");
+  if (pageHtml.split("</main>").length !== 2) throw new Error("index.html needs exactly one </main> for the font notices");
+  writeFileSync(resolve(OUT, "index.html"), pageHtml.replace("</main>", `  <section class="card">${notice.html}</section>\n    </main>`));
   for (const p of PROFILES) {
     copyFileSync(resolve(TECOS, `dist/${p}.rom`), resolve(OUT, `roms/${p}.rom`));
     const d8 = JSON.parse(readFileSync(resolve(TECOS, `dist/${p}.d8.json`), "utf8"));

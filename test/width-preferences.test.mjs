@@ -94,7 +94,8 @@ test("the real width handler persists each choice and prepares the card even whe
     for (const width of ["32", "80", "40"]) {
       await handler({ target: { value: width } });
       expectWidth(page, width);
-      const expected = width === "80" ? "USER 0\n" : `CON PICO ${width}\nUSER 0\n`;
+      // The firmware writes a line for every width (TEC-OS KS48 card.mjs).
+      const expected = `CON PICO ${width}\nUSER 0\n`;
       assert.equal(Buffer.from(a.read("STARTUP.CMD", { text: true })).toString("latin1"), expected);
       assert.equal(page.stored.get("tecos.width"), writeFails ? undefined : width);
     }
