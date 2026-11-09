@@ -3,21 +3,40 @@
 // dist/tec-os-viewer.html. Run after
 // npm run web. Preserve the app code and
 // serve embedded assets through fetch.
-// Label both repository commits and
-// reject a changed viewer checkout.
-import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+// Label both repository commits only
+// when dist/build.json shows a clean
+// build of the current commits and every
+// byte in dist still matches it.
+import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { outputHashes, sourceState } from "./build.mjs";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = resolve(ROOT, "dist"), out = resolve(dist, "tec-os-viewer.html");
-const commit = (dir) => execFileSync("git", ["-C", dir, "rev-parse", "--short=7", "HEAD"], { encoding: "utf8" }).trim();
-const dirty = execFileSync("git", ["-C", ROOT, "status", "--porcelain"], { encoding: "utf8" }).trimEnd();
-if (dirty) {
-  console.error(`No page: the viewer's tree has changes, so its commit wouldn't name what built the page:\n${dirty}`);
+const refuse = (why) => {
+  console.error(`No page: ${why}`);
   process.exit(1);
+};
+const manifestPath = resolve(dist, "build.json");
+if (!existsSync(manifestPath)) refuse("dist/build.json is missing; run npm run web");
+let manifest;
+try {
+  manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+} catch (error) {
+  refuse(`dist/build.json cannot be read as JSON: ${error.message}`);
 }
-const viewer = commit(ROOT), tecos = commit(resolve(ROOT, "tec-os"));
+if (manifest?.format !== "tecos-viewer-build-v1") refuse("dist/build.json has an unsupported format");
+const now = sourceState();
+for (const [name, tree] of [["viewer", "the viewer's tree"], ["tecos", "TEC-OS's tree"]]) {
+  if (!manifest[name]?.clean) refuse(`dist was built while ${tree} had changes; rebuild from a clean tree`);
+  if (!now[name].clean) refuse(`${tree} has changes, so its commit wouldn't name what built the page`);
+  if (manifest[name].commit !== now[name].commit) refuse(`dist was built from ${tree} at ${String(manifest[name].commit).slice(0, 7)}, not the current ${now[name].commit.slice(0, 7)}; rebuild`);
+}
+const want = manifest.files ?? {}, have = outputHashes(dist);
+for (const path of Object.keys(want)) if (!(path in have)) refuse(`dist/${path} is missing`);
+for (const path of Object.keys(have)) if (!(path in want)) refuse(`dist/${path} is not in dist/build.json`);
+for (const [path, sha] of Object.entries(have)) if (want[path] !== sha) refuse(`dist/${path} differs from dist/build.json`);
+const viewer = now.viewer.commit.slice(0, 7), tecos = now.tecos.commit.slice(0, 7);
 const embed = {};
 const add = (rel) => (embed[rel] = readFileSync(join(dist, rel)).toString("base64"));
 add("starter.recipe.json");
