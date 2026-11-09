@@ -72,6 +72,20 @@ test("each stale or altered dist is refused with its cause (VE-4)", { timeout: 6
   rmSync(resolve(DIST, "files/DEMO.COM"));
   refused(/dist\/files\/DEMO\.COM is missing/);
 
+  // A build whose input check fails leaves no manifest from before it.
+  build();
+  const recipe = resolve(ROOT, "tec-os/dist/page.recipe.json");
+  const kept = readFileSync(recipe);
+  const changed = JSON.parse(kept.toString("utf8"));
+  changed.volumes.push({ geometry: "G1M", label: "EXTRA", mount: "C" });
+  writeFileSync(recipe, JSON.stringify(changed));
+  try {
+    assert.throws(build);
+  } finally {
+    writeFileSync(recipe, kept);
+  }
+  refused(/dist\/build\.json is missing/);
+
   // A build from a changed tree stays uncertified when the change is undone.
   const stray = resolve(ROOT, "vs4-stray.txt");
   writeFileSync(stray, "not committed\n");

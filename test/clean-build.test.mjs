@@ -47,6 +47,13 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
     ["duplicate lowercase A mount", (recipe) => { recipe.volumes[1].mount = "a"; }, /one writable G1M volume mounted at A/],
     ["duplicate colon A mount", (recipe) => { recipe.volumes[1].mount = "A:"; }, /one writable G1M volume mounted at A/],
     ["wrong A geometry", (recipe) => { recipe.volumes[0].geometry = "G8M"; }, /one writable G1M volume mounted at A/],
+    // VE-5: fields the structural checks don't read are pinned through the canonical digest.
+    ["changed B geometry", (recipe) => { recipe.volumes[1].geometry = "G1M"; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
+    ["B write-behind off", (recipe) => { recipe.volumes[1].writeBehind = false; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
+    ["extra volume", (recipe) => { recipe.volumes.push({ geometry: "G1M", label: "EXTRA", mount: "C" }); }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
+    ["empty component", (recipe) => { recipe.components.push({ id: "empty", name: "EMPTY", files: [] }); }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
+    ["extra file field", (recipe) => { sample(recipe).readOnly = true; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
+    ["changed instruction", (recipe) => { recipe.instruction = "changed"; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
   ];
   try {
     await t.test("matching recipe", () => {

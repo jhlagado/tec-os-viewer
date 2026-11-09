@@ -110,7 +110,45 @@ export function problems() {
   for (const name of Object.keys(pins.files)) {
     if (!declared.has(name)) fault(`${name} is missing from the recipe`);
   }
+  // VE-5: every other field is pinned too,
+  // through the recipe's canonical form,
+  // so a change the checks above don't
+  // read, such as another volume, can't
+  // pass unseen.
+  const canonical = recipeDigest(recipe);
+  if (canonical !== pins.recipe) fault(`its canonical SHA-256 is ${canonical}, not the pinned ${pins.recipe}`);
   return found;
+}
+
+/**
+ * The SHA-256 of RECIPE's canonical form:
+ * keys sorted, mounts and drives in upper
+ * case without a colon, flags as booleans,
+ * a file's drive A and user 0 when absent.
+ * Spellings the card builder treats alike
+ * give the same digest.
+ */
+export function recipeDigest(recipe) {
+  const letter = (v) => String(v ?? "A").toUpperCase().replace(/:$/, "");
+  const normal = structuredClone(recipe);
+  for (const v of Array.isArray(normal.volumes) ? normal.volumes : []) {
+    if (v && typeof v === "object") {
+      v.mount = letter(v.mount);
+      v.readOnly = Boolean(v.readOnly);
+      v.writeBehind = Boolean(v.writeBehind);
+    }
+  }
+  for (const c of Array.isArray(normal.components) ? normal.components : []) {
+    for (const f of Array.isArray(c?.files) ? c.files : []) {
+      if (f && typeof f === "object") {
+        f.drive = letter(f.drive);
+        f.user = f.user ?? 0;
+      }
+    }
+  }
+  const sorted = (x) => (Array.isArray(x) ? x.map(sorted) : x && typeof x === "object"
+    ? Object.fromEntries(Object.keys(x).sort().map((k) => [k, sorted(x[k])])) : x);
+  return createHash("sha256").update(JSON.stringify(sorted(normal))).digest("hex");
 }
 
 /** Report mismatches and exit on error. */

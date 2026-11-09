@@ -40,8 +40,11 @@ An unavailable ATOM stops the build. TEC-OS also documents a TAS default and its
 inputs in its README. This Viewer qualification uses ATOM.
 
 - `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
-  it made differs from `pins.json`. With `TAS_COM` and `TED_COM` set, it reads the Thorium inputs from them; otherwise it fetches them.
-- `npm run web` bundles the page into `dist/`, with the ROM and the card's files.
+  it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its canonical
+  digest. With `TAS_COM` and `TED_COM` set, it reads the Thorium inputs from them; otherwise it fetches them.
+- `npm run web` bundles the page into `dist/`, with the ROM, the card's files and `FONT-NOTICES.txt`; the font notices also appear in the
+  page. It writes `dist/build.json` last, naming both commits, whether each tree was clean and every file's hash.
 - `npm run page` runs both, then writes `dist/tec-os-viewer.html`, one page with everything embedded, labelled with this
-  repository's commit and TEC-OS's.
+  repository's commit and TEC-OS's. It refuses, naming the cause, unless `dist/build.json` records a clean build of the current
+  commits and every file in `dist/` still matches it.
 - `npm test` runs every test; `npm run quick` runs the bundle and the serial board's boot, in seconds. Both need `npm run tecos` first.
