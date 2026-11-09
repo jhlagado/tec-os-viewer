@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Build pinned firmware and media, then
-// check ROM and card-file digests.
+// Check the pinned firmware and the
+// recipe used to build the starter card.
 // TAS_COM and TED_COM select the Thorium
 // inputs when both are set. Otherwise
 // npm run inputs prepares them.
@@ -19,7 +19,7 @@ const TECOS = resolve(ROOT, "tec-os");
 const sha = (path) => createHash("sha256").update(readFileSync(path)).digest("hex");
 
 /**
- * List checkout and output mismatches.
+ * List checkout, file and recipe faults.
  * Return an empty list on a match.
  */
 export function problems() {
@@ -45,6 +45,70 @@ export function problems() {
     const path = resolve(TECOS, "dist/files", name);
     if (!existsSync(path)) found.push(`tec-os/dist/files/${name} is missing`);
     else if (sha(path) !== want) found.push(`tec-os/dist/files/${name} has SHA-256 ${sha(path)}, not the pinned ${want}`);
+  }
+  const recipePath = resolve(TECOS, "dist/page.recipe.json");
+  const recipeName = "tec-os/dist/page.recipe.json";
+  if (!existsSync(recipePath)) {
+    found.push(`${recipeName} is missing`);
+    return found;
+  }
+  let recipe;
+  try {
+    recipe = JSON.parse(readFileSync(recipePath, "utf8"));
+  } catch (error) {
+    found.push(`${recipeName} cannot be read as JSON: ${error.message}`);
+    return found;
+  }
+  if (recipe === null || typeof recipe !== "object" || Array.isArray(recipe)) {
+    found.push(`${recipeName} must be an object`);
+    return found;
+  }
+  const fault = (message) => found.push(`${recipeName}: ${message}`);
+  if (recipe.schema !== "tecos-file-recipe-v1") fault("unsupported schema");
+  if (recipe.profile !== "tecos") fault("profile must be tecos");
+  const systemVolumes = Array.isArray(recipe.volumes)
+    ? recipe.volumes.filter((volume) => volume?.mount === "A") : [];
+  if (systemVolumes.length !== 1 || systemVolumes[0].geometry !== "G1M" || systemVolumes[0].readOnly === true) {
+    fault("starter files need one writable G1M volume mounted at A");
+  }
+  if (!Array.isArray(recipe.components)) {
+    fault("components must be an array");
+    return found;
+  }
+  const declared = new Set();
+  for (const component of recipe.components) {
+    if (component === null || typeof component !== "object" || !Array.isArray(component.files)) {
+      fault("component files must be an array");
+      continue;
+    }
+    for (const file of component.files) {
+      if (file === null || typeof file !== "object" || typeof file.name !== "string") {
+        fault("file declarations must have a name");
+        continue;
+      }
+      const name = file.name;
+      if (!Object.hasOwn(pins.files, name)) {
+        fault(`${name} is not named in pins.json`);
+        continue;
+      }
+      if (declared.has(name)) fault(`${name} is declared more than once`);
+      declared.add(name);
+      if (file.url !== `files/${name}`) fault(`${name} URL must be files/${name}`);
+      if ((file.drive ?? "A") !== "A" || (file.user ?? 0) !== 0) {
+        fault(`${name} must be placed on drive A in user 0`);
+      }
+      const path = resolve(files, name);
+      if (!existsSync(path)) continue;
+      const bytes = readFileSync(path);
+      if (file.bytes !== bytes.length) fault(`${name} has ${bytes.length} bytes, recipe says ${file.bytes}`);
+      const actual = createHash("sha256").update(bytes).digest("hex");
+      if (file.sha256 !== pins.files[name] || file.sha256 !== actual) {
+        fault(`${name} recipe SHA-256 disagrees with its file or pin`);
+      }
+    }
+  }
+  for (const name of Object.keys(pins.files)) {
+    if (!declared.has(name)) fault(`${name} is missing from the recipe`);
   }
   return found;
 }
@@ -72,5 +136,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     npm("run", "media");
   }
   check();
-  console.log("tec-os: ROM and the page card's files match pins.json");
+  console.log("tec-os: ROM, card files and recipe checks pass");
 }
