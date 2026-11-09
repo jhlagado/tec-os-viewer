@@ -1,5 +1,5 @@
 {
-  "rom": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb",
+  "rom": "0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484",
   "files": {
     "DEMO.COM": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d",
     "GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
@@ -7,6 +7,6 @@
     "SAMPLE.ASM": "1bfd9696548327f5717f18b749ec2bcb3468df2e6c1dbea095b295673a00c20e",
     "STARTUP.CMD": "22c64e3fe8e98eabb6540ce49ef2b032e00139c178fb3c57663aeb379cdfe06d",
     "TAS.COM": "45c0cf054c089163b18d40d9d009715d01a691ffee1c797a61333c3fb7963bd2",
-    "TED.COM": "2b9291a8c50fc2fbf6673112627bcfc849cf0f7578d20e4104b86f9e1516e49f"
+    "TED.COM": "75fd6c64d8e07f6733f3ecd94d2dcaf19f6080fa8ef8c20b37e2fa54fcbc269a"
   }
 }
