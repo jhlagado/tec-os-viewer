@@ -54,7 +54,9 @@ contracts. No Linux substitution, new provider, changed limits, observed
 resource cost, SDK capability or supported Mac executor is asserted. The native
 source still requires independently reviewed startup/provider/command/input
 bindings, registered controls and separate root allocation before any B/R/API
-or diagnostic execution. A5 and the native admission prerequisites remain open.
+or diagnostic execution. A5 and the native admission prerequisites are not
+done, and no longer gate anything: the Mac native build is out of the
+requirements (P3: KD-257).
 
 Historical held-state/abort scripts bind past process identities and stay with
 their original observations; they are not reusable qualification controls.
@@ -68,5 +70,6 @@ new guard inventory, complete native reviewed-input/permit/self-hash joins,
 actual target dependency/provider metadata, command/clock/resource ownership
 and finite positive/negative controls. Nothing in this directory grants
 execution authority. Firmware pins, study gates, VS1/VS2 evidence and accepted
-viewer behavior are unchanged. Compact adoption and phosphor implementation
-are separate work.
+viewer behavior are unchanged here. The Compact firmware is received in the
+`a1023bd` pin (TEC-OS release 1); phosphor is dropped from the programme
+(P3: KD-258 D3).

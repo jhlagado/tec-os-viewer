@@ -125,7 +125,8 @@ export function problems() {
  * keys sorted, mounts and drives in upper
  * case without a colon, flags as booleans,
  * a file's drive A and user 0 when absent.
- * Spellings the card builder treats alike
+ * The spellings of the A mount and of the
+ * flags that the card builder treats alike
  * give the same digest.
  */
 export function recipeDigest(recipe) {
