@@ -68,7 +68,7 @@ Original source records in Origo include:
 
 Native source review does not supply a supported Mac executor, SDK/provider
 closure, native build/run evidence or the remaining A5 admission. Those
-prerequisites remain open. The partial phosphor model has no accepted product
+prerequisites are not done and no longer gate anything. The partial phosphor model has no accepted product
 candidate/default; phosphor is dropped from the programme (P3: KD-258 D3),
 and Mac native qualification from the requirements (KD-257). VS4's VE-4 and
 VE-5 are implemented: `dist/build.json` certifies the standalone page, and
