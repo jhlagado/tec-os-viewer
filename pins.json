@@ -1,5 +1,6 @@
 {
   "rom": "0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484",
+  "recipe": "f464cec109fe5fe1411300872476b6510951e8e54b931deaaca26d6d014cedf6",
   "files": {
     "DEMO.COM": "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d",
     "GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",

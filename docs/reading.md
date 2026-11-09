@@ -67,13 +67,16 @@ The Download image control provides a file copy.
 [package.json](../package.json) names the commands. Their implementation is:
 
 - [tools/tecos.mjs](../tools/tecos.mjs): build firmware and media with ATOM,
-  then check the submodule pin, clean state and ROM/card-file digests.
+  then check the submodule pin, clean state, ROM/card-file digests and the
+  starter recipe, structurally and by its pinned canonical digest.
 - [tools/build.mjs](../tools/build.mjs): bundle `src/main.mjs` with esbuild and
   copy the page, ROM, derived symbols, recipe and card files into `dist/`.
-  Dependencies resolve from `tec-os/node_modules`.
+  It validates and ships the font notices, beside the page and inline, and
+  writes `dist/build.json` last. Dependencies resolve from `tec-os/node_modules`.
 - [tools/page.mjs](../tools/page.mjs): embed that distribution's assets into
-  `dist/tec-os-viewer.html`. Its fetch shim supplies embedded files. It rejects
-  a changed viewer tree and labels the page with both repository commits.
+  `dist/tec-os-viewer.html`. Its fetch shim supplies embedded files. It labels
+  the page with both repository commits only when `dist/build.json` shows a
+  clean build of the current commits that still matches `dist/`.
 
 `npm start` serves `dist/`. The README contains the build commands.
 

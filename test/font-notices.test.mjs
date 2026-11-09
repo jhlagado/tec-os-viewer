@@ -27,3 +27,18 @@ test("the font notices ship beside the page and inline in it", { timeout: 300_00
   const page = readFileSync(resolve(DIST, "tec-os-viewer.html"), "utf8");
   assert.ok(page.includes(`<pre>${escape(text)}</pre>`), "in the standalone page");
 });
+
+test("the notice helper escapes markup and refuses each bad input by name", async () => {
+  const { serializeNotice, validateNotice } = await import("../tools/notices.mjs");
+  const { html, external } = serializeNotice("a&<b>$&c", "directory");
+  assert.equal(html, '<details id="font-notices"><summary>Font notices</summary><pre>a&amp;&lt;b&gt;$&amp;c</pre></details>');
+  assert.equal(external.toString("utf8"), "a&<b>$&c");
+  assert.equal(serializeNotice("x", "standalone").external, null);
+  const code = (fn) => { try { fn(); } catch (e) { return e.code; } return null; };
+  assert.equal(code(() => serializeNotice("x", "other")), "NOTICE_FORMAT");
+  assert.equal(code(() => serializeNotice(7, "directory")), "NOTICE_TEXT");
+  assert.equal(code(() => validateNotice(null, "directory")), "NOTICE_MISSING");
+  assert.equal(code(() => validateNotice("text", "directory")), "NOTICE_BYTES");
+  assert.equal(code(() => validateNotice(new Uint8Array(10), "directory")), "NOTICE_LENGTH");
+  assert.equal(code(() => validateNotice(new Uint8Array(2642), "directory")), "NOTICE_HASH");
+});

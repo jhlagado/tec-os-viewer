@@ -81,6 +81,10 @@ export function outputHashes(dir = OUT) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  // An old manifest goes first, so a build
+  // whose input check fails certifies
+  // nothing that was there before.
+  rmSync(resolve(OUT, "build.json"), { force: true });
   check(); // Check ROM and card-file pins.
   const before = sourceState();
   rmSync(OUT, { recursive: true, force: true });
@@ -97,7 +101,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   writeFileSync(resolve(OUT, "FONT-NOTICES.txt"), notice.external);
   const pageHtml = readFileSync(resolve(OUT, "index.html"), "utf8");
   if (pageHtml.split("</main>").length !== 2) throw new Error("index.html needs exactly one </main> for the font notices");
-  writeFileSync(resolve(OUT, "index.html"), pageHtml.replace("</main>", `  <section class="card">${notice.html}</section>\n    </main>`));
+  writeFileSync(resolve(OUT, "index.html"), pageHtml.replace("</main>", () => `  <section class="card">${notice.html}</section>\n    </main>`));
   for (const p of PROFILES) {
     copyFileSync(resolve(TECOS, `dist/${p}.rom`), resolve(OUT, `roms/${p}.rom`));
     const d8 = JSON.parse(readFileSync(resolve(TECOS, `dist/${p}.d8.json`), "utf8"));
