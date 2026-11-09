@@ -8,7 +8,7 @@ ROM SHA-256 is `0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484
 and `TED.COM` is `75fd6c64…`. The other six card files are byte-identical to the
 previous pin, `c8c4a3e3`. The build ships the font notices as
 `FONT-NOTICES.txt` and inline in the page, checked by `tools/notices.mjs`.
-All 92 Viewer tests pass on this pin. Of these, `test/build-manifest.test.mjs`
+All 94 Viewer tests pass on this pin. Of these, `test/build-manifest.test.mjs`
 covers the VS4 build manifest and `test/font-notices.test.mjs` the notices.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
