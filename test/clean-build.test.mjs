@@ -42,6 +42,10 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
     ["missing A volume", (recipe) => { recipe.volumes = []; }, /one writable G1M volume mounted at A/],
     ["duplicate A volume", (recipe) => { recipe.volumes.push({ ...recipe.volumes[0] }); }, /one writable G1M volume mounted at A/],
     ["read-only A volume", (recipe) => { recipe.volumes[0].readOnly = true; }, /one writable G1M volume mounted at A/],
+    ["numeric read-only A volume", (recipe) => { recipe.volumes[0].readOnly = 1; }, /one writable G1M volume mounted at A/],
+    ["string read-only A volume", (recipe) => { recipe.volumes[0].readOnly = "true"; }, /one writable G1M volume mounted at A/],
+    ["duplicate lowercase A mount", (recipe) => { recipe.volumes[1].mount = "a"; }, /one writable G1M volume mounted at A/],
+    ["duplicate colon A mount", (recipe) => { recipe.volumes[1].mount = "A:"; }, /one writable G1M volume mounted at A/],
     ["wrong A geometry", (recipe) => { recipe.volumes[0].geometry = "G8M"; }, /one writable G1M volume mounted at A/],
   ];
   try {
@@ -49,6 +53,14 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
       writeFileSync(path, JSON.stringify(valid));
       assert.deepEqual(problems(), []);
     });
+    for (const mount of ["a", "A:"]) {
+      await t.test(`matching A volume spelled ${mount}`, () => {
+        const recipe = structuredClone(valid);
+        recipe.volumes[0].mount = mount;
+        writeFileSync(path, JSON.stringify(recipe));
+        assert.deepEqual(problems(), []);
+      });
+    }
     for (const [name, change, diagnostic] of cases) {
       await t.test(name, () => {
         const recipe = structuredClone(valid);
