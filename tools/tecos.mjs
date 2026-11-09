@@ -67,8 +67,8 @@ export function problems() {
   if (recipe.schema !== "tecos-file-recipe-v1") fault("unsupported schema");
   if (recipe.profile !== "tecos") fault("profile must be tecos");
   const systemVolumes = Array.isArray(recipe.volumes)
-    ? recipe.volumes.filter((volume) => volume?.mount === "A") : [];
-  if (systemVolumes.length !== 1 || systemVolumes[0].geometry !== "G1M" || systemVolumes[0].readOnly === true) {
+    ? recipe.volumes.filter((volume) => String(volume?.mount ?? "").toUpperCase().replace(/:$/, "") === "A") : [];
+  if (systemVolumes.length !== 1 || systemVolumes[0].geometry !== "G1M" || systemVolumes[0].readOnly) {
     fault("starter files need one writable G1M volume mounted at A");
   }
   if (!Array.isArray(recipe.components)) {
