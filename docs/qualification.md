@@ -8,7 +8,7 @@ ROM SHA-256 is `0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484
 and `TED.COM` is `75fd6c64…`. The other six card files are byte-identical to the
 previous pin, `c8c4a3e3`. The build ships the font notices as
 `FONT-NOTICES.txt` and inline in the page, checked by `tools/notices.mjs`.
-All 85 Viewer tests pass on this pin. Of these, `test/build-manifest.test.mjs`
+All 92 Viewer tests pass on this pin. Of these, `test/build-manifest.test.mjs`
 covers the VS4 build manifest and `test/font-notices.test.mjs` the notices.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
@@ -29,10 +29,9 @@ The ROM and all other card-file bytes remain identical.
 
 The page retains saved 32, 40 or 80-column preferences and uses 40 columns
 when storage is missing, invalid or unavailable. A failed preference write
-leaves the current session choice in use. The existing font and firmware pin
-remain unchanged. The
-[upstream Compact offer](compact-source-offer.md) is separate receiving work,
-including its ROM, font and cold40 default.
+leaves the current session choice in use. The
+[Compact offer](compact-source-offer.md), with its ROM, font and cold 40-column
+default, is received in the current pin.
 
 The complete current Viewer suite passed at
 `479a3b90f71b2e6c864c8a26b895addd60b262e1`: all 50 tests passed, with no failures,
@@ -70,6 +69,8 @@ Original source records in Origo include:
 Native source review does not supply a supported Mac executor, SDK/provider
 closure, native build/run evidence or the remaining A5 admission. Those
 prerequisites remain open. The partial phosphor model has no accepted product
-candidate/default. Generated recipe/map and standalone stale-output integrity
-work (VS4) also remains open. Source relocation records no new runtime result
+candidate/default; phosphor is dropped from the programme (P3: KD-258 D3),
+and Mac native qualification from the requirements (KD-257). VS4's VE-4 and
+VE-5 are implemented: `dist/build.json` certifies the standalone page, and
+the starter recipe is pinned by its canonical digest. Source relocation records no new runtime result
 and supplies no Mac qualification.

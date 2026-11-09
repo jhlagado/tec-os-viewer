@@ -11,11 +11,12 @@ The gitlink at `tec-os/` selects firmware commit
 a 40-column cold console and the repaired TED. Its `SAMPLE.ASM` is the same
 40-column sample the previous pin carried.
 [Qualification](qualification.md) records the accepted viewer baseline.
-[pins.json](../pins.json) holds the expected ROM and card-file digests.
+[pins.json](../pins.json) holds the expected ROM, card-file and canonical
+recipe digests.
 ROM means read-only memory, containing the firmware image.
 
-The later [Compact font and cold 40-column offer](compact-source-offer.md)
-is separate receiving work. The page retains a saved width of 32, 40 or 80
+The [Compact font and cold 40-column offer](compact-source-offer.md) is
+received in this pin. The page retains a saved width of 32, 40 or 80
 columns and uses 40 when that preference is missing, invalid or unavailable.
 A newer firmware checkout elsewhere does not change this page's dependency.
 

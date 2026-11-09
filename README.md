@@ -15,16 +15,15 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The checked-in firmware pin preserves the [VS2 qualified ROM](docs/qualification.md)
-and updates only the starter sample's source layout.
-The later [Compact font and cold 40-column firmware offer](docs/compact-source-offer.md)
-has not yet been adopted or qualified by this viewer. Those documents also identify
-pending viewer work and its source records.
+The firmware pin is TEC-OS release 1 (`a1023bd`, branch `release-1`): the Compact
+font, a cold 40-column console and the repaired TED, with its font notices shipped
+beside and inside the page. [Qualification](docs/qualification.md) records the
+pin, its ROM and the tests that pass on it.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
-`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM and of each file on the page's card, as TEC-OS's build
-at the pin gives them.
+`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the page's card and of the starter recipe's canonical form,
+as TEC-OS's build at the pin gives them.
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git

@@ -133,7 +133,7 @@ export function recipeDigest(recipe) {
   const normal = structuredClone(recipe);
   for (const v of Array.isArray(normal.volumes) ? normal.volumes : []) {
     if (v && typeof v === "object") {
-      v.mount = letter(v.mount);
+      if (v.mount !== undefined && v.mount !== null) v.mount = letter(v.mount);
       v.readOnly = Boolean(v.readOnly);
       v.writeBehind = Boolean(v.writeBehind);
     }
