@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "995069f21dd2342ee0cd1f528478d0713de97680",
-  "firmwareCommit": "c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c",
-  "firmwareRomSha256": "a3dd9ee9763d94efff6b7a93a2cc8f9d7300f04a3e57f5cd0a5f24868f8ed6bb",
+  "viewerCommit": "2a6132d988dd86ffa779ef3c1d4ee1a3111c8cf2",
+  "firmwareCommit": "a1023bd0cbb4879c37ae61e6f670b442e1e60abe",
+  "firmwareRomSha256": "0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484",
   "publication": "standalone-demo",
   "sample": {
     "cpmBytes": 4485,
@@ -20,9 +20,10 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 265412,
-      "sha256": "ddcf470e01d6c1132d89d090390abdfa2af841816183a36d1a5a723e2025df22"
+      "bytes": 268807,
+      "sha256": "1af7f0aa7d5f7e2ef02ab2f405b8cd76f06d6ef373bbbaf65fdae3aa5e7a61fc"
     }
   },
-  "defaultColumns": 40
+  "defaultColumns": 40,
+  "release": "release-1"
 }
