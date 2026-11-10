@@ -17,7 +17,7 @@ test("the web build starts clean: a file left in dist from an older build doesn'
   assert.deepEqual(readdirSync(resolve(ROOT, "dist/files")).sort(), readdirSync(resolve(ROOT, "tec-os/dist/files")).sort());
 });
 
-test("the firmware precheck verifies the starter recipe", { concurrency: false }, async (t) => {
+test("the firmware precheck verifies the page recipe", { concurrency: false }, async (t) => {
   const path = resolve(ROOT, "tec-os/dist/page.recipe.json");
   const original = readFileSync(path);
   const valid = JSON.parse(original);
@@ -47,7 +47,7 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
     ["duplicate lowercase A mount", (recipe) => { recipe.volumes[1].mount = "a"; }, /one writable G1M volume mounted at A/],
     ["duplicate colon A mount", (recipe) => { recipe.volumes[1].mount = "A:"; }, /one writable G1M volume mounted at A/],
     ["wrong A geometry", (recipe) => { recipe.volumes[0].geometry = "G8M"; }, /one writable G1M volume mounted at A/],
-    // VE-5: fields the structural checks don't read are pinned through the canonical digest.
+    // Fields the structural checks don't read are pinned through the canonical digest.
     ["changed B geometry", (recipe) => { recipe.volumes[1].geometry = "G1M"; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
     ["B write-behind off", (recipe) => { recipe.volumes[1].writeBehind = false; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
     ["extra volume", (recipe) => { recipe.volumes.push({ geometry: "G1M", label: "EXTRA", mount: "C" }); }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],

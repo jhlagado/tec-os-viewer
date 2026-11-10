@@ -1,40 +1,44 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`12b2ec5f470844c46cd0c92fea132f1a0ab11c40`, TEC-OS: the release 1 candidate
+`7fa2823357b2a96330d0b90bd120702347043116`, TEC-OS: the release 1 candidate
 with BASIC and TED's language support (Origo KD-262), on the Compact font, a
 cold 40-column console and the debugger-support interfaces. It follows
-`9f3931ce`, `755636b1` and `a1023bd0`, whose ROM and font notices it keeps.
-`pins.json` binds the ROM, the page's twelve card files and the page recipe's
-canonical digest. The ROM SHA-256 is still
-`0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484`.
-The card is the starter card's nine files plus `DEMO.COM`, its source
-`DEMO.ASM` (`5b9adf63…`, 15,335 bytes as CP/M text) and `BOUNCE.BAS`.
-From Thorium `967678c` comes `TED.COM`, with its language table (`150a19bd…`,
-12,154 bytes). From Baza `ae6a00d` come `BAZA.COM`, with `DEF CALL`, `CALL`
-and `REG` (`ee8465ac…`, 15,744 bytes), and `BAZA.RTL` (`5854bfb6…`, 11,008
-bytes), both unchanged since Baza `6b2b22d`, and `examples/BOUNCE.BAS` (`3bd6d055…`, 4,226
-bytes of LF text, in spaced-out lower case), which the page's card alone holds
-as CP/M text (`df1bcfc7…`, 4,315 bytes): a sprite game on the PICO9918, steered
-by tapping W, A, S and D, with Q to quit. `TIMES.BAS`, now in spaced-out lower
-case, is `b3aa2578…`, 626 bytes; the `TIMES.COM` BAZA builds from it is
-unchanged. The other six card files are byte-identical to `a1023bd0`'s. The
-page recipe, `id` `page` at revision 8, has the canonical SHA-256
-`f2833312d8704aa63fe6f242030083aa5bd0ace32979cad2c0a150d97be935dc`
+`12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it
+keeps. `pins.json` binds the ROM, the page's eleven card files and the page
+recipe's canonical digest. The ROM, 16,077 bytes with a `DEL` command beside
+`ERA`, has the SHA-256
+`3ed68c47f4955eefa1d595c51cfa80060453922d6eea0f3787c4527ab553700e`,
+replacing `0f93acdc…`. The card is the starter card's nine files plus
+`DEMO.ASM`, the hardware demo's source (`5b9adf63…`, 15,335 bytes as CP/M
+text), and `BOUNCE.BAS`. It no longer holds `DEMO.COM`: `TAS DEMO` builds it
+and `DEMO` runs it. From Thorium `b69d544` comes `TED.COM` (`4f622390…`,
+12,334 bytes), which takes trailing 00h as a file's end and gives a line and
+column with error 03. From Baza `a9e7b2f` come `BAZA.COM`, which gives back a
+claimed display on a fatal error and adds `VARPTR` (`44a0fe17…`, 15,872
+bytes), `BAZA.RTL` (`fab27179…`, 11,008 bytes) and `examples/BOUNCE.BAS`
+(`fab92802…`, 4,177 bytes of LF text), which the page's card alone holds as
+CP/M text (`07196e57…`, 4,266 bytes): a sprite game on the PICO9918, steered
+by tapping W, A, S and D, with Q to quit. `TIMES.BAS` is `b3aa2578…`, 626
+bytes. `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD` and `TAS.COM` are
+byte-identical to `a1023bd0`'s. The page recipe, `id` `page` at revision 9,
+has the canonical SHA-256
+`b8bb7677634770aa43cf4906a87e72509c7c0d998141e6e68e7dfd7d43f7afe2`
 (VE-5). The build ships the font notices as `FONT-NOTICES.txt` and inline in
-the page, checked by `tools/notices.mjs`. All 107 Viewer tests pass on this
+the page, checked by `tools/notices.mjs`. All 109 Viewer tests pass on this
 pin. Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices and `test/basic-card.test.mjs` the
-card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, and a
-`BAZA BOUNCE` build and `BOUNCE` run in the page's machine: Graphics I with
-the ROM's font, its title and sprites, the ship moved by taps and the console
-back at `A>` after Q. These run the TEC-OS `Machine` under Node with the
+card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
+`BAZA BOUNCE` build and `BOUNCE` run (Graphics I with the ROM's font, its
+title and sprites, the ship moved by taps and the console back at `A>` after
+Q), a `TAS DEMO` build and `DEMO` run until a key, and `DEL` erasing a file,
+all in the page's machine. These run the TEC-OS `Machine` under Node with the
 page's ROM, card and settings, not a browser. `test/text-mode.test.mjs` covers
 how the page decides to copy a file as text or binary, and that binaries with
 text types and CP/M programs' data files round-trip intact.
 `test/copy-text.test.mjs` copies an LF `.z80` file through the page with the
 default setting and opens it in TED, and downloads `TIMES.BAS` as LF text and
-`DEMO.COM` byte for byte.
+`MOUNT.COM` byte for byte.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
 product `d193838`, with firmware `fe2097f4`; its completed evidence landed at

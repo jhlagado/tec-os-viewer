@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Check the pinned firmware and the
 // page recipe: the starter card plus
-// DEMO.COM, DEMO.ASM and BOUNCE.BAS.
+// DEMO.ASM and BOUNCE.BAS.
 // npm run inputs in tec-os checks the
 // five pinned inputs, TAS.COM and
 // TED.COM from Thorium and BAZA.COM,

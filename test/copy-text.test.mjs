@@ -59,7 +59,7 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   await context.close();
 });
 
-test("Download in the default setting gives TIMES.BAS back as LF text and DEMO.COM byte for byte", { timeout: 180_000 }, async (t) => {
+test("Download in the default setting gives TIMES.BAS back as LF text and MOUNT.COM byte for byte", { timeout: 180_000 }, async (t) => {
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
@@ -80,10 +80,10 @@ test("Download in the default setting gives TIMES.BAS back as LF text and DEMO.C
   };
   const times = await download("TIMES.BAS");
   assert.deepEqual(times, readFileSync(resolve(ROOT, "tec-os/programs/TIMES.BAS")), "TIMES.BAS as its LF source, with no CR and no ^Z");
-  const demo = await download("DEMO.COM");
-  const pinned = readFileSync(resolve(ROOT, "dist/files/DEMO.COM"));
-  assert.deepEqual(demo.subarray(0, pinned.length), pinned, "DEMO.COM byte for byte");
-  assert.ok(demo.length % 128 === 0 && demo.length - pinned.length < 128 && demo.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
+  const mount = await download("MOUNT.COM");
+  const pinned = readFileSync(resolve(ROOT, "dist/files/MOUNT.COM"));
+  assert.deepEqual(mount.subarray(0, pinned.length), pinned, "MOUNT.COM byte for byte");
+  assert.ok(mount.length % 128 === 0 && mount.length - pinned.length < 128 && mount.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
   assert.deepEqual(errors, []);
   await context.close();
 });

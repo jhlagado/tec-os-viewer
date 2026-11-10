@@ -110,7 +110,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       .map((s) => ({ name: s.name, address: s.address ?? s.value }));
     writeFileSync(resolve(OUT, `roms/${p}.symbols.json`), JSON.stringify(labels));
   }
-  // The page recipe adds DEMO.COM and
+  // The page recipe adds DEMO.ASM and
   // BOUNCE.BAS to the starter card. Copy
   // it under the path fetched by the page.
   copyFileSync(resolve(TECOS, "dist/page.recipe.json"), resolve(OUT, "starter.recipe.json"));

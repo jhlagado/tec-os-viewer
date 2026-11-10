@@ -1,10 +1,11 @@
 // The page's card carries BAZA, its
 // first BASIC program and Baza's
-// BOUNCE.BAS, and DEMO.COM's source:
+// BOUNCE.BAS, and the demo as source:
 // its recipe and A: hold BAZA.COM,
 // BAZA.RTL, TIMES.BAS, BOUNCE.BAS and
 // DEMO.ASM, which is TEC-OS's
-// programs/DEMO.ASM as CP/M text.
+// programs/DEMO.ASM as CP/M text, and
+// no DEMO.COM.
 // In the page's machine, PICO9918 at
 // 40 columns, BAZA TIMES builds
 // TIMES.COM and TIMES runs it back to
@@ -13,7 +14,10 @@
 // the ROM's font, found by reg("HL"),
 // its title and its sprites, moves the
 // ship on W/A/S/D taps and gives the
-// console back on Q.
+// console back on Q; TAS DEMO builds
+// DEMO.COM and DEMO runs it until a
+// key; and DEL erases a file as ERA
+// does.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -50,7 +54,8 @@ test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.A
   for (const name of FILES) assert.ok(onA.includes(name), `${name} on A:`);
   const source = Buffer.from(readFileSync(resolve(ROOT, "tec-os/programs/DEMO.ASM"), "utf8").replace(/\n/g, "\r\n") + "\x1a", "latin1");
   const demo = Buffer.from(driveA(image).read("DEMO.ASM"));
-  assert.deepEqual(demo.subarray(0, source.length), source, "DEMO.ASM is DEMO.COM's source as CP/M text");
+  assert.deepEqual(demo.subarray(0, source.length), source, "DEMO.ASM is the demo's source as CP/M text");
+  assert.ok(!declared.includes("DEMO.COM") && !onA.includes("DEMO.COM"), "no DEMO.COM: TAS DEMO makes it");
 });
 
 test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
@@ -113,5 +118,44 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   assert.deepEqual(registers(), console40, "the console's VDP mode back");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
   assert.ok(m.screen().some((l) => /^THANKS FOR PLAYING\. SCORE/.test(l)), "the THANKS line on the console's screen");
+  assert.deepEqual(m.violations, []);
+});
+
+test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key", { timeout: 1_800_000 }, async () => {
+  const image = await card();
+  const m = power(image, "pico", 40);
+  const long = (s, what, done) => {
+    m.enqueueInput(s, "matrix");
+    m.runUntilChecked(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), 3_000_000_000, what);
+  };
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  let mark = m.output.length;
+  long("tas demo\r", "TAS's build", () => m.ready() && /A>$/.test(m.text(mark)));
+  assert.match(m.text(mark), /DEMO\.COM written/);
+  assert.ok(names(image).includes("DEMO.COM"), "DEMO.COM on A:");
+  mark = m.output.length;
+  long("demo\r", "the demo's loop", () => /Press any key to stop\./.test(m.text(mark)));
+  const end = m.cycles + 100_000_000;
+  m.runUntil(() => m.cycles >= end, 101_000_000, "the demo running");
+  assert.deepEqual(Array.from(m.tec1g.state.display.tms9918.stateSnapshot().registers.slice(0, 8)), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I on the PICO9918");
+  assert.equal(String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20)), "TEC-OS hardware demo", "the LCD's first row");
+  m.enqueueInput(" ", "matrix");
+  m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
+  assert.ok(m.videoConsole(), "the PICO9918 is the console again");
+  assert.deepEqual(m.violations, []);
+});
+
+test("in the page's machine, DEL erases a file, as ERA does", { timeout: 300_000 }, async () => {
+  const image = await card();
+  const m = power(image, "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  assert.ok(names(image).includes("TIMES.BAS") && names(image).includes("SAMPLE.ASM"));
+  let mark = m.output.length;
+  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A>$/.test(m.text(mark)));
+  assert.equal(m.text(mark), "del times.bas\r\r\nA>", "DEL says nothing, as ERA");
+  mark = m.output.length;
+  keys(m, "dir times.bas\r", "DIR", () => m.ready() && /A>$/.test(m.text(mark)));
+  assert.match(m.text(mark), /No file/i, "DIR finds no TIMES.BAS");
+  assert.ok(names(image).includes("SAMPLE.ASM"), "the other files stay");
   assert.deepEqual(m.violations, []);
 });
