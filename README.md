@@ -15,10 +15,16 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS release 1 (`a1023bd`, branch `release-1`): the Compact
-font, a cold 40-column console and the repaired TED, with its font notices shipped
-beside and inside the page. [Qualification](docs/qualification.md) records the
-pin, its ROM and the tests that pass on it.
+The firmware pin is TEC-OS main `755636b`, the release 1 candidate with BASIC
+(Origo KD-262): the Compact font, a cold 40-column console, TED from Thorium
+`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `fbfedb6`, with
+the Compact font's notices shipped beside and inside the page. The page's card
+is the starter card's nine files, `BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`,
+`MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and `TIMES.BAS`,
+plus `DEMO.COM`. At `A>`, `TAS SAMPLE` and `SAMPLE` build and run a first
+program, and `BAZA TIMES` and `TIMES` one in BASIC.
+[Qualification](docs/qualification.md) records the pin, its ROM and the tests
+that pass on it.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
@@ -40,7 +46,10 @@ inputs in its README. This Viewer qualification uses ATOM.
 
 - `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its canonical
-  digest. With `TAS_COM` and `TED_COM` set, it reads the Thorium inputs from them; otherwise it fetches them.
+  digest. It runs TEC-OS's `npm run inputs` first, which takes the four pinned inputs, `TAS.COM` and `TED.COM` from Thorium and
+  `BAZA.COM` and `BAZA.RTL` from Baza, from `TAS_COM`, `TED_COM`, `BAZA_COM` and `BAZA_RTL` when set, else `tec-os/.inputs/`, else
+  fetches them, and refuses any that differs from its pin. Baza's repository is private: without access to it, put its two files in
+  `tec-os/.inputs/` or name them in `BAZA_COM` and `BAZA_RTL`.
 - `npm run web` bundles the page into `dist/`, with the ROM, the card's files and `FONT-NOTICES.txt`; the font notices also appear in the
   page. It writes `dist/build.json` last, naming both commits, whether each tree was clean and every file's hash.
 - `npm run page` runs both, then writes `dist/tec-os-viewer.html`, one page with everything embedded, labelled with this
