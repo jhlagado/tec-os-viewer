@@ -1,32 +1,40 @@
 // The page's card carries BAZA, its
 // first BASIC program and Baza's
-// BOUNCE.BAS: its recipe and A: hold
-// BAZA.COM, BAZA.RTL, TIMES.BAS and
-// BOUNCE.BAS.
+// BOUNCE.BAS, and DEMO.COM's source:
+// its recipe and A: hold BAZA.COM,
+// BAZA.RTL, TIMES.BAS, BOUNCE.BAS and
+// DEMO.ASM, which is TEC-OS's
+// programs/DEMO.ASM as CP/M text.
 // In the page's machine, PICO9918 at
 // 40 columns, BAZA TIMES builds
 // TIMES.COM and TIMES runs it back to
 // the prompt; BAZA BOUNCE builds
 // BOUNCE, which takes Graphics I with
-// the ROM's font, found by REG("HL"),
+// the ROM's font, found by reg("HL"),
 // its title and its sprites, moves the
 // ship on W/A/S/D taps and gives the
 // console back on Q.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { card, power, recipe } from "./lib/page.mjs";
+import { ROOT } from "./lib/root.mjs";
 
 const LIMIT = 400_000_000; // Per-step cycle limit.
-const BASIC = ["BAZA.COM", "BAZA.RTL", "TIMES.BAS", "BOUNCE.BAS"];
+const FILES = ["BAZA.COM", "BAZA.RTL", "TIMES.BAS", "BOUNCE.BAS", "DEMO.ASM"];
+
+/** A: on IMAGE. */
+function driveA(image) {
+  const v = findVolume(parseContainer(image), "A");
+  return new CpmVolume(volumePayload(image, v), v.g);
+}
 
 /** A:'s file names on IMAGE. */
-function names(image) {
-  const v = findVolume(parseContainer(image), "A");
-  return new CpmVolume(volumePayload(image, v), v.g).list().map((f) => f.name);
-}
+const names = (image) => driveA(image).list().map((f) => f.name);
 
 /** Type S, each key when asked, then run until M waits with nothing queued and DONE holds. */
 function keys(m, s, what, done) {
@@ -34,11 +42,15 @@ function keys(m, s, what, done) {
   m.runUntilChecked(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), LIMIT, what);
 }
 
-test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS and BOUNCE.BAS on A:", async () => {
+test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on A:", async () => {
   const declared = recipe().components.flatMap((c) => c.files.map((f) => f.name));
-  for (const name of BASIC) assert.ok(declared.includes(name), `${name} in the page recipe`);
-  const onA = names(await card());
-  for (const name of BASIC) assert.ok(onA.includes(name), `${name} on A:`);
+  for (const name of FILES) assert.ok(declared.includes(name), `${name} in the page recipe`);
+  const image = await card();
+  const onA = names(image);
+  for (const name of FILES) assert.ok(onA.includes(name), `${name} on A:`);
+  const source = Buffer.from(readFileSync(resolve(ROOT, "tec-os/programs/DEMO.ASM"), "utf8").replace(/\n/g, "\r\n") + "\x1a", "latin1");
+  const demo = Buffer.from(driveA(image).read("DEMO.ASM"));
+  assert.deepEqual(demo.subarray(0, source.length), source, "DEMO.ASM is DEMO.COM's source as CP/M text");
 });
 
 test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
