@@ -17,7 +17,7 @@ unavailable saved preferences use 40 columns.
 
 The firmware pin is TEC-OS `12b2ec5`, the release 1 candidate with BASIC
 (Origo KD-262): the Compact font, a cold 40-column console, TED from Thorium
-`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `6b2b22d`, with
+`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `ae6a00d` (unchanged since `6b2b22d`), with
 `DEF CALL`, `CALL` and `REG`, with the Compact font's notices shipped beside
 and inside the page. The page's card is the starter card's nine files,
 `BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`,

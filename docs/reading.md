@@ -9,7 +9,8 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 The gitlink at `tec-os/` selects firmware commit
 `12b2ec5f470844c46cd0c92fea132f1a0ab11c40`, TEC-OS, the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, TED with its
-language table, and BAZA from Baza `6b2b22d`. Its `SAMPLE.ASM` is the same
+language table, and BAZA from Baza `ae6a00d`, unchanged since
+`6b2b22d`. Its `SAMPLE.ASM` is the same
 40-column sample earlier pins carried. Its starter card holds `BAZA.COM`,
 `BAZA.RTL` and `TIMES.BAS`, and the page's card adds `DEMO.COM`, its source
 `DEMO.ASM`, and Baza's `BOUNCE.BAS`.
@@ -60,11 +61,15 @@ The card section in `main.mjs` lists files, downloads images and stages imported
 files on a copy. A successful import publishes the staged card and resets the
 machine. Its storage step precedes publication when browser saving is enabled.
 [src/text.mjs](../src/text.mjs) decides, for each file copied onto or off the
-card, whether it is CP/M text: by default a text type such as `.ASM`, `.BAS`
-or `.Z80`, or a file of plain printable ASCII, is text (LF to CRLF and ^Z
-padding going on, back to LF coming off), and `.COM`, `.SVC`, `.RTL`, `.BIN`
-and other files are copied as they are. The Copy as control forces text or
-binary instead.
+card, whether it is CP/M text. By default a file is text only when its bytes
+are: printable ASCII with TAB, LF, FF and CR, and a final ^Z, plus bytes from
+80h for a text type such as `.ASM`, `.BAS`, `.Z80` or `.TXT`. Text goes on with
+CRLF line ends and ^Z padding. A file on the card comes off as text only when
+nothing but ^Z and 00h follows its first ^Z, or, with no ^Z, when its 00h
+padding lies within its last record; it comes off with LF line ends.
+`.COM`, `.SVC`, `.RTL`, `.BIN` and any file with other bytes are copied as
+they are, so nothing in a binary is lost. The Copy as control forces text or
+binary instead, for Copy file to drive and for Download.
 
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
 Machine card writes mark it dirty for periodic saving. A failed save leaves

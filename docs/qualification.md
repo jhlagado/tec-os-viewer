@@ -11,9 +11,9 @@ canonical digest. The ROM SHA-256 is still
 The card is the starter card's nine files plus `DEMO.COM`, its source
 `DEMO.ASM` (`5b9adf63…`, 15,335 bytes as CP/M text) and `BOUNCE.BAS`.
 From Thorium `967678c` comes `TED.COM`, with its language table (`150a19bd…`,
-12,154 bytes). From Baza `6b2b22d` come `BAZA.COM`, with `DEF CALL`, `CALL`
+12,154 bytes). From Baza `ae6a00d` come `BAZA.COM`, with `DEF CALL`, `CALL`
 and `REG` (`ee8465ac…`, 15,744 bytes), and `BAZA.RTL` (`5854bfb6…`, 11,008
-bytes). From Baza `ae6a00d` comes `examples/BOUNCE.BAS` (`3bd6d055…`, 4,226
+bytes), both unchanged since Baza `6b2b22d`, and `examples/BOUNCE.BAS` (`3bd6d055…`, 4,226
 bytes of LF text, in spaced-out lower case), which the page's card alone holds
 as CP/M text (`df1bcfc7…`, 4,315 bytes): a sprite game on the PICO9918, steered
 by tapping W, A, S and D, with Q to quit. `TIMES.BAS`, now in spaced-out lower
@@ -22,7 +22,7 @@ unchanged. The other six card files are byte-identical to `a1023bd0`'s. The
 page recipe, `id` `page` at revision 8, has the canonical SHA-256
 `f2833312d8704aa63fe6f242030083aa5bd0ace32979cad2c0a150d97be935dc`
 (VE-5). The build ships the font notices as `FONT-NOTICES.txt` and inline in
-the page, checked by `tools/notices.mjs`. All 103 Viewer tests pass on this
+the page, checked by `tools/notices.mjs`. All 107 Viewer tests pass on this
 pin. Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices and `test/basic-card.test.mjs` the
 card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, and a
@@ -30,9 +30,11 @@ card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, and a
 the ROM's font, its title and sprites, the ship moved by taps and the console
 back at `A>` after Q. These run the TEC-OS `Machine` under Node with the
 page's ROM, card and settings, not a browser. `test/text-mode.test.mjs` covers
-how the page decides to copy a file as text or binary, and
+how the page decides to copy a file as text or binary, and that binaries with
+text types and CP/M programs' data files round-trip intact.
 `test/copy-text.test.mjs` copies an LF `.z80` file through the page with the
-default setting and opens it in TED.
+default setting and opens it in TED, and downloads `TIMES.BAS` as LF text and
+`DEMO.COM` byte for byte.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
 product `d193838`, with firmware `fe2097f4`; its completed evidence landed at
