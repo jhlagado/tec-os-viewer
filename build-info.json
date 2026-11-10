@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "6a7d2d060752b9b441f5eb9070855be2374b3e81",
-  "firmwareCommit": "a1023bd0cbb4879c37ae61e6f670b442e1e60abe",
+  "viewerCommit": "5d24516ef3bfc4189ba2aa1dd99337fd6f26bd56",
+  "firmwareCommit": "755636b130241173c5c30a0be8fe6b79cf2fee37",
   "firmwareRomSha256": "0f93acdc593299ab2c8a1c6af40ca2db23dd3da22263b58c67a13cb7df86d484",
   "publication": "standalone-demo",
   "sample": {
@@ -20,10 +20,18 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 268853,
-      "sha256": "7c96d8cbb9269e6958bf3ea143cd0514ba9b65cead9ecb54066e2ad04f865fd1"
+      "bytes": 305630,
+      "sha256": "d5dea4d1488852df6f6fe4351c695e9dcc39445992727092c2ce7bc651ddef47"
     }
   },
   "defaultColumns": 40,
-  "release": "release-1"
+  "basic": {
+    "cardFiles": [
+      "BAZA.COM",
+      "BAZA.RTL",
+      "TIMES.BAS"
+    ],
+    "bazaCommit": "fbfedb6ab596de42f5e741bcb8315ece3fea97b7",
+    "tedCommit": "967678c668e836f206cacdf9c0837ef55abffc61"
+  }
 }
