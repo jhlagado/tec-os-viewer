@@ -2,13 +2,19 @@
 // Check the pinned firmware and the
 // recipe used to build the starter card.
 // npm run inputs in tec-os checks the
-// four pinned inputs, TAS.COM, TED.COM,
-// BAZA.COM and BAZA.RTL: from TAS_COM,
-// TED_COM, BAZA_COM and BAZA_RTL when
-// set, else tec-os/.inputs/, else it
-// fetches them. Baza is private, so its
-// two files come from the variables or
-// .inputs/ without access to its repo.
+// five pinned inputs, TAS.COM and
+// TED.COM from Thorium and BAZA.COM,
+// BAZA.RTL and BOUNCE.BAS from Baza:
+// from TAS_COM, TED_COM, BAZA_COM,
+// BAZA_RTL and BOUNCE_BAS when set,
+// else tec-os/.inputs/, else a pinned
+// sibling checkout (../thorium/dist,
+// ../baza from tec-os), else it
+// fetches them; see TEC-OS's README.
+// TEC-OS, Thorium and Baza are private:
+// without access, supply the five
+// files through the variables or
+// tec-os/.inputs/.
 //
 // node tools/tecos.mjs: build and check
 // node tools/tecos.mjs --check: check
