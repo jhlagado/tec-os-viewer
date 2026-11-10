@@ -1,5 +1,5 @@
 // Card lifecycle against the actual page
-// source (release 1 review R1-01, R1-04):
+// source:
 // a card replaced during a pending save is
 // the card stored, and power-on stops the
 // old machine before preparing the card.
@@ -15,7 +15,7 @@ const fn = (name) => {
   return source.slice(at, source.indexOf("\n}\n", at) + 3);
 };
 
-test("a card opened while the old card is still saving is the card stored (R1-01)", async () => {
+test("a card opened while the old card is still saving is the card stored", async () => {
   const oldCard = Uint8Array.of(1), newCard = Uint8Array.of(2);
   const stored = [];
   let releaseOld;
@@ -41,7 +41,7 @@ test("a card opened while the old card is still saving is the card stored (R1-01
   assert.equal(context.state.unsaved ?? false, false);
 });
 
-test("power-on stops the old machine before it prepares the card (R1-04)", async () => {
+test("power-on stops the old machine before it prepares the card", async () => {
   const old = { name: "old" };
   const seen = [];
   const context = {

@@ -22,11 +22,11 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, await card(), "tms", "40");
   const screen = () => page.evaluate(() => globalThis.tecos.screen().map((l) => l.trimEnd()));
   await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
@@ -63,11 +63,11 @@ test("Download in the default setting gives TIMES.BAS back as LF text and MOUNT.
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, await card(), "tms", "40");
   assert.equal(await page.inputValue("#textmode"), "auto", "the default is text or binary, by file");
   /** The bytes Download gives for NAME. */

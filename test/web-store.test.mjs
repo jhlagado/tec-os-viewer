@@ -75,11 +75,11 @@ test("the page keeps a card it couldn't save unsaved, says so, and saves it once
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const page = await browser.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -213,11 +213,11 @@ test("a saved card that won't read, or won't parse, is left as it is: the page r
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const url = `http://127.0.0.1:${server.address().port}/`;
   const MARK = [7, 7, 7, 1, 2, 3];
   const record = (page) => page.evaluate(() => new Promise((ok) => {

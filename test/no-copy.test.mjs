@@ -1,4 +1,4 @@
-// VG8 (VD-9): reject copies of pinned
+// Reject copies of pinned
 // TEC-OS files outside the submodule.
 // Compare tracked and untracked viewer
 // files by Git blob identity. Exclude
@@ -26,7 +26,7 @@ function copies(keep) {
   return ours.flatMap((p, i) => (pinned.has(blobs[i]) ? [`${p} is tec-os/${pinned.get(blobs[i])}`] : []));
 }
 
-test("VG8: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin", () => {
+test("no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin", () => {
   const found = copies((path) => !path.startsWith("web/"));
   assert.deepEqual(found, [], `copies of TEC-OS's files:\n${found.join("\n")}`);
 });

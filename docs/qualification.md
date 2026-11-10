@@ -1,30 +1,35 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`a39416ed69ae7b92d4ffdc3f8ac250c7a45f813e`, TEC-OS main: the release 1 candidate
-with BASIC and TED's language support (Origo KD-262), on the Compact font, a
-cold 40-column console and the debugger-support interfaces. It follows
-`7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font
-notices it keeps. `pins.json` binds the ROM, the page's eleven card files and the page
-recipe's canonical digest. The ROM, with 16,077 of 16,384 bytes used and a
-`DEL` command beside `ERA`, has the SHA-256
-`3ed68c47f4955eefa1d595c51cfa80060453922d6eea0f3787c4527ab553700e`,
-replacing `0f93acdc…`. The card is the starter card's nine files plus
-`DEMO.ASM`, the hardware demo's source (`5b9adf63…`, 15,335 bytes as CP/M
-text), and `BOUNCE.BAS`. It no longer holds `DEMO.COM`: `TAS DEMO` builds it
-and `DEMO` runs it. From Thorium `b69d544` comes `TED.COM` (`4f622390…`,
-12,334 bytes), which takes trailing 00h as a file's end and gives a line and
-column with error 03. From Baza `5239149` come `BAZA.COM` (`7e078ea9…`, 15,872
-bytes), `BAZA.RTL` (`568a625f…`, 11,008 bytes) and `examples/BOUNCE.BAS`
-(`fab92802…`, 4,177 bytes of LF text, unchanged since `a9e7b2f`). Since
-`a9e7b2f`, `RND` can't stick at zero, an integer `FOR` rounds its limit and
-step down, and a leftover backup file no longer stops a build. The page's
-card alone holds `BOUNCE.BAS`, as CP/M text (`07196e57…`, 4,266 bytes): a
-sprite game on the PICO9918, steered by tapping W, A, S and D, with Q to quit. `TIMES.BAS` is `b3aa2578…`, 626
-bytes. `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD` and `TAS.COM` are
-byte-identical to `a1023bd0`'s. The page recipe, `id` `page` at revision 9,
-has the canonical SHA-256
-`15fb4a41cebd18018af6bd39ed928abbb42208f30771200900ec9352989dfa82`
+`31b60837d24cf801b5e8cf4daa4856f520227795`, TEC-OS main: the release 1
+candidate with BASIC and TED's language support (Origo KD-262), on the
+Compact font, a cold 40-column console and the debugger-support interfaces.
+It follows `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and
+`a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
+page's eleven card files and the page recipe's canonical digest. The ROM,
+with 16,247 of 16,384 bytes used, a `DEL` command beside `ERA` and
+`NAME.SVC /E`, which enters an installed service, has the SHA-256
+`3e5311d2b9706ca3e64bf2c3e0198b883b6394dde8d62316fd8fdeb881192fd9`.
+It replaces `3ed68c47…`, the ROM of `a39416ed`, which used 16,077 bytes.
+A `.COM` now starts with HL=0100h and DE=0000h. TEC-OS also builds
+`MON3.SVC`, a MON-3 compatibility service, which is on no card. The card
+is the starter card's nine files plus `DEMO.ASM`, the hardware demo's
+source (`5b9adf63…`, 15,335 bytes as CP/M text), and `BOUNCE.BAS`. It no
+longer holds `DEMO.COM`: `TAS DEMO` builds it and `DEMO` runs it. From
+Thorium `b69d544` comes `TED.COM` (`4f622390…`, 12,334 bytes), which takes
+trailing 00h as a file's end and gives a line and column with error 03.
+From Baza `747b9a7` come `BAZA.COM` (`27724068…`, 16,128 bytes), `BAZA.RTL`
+(`7c0cda03…`, 11,136 bytes) and `examples/BOUNCE.BAS` (`fab92802…`, 4,177
+bytes of LF text, unchanged since `a9e7b2f`). This BAZA compiles faster
+and makes faster programs, with no language change: `BAZA TIMES` now
+writes a `TIMES.COM` of 9,088 bytes (`347b974d…`). The page's card alone
+holds `BOUNCE.BAS`, as CP/M text (`07196e57…`, 4,266 bytes): a sprite game
+on the PICO9918, steered by tapping W, A, S and D, with Q to quit.
+`TIMES.BAS` is `b3aa2578…`, 626 bytes. `GLCD.SVC`, `MOUNT.COM`,
+`SAMPLE.ASM`, `STARTUP.CMD` and `TAS.COM` are byte-identical to
+`a1023bd0`'s. The page recipe, `id` `page` at revision 9, has the
+canonical SHA-256
+`97f80e7b0eae4269bf89ad16e35fe698b062f07aff4b4c877cb53f63f934139c`
 (VE-5). The build ships the font notices as `FONT-NOTICES.txt` and inline in
 the page, checked by `tools/notices.mjs`. All 109 Viewer tests pass on this
 pin. Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,

@@ -41,11 +41,11 @@ test("Download of a file whose entry names a block past DSM says why, and the pa
   assert.match(words ?? "", /MOUNT\.COM: extent 0 .* names block \d+, beyond DSM \d+/, "TEC-OS's read refuses it, naming the entry");
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, image, "tms", "80");
   const downloads = [];
   page.on("download", (d) => downloads.push(d.suggestedFilename()));

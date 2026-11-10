@@ -7,9 +7,9 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`a39416ed69ae7b92d4ffdc3f8ac250c7a45f813e`, TEC-OS main, the release 1
+`31b60837d24cf801b5e8cf4daa4856f520227795`, TEC-OS main, the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
-beside `ERA`, TED with its language table, and BAZA from Baza `5239149`. Its
+beside `ERA`, TED with its language table, and BAZA from Baza `747b9a7`. Its
 `SAMPLE.ASM` is the same 40-column sample earlier pins carried. Its starter
 card holds `BAZA.COM`, `BAZA.RTL` and `TIMES.BAS`, and the page's card adds
 `DEMO.ASM`, the hardware demo's source, and Baza's `BOUNCE.BAS`: `TAS DEMO`

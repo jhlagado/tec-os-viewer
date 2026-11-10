@@ -599,7 +599,7 @@ function refreshFiles() {
       try {
         bytes = fromCard($("textmode").value, f.name, fs.read(f.name, { user: f.user }));
       } catch (err) {
-        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // Report the damaged entry (VE-2).
+        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // Report the damaged entry.
         return;
       }
       download(bytes, f.name);
