@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "860fda09a20e2f542184fbc74c9ae55a9a780e34",
-  "firmwareCommit": "a39416ed69ae7b92d4ffdc3f8ac250c7a45f813e",
-  "firmwareRomSha256": "3ed68c47f4955eefa1d595c51cfa80060453922d6eea0f3787c4527ab553700e",
+  "viewerCommit": "7aa69c31641c1c2764d83ec90feaa4b87980a6c4",
+  "firmwareCommit": "31b60837d24cf801b5e8cf4daa4856f520227795",
+  "firmwareRomSha256": "3e5311d2b9706ca3e64bf2c3e0198b883b6394dde8d62316fd8fdeb881192fd9",
   "publication": "standalone-demo",
   "sample": {
     "cpmBytes": 4485,
@@ -20,8 +20,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 334942,
-      "sha256": "f409372326b3f88070f34c09ad9f0b948f5be9c419f09de257a47becea5bd40a"
+      "bytes": 336066,
+      "sha256": "1aa3a0ffb204c99ccea98045a58a3e6763720ad94132751eff8a90dc54c77734"
     }
   },
   "defaultColumns": 40,
@@ -32,7 +32,7 @@
       "TIMES.BAS",
       "BOUNCE.BAS"
     ],
-    "bazaCommit": "52391490d3b95cfc77b711c0c68d2fc791d706b1",
+    "bazaCommit": "747b9a75c7ced152bc63d50c1120253e1d7d12b3",
     "tedCommit": "b69d5444941223172783c831590f5b33e1a59429"
   },
   "demoSource": "DEMO.ASM"
