@@ -4,8 +4,10 @@
 // last record padded with ^Z, and comes
 // off at its end with CRLF turned back
 // into LF. Anything else is copied byte
-// for byte, so a file is taken as text
-// only when nothing in it could be lost.
+// for byte. A file is taken as text only
+// when its bytes are all text, so few
+// binaries, and only short ones, can
+// pass for text.
 
 /** Types that are text when their bytes allow it. */
 export const TEXT_TYPES = new Set(["ASM", "BAS", "Z80", "TXT", "INC", "MAC", "LST", "DOC", "MD", "CMD", "SUB", "PRN", "ASC", "LIB", "HEX", "ME", "H", "C"]);

@@ -1,4 +1,4 @@
-// VE-2: report a damaged file entry in
+// Report a damaged file entry in
 // the card-status line without a page
 // exception or download. Plant the card
 // in Chromium's store. Run npm run tecos
@@ -13,7 +13,7 @@ import { fromTecos } from "./lib/root.mjs";
 import { open, serve } from "./lib/serve.mjs";
 
 /**
- * Damage DEMO.COM with a block beyond
+ * Damage MOUNT.COM with a block beyond
  * A:'s maximum block number, DSM.
  * Return the card and its read error.
  */
@@ -21,24 +21,24 @@ async function damagedCard() {
   const image = await card();
   const v = findVolume(parseContainer(image), "A");
   const a = new CpmVolume(volumePayload(image, v), v.g);
-  const entry = a.scan().find((e) => e.name === "DEMO.COM" && e.extent === 0);
+  const entry = a.scan().find((e) => e.name === "MOUNT.COM" && e.extent === 0);
   const past = a.d.dsm + 1;
   const e = a.entry(entry.index);
   if (a.wide) [e[16], e[17]] = [past & 0xff, past >> 8];
   else e[16] = past;
   let words = null;
   try {
-    a.read("DEMO.COM");
+    a.read("MOUNT.COM");
   } catch (err) {
     words = err.message;
   }
   return { image, words };
 }
 
-test("Download of a file whose entry names a block past DSM says why, and the page throws nothing (VE-2)", { timeout: 120_000 }, async (t) => {
+test("Download of a file whose entry names a block past DSM says why, and the page throws nothing", { timeout: 120_000 }, async (t) => {
   web();
   const { image, words } = await damagedCard();
-  assert.match(words ?? "", /DEMO\.COM: extent 0 .* names block \d+, beyond DSM \d+/, "TEC-OS's read refuses it, naming the entry");
+  assert.match(words ?? "", /MOUNT\.COM: extent 0 .* names block \d+, beyond DSM \d+/, "TEC-OS's read refuses it, naming the entry");
   const { chromium } = fromTecos("playwright");
   const server = await serve();
   const browser = await chromium.launch();
@@ -49,7 +49,7 @@ test("Download of a file whose entry names a block past DSM says why, and the pa
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, image, "tms", "80");
   const downloads = [];
   page.on("download", (d) => downloads.push(d.suggestedFilename()));
-  const row = page.locator("#filelist tbody tr", { hasText: "DEMO.COM" });
+  const row = page.locator("#filelist tbody tr", { hasText: "MOUNT.COM" });
   await row.waitFor({ timeout: 60_000 });
   await row.locator("button").click();
   await page.waitForFunction((w) => document.getElementById("cardinfo").textContent === `Not downloaded: ${w}`, words, { timeout: 10_000 });

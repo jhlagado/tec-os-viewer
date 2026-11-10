@@ -7,13 +7,13 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`12b2ec5f470844c46cd0c92fea132f1a0ab11c40`, TEC-OS, the release 1
-candidate with BASIC: the Compact font, a 40-column cold console, TED with its
-language table, and BAZA from Baza `ae6a00d`, unchanged since
-`6b2b22d`. Its `SAMPLE.ASM` is the same
-40-column sample earlier pins carried. Its starter card holds `BAZA.COM`,
-`BAZA.RTL` and `TIMES.BAS`, and the page's card adds `DEMO.COM`, its source
-`DEMO.ASM`, and Baza's `BOUNCE.BAS`.
+`7fa2823357b2a96330d0b90bd120702347043116`, TEC-OS, the release 1
+candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
+beside `ERA`, TED with its language table, and BAZA from Baza `a9e7b2f`. Its
+`SAMPLE.ASM` is the same 40-column sample earlier pins carried. Its starter
+card holds `BAZA.COM`, `BAZA.RTL` and `TIMES.BAS`, and the page's card adds
+`DEMO.ASM`, the hardware demo's source, and Baza's `BOUNCE.BAS`: `TAS DEMO`
+then `DEMO` build and run the demo.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
@@ -68,7 +68,8 @@ CRLF line ends and ^Z padding. A file on the card comes off as text only when
 nothing but ^Z and 00h follows its first ^Z, or, with no ^Z, when its 00h
 padding lies within its last record; it comes off with LF line ends.
 `.COM`, `.SVC`, `.RTL`, `.BIN` and any file with other bytes are copied as
-they are, so nothing in a binary is lost. The Copy as control forces text or
+they are. A short binary whose bytes all happen to be text can still pass
+for text; "binary, as it is" copies it unchanged. The Copy as control forces text or
 binary instead, for Copy file to drive and for Download.
 
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.

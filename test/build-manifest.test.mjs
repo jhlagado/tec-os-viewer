@@ -1,6 +1,6 @@
-// VS4: tools/page.mjs labels only a clean
+// tools/page.mjs labels only a clean
 // build of the current commits whose dist
-// still matches dist/build.json (VE-4).
+// still matches dist/build.json.
 // Each refusal names its cause. Run npm run
 // tecos before this test.
 
@@ -38,7 +38,7 @@ test("a clean build labels the page, and dist/build.json records it", { timeout:
   assert.equal(page().status, 0, "twice");
 });
 
-test("each stale or altered dist is refused with its cause (VE-4)", { timeout: 600_000 }, (t) => {
+test("each stale or altered dist is refused with its cause", { timeout: 600_000 }, (t) => {
   t.after(() => build());
   build();
   unlinkSync(MANIFEST);
@@ -69,8 +69,8 @@ test("each stale or altered dist is refused with its cause (VE-4)", { timeout: 6
   refused(/dist\/files\/EXTRA\.COM is not in dist\/build\.json/);
 
   build();
-  rmSync(resolve(DIST, "files/DEMO.COM"));
-  refused(/dist\/files\/DEMO\.COM is missing/);
+  rmSync(resolve(DIST, "files/MOUNT.COM"));
+  refused(/dist\/files\/MOUNT\.COM is missing/);
 
   // A build whose input check fails leaves no manifest from before it.
   build();

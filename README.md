@@ -15,25 +15,26 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `12b2ec5`, the release 1 candidate with BASIC
-(Origo KD-262): the Compact font, a cold 40-column console, TED from Thorium
-`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `ae6a00d` (unchanged since `6b2b22d`), with
-`DEF CALL`, `CALL` and `REG`, with the Compact font's notices shipped beside
-and inside the page. The page's card is the starter card's nine files,
-`BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`,
-`TAS.COM`, `TED.COM` and `TIMES.BAS`, plus `DEMO.COM`, its source `DEMO.ASM`,
-and Baza's `BOUNCE.BAS`. `TIMES.BAS` and `BOUNCE.BAS` are in lower case.
-At `A>`, `DEMO` shows the hardware and `TED DEMO.ASM` reads its source,
-`TAS SAMPLE` and `SAMPLE` build and run a first program, `BAZA TIMES`
-and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite game on the
-PICO9918: tap W, A, S and D to steer, Q to quit. A browser that already holds
-a card keeps it; press New starter card for this one.
+The firmware pin is TEC-OS `7fa2823`, the release 1 candidate with BASIC
+(Origo KD-262): the Compact font, a cold 40-column console, a `DEL` command
+beside `ERA`, TED from Thorium `b69d544`, which builds a `.BAS` with BAZA, and
+BAZA from Baza `a9e7b2f`, with `DEF CALL`, `CALL`, `REG` and `VARPTR`, with
+the Compact font's notices shipped beside and inside the page. The page's card
+is the starter card's nine files, `BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`,
+`MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
+`TIMES.BAS`, plus `DEMO.ASM`, the hardware demo's source, and Baza's
+`BOUNCE.BAS`. At `A>`, `TAS DEMO` then `DEMO` build and run the demo, and
+`TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build and run a first
+program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE`
+a sprite game on the PICO9918: tap W, A, S and D to steer, Q to quit. A
+browser that already holds a card keeps it; press New starter card for this
+one.
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
-`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the page's card and of the page recipe's canonical form (the starter recipe plus `DEMO.COM`, `DEMO.ASM` and `BOUNCE.BAS`),
+`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the page's card and of the page recipe's canonical form (the starter recipe plus `DEMO.ASM` and `BOUNCE.BAS`),
 as TEC-OS's build at the pin gives them.
 
 The `tec-os` submodule and the Thorium and Baza repositories its inputs come from are private, so a build needs access to all
