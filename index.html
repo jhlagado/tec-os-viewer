@@ -76,14 +76,18 @@
         <div class="files">
           <label>Drive <select id="drive"></select></label>
           <label class="file-button">Copy file to drive<input type="file" id="putfile" hidden multiple /></label>
-          <label title="Text: LF becomes CRLF on the card and the file ends with ^Z, and back again when copied off. Automatic takes .ASM, .BAS, .Z80, .TXT and other text types, and any file of plain text, as text, and .COM, .SVC, .RTL, .BIN and any other file as it is.">Copy as
-            <select id="textmode">
+          <label>Copy as
+            <select id="textmode" aria-describedby="textmode-note">
               <option value="auto" selected>text or binary, by file</option>
               <option value="text">text</option>
               <option value="raw">binary, as it is</option>
             </select>
           </label>
         </div>
+        <p class="note" id="textmode-note">Copy as applies to Copy file to drive and to Download.
+          With "text or binary, by file", a file whose bytes are all text goes on the card as text, with CRLF
+          line ends and a ^Z at the end, and comes off with LF line ends and no ^Z; .COM, .SVC, .RTL, .BIN and
+          any file with other bytes are copied as they are. "text" and "binary, as it is" force one or the other.</p>
         <table id="filelist"><thead><tr><th>User</th><th>Name</th><th>Bytes</th><th></th></tr></thead><tbody></tbody></table>
         <p class="note">Changing files resets the TEC-1G so CP/M sees the new directory.</p>
       </section>

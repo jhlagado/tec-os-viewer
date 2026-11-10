@@ -2,13 +2,18 @@
 // ends, copied to A: with the page's
 // default Copy as setting goes on as
 // CP/M text, and TED opens it cleanly.
+// Download in the same setting gives a
+// text file back with LF line ends and
+// no ^Z, and a .COM byte for byte.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { card, web } from "./lib/page.mjs";
-import { fromTecos } from "./lib/root.mjs";
+import { ROOT, fromTecos } from "./lib/root.mjs";
 import { open, serve } from "./lib/serve.mjs";
 
 const SOURCE = "; SNAKE0.Z80\n        ORG  0100H\nSTART:  LD   C,9\n        LD   DE,MSG\n        CALL 5\n        RET\nMSG:    DB   \"SNAKE$\"\n";
@@ -50,6 +55,35 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   assert.ok(!lines.some((l) => /EDIT error/.test(l)), `no EDIT error:\n${lines.join("\n")}`);
   assert.equal(lines[0], "; SNAKE0.Z80", `the file's first line at the top:\n${lines.join("\n")}`);
   assert.ok(lines.includes('MSG:    DB   "SNAKE$"'), "its last line");
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test("Download in the default setting gives TIMES.BAS back as LF text and DEMO.COM byte for byte", { timeout: 180_000 }, async (t) => {
+  web();
+  const { chromium } = fromTecos("playwright");
+  const server = await serve();
+  const browser = await chromium.launch();
+  t.after(async () => {
+    await browser.close();
+    server.close();
+  });
+  const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, await card(), "tms", "40");
+  assert.equal(await page.inputValue("#textmode"), "auto", "the default is text or binary, by file");
+  /** The bytes Download gives for NAME. */
+  const download = async (name) => {
+    const row = page.locator("#filelist tbody tr", { hasText: name });
+    await row.waitFor({ timeout: 60_000 });
+    const [d] = await Promise.all([page.waitForEvent("download"), row.locator("button").click()]);
+    assert.equal(d.suggestedFilename(), name);
+    return readFileSync(await d.path());
+  };
+  const times = await download("TIMES.BAS");
+  assert.deepEqual(times, readFileSync(resolve(ROOT, "tec-os/programs/TIMES.BAS")), "TIMES.BAS as its LF source, with no CR and no ^Z");
+  const demo = await download("DEMO.COM");
+  const pinned = readFileSync(resolve(ROOT, "dist/files/DEMO.COM"));
+  assert.deepEqual(demo.subarray(0, pinned.length), pinned, "DEMO.COM byte for byte");
+  assert.ok(demo.length % 128 === 0 && demo.length - pinned.length < 128 && demo.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
   assert.deepEqual(errors, []);
   await context.close();
 });
