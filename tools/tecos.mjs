@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 // Check the pinned firmware and the
 // recipe used to build the starter card.
-// TAS_COM and TED_COM select the Thorium
-// inputs when both are set. Otherwise
-// npm run inputs prepares them.
+// npm run inputs in tec-os checks the
+// four pinned inputs, TAS.COM, TED.COM,
+// BAZA.COM and BAZA.RTL: from TAS_COM,
+// TED_COM, BAZA_COM and BAZA_RTL when
+// set, else tec-os/.inputs/, else it
+// fetches them. Baza is private, so its
+// two files come from the variables or
+// .inputs/ without access to its repo.
 //
 // node tools/tecos.mjs: build and check
 // node tools/tecos.mjs --check: check
@@ -170,7 +175,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.log("tec-os: assembling with TECOS_ROM_ASSEMBLER=atom (no fallback)");
     const npm = (...args) => execFileSync("npm", args, { cwd: TECOS, stdio: "inherit" });
     npm("ci");
-    if (!(process.env.TAS_COM && process.env.TED_COM)) npm("run", "inputs");
+    npm("run", "inputs");
     npm("run", "build");
     npm("run", "media");
   }
