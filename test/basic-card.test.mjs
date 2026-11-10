@@ -1,15 +1,17 @@
 // The page's card carries BAZA, its
-// first BASIC program (KD-262) and
-// Baza's BOUNCE.BAS (P7 BZ-37): its
-// recipe and A: hold BAZA.COM,
-// BAZA.RTL, TIMES.BAS and BOUNCE.BAS.
+// first BASIC program and Baza's
+// BOUNCE.BAS: its recipe and A: hold
+// BAZA.COM, BAZA.RTL, TIMES.BAS and
+// BOUNCE.BAS.
 // In the page's machine, PICO9918 at
 // 40 columns, BAZA TIMES builds
 // TIMES.COM and TIMES runs it back to
 // the prompt; BAZA BOUNCE builds
 // BOUNCE, which takes Graphics I with
-// sprites, moves the ship on W/A/S/D
-// taps and gives the console back on Q.
+// the ROM's font, found by REG("HL"),
+// its title and its sprites, moves the
+// ship on W/A/S/D taps and gives the
+// console back on Q.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -77,8 +79,13 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   m.runUntil(() => (m.pumpInput(), !m.pending?.length), 50_000_000, "the command line");
   run(150_000_000);
   assert.deepEqual(registers(), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I with 16 x 16 sprites");
+  const vram = vdp().vram;
+  const font = m.sym("FONT");
+  assert.deepEqual(Array.from(vram.slice(0x100, 0x400)), Array.from({ length: 768 }, (_, i) => m.read(font + i)), 'the ROM\'s font at 0100h, found by REG("HL")');
+  const title = " BAZA BASIC ON THE PICO9918 ";
+  assert.equal(Buffer.from(vram.slice(0x1802, 0x1802 + title.length)).toString("latin1"), title, "the title in the name table");
   const first = sprites();
-  assert.equal(first[20], 208, "five sprites, then the table's end");
+  assert.deepEqual([2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 20].map((i) => first[i]), [0, 8, 0, 3, 0, 7, 0, 13, 4, 15, 208], "four balls, the ship and the table's end");
   assert.deepEqual([first[16], first[17]], [150, 120], "the ship at Y 150, X 120");
   for (const k of "DDDDAAWWWS") {
     m.typeMatrix(k);
@@ -93,5 +100,6 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   assert.match(m.text(mark), /THANKS FOR PLAYING\. SCORE -?\d+ \r\n/);
   assert.deepEqual(registers(), console40, "the console's VDP mode back");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
+  assert.ok(m.screen().some((l) => /^THANKS FOR PLAYING\. SCORE/.test(l)), "the THANKS line on the console's screen");
   assert.deepEqual(m.violations, []);
 });

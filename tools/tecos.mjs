@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Check the pinned firmware and the
-// recipe used to build the starter card.
+// page recipe: the starter card plus
+// DEMO.COM and BOUNCE.BAS.
 // npm run inputs in tec-os checks the
 // five pinned inputs, TAS.COM and
 // TED.COM from Thorium and BAZA.COM,
@@ -121,7 +122,7 @@ export function problems() {
   for (const name of Object.keys(pins.files)) {
     if (!declared.has(name)) fault(`${name} is missing from the recipe`);
   }
-  // VE-5: every other field is pinned too,
+  // Every other field is pinned too,
   // through the recipe's canonical form,
   // so a change the checks above don't
   // read, such as another volume, can't
