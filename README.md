@@ -15,21 +15,27 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `755636b`, the release 1 candidate with BASIC
+The firmware pin is TEC-OS main `9f3931c`, the release 1 candidate with BASIC
 (Origo KD-262): the Compact font, a cold 40-column console, TED from Thorium
-`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `fbfedb6`, with
-the Compact font's notices shipped beside and inside the page. The page's card
-is the starter card's nine files, `BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`,
-`MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and `TIMES.BAS`,
-plus `DEMO.COM`. At `A>`, `TAS SAMPLE` and `SAMPLE` build and run a first
-program, and `BAZA TIMES` and `TIMES` one in BASIC.
+`967678c`, which builds a `.BAS` with BAZA, and BAZA from Baza `6b2b22d`, with
+`DEF CALL`, `CALL` and `REG`, with the Compact font's notices shipped beside
+and inside the page. The page's card is the starter card's nine files,
+`BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`,
+`TAS.COM`, `TED.COM` and `TIMES.BAS`, plus `DEMO.COM` and Baza's `BOUNCE.BAS`.
+At `A>`, `TAS SAMPLE` and `SAMPLE` build and run a first program, `BAZA TIMES`
+and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite game on the
+PICO9918: tap W, A, S and D to steer, Q to quit. A browser that already holds
+a card keeps it; press New starter card for this one.
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
-`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the page's card and of the starter recipe's canonical form,
+`tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the page's card and of the page recipe's canonical form (the starter recipe plus `DEMO.COM` and `BOUNCE.BAS`),
 as TEC-OS's build at the pin gives them.
+
+The `tec-os` submodule and the Thorium and Baza repositories its inputs come from are private, so a build needs access to all
+three; without it, use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
@@ -46,10 +52,11 @@ inputs in its README. This Viewer qualification uses ATOM.
 
 - `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its canonical
-  digest. It runs TEC-OS's `npm run inputs` first, which takes the four pinned inputs, `TAS.COM` and `TED.COM` from Thorium and
-  `BAZA.COM` and `BAZA.RTL` from Baza, from `TAS_COM`, `TED_COM`, `BAZA_COM` and `BAZA_RTL` when set, else `tec-os/.inputs/`, else
-  fetches them, and refuses any that differs from its pin. Baza's repository is private: without access to it, put its two files in
-  `tec-os/.inputs/` or name them in `BAZA_COM` and `BAZA_RTL`.
+  digest. It runs TEC-OS's `npm run inputs` first, which takes the five pinned inputs, `TAS.COM` and `TED.COM` from Thorium and
+  `BAZA.COM`, `BAZA.RTL` and `BOUNCE.BAS` from Baza, from `TAS_COM`, `TED_COM`, `BAZA_COM`, `BAZA_RTL` and `BOUNCE_BAS` when set,
+  else `tec-os/.inputs/`, else a pinned sibling checkout (`../thorium/dist/` or `../baza/` beside `tec-os/`, as TEC-OS's README
+  says), else fetches them, and refuses any that differs from its pin. To supply the files without fetching them, put them in
+  `tec-os/.inputs/` or name them in those variables.
 - `npm run web` bundles the page into `dist/`, with the ROM, the card's files and `FONT-NOTICES.txt`; the font notices also appear in the
   page. It writes `dist/build.json` last, naming both commits, whether each tree was clean and every file's hash.
 - `npm run page` runs both, then writes `dist/tec-os-viewer.html`, one page with everything embedded, labelled with this

@@ -1,7 +1,7 @@
 # Compact font and cold 40-column source offer
 
-This offer has been received. The viewer now pins TEC-OS release 1, `a1023bd`,
-which descends from it. See [qualification](qualification.md). The rest of
+This offer has been received. The current pin, TEC-OS main `9f3931c`,
+descends from it. See [qualification](qualification.md). The rest of
 this page is the offer as it was made.
 
 | Source role | Exact TEC-OS commit |
