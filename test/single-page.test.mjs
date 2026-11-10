@@ -24,11 +24,11 @@ test("the single page boots to A> with no request but its own, and names both co
   });
   await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
   const { chromium } = fromTecos("playwright");
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const url = `http://127.0.0.1:${server.address().port}/tec-os-viewer.html`;
   const context = await browser.newContext();
   const refused = [];

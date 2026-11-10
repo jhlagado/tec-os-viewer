@@ -15,10 +15,10 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `a39416e`, the release 1 candidate with BASIC
+The firmware pin is TEC-OS main `31b6083`, the release 1 candidate with BASIC
 (Origo KD-262): the Compact font, a cold 40-column console, a `DEL` command
 beside `ERA`, TED from Thorium `b69d544`, which builds a `.BAS` with BAZA, and
-BAZA from Baza `5239149`, with `DEF CALL`, `CALL`, `REG` and `VARPTR`, with
+BAZA from Baza `747b9a7`, with `DEF CALL`, `CALL`, `REG` and `VARPTR`, with
 the Compact font's notices shipped beside and inside the page. The page's card
 is the starter card's nine files, `BAZA.COM`, `BAZA.RTL`, `GLCD.SVC`,
 `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and

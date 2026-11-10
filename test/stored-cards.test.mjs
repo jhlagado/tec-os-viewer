@@ -67,11 +67,11 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
-  const browser = await chromium.launch();
-  t.after(async () => {
-    await browser.close();
+  t.after(() => {
     server.close();
   });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
   const url = `http://127.0.0.1:${server.address().port}/`;
 
   // Prepare the reference card in Node.

@@ -1,4 +1,4 @@
-// VG10 (VS1 VG4): build and run SAMPLE
+// Build and run SAMPLE
 // at the prompt on PICO9918, width 80.
 // Edit its greeting in TED, then build
 // with ^T B and run with ^T R. Check
@@ -54,20 +54,20 @@ function samplePosition(image) {
   const bytes = Buffer.from(new CpmVolume(volumePayload(image, v), v.g).read("SAMPLE.ASM"));
   const padded = Buffer.alloc(Math.ceil(expected.length / 128) * 128);
   expected.copy(padded);
-  assert.deepEqual(bytes, padded, "VG10: card source equals pinned source with CRLF, EOF and zero record padding");
+  assert.deepEqual(bytes, padded, "card source equals pinned source with CRLF, EOF and zero record padding");
   const lines = bytes.subarray(0, bytes.indexOf(0x1a)).toString("latin1").split("\r\n");
   const line = lines.findIndex((l) => l === 'HELLO:    DB    "Hello from TEC-OS."') + 1;
-  assert.equal(line, 193, "VG10: the pinned greeting line");
+  assert.equal(line, 193, "the pinned greeting line");
   const text = lines[line - 1];
-  assert.equal(text.indexOf("Hello") + 1, 18, "VG10: the pinned greeting text column");
+  assert.equal(text.indexOf("Hello") + 1, 18, "the pinned greeting text column");
   assert.ok(!text.includes("\t"), "the compact greeting has no tabs to expand");
   const insertAt = text.indexOf("TEC-OS.");
-  assert.equal(insertAt, 28, "VG10: the pinned insertion offset");
+  assert.equal(insertAt, 28, "the pinned insertion offset");
   return { line, insertAt, cursor: `L${line} C${insertAt + "the ".length + 1}`,
     edited: text.slice(0, insertAt) + "the " + text.slice(insertAt) };
 }
 
-test("VG10: the card's compact source has the qualified bytes and greeting coordinates", async (t) => {
+test("the card's compact source has the qualified bytes and greeting coordinates", async (t) => {
   const position = samplePosition(await card());
   assert.equal(position.cursor, "L193 C33");
   t.diagnostic(JSON.stringify(position));
