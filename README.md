@@ -51,7 +51,7 @@ An unavailable ATOM stops the build. TEC-OS also documents a TAS default and its
 inputs in its README. This Viewer qualification uses ATOM.
 
 - `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
-  it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its canonical
+  it made differs from `pins.json`. That includes the ROM, the card's files and the page recipe, which is pinned in full by its canonical
   digest. It runs TEC-OS's `npm run inputs` first, which takes the five pinned inputs, `TAS.COM` and `TED.COM` from Thorium and
   `BAZA.COM`, `BAZA.RTL` and `BOUNCE.BAS` from Baza, from `TAS_COM`, `TED_COM`, `BAZA_COM`, `BAZA_RTL` and `BOUNCE_BAS` when set,
   else `tec-os/.inputs/`, else a pinned sibling checkout (`../thorium/dist/` or `../baza/` beside `tec-os/`, as TEC-OS's README
