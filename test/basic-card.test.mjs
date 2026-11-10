@@ -21,6 +21,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
@@ -121,20 +122,20 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key", { timeout: 1_800_000 }, async () => {
+test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key", { timeout: 300_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
-  const long = (s, what, done) => {
-    m.enqueueInput(s, "matrix");
-    m.runUntilChecked(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), 3_000_000_000, what);
-  };
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
   let mark = m.output.length;
-  long("tas demo\r", "TAS's build", () => m.ready() && /A>$/.test(m.text(mark)));
+  keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DEMO\.COM written/);
-  assert.ok(names(image).includes("DEMO.COM"), "DEMO.COM on A:");
+  // The program TEC-OS's own build
+  // makes from the same source.
+  const built = Buffer.from(driveA(image).read("DEMO.COM"));
+  assert.equal(createHash("sha256").update(built.subarray(0, 1191)).digest("hex"), "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d", "DEMO.COM's 1,191 bytes");
+  assert.ok(built.length - 1191 < 128 && built.subarray(1191).every((b) => b === 0 || b === 0x1a), "then only the record's padding");
   mark = m.output.length;
-  long("demo\r", "the demo's loop", () => /Press any key to stop\./.test(m.text(mark)));
+  keys(m, "demo\r", "the demo's loop", () => /Press any key to stop\./.test(m.text(mark)));
   const end = m.cycles + 100_000_000;
   m.runUntil(() => m.cycles >= end, 101_000_000, "the demo running");
   assert.deepEqual(Array.from(m.tec1g.state.display.tms9918.stateSnapshot().registers.slice(0, 8)), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I on the PICO9918");

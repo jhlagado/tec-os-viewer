@@ -1,29 +1,30 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`7fa2823357b2a96330d0b90bd120702347043116`, TEC-OS: the release 1 candidate
+`a39416ed69ae7b92d4ffdc3f8ac250c7a45f813e`, TEC-OS main: the release 1 candidate
 with BASIC and TED's language support (Origo KD-262), on the Compact font, a
 cold 40-column console and the debugger-support interfaces. It follows
-`12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it
-keeps. `pins.json` binds the ROM, the page's eleven card files and the page
-recipe's canonical digest. The ROM, 16,077 bytes with a `DEL` command beside
-`ERA`, has the SHA-256
+`7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font
+notices it keeps. `pins.json` binds the ROM, the page's eleven card files and the page
+recipe's canonical digest. The ROM, with 16,077 of 16,384 bytes used and a
+`DEL` command beside `ERA`, has the SHA-256
 `3ed68c47f4955eefa1d595c51cfa80060453922d6eea0f3787c4527ab553700e`,
 replacing `0f93acdc…`. The card is the starter card's nine files plus
 `DEMO.ASM`, the hardware demo's source (`5b9adf63…`, 15,335 bytes as CP/M
 text), and `BOUNCE.BAS`. It no longer holds `DEMO.COM`: `TAS DEMO` builds it
 and `DEMO` runs it. From Thorium `b69d544` comes `TED.COM` (`4f622390…`,
 12,334 bytes), which takes trailing 00h as a file's end and gives a line and
-column with error 03. From Baza `a9e7b2f` come `BAZA.COM`, which gives back a
-claimed display on a fatal error and adds `VARPTR` (`44a0fe17…`, 15,872
-bytes), `BAZA.RTL` (`fab27179…`, 11,008 bytes) and `examples/BOUNCE.BAS`
-(`fab92802…`, 4,177 bytes of LF text), which the page's card alone holds as
-CP/M text (`07196e57…`, 4,266 bytes): a sprite game on the PICO9918, steered
-by tapping W, A, S and D, with Q to quit. `TIMES.BAS` is `b3aa2578…`, 626
+column with error 03. From Baza `5239149` come `BAZA.COM` (`7e078ea9…`, 15,872
+bytes), `BAZA.RTL` (`568a625f…`, 11,008 bytes) and `examples/BOUNCE.BAS`
+(`fab92802…`, 4,177 bytes of LF text, unchanged since `a9e7b2f`). Since
+`a9e7b2f`, `RND` can't stick at zero, an integer `FOR` rounds its limit and
+step down, and a leftover backup file no longer stops a build. The page's
+card alone holds `BOUNCE.BAS`, as CP/M text (`07196e57…`, 4,266 bytes): a
+sprite game on the PICO9918, steered by tapping W, A, S and D, with Q to quit. `TIMES.BAS` is `b3aa2578…`, 626
 bytes. `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD` and `TAS.COM` are
 byte-identical to `a1023bd0`'s. The page recipe, `id` `page` at revision 9,
 has the canonical SHA-256
-`b8bb7677634770aa43cf4906a87e72509c7c0d998141e6e68e7dfd7d43f7afe2`
+`15fb4a41cebd18018af6bd39ed928abbb42208f30771200900ec9352989dfa82`
 (VE-5). The build ships the font notices as `FONT-NOTICES.txt` and inline in
 the page, checked by `tools/notices.mjs`. All 109 Viewer tests pass on this
 pin. Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
