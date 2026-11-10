@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { createContainer, parseContainer, volumePayload } from '../tec-os/tools/lib/container.mjs';
 import { CpmVolume } from '../tec-os/tools/lib/cpmfs.mjs';
+import { chooseText, isCardText, trimPadding } from '../src/text.mjs';
 
 function card() {
   const image = createContainer([{ geometry: 'G1M', label: 'SYSTEM', mount: 'A' }]);
@@ -37,9 +38,9 @@ test('browser stages the whole import before saving or publishing', async () => 
   const start = source.indexOf('$("putfile").addEventListener');
   const end = source.indexOf('$("drive").addEventListener', start);
   const state = { card: image };
-  const elements = { drive: { value: 'A' }, astext: { checked: false }, cardinfo: {}, putfile: { addEventListener: (_type, fn) => { handler = fn; } } };
+  const elements = { drive: { value: 'A' }, textmode: { value: 'auto' }, cardinfo: {}, putfile: { addEventListener: (_type, fn) => { handler = fn; } } };
   let handler, saves = 0, resets = 0;
-  const context = { state, CpmVolume, parseContainer, volumePayload, $: id => elements[id], saveCard: async () => { saves++; }, reset: () => { resets++; }, refreshFiles: () => {} };
+  const context = { state, CpmVolume, parseContainer, volumePayload, chooseText, isCardText, trimPadding, $: id => elements[id], saveCard: async () => { saves++; }, reset: () => { resets++; }, refreshFiles: () => {} };
   context.currentVolume = () => {
     const v = parseContainer(state.card).volumes[0];
     return new CpmVolume(volumePayload(state.card, v), v.g);
@@ -71,9 +72,9 @@ for (const running of [true, false]) {
       let handler, releaseRead, releaseSave, saves = 0, resets = 0;
       const readGate = new Promise(resolve => { releaseRead = resolve; });
       const saveGate = new Promise(resolve => { releaseSave = resolve; });
-      const elements = { drive: { value: 'A' }, astext: { checked: false }, cardinfo: {}, putfile: { addEventListener: (_type, fn) => { handler = fn; } } };
+      const elements = { drive: { value: 'A' }, textmode: { value: 'auto' }, cardinfo: {}, putfile: { addEventListener: (_type, fn) => { handler = fn; } } };
       runInNewContext(withImportSave(source, start, end), {
-        state, CpmVolume, parseContainer, volumePayload, $: id => elements[id],
+        state, CpmVolume, parseContainer, volumePayload, chooseText, isCardText, trimPadding, $: id => elements[id],
         currentVolume: () => new CpmVolume(volumePayload(image, parseContainer(image).volumes[0]), parseContainer(image).volumes[0].g),
         saveCard: async () => {
           saves++;
@@ -120,12 +121,12 @@ for (const running of [true, false]) {
       const state = { card: image, running, cardDirty: true };
       const source = readFileSync(new URL('../src/main.mjs', import.meta.url), 'utf8');
       const handlers = {};
-      const elements = { drive: { value: 'A' }, astext: { checked: false }, cardinfo: {} };
+      const elements = { drive: { value: 'A' }, textmode: { value: 'auto' }, cardinfo: {} };
       const $ = id => elements[id] ??= { addEventListener: (_type, fn) => { handlers[id] = fn; } };
       let releaseRead, releaseSave, saves = 0, powers = 0, steps = 0, autosave;
       const readGate = new Promise(resolve => { releaseRead = resolve; });
       const saveGate = new Promise(resolve => { releaseSave = resolve; });
-      const context = { state, $, CpmVolume, parseContainer, volumePayload,
+      const context = { state, $, CpmVolume, parseContainer, volumePayload, chooseText, isCardText, trimPadding,
         currentVolume: () => fs,
         saveCard: async () => { saves++; await saveGate; if (failure) throw Error('save failed'); },
         reset: () => {}, refreshFiles: () => {}, refreshCard: () => {}, powerOn: async () => { powers++; },
@@ -202,12 +203,12 @@ test("a width chosen while an import's files are read is the width on the card t
   const start = source.indexOf('$("putfile").addEventListener');
   const end = source.indexOf('$("drive").addEventListener', start);
   const state = { card: image, display: 'tms', width: '80' };
-  const elements = { drive: { value: 'A' }, astext: { checked: false }, cardinfo: {}, putfile: { addEventListener: (_type, f) => { handler = f; } } };
+  const elements = { drive: { value: 'A' }, textmode: { value: 'auto' }, cardinfo: {}, putfile: { addEventListener: (_type, f) => { handler = f; } } };
   let handler, releaseRead;
   const readGate = new Promise((ok) => { releaseRead = ok; });
   const volumeOf = (img) => { const v = parseContainer(img).volumes[0]; return new CpmVolume(volumePayload(img, v), v.g); };
   const context = {
-    state, CpmVolume, parseContainer, volumePayload, $: (id) => elements[id],
+    state, CpmVolume, parseContainer, volumePayload, chooseText, isCardText, trimPadding, $: (id) => elements[id],
     saveCard: async () => {}, reset: () => {}, refreshFiles: () => {}, appendSerial: () => {},
     fetch: async () => ({ json: async () => ({}) }), fetchBytes: async () => new Uint8Array(0),
     loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),

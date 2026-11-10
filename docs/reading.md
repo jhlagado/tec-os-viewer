@@ -59,6 +59,12 @@ The firmware's console and device routines remain in `tec-os/src/` and
 The card section in `main.mjs` lists files, downloads images and stages imported
 files on a copy. A successful import publishes the staged card and resets the
 machine. Its storage step precedes publication when browser saving is enabled.
+[src/text.mjs](../src/text.mjs) decides, for each file copied onto or off the
+card, whether it is CP/M text: by default a text type such as `.ASM`, `.BAS`
+or `.Z80`, or a file of plain printable ASCII, is text (LF to CRLF and ^Z
+padding going on, back to LF coming off), and `.COM`, `.SVC`, `.RTL`, `.BIN`
+and other files are copied as they are. The Copy as control forces text or
+binary instead.
 
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
 Machine card writes mark it dirty for periodic saving. A failed save leaves

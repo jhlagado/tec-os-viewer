@@ -10,6 +10,7 @@ import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
 import { loadCard, saveCard } from "./store.mjs";
+import { chooseText, isCardText, trimPadding } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
 
 const CPU_HZ = 4_000_000;
@@ -596,7 +597,9 @@ function refreshFiles() {
     tr.querySelector("button").addEventListener("click", () => {
       let bytes;
       try {
-        bytes = fs.read(f.name, { user: f.user, text: $("astext").checked });
+        const text = chooseText($("textmode").value, f.name, fs.read(f.name, { user: f.user }), isCardText);
+        bytes = fs.read(f.name, { user: f.user, text });
+        if (text) bytes = trimPadding(bytes);
       } catch (err) {
         $("cardinfo").textContent = `Not downloaded: ${err.message}`; // Report the damaged entry (VE-2).
         return;
@@ -664,7 +667,7 @@ $("putfile").addEventListener("change", async (e) => {
       const v = parseContainer(staged).volumes.find((x) => x.drive === $("drive").value);
       if (!v) return;
       const fs = new CpmVolume(volumePayload(staged, v), v.g, { readOnly: v.readOnly });
-      for (const [name, bytes] of files) fs.write(name, bytes, { text: $("astext").checked });
+      for (const [name, bytes] of files) fs.write(name, bytes, { text: chooseText($("textmode").value, name, bytes) });
       await importSave(staged); // Save failure leaves the card intact.
       state.card.set(staged);
       reset();
