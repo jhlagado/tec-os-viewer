@@ -7,10 +7,12 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`755636b130241173c5c30a0be8fe6b79cf2fee37`, TEC-OS main, the release 1
+`9f3931ce2af07ae0384caad2e7a502169dc1e3fa`, TEC-OS main, the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, TED with its
-language table, and BAZA. Its `SAMPLE.ASM` is the same 40-column sample the
-previous pin carried, and its card adds `BAZA.COM`, `BAZA.RTL` and `TIMES.BAS`.
+language table, and BAZA from Baza `6b2b22d`. Its `SAMPLE.ASM` is the same
+40-column sample earlier pins carried. Its starter card holds `BAZA.COM`,
+`BAZA.RTL` and `TIMES.BAS`, and the page's card adds `DEMO.COM` and Baza's
+`BOUNCE.BAS`.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
