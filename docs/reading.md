@@ -54,7 +54,9 @@ keys on as the frame loop steps the machine. A matrix key stays down until
 TEC-OS's scan has read it, but TEC-OS scans the matrix only while CON: is CRT:
 or UC1:. Under `CON TTY` or `CON BAT` the page holds a matrix key for a tenth
 of a second, so a MON-3 program still sees it, and then lets it go, so the
-keys behind it are not stuck. Touch input passes through the hidden text field
+keys behind it are not stuck. The next key waits as long again with no key
+down, since a MON-3 program counts a key only when it goes down after a gap.
+Until startup is over, and on CRT: and UC1:, keys wait for TEC-OS's scan. Touch input passes through the hidden text field
 and the extra keys defined in `index.html`.
 
 [src/tms.mjs](../src/tms.mjs) renders 80-column text, 40-column text and
@@ -112,7 +114,8 @@ sample through assembly and editing. [stored-cards](../test/stored-cards.test.mj
 [page-boundaries](../test/page-boundaries.test.mjs) and
 [web-store](../test/web-store.test.mjs) cover storage and import boundaries.
 [single-page](../test/single-page.test.mjs) covers standalone delivery, and
-[held-key](../test/held-key.test.mjs) the matrix key under `CON TTY`.
+[held-key](../test/held-key.test.mjs) the matrix keys under `CON TTY`, on CRT:
+and at the GLCD board's start.
 The shared setup in [test/lib/page.mjs](../test/lib/page.mjs) relates generated
 assets to the machine and card helpers.
 

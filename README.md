@@ -29,8 +29,9 @@ reads it; `TAS SAMPLE` and `SAMPLE` build and run a first program,
 `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite
 game on the PICO9918: tap W, A, S and D to steer, Q to quit. `MON3.SVC /E` gives
 `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a MON-3 program that
-writes four lines on the LCD and counts on the digits; AD, or Esc on the
-matrix keyboard, returns to `MON3>`, and `EXIT` to `A>`. `TAS CHAIN` then
+writes four lines on the LCD and counts on the digits; on the page, Esc on
+the matrix keyboard returns to `MON3>` (on the board, AD on its keypad does
+too), and `EXIT` to `A>`. `TAS CHAIN` then
 `CHAIN` print `LINE 1` to `LINE 5` from `CHAIN.ASM`, which is written with
 several statements on a line, a `\` between them. Its lines are up to 67
 columns: choose 80 in the width selector and `TED CHAIN.ASM` shows them
@@ -44,7 +45,7 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 `tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the card and of the starter recipe's canonical form,
 as TEC-OS's build at the pin gives them.
 
-`npm run tecos` needs read access to four repositories: the `tec-os` submodule, jhlagado/tec-os at the pin, and the three its
+`npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`3d1e2c0` for `TAS.COM` and `CHAIN.ASM`,
 `b69d544` for `TED.COM`), jhlagado/baza (`45b138e`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
