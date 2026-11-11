@@ -7,13 +7,16 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`31b60837d24cf801b5e8cf4daa4856f520227795`, TEC-OS main, the release 1
+`be654b39faae4f121dd18ab6d559ceedad58b10e`, TEC-OS main, on the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
-beside `ERA`, TED with its language table, and BAZA from Baza `747b9a7`. Its
-`SAMPLE.ASM` is the same 40-column sample earlier pins carried. Its starter
-card holds `BAZA.COM`, `BAZA.RTL` and `TIMES.BAS`, and the page's card adds
-`DEMO.ASM`, the hardware demo's source, and Baza's `BOUNCE.BAS`: `TAS DEMO`
-then `DEMO` build and run the demo.
+beside `ERA`, the squeezed ROM, TED with its language table, TAS from Thorium
+`3d1e2c0` with chained lines, BAZA from Baza `45b138e` and `MON3.SVC`. TEC-OS
+builds one card, the starter card, and the page runs it. Besides the earlier
+files it holds `MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3
+program and its source, and `CHAIN.ASM`, written with several statements on a
+line. `MON3.SVC /E`, `LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on
+the LCD; `TAS CHAIN` then `CHAIN` print `LINE 1` to `LINE 5`; and with 80
+chosen in the width selector `TED CHAIN.ASM` shows its lines whole.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
@@ -21,7 +24,8 @@ ROM means read-only memory, containing the firmware image.
 
 The [Compact font and cold 40-column offer](compact-source-offer.md) is
 received in this pin. The page retains a saved width of 32, 40 or 80
-columns and uses 40 when that preference is missing, invalid or unavailable.
+columns and uses 40 when that preference is missing, invalid or unavailable;
+a new session starts at 40.
 A newer firmware checkout elsewhere does not change this page's dependency.
 
 ## 2. Follow page startup
@@ -45,7 +49,12 @@ uses IndexedDB, a separate browser database.
 
 The rendering, keyboard and controls sections in `main.mjs` contain the page's
 event handlers. Screen input uses the matrix-keyboard route and serial-terminal
-input uses the serial route. Touch input passes through the hidden text field
+input uses the serial route. [src/keys.mjs](../src/keys.mjs) moves the queued
+keys on as the frame loop steps the machine. A matrix key stays down until
+TEC-OS's scan has read it, but TEC-OS scans the matrix only while CON: is CRT:
+or UC1:. Under `CON TTY` or `CON BAT` the page holds a matrix key for a tenth
+of a second, so a MON-3 program still sees it, and then lets it go, so the
+keys behind it are not stuck. Touch input passes through the hidden text field
 and the extra keys defined in `index.html`.
 
 [src/tms.mjs](../src/tms.mjs) renders 80-column text, 40-column text and
@@ -102,7 +111,8 @@ boards. [worked-example](../test/worked-example.test.mjs) follows the card's
 sample through assembly and editing. [stored-cards](../test/stored-cards.test.mjs),
 [page-boundaries](../test/page-boundaries.test.mjs) and
 [web-store](../test/web-store.test.mjs) cover storage and import boundaries.
-[single-page](../test/single-page.test.mjs) covers standalone delivery.
+[single-page](../test/single-page.test.mjs) covers standalone delivery, and
+[held-key](../test/held-key.test.mjs) the matrix key under `CON TTY`.
 The shared setup in [test/lib/page.mjs](../test/lib/page.mjs) relates generated
 assets to the machine and card helpers.
 
