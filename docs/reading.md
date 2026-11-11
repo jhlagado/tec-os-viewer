@@ -93,7 +93,8 @@ The Download image control provides a file copy.
 
 [package.json](../package.json) names the commands. Their implementation is:
 
-- [tools/tecos.mjs](../tools/tecos.mjs): build firmware and media with ATOM,
+- [tools/tecos.mjs](../tools/tecos.mjs): build firmware and media with TAS,
+  preparing its host runner when it is missing,
   then check the submodule pin, clean state, ROM/card-file digests and the
   starter recipe, structurally and by its pinned canonical digest.
 - [tools/build.mjs](../tools/build.mjs): bundle `src/main.mjs` with esbuild and

@@ -18,13 +18,19 @@
 // commits test/inputs.json pins.
 // Without it, supply the files through
 // the variables or tec-os/.inputs/.
+// TAS builds everything; it runs on the
+// host from Thorium's runner, taken
+// from TECOS_TAS_HOST when set, else
+// tec-os/.inputs/tas-host, which is
+// prepared as TEC-OS's README says when
+// it is missing.
 //
 // node tools/tecos.mjs: build and check
 // node tools/tecos.mjs --check: check
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -175,16 +181,35 @@ export function check() {
   }
 }
 
+/**
+ * Prepare tec-os/.inputs/tas-host, the
+ * TAS runner TEC-OS's build uses, unless
+ * TECOS_TAS_HOST names one or it is
+ * there: Thorium at the runner commit
+ * TEC-OS pins, with its dependencies.
+ * TEC-OS checks the runner's pins.
+ */
+function tasHost() {
+  if (process.env.TECOS_TAS_HOST) return;
+  const host = resolve(TECOS, ".inputs/tas-host");
+  if (existsSync(host)) return;
+  const pin = /const runnerPin = '([0-9a-f]{40})'/.exec(readFileSync(resolve(TECOS, "tools/lib/tas-rom.mjs"), "utf8"))?.[1];
+  if (!pin) throw new Error("tec-os/tools/lib/tas-rom.mjs names no TAS runner commit");
+  mkdirSync(resolve(TECOS, ".inputs"), { recursive: true });
+  const stage = mkdtempSync(resolve(TECOS, ".inputs/.tas-host."));
+  const run = (cmd, ...args) => execFileSync(cmd, args, { cwd: stage, stdio: "inherit" });
+  run("git", "clone", "-q", "https://github.com/jhlagado/thorium.git", ".");
+  run("git", "checkout", "-q", "--detach", pin);
+  run("npm", "ci");
+  renameSync(stage, host);
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   if (!process.argv.includes("--check")) {
-    if (process.env.TECOS_ROM_ASSEMBLER && process.env.TECOS_ROM_ASSEMBLER !== "atom") {
-      throw new Error("The viewer build requires TECOS_ROM_ASSEMBLER=atom");
-    }
-    process.env.TECOS_ROM_ASSEMBLER = "atom";
-    console.log("tec-os: assembling with TECOS_ROM_ASSEMBLER=atom (no fallback)");
     const npm = (...args) => execFileSync("npm", args, { cwd: TECOS, stdio: "inherit" });
     npm("ci");
     npm("run", "inputs");
+    tasHost();
     npm("run", "build");
     npm("run", "media");
   }

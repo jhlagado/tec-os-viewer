@@ -52,18 +52,19 @@ that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](http
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
-TECOS_ROM_ASSEMBLER=atom npm run page
+npm run page
 npm start
 ```
 
 Open `http://localhost:8765`. For an existing build, just run `npm start`.
 The local server uses esbuild from the submodule; Python is not needed.
 
-The Viewer selects ATOM explicitly for its ROM build and passes that selection to subprocesses.
-An unavailable ATOM stops the build. TEC-OS also documents a TAS default and its host/compiler
-inputs in its README. This Viewer qualification uses ATOM.
+TEC-OS builds its ROM, card files and services with TAS, Thorium's assembler, run on the host from Thorium's
+runner. `npm run tecos` takes the runner from `TECOS_TAS_HOST` when set, else `tec-os/.inputs/tas-host`; when neither is
+there it clones Thorium at the runner commit TEC-OS pins into `tec-os/.inputs/tas-host` and installs its dependencies, as
+TEC-OS's README describes, and TEC-OS checks the runner against its pins.
 
-- `TECOS_ROM_ASSEMBLER=atom npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
+- `npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its
   canonical digest. It runs TEC-OS's `npm run inputs` first, which takes the inputs TEC-OS's `test/inputs.json` pins, among them
   `TAS.COM`, `TED.COM` and `CHAIN.ASM` from Thorium, `BAZA.COM`, `BAZA.RTL` and `BOUNCE.BAS` from Baza and MON-3's ROM and sources,
