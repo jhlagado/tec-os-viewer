@@ -7,9 +7,12 @@
 // and returns to MON3>, and EXIT, queued
 // behind the Esc on the serial line,
 // reaches A>. Without the bound the Esc
-// stays down and EXIT is never sent. On
-// CRT: the page's keys reach TEC-OS as
-// before.
+// stays down and EXIT is never sent.
+// After a key is let go the next waits
+// through a gap with no key down, so
+// HELLO3 counts both of 1 and 2, and 1
+// then Esc ends it. On CRT: the page's
+// keys reach TEC-OS as before.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -34,6 +37,14 @@ function watchKeys(m) {
     return apply(row, col, pressed);
   };
   return down;
+}
+
+/** HELLO3's last key: the byte that SHOWN clears with xor a, ld (KEY),a. */
+function keyAddress(m) {
+  for (let a = 0x4000; a < 0x4100; a += 1) {
+    if (m.read(a) === 0xaf && m.read(a + 1) === 0x32) return m.read(a + 2) | (m.read(a + 3) << 8);
+  }
+  throw new Error("no ld (KEY),a in HELLO3");
 }
 
 /** A machine at MON3> with HELLO3 running under CON TTY. */
@@ -89,4 +100,25 @@ test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
   assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
+});
+
+test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends it", { timeout: 300_000 }, async () => {
+  let m = await hello3();
+  const key = keyAddress(m);
+  const seen = [];
+  m.enqueueInput("12", "matrix");
+  m.runUntil(() => {
+    if (m.pending.length) pumpKeys(m);
+    const k = m.read(key);
+    if (k !== (seen.at(-1) ?? 0)) seen.push(k);
+    return !m.pending.length;
+  }, LIMIT, "an empty key queue");
+  run(m, 2_000_000, () => {});
+  assert.deepEqual(seen, [1, 2], "HELLO3's key 1, then 2");
+
+  m = await hello3();
+  const mark = m.output.length;
+  m.enqueueInput("1\x1b", "matrix");
+  m.runUntil(() => (pumpKeys(m), /MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
+  assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
 });
