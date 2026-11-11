@@ -49,7 +49,7 @@ function keys(m, s, what, done) {
 
 test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on A:", async () => {
   const declared = recipe().components.flatMap((c) => c.files.map((f) => f.name));
-  for (const name of FILES) assert.ok(declared.includes(name), `${name} in the page recipe`);
+  for (const name of FILES) assert.ok(declared.includes(name), `${name} in the starter recipe`);
   const image = await card();
   const onA = names(image);
   for (const name of FILES) assert.ok(onA.includes(name), `${name} on A:`);

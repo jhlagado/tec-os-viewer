@@ -17,8 +17,8 @@ test("the web build starts clean: a file left in dist from an older build doesn'
   assert.deepEqual(readdirSync(resolve(ROOT, "dist/files")).sort(), readdirSync(resolve(ROOT, "tec-os/dist/files")).sort());
 });
 
-test("the firmware precheck verifies the page recipe", { concurrency: false }, async (t) => {
-  const path = resolve(ROOT, "tec-os/dist/page.recipe.json");
+test("the firmware precheck verifies the starter recipe", { concurrency: false }, async (t) => {
+  const path = resolve(ROOT, "tec-os/dist/starter.recipe.json");
   const original = readFileSync(path);
   const valid = JSON.parse(original);
   const sample = (recipe) => recipe.components.flatMap((component) => component.files)
