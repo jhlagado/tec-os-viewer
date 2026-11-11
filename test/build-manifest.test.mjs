@@ -74,7 +74,7 @@ test("each stale or altered dist is refused with its cause", { timeout: 600_000 
 
   // A build whose input check fails leaves no manifest from before it.
   build();
-  const recipe = resolve(ROOT, "tec-os/dist/page.recipe.json");
+  const recipe = resolve(ROOT, "tec-os/dist/starter.recipe.json");
   const kept = readFileSync(recipe);
   const changed = JSON.parse(kept.toString("utf8"));
   changed.volumes.push({ geometry: "G1M", label: "EXTRA", mount: "C" });

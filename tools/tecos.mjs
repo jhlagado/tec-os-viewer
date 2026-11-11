@@ -1,20 +1,18 @@
 #!/usr/bin/env node
 // Check the pinned firmware and the
-// page recipe: the starter card plus
-// DEMO.ASM and BOUNCE.BAS.
+// starter recipe, the one card that
+// the page loads.
 // npm run inputs in tec-os checks the
-// five pinned inputs, TAS.COM and
-// TED.COM from Thorium and BAZA.COM,
-// BAZA.RTL and BOUNCE.BAS from Baza:
-// from TAS_COM, TED_COM, BAZA_COM,
-// BAZA_RTL and BOUNCE_BAS when set,
-// else tec-os/.inputs/, else a pinned
-// sibling checkout (../thorium/dist,
-// ../baza from tec-os), else it
-// fetches them; see TEC-OS's README.
+// pinned inputs that tec-os's
+// test/inputs.json lists: from
+// Thorium, Baza and MON-3's sources.
+// Each comes from its variable when
+// set, else tec-os/.inputs/, else a
+// pinned sibling checkout, else it is
+// fetched; see TEC-OS's README.
 // TEC-OS, Thorium and Baza are private:
-// without access, supply the five
-// files through the variables or
+// without access, supply the files
+// through the variables or
 // tec-os/.inputs/.
 //
 // node tools/tecos.mjs: build and check
@@ -58,8 +56,8 @@ export function problems() {
     if (!existsSync(path)) found.push(`tec-os/dist/files/${name} is missing`);
     else if (sha(path) !== want) found.push(`tec-os/dist/files/${name} has SHA-256 ${sha(path)}, not the pinned ${want}`);
   }
-  const recipePath = resolve(TECOS, "dist/page.recipe.json");
-  const recipeName = "tec-os/dist/page.recipe.json";
+  const recipePath = resolve(TECOS, "dist/starter.recipe.json");
+  const recipeName = "tec-os/dist/starter.recipe.json";
   if (!existsSync(recipePath)) {
     found.push(`${recipeName} is missing`);
     return found;
