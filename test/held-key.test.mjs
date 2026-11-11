@@ -11,8 +11,12 @@
 // After a key is let go the next waits
 // through a gap with no key down, so
 // HELLO3 counts both of 1 and 2, and 1
-// then Esc ends it. On CRT: the page's
-// keys reach TEC-OS as before.
+// then Esc ends it. On CRT:, and on the
+// GLCD board before STARTUP.CMD has put
+// GLCD.SVC in, the page's keys wait for
+// TEC-OS's scan and none is let go:
+// typed ahead while TAS builds DEMO,
+// or typed while the board starts.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -37,6 +41,24 @@ function watchKeys(m) {
     return apply(row, col, pressed);
   };
   return down;
+}
+
+/**
+ * Run M with its key queue moving until
+ * it is empty, and give how each key
+ * left: "read" by TEC-OS's scan, or
+ * "let go" by the page's bound.
+ */
+function fates(m, maxCycles) {
+  const out = [];
+  m.runUntil(() => {
+    const head = m.pending?.[0];
+    if (!head) return true;
+    pumpKeys(m);
+    if (m.pending[0] !== head) out.push(head.letGo === undefined ? "read" : "let go");
+    return false;
+  }, maxCycles, "an empty key queue");
+  return out;
 }
 
 /** HELLO3's last key: the byte that SHOWN clears with xor a, ld (KEY),a. */
@@ -121,4 +143,19 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
   m.enqueueInput("1\x1b", "matrix");
   m.runUntil(() => (pumpKeys(m), /MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
   assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
+});
+
+test("on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan", { timeout: 600_000 }, async () => {
+  const m = power(await card(), "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  const text = "TAS DEMO\rDIR\r";
+  m.enqueueInput(text, "matrix");
+  assert.deepEqual(fates(m, 2_000_000_000), Array(text.length).fill("read"), "every key read by TEC-OS");
+});
+
+test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan", { timeout: 300_000 }, async () => {
+  const m = power(await card(), "glcd", 40);
+  m.enqueueInput("DIR\r", "matrix");
+  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
+  assert.ok(m.videoConsole(), "UC1: is the console");
 });
