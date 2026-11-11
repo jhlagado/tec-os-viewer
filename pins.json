@@ -1,8 +1,8 @@
 {
   "rom": "95467cae75ac86f0881f1deff468fdf7fd6b72ba8dfb460513daca3e28a4f902",
-  "recipe": "a4915bc8a54c6701e9103ce8cd9e2f1cd96301795bacc82a0c2b1ae95d6ea52d",
+  "recipe": "3a4009cdfd67b85d43fac1757c90a98874d7df7bf26f0a390494a1abb7f1260f",
   "files": {
-    "BAZA.COM": "4e0fee6af06ded5140b715d2576d0366dfe61d9b2f72f8f132ffcafcd04389cf",
+    "BAZA.COM": "ec8fd42a92a46fbbbe0a2b32112a43180e9dbf9d01652191cfa5d0c6568d3038",
     "BAZA.RTL": "14d7fd1136ed218ef5b81c02cce04baab8fa0f06a96c3d73b77b339f0a9e58f7",
     "BOUNCE.BAS": "1450a77f978fc83628e31d3374fef63bc813af557a2fbc8f6ee157c286da9b61",
     "CHAIN.ASM": "6820d40f6993bc2f99ac835ca56b0a455ff04a7fa78eb86a47d78521d9338f24",
