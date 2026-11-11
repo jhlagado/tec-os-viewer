@@ -1,9 +1,9 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`be654b39faae4f121dd18ab6d559ceedad58b10e`, TEC-OS main, on the release 1
+`55114e4dfb234c81da73aea7e2e2ccaaf873b80e`, TEC-OS, on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
-40-column console and the debugger-support interfaces. It follows
+40-column console and the debugger-support interfaces. It follows `be654b39`,
 `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and
 `a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
 card's 15 files and the starter recipe's canonical digest.
@@ -19,22 +19,22 @@ HL=0100h and DE=0000h.
 TEC-OS builds one card: the starter card and the card the page runs are the
 same image. Its recipe, `id` `starter` at revision 11, has the canonical
 SHA-256
-`b8d95279f41b82e787cf87617b9f31c287bd9595a22306dd728bcd65a7ce2669`
+`a4915bc8a54c6701e9103ce8cd9e2f1cd96301795bacc82a0c2b1ae95d6ea52d`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
 separate page recipe is gone. Its 15 files, with the first eight hex digits
 of each SHA-256 and their bytes on the card:
 
 | File | SHA-256 | Bytes | From |
 | --- | --- | --- | --- |
-| `BAZA.COM` | `eed19ec1…` | 16,768 | Baza `45b138e` |
-| `BAZA.RTL` | `51f43465…` | 11,648 | Baza `45b138e` |
-| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `45b138e`, as CP/M text |
+| `BAZA.COM` | `4e0fee6a…` | 17,536 | Baza `ab4d173` |
+| `BAZA.RTL` | `14d7fd11…` | 12,032 | Baza `ab4d173` |
+| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `ab4d173`, as CP/M text |
 | `CHAIN.ASM` | `6820d40f…` | 904 | Thorium `3d1e2c0`, as CP/M text |
 | `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
 | `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
 | `HELLO3.ASM` | `e8ac3de7…` | 2,170 | TEC-OS, as CP/M text |
 | `HELLO3.BIN` | `666ca183…` | 173 | TEC-OS |
-| `MON3.SVC` | `e85342e3…` | 5,018 | TEC-OS |
+| `MON3.SVC` | `53cc78e3…` | 5,031 | TEC-OS |
 | `MOUNT.COM` | `5273f0ba…` | 671 | TEC-OS |
 | `SAMPLE.ASM` | `1bfd9696…` | 4,485 | TEC-OS, as CP/M text |
 | `STARTUP.CMD` | `22c64e3f…` | 11 | TEC-OS |
@@ -46,7 +46,9 @@ of each SHA-256 and their bytes on the card:
 and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
 
 - `MON3.SVC`, which runs programs written for MON-3: `MON3.SVC /E` gives
-  `MON3>`;
+  `MON3>`. The service is 4,605 bytes, 5,031 as the file on the card. It
+  records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own scan
+  does, so a key the page holds during a MON-3 program is let go;
 - `HELLO3.BIN` and its source `HELLO3.ASM`: at `MON3>`, `LOAD HELLO3.BIN`
   and `GO` write four lines on the LCD, `MON-3 ON TEC-OS`, `LCD BY RST 10H`,
   `DIGITS BY RST 20H` and `KEY BEEPS, AD QUITS`, and count on the digits. On
@@ -58,8 +60,10 @@ and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
   CHAIN.ASM` shows them whole with 80 chosen in the width selector, and
   scrolls sideways at 40.
 
-BAZA and `BOUNCE.BAS` come from Baza `45b138e`, which compiles integer
-statements as 16-bit code; `BOUNCE.BAS` is a sprite game on the PICO9918,
+BAZA and `BOUNCE.BAS` come from Baza `ab4d173`, which compiles integer
+statements as 16-bit code and adds BASIC-80's `&H`, `HEX$`, `MOD`, `\`,
+`XOR`, `WAIT` and `SWAP`. `BOUNCE.BAS` is unchanged from `45b138e`'s: a
+sprite game on the PICO9918,
 steered by tapping W, A, S and D, with Q to quit. New sessions still start at
 40 columns; 80 is a choice in the width selector, not the default.
 
@@ -69,15 +73,15 @@ the page sends was never let go, and the keys behind it waited for good.
 and lets it go, and the next key waits as long again with no key down, since a
 MON-3 program counts a key only when it goes down after a gap. On CRT: and
 UC1:, and until `STARTUP.CMD` has run, keys wait for TEC-OS's scan as
-before.
+before; while a MON-3 program runs, MON3.SVC's scan stands in for it.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 115 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 116 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
 it reaches `A>`, `HELLO3` counts both of a queued `12`, and `1` then Esc ends
-it; on CRT: keys typed ahead while `TAS DEMO` builds, and on the GLCD board
+it; on CRT: `HELLO3` takes `1` then Esc and `EXIT` reaches `A>`, and keys typed ahead while `TAS DEMO` builds, and on the GLCD board
 keys typed while it starts, all wait for TEC-OS's scan; and `test/basic-card.test.mjs` the card's BASIC
 files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a `BAZA BOUNCE`
 build and `BOUNCE` run (Graphics I with the ROM's font, its title and
