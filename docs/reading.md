@@ -10,7 +10,7 @@ The gitlink at `tec-os/` selects firmware commit
 `55f01718316d365004b931e5837b181ddc8561c7`, TEC-OS main, built with TAS alone, on the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
 beside `ERA`, the squeezed ROM, TED with its language table, TAS from Thorium
-`3d1e2c0` with chained lines, BAZA from Baza `ebc0281` and `MON3.SVC`. TEC-OS
+`3d1e2c0` with chained lines, BAZA from Baza `0516794` and `MON3.SVC`. TEC-OS
 builds one card, the starter card, and the page runs it. Besides the earlier
 files it holds `MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3
 program and its source, and `CHAIN.ASM`, written with several statements on a

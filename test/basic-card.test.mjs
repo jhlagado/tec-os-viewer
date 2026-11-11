@@ -11,7 +11,7 @@
 // TIMES.COM and TIMES runs it back to
 // the prompt; BAZA BOUNCE builds
 // BOUNCE, which takes Graphics I with
-// the ROM's font, found by reg("HL"),
+// the ROM's font, found by REG("HL"),
 // its title and its sprites, moves the
 // ship on W/A/S/D taps and gives the
 // console back on Q; TAS DEMO builds

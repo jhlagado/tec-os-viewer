@@ -22,16 +22,16 @@ HL=0100h and DE=0000h.
 TEC-OS builds one card: the starter card and the card the page runs are the
 same image. Its recipe, `id` `starter` at revision 11, has the canonical
 SHA-256
-`3a4009cdfd67b85d43fac1757c90a98874d7df7bf26f0a390494a1abb7f1260f`
+`3e3f4fb82b368f43f9e5eac3aef73c2f2bda728b216e0f0a064ac3245b2bb80a`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
 separate page recipe is gone. Its 15 files, with the first eight hex digits
 of each SHA-256 and their bytes on the card:
 
 | File | SHA-256 | Bytes | From |
 | --- | --- | --- | --- |
-| `BAZA.COM` | `ec8fd42a…` | 13,056 | Baza `ebc0281`, self-extracting |
-| `BAZA.RTL` | `14d7fd11…` | 12,032 | Baza `ebc0281` |
-| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `ebc0281`, as CP/M text |
+| `BAZA.COM` | `ec8fd42a…` | 13,056 | Baza `0516794`, self-extracting |
+| `BAZA.RTL` | `14d7fd11…` | 12,032 | Baza `0516794` |
+| `BOUNCE.BAS` | `71a6c8aa…` | 4,769 | Baza `0516794`, as CP/M text |
 | `CHAIN.ASM` | `6820d40f…` | 904 | Thorium `3d1e2c0`, as CP/M text |
 | `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
 | `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
@@ -43,10 +43,12 @@ of each SHA-256 and their bytes on the card:
 | `STARTUP.CMD` | `22c64e3f…` | 11 | TEC-OS |
 | `TAS.COM` | `e648a1d0…` | 10,343 | Thorium `3d1e2c0` |
 | `TED.COM` | `4f622390…` | 12,334 | Thorium `b69d544` |
-| `TIMES.BAS` | `b3aa2578…` | 626 | TEC-OS, as CP/M text |
+| `TIMES.BAS` | `287f0237…` | 626 | TEC-OS, as CP/M text |
 
-`DEMO.ASM`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TED.COM`
-and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
+`DEMO.ASM`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD` and `TED.COM`
+are byte-identical to `31b60837`'s. `TIMES.BAS` and `BOUNCE.BAS` are
+restyled in the BASIC style, keywords in capitals and names in lower case;
+`TIMES.BAS` compiles to the same `TIMES.COM`. New on the card are:
 
 - `MON3.SVC`, which runs programs written for MON-3: `MON3.SVC /E` gives
   `MON3>`. The service is 4,605 bytes, 5,031 as the file on the card. It
@@ -63,11 +65,13 @@ and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
   CHAIN.ASM` shows them whole with 80 chosen in the width selector, and
   scrolls sideways at 40.
 
-BAZA and `BOUNCE.BAS` come from Baza `ebc0281`. Its `BAZA.COM` is
+BAZA and `BOUNCE.BAS` come from Baza `0516794`, whose `BAZA.COM` and
+`BAZA.RTL` are the same bytes as `ebc0281`'s. Its `BAZA.COM` is
 self-extracting, 13,056 bytes on the card. BAZA compiles integer statements
 as 16-bit code and takes BASIC-80's `&H`, `HEX$`, `MOD`, `\`, `XOR`, `WAIT`
 and `SWAP`. With it the card's A: has 935,936 bytes free. `BOUNCE.BAS` is
-unchanged from `45b138e`'s: a sprite game on the PICO9918,
+`45b138e`'s program restyled, 4 bytes longer and in the same blocks: a
+sprite game on the PICO9918,
 steered by tapping W, A, S and D, with Q to quit. New sessions still start at
 40 columns; 80 is a choice in the width selector, not the default.
 
