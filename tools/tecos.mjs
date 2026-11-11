@@ -10,10 +10,14 @@
 // set, else tec-os/.inputs/, else a
 // pinned sibling checkout, else it is
 // fetched; see TEC-OS's README.
-// TEC-OS, Thorium and Baza are private:
-// without access, supply the files
-// through the variables or
-// tec-os/.inputs/.
+// A build needs read access to
+// jhlagado/tec-os and to the inputs'
+// repositories, jhlagado/thorium,
+// jhlagado/baza and
+// jhlagado/debug80-tec1g-mon3, at the
+// commits test/inputs.json pins.
+// Without it, supply the files through
+// the variables or tec-os/.inputs/.
 //
 // node tools/tecos.mjs: build and check
 // node tools/tecos.mjs --check: check
