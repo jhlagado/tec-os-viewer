@@ -15,8 +15,8 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `402f30e`, on the release 1 candidate with
-BASIC: the Compact font, a cold 40-column console, `DEL` beside `ERA`, the
+The firmware pin is TEC-OS main `0e3c1a8`, which builds with TAS alone, on
+the release 1 candidate with BASIC: the Compact font, a cold 40-column console, `DEL` beside `ERA`, the
 squeezed ROM, `MON3.SVC` for MON-3's programs, TED from Thorium `b69d544`,
 TAS from Thorium `3d1e2c0`, which takes several statements on a line, and
 BAZA from Baza `ebc0281`, with the Compact font's notices shipped beside and

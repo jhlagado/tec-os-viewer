@@ -1,9 +1,11 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`402f30ef67c2d800d6c6b6bec4460697b3a4d125`, TEC-OS main, on the release 1
+`0e3c1a82a8e01baaee9766e6ef52ea6f38b476f1`, TEC-OS main, on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
-40-column console and the debugger-support interfaces. It follows
+40-column console and the debugger-support interfaces. TEC-OS builds it
+with TAS alone, Atom having left its toolchain (KD-274), and its ROM, card
+files and recipe are byte for byte `402f30ef`'s. It follows `402f30ef`,
 `55114e4d`, `be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`,
 `9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
 card's 15 files and the starter recipe's canonical digest.
