@@ -30,7 +30,7 @@
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -186,21 +186,34 @@ export function check() {
  * TAS runner TEC-OS's build uses, unless
  * TECOS_TAS_HOST names one or it is
  * there: Thorium at the runner commit
- * TEC-OS pins, with its dependencies.
- * TEC-OS checks the runner's pins.
+ * TEC-OS pins, with its dependencies,
+ * as TEC-OS's README prepares it. The
+ * stage becomes the host only once
+ * TEC-OS's own check of the runner
+ * passes on it; if the clone, npm ci or
+ * the check fails, the stage goes and
+ * no host is left. TECOS and URL are
+ * for a probe of that.
  */
-function tasHost() {
+export function tasHost({ tecos = TECOS, url = "https://github.com/jhlagado/thorium.git" } = {}) {
   if (process.env.TECOS_TAS_HOST) return;
-  const host = resolve(TECOS, ".inputs/tas-host");
+  const host = resolve(tecos, ".inputs/tas-host");
   if (existsSync(host)) return;
-  const pin = /const runnerPin = '([0-9a-f]{40})'/.exec(readFileSync(resolve(TECOS, "tools/lib/tas-rom.mjs"), "utf8"))?.[1];
+  const pin = /const runnerPin = '([0-9a-f]{40})'/.exec(readFileSync(resolve(tecos, "tools/lib/tas-rom.mjs"), "utf8"))?.[1];
   if (!pin) throw new Error("tec-os/tools/lib/tas-rom.mjs names no TAS runner commit");
-  mkdirSync(resolve(TECOS, ".inputs"), { recursive: true });
-  const stage = mkdtempSync(resolve(TECOS, ".inputs/.tas-host."));
-  const run = (cmd, ...args) => execFileSync(cmd, args, { cwd: stage, stdio: "inherit" });
-  run("git", "clone", "-q", "https://github.com/jhlagado/thorium.git", ".");
-  run("git", "checkout", "-q", "--detach", pin);
-  run("npm", "ci");
+  mkdirSync(resolve(tecos, ".inputs"), { recursive: true });
+  const stage = mkdtempSync(resolve(tecos, ".inputs/.tas-host."));
+  try {
+    const run = (cmd, ...args) => execFileSync(cmd, args, { cwd: stage, stdio: "inherit" });
+    run("git", "clone", "-q", url, ".");
+    run("git", "checkout", "-q", "--detach", pin);
+    run("npm", "ci");
+    execFileSync(process.execPath, ["--input-type=module", "-e", 'import { tasAssembler } from "./tools/lib/tas-rom.mjs"; await tasAssembler();'],
+      { cwd: tecos, stdio: "inherit", env: { ...process.env, TECOS_TAS_HOST: stage } });
+  } catch (e) {
+    rmSync(stage, { recursive: true, force: true });
+    throw e;
+  }
   renameSync(stage, host);
 }
 
