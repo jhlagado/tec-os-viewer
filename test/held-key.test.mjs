@@ -6,8 +6,12 @@
 // under MON3.SVC /E sees the page's Esc
 // and returns to MON3>, and EXIT, queued
 // behind the Esc on the serial line,
-// reaches A>. Without the bound the Esc
-// stays down and EXIT is never sent.
+// reaches A>. At A> under CON TTY
+// nothing reads the matrix: a key from
+// the screen is let go and DIR, queued
+// behind it on serial, runs; without
+// the bound the key stays down and DIR
+// is never sent.
 // After a key is let go the next waits
 // through a gap with no key down, so
 // HELLO3 counts both of 1 and 2, and 1
@@ -104,16 +108,33 @@ test("under CON TTY the page lets a matrix key go, and EXIT behind it reaches A>
   assert.deepEqual(m.violations, []);
 });
 
-test("without the bound, the Esc stays down under CON TTY and EXIT is never sent", { timeout: 300_000 }, async () => {
-  const m = await hello3();
-  const down = watchKeys(m);
-  const mark = m.output.length;
-  m.enqueueInput("\x1b", "matrix");
-  m.enqueueInput("EXIT\r", "serial");
+/** A machine at A> under CON TTY. */
+async function ttyPrompt() {
+  const m = power(await card(), "pico", 40);
+  m.runUntilChecked(() => m.ready(), LIMIT, "the prompt");
+  m.command("CON TTY");
+  return m;
+}
+
+test("at A> under CON TTY a matrix key is let go and DIR behind it runs; without the bound it stays down", { timeout: 300_000 }, async () => {
+  let m = await ttyPrompt();
+  let down = watchKeys(m);
+  let mark = m.output.length;
+  m.enqueueInput("x", "matrix");
+  m.enqueueInput("DIR\r", "serial");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
+  assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
+  assert.equal(down.size, 0, "no matrix key held");
+
+  m = await ttyPrompt();
+  down = watchKeys(m);
+  mark = m.output.length;
+  m.enqueueInput("x", "matrix");
+  m.enqueueInput("DIR\r", "serial");
   run(m, 50 * HOLD_CYCLES, (x) => x.pumpInput());
-  assert.equal(down.size, 1, "the Esc is still down");
-  assert.equal(m.pending.length, 6, "EXIT waits behind it");
-  assert.doesNotMatch(m.text(mark), /EXIT/);
+  assert.equal(down.size, 1, "the x is still down");
+  assert.equal(m.pending.length, 5, "DIR waits behind it");
+  assert.doesNotMatch(m.text(mark), /DIR/);
 });
 
 test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000 }, async () => {
