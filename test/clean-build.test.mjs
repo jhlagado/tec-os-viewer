@@ -78,7 +78,7 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
     }
     await t.test("missing recipe", () => {
       unlinkSync(path);
-      assert.match(problems().join("\n"), /page\.recipe\.json is missing/);
+      assert.match(problems().join("\n"), /starter\.recipe\.json is missing/);
     });
     await t.test("malformed recipe", () => {
       writeFileSync(path, "{");
