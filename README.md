@@ -44,8 +44,10 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 `tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the card and of the starter recipe's canonical form,
 as TEC-OS's build at the pin gives them.
 
-The `tec-os` submodule and the Thorium and Baza repositories its inputs come from are private, so a build needs access to all
-three; without it, use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
+`npm run tecos` needs read access to four repositories: the `tec-os` submodule, jhlagado/tec-os at the pin, and the three its
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`3d1e2c0` for `TAS.COM` and `CHAIN.ASM`,
+`b69d544` for `TED.COM`), jhlagado/baza (`45b138e`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
