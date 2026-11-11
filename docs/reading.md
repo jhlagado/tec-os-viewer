@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`0e3c1a82a8e01baaee9766e6ef52ea6f38b476f1`, TEC-OS main, built with TAS alone, on the release 1
+`55f01718316d365004b931e5837b181ddc8561c7`, TEC-OS main, built with TAS alone, on the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
 beside `ERA`, the squeezed ROM, TED with its language table, TAS from Thorium
 `3d1e2c0` with chained lines, BAZA from Baza `ebc0281` and `MON3.SVC`. TEC-OS
