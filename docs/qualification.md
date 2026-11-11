@@ -49,8 +49,9 @@ and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
   `MON3>`;
 - `HELLO3.BIN` and its source `HELLO3.ASM`: at `MON3>`, `LOAD HELLO3.BIN`
   and `GO` write four lines on the LCD, `MON-3 ON TEC-OS`, `LCD BY RST 10H`,
-  `DIGITS BY RST 20H` and `KEY BEEPS, AD QUITS`, and count on the digits; AD,
-  or Esc on the matrix keyboard, returns to `MON3>`, and `EXIT` to `A>`;
+  `DIGITS BY RST 20H` and `KEY BEEPS, AD QUITS`, and count on the digits. On
+  the page, Esc on the matrix keyboard returns to `MON3>`; on the board, AD on
+  its keypad does too. `EXIT` returns to `A>`;
 - `CHAIN.ASM`, Thorium's demonstration of several statements on a line, a
   `\` between them: `TAS CHAIN` builds it with the new `TAS.COM` and `CHAIN`
   prints `LINE 1` to `LINE 5`. Its lines are up to 67 columns, so `TED
@@ -65,15 +66,19 @@ steered by tapping W, A, S and D, with Q to quit. New sessions still start at
 Under `CON TTY` or `CON BAT` TEC-OS doesn't scan the matrix, so a matrix key
 the page sends was never let go, and the keys behind it waited for good.
 `src/keys.mjs` now holds such a key for 400,000 cycles, a tenth of a second,
-and lets it go; on CRT: and UC1:, and until `STARTUP.CMD` has run, keys go as
+and lets it go, and the next key waits as long again with no key down, since a
+MON-3 program counts a key only when it goes down after a gap. On CRT: and
+UC1:, and until `STARTUP.CMD` has run, keys wait for TEC-OS's scan as
 before.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 112 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 115 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
-key under `CON TTY`, with `HELLO3` taking the page's Esc and `EXIT` queued
-behind it reaching `A>`, and `test/basic-card.test.mjs` the card's BASIC
+keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
+it reaches `A>`, `HELLO3` counts both of a queued `12`, and `1` then Esc ends
+it; on CRT: keys typed ahead while `TAS DEMO` builds, and on the GLCD board
+keys typed while it starts, all wait for TEC-OS's scan; and `test/basic-card.test.mjs` the card's BASIC
 files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a `BAZA BOUNCE`
 build and `BOUNCE` run (Graphics I with the ROM's font, its title and
 sprites, the ship moved by taps and the console back at `A>` after Q), a
