@@ -9,6 +9,7 @@ import { prepareCard } from "../tec-os/host/card.mjs";
 import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
+import { pumpKeys } from "./keys.mjs";
 import { loadCard, saveCard } from "./store.mjs";
 import { chooseText, fromCard } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
@@ -195,7 +196,7 @@ function frame(now) {
     let n = 0;
     while (m.cycles < target) {
       m.step();
-      if (m.pending?.length) m.pumpInput();
+      if (m.pending?.length) pumpKeys(m);
       if ((++n & 1023) === 0 && performance.now() > deadline) break;
     }
     cyclesWindow += m.cycles - start;
