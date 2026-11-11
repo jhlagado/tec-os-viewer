@@ -1,46 +1,86 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`31b60837d24cf801b5e8cf4daa4856f520227795`, TEC-OS main: the release 1
-candidate with BASIC and TED's language support (Origo KD-262), on the
-Compact font, a cold 40-column console and the debugger-support interfaces.
-It follows `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and
+`be654b39faae4f121dd18ab6d559ceedad58b10e`, TEC-OS main, on the release 1
+candidate with BASIC and TED's language support, the Compact font, a cold
+40-column console and the debugger-support interfaces. It follows
+`31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and
 `a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
-page's eleven card files and the page recipe's canonical digest. The ROM,
-with 16,247 of 16,384 bytes used, a `DEL` command beside `ERA` and
-`NAME.SVC /E`, which enters an installed service, has the SHA-256
-`3e5311d2b9706ca3e64bf2c3e0198b883b6394dde8d62316fd8fdeb881192fd9`.
-It replaces `3ed68c47…`, the ROM of `a39416ed`, which used 16,077 bytes.
-A `.COM` now starts with HL=0100h and DE=0000h. TEC-OS also builds
-`MON3.SVC`, a MON-3 compatibility service, which is on no card. The card
-is the starter card's nine files plus `DEMO.ASM`, the hardware demo's
-source (`5b9adf63…`, 15,335 bytes as CP/M text), and `BOUNCE.BAS`. It no
-longer holds `DEMO.COM`: `TAS DEMO` builds it and `DEMO` runs it. From
-Thorium `b69d544` comes `TED.COM` (`4f622390…`, 12,334 bytes), which takes
-trailing 00h as a file's end and gives a line and column with error 03.
-From Baza `747b9a7` come `BAZA.COM` (`27724068…`, 16,128 bytes), `BAZA.RTL`
-(`7c0cda03…`, 11,136 bytes) and `examples/BOUNCE.BAS` (`fab92802…`, 4,177
-bytes of LF text, unchanged since `a9e7b2f`). This BAZA compiles faster
-and makes faster programs, with no language change: `BAZA TIMES` now
-writes a `TIMES.COM` of 9,088 bytes (`347b974d…`). The page's card alone
-holds `BOUNCE.BAS`, as CP/M text (`07196e57…`, 4,266 bytes): a sprite game
-on the PICO9918, steered by tapping W, A, S and D, with Q to quit.
-`TIMES.BAS` is `b3aa2578…`, 626 bytes. `GLCD.SVC`, `MOUNT.COM`,
-`SAMPLE.ASM`, `STARTUP.CMD` and `TAS.COM` are byte-identical to
-`a1023bd0`'s. The page recipe, `id` `page` at revision 9, has the
-canonical SHA-256
-`97f80e7b0eae4269bf89ad16e35fe698b062f07aff4b4c877cb53f63f934139c`
-(VE-5). The build ships the font notices as `FONT-NOTICES.txt` and inline in
-the page, checked by `tools/notices.mjs`. All 109 Viewer tests pass on this
-pin. Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
-`test/font-notices.test.mjs` the notices and `test/basic-card.test.mjs` the
-card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
-`BAZA BOUNCE` build and `BOUNCE` run (Graphics I with the ROM's font, its
-title and sprites, the ship moved by taps and the console back at `A>` after
-Q), a `TAS DEMO` build and `DEMO` run until a key, and `DEL` erasing a file,
-all in the page's machine. These run the TEC-OS `Machine` under Node with the
-page's ROM, card and settings, not a browser. `test/text-mode.test.mjs` covers
-how the page decides to copy a file as text or binary, and that binaries with
+card's 15 files and the starter recipe's canonical digest.
+
+The ROM is the squeezed one: 15,363 of 16,384 bytes used, 1,021 free, with
+the SHA-256
+`95467cae75ac86f0881f1deff468fdf7fd6b72ba8dfb460513daca3e28a4f902`.
+It replaces `3e5311d2…`, the ROM of `31b60837`, which used 16,247 bytes. It
+has `DEL` beside `ERA`, and `NAME.SVC /E`, which enters a service's
+application, installing the service first if needed. A `.COM` starts with
+HL=0100h and DE=0000h.
+
+TEC-OS builds one card: the starter card and the card the page runs are the
+same image. Its recipe, `id` `starter` at revision 11, has the canonical
+SHA-256
+`b8d95279f41b82e787cf87617b9f31c287bd9595a22306dd728bcd65a7ce2669`
+(VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
+separate page recipe is gone. Its 15 files, with the first eight hex digits
+of each SHA-256 and their bytes on the card:
+
+| File | SHA-256 | Bytes | From |
+| --- | --- | --- | --- |
+| `BAZA.COM` | `eed19ec1…` | 16,768 | Baza `45b138e` |
+| `BAZA.RTL` | `51f43465…` | 11,648 | Baza `45b138e` |
+| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `45b138e`, as CP/M text |
+| `CHAIN.ASM` | `6820d40f…` | 904 | Thorium `3d1e2c0`, as CP/M text |
+| `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
+| `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
+| `HELLO3.ASM` | `e8ac3de7…` | 2,170 | TEC-OS, as CP/M text |
+| `HELLO3.BIN` | `666ca183…` | 173 | TEC-OS |
+| `MON3.SVC` | `e85342e3…` | 5,018 | TEC-OS |
+| `MOUNT.COM` | `5273f0ba…` | 671 | TEC-OS |
+| `SAMPLE.ASM` | `1bfd9696…` | 4,485 | TEC-OS, as CP/M text |
+| `STARTUP.CMD` | `22c64e3f…` | 11 | TEC-OS |
+| `TAS.COM` | `e648a1d0…` | 10,343 | Thorium `3d1e2c0` |
+| `TED.COM` | `4f622390…` | 12,334 | Thorium `b69d544` |
+| `TIMES.BAS` | `b3aa2578…` | 626 | TEC-OS, as CP/M text |
+
+`DEMO.ASM`, `GLCD.SVC`, `MOUNT.COM`, `SAMPLE.ASM`, `STARTUP.CMD`, `TED.COM`
+and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
+
+- `MON3.SVC`, which runs programs written for MON-3: `MON3.SVC /E` gives
+  `MON3>`;
+- `HELLO3.BIN` and its source `HELLO3.ASM`: at `MON3>`, `LOAD HELLO3.BIN`
+  and `GO` write four lines on the LCD, `MON-3 ON TEC-OS`, `LCD BY RST 10H`,
+  `DIGITS BY RST 20H` and `KEY BEEPS, AD QUITS`, and count on the digits; AD,
+  or Esc on the matrix keyboard, returns to `MON3>`, and `EXIT` to `A>`;
+- `CHAIN.ASM`, Thorium's demonstration of several statements on a line, a
+  `\` between them: `TAS CHAIN` builds it with the new `TAS.COM` and `CHAIN`
+  prints `LINE 1` to `LINE 5`. Its lines are up to 67 columns, so `TED
+  CHAIN.ASM` shows them whole with 80 chosen in the width selector, and
+  scrolls sideways at 40.
+
+BAZA and `BOUNCE.BAS` come from Baza `45b138e`, which compiles integer
+statements as 16-bit code; `BOUNCE.BAS` is a sprite game on the PICO9918,
+steered by tapping W, A, S and D, with Q to quit. New sessions still start at
+40 columns; 80 is a choice in the width selector, not the default.
+
+Under `CON TTY` or `CON BAT` TEC-OS doesn't scan the matrix, so a matrix key
+the page sends was never let go, and the keys behind it waited for good.
+`src/keys.mjs` now holds such a key for 400,000 cycles, a tenth of a second,
+and lets it go; on CRT: and UC1:, and until `STARTUP.CMD` has run, keys go as
+before.
+
+The build ships the font notices as `FONT-NOTICES.txt` and inline in the
+page, checked by `tools/notices.mjs`. All 112 Viewer tests pass on this pin.
+Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
+`test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
+key under `CON TTY`, with `HELLO3` taking the page's Esc and `EXIT` queued
+behind it reaching `A>`, and `test/basic-card.test.mjs` the card's BASIC
+files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a `BAZA BOUNCE`
+build and `BOUNCE` run (Graphics I with the ROM's font, its title and
+sprites, the ship moved by taps and the console back at `A>` after Q), a
+`TAS DEMO` build and `DEMO` run until a key, and `DEL` erasing a file, all in
+the page's machine. These run the TEC-OS `Machine` under Node with the page's
+ROM, card and settings, not a browser. `test/text-mode.test.mjs` covers how
+the page decides to copy a file as text or binary, and that binaries with
 text types and CP/M programs' data files round-trip intact.
 `test/copy-text.test.mjs` copies an LF `.z80` file through the page with the
 default setting and opens it in TED, and downloads `TIMES.BAS` as LF text and
@@ -56,7 +96,7 @@ fresh build, browser run or native capability in a new environment.
 VS2's greeting line 186 and edited cursor `L186 C27` remain historical results.
 The reformatted sample places the greeting on line 193, with the first `H` at
 column 18. The zero-based insertion offset is 28 and adding `the ` before
-`TEC-OS.` places the edited cursor at `L193 C33`. The VG10 assertions use these exact source
+`TEC-OS.` places the edited cursor at `L193 C33`. The worked-example test's assertions use these exact source
 coordinates. The exact card-source checks and the TAS/TED edit, build and run
 workflow pass for this sample update. Clean bundle and distribution checks
 also pass. That sample-only update did not rerun the historical full VS2 suite.
