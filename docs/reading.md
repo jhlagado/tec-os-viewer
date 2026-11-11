@@ -7,10 +7,10 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`55114e4dfb234c81da73aea7e2e2ccaaf873b80e`, TEC-OS, on the release 1
+`402f30ef67c2d800d6c6b6bec4460697b3a4d125`, TEC-OS main, on the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
 beside `ERA`, the squeezed ROM, TED with its language table, TAS from Thorium
-`3d1e2c0` with chained lines, BAZA from Baza `ab4d173` and `MON3.SVC`. TEC-OS
+`3d1e2c0` with chained lines, BAZA from Baza `ebc0281` and `MON3.SVC`. TEC-OS
 builds one card, the starter card, and the page runs it. Besides the earlier
 files it holds `MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3
 program and its source, and `CHAIN.ASM`, written with several statements on a

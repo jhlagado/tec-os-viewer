@@ -15,11 +15,11 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `55114e4`, on the release 1 candidate with
+The firmware pin is TEC-OS main `402f30e`, on the release 1 candidate with
 BASIC: the Compact font, a cold 40-column console, `DEL` beside `ERA`, the
 squeezed ROM, `MON3.SVC` for MON-3's programs, TED from Thorium `b69d544`,
 TAS from Thorium `3d1e2c0`, which takes several statements on a line, and
-BAZA from Baza `ab4d173`, with the Compact font's notices shipped beside and
+BAZA from Baza `ebc0281`, with the Compact font's notices shipped beside and
 inside the page. TEC-OS builds one card, and the page runs it: the starter
 card's 15 files, `BAZA.COM`, `BAZA.RTL`, `BOUNCE.BAS`, `CHAIN.ASM`,
 `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MON3.SVC`, `MOUNT.COM`,
@@ -47,7 +47,7 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`3d1e2c0` for `TAS.COM` and `CHAIN.ASM`,
-`b69d544` for `TED.COM`), jhlagado/baza (`ab4d173`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+`b69d544` for `TED.COM`), jhlagado/baza (`ebc0281`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```

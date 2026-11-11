@@ -1,11 +1,11 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`55114e4dfb234c81da73aea7e2e2ccaaf873b80e`, TEC-OS, on the release 1
+`402f30ef67c2d800d6c6b6bec4460697b3a4d125`, TEC-OS main, on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
-40-column console and the debugger-support interfaces. It follows `be654b39`,
-`31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and
-`a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
+40-column console and the debugger-support interfaces. It follows
+`55114e4d`, `be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`,
+`9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it keeps. `pins.json` binds the ROM, the
 card's 15 files and the starter recipe's canonical digest.
 
 The ROM is the squeezed one: 15,363 of 16,384 bytes used, 1,021 free, with
@@ -19,16 +19,16 @@ HL=0100h and DE=0000h.
 TEC-OS builds one card: the starter card and the card the page runs are the
 same image. Its recipe, `id` `starter` at revision 11, has the canonical
 SHA-256
-`a4915bc8a54c6701e9103ce8cd9e2f1cd96301795bacc82a0c2b1ae95d6ea52d`
+`3a4009cdfd67b85d43fac1757c90a98874d7df7bf26f0a390494a1abb7f1260f`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
 separate page recipe is gone. Its 15 files, with the first eight hex digits
 of each SHA-256 and their bytes on the card:
 
 | File | SHA-256 | Bytes | From |
 | --- | --- | --- | --- |
-| `BAZA.COM` | `4e0fee6a…` | 17,536 | Baza `ab4d173` |
-| `BAZA.RTL` | `14d7fd11…` | 12,032 | Baza `ab4d173` |
-| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `ab4d173`, as CP/M text |
+| `BAZA.COM` | `ec8fd42a…` | 13,056 | Baza `ebc0281`, self-extracting |
+| `BAZA.RTL` | `14d7fd11…` | 12,032 | Baza `ebc0281` |
+| `BOUNCE.BAS` | `1450a77f…` | 4,765 | Baza `ebc0281`, as CP/M text |
 | `CHAIN.ASM` | `6820d40f…` | 904 | Thorium `3d1e2c0`, as CP/M text |
 | `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
 | `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
@@ -60,10 +60,11 @@ and `TIMES.BAS` are byte-identical to `31b60837`'s. New on the card are:
   CHAIN.ASM` shows them whole with 80 chosen in the width selector, and
   scrolls sideways at 40.
 
-BAZA and `BOUNCE.BAS` come from Baza `ab4d173`, which compiles integer
-statements as 16-bit code and adds BASIC-80's `&H`, `HEX$`, `MOD`, `\`,
-`XOR`, `WAIT` and `SWAP`. `BOUNCE.BAS` is unchanged from `45b138e`'s: a
-sprite game on the PICO9918,
+BAZA and `BOUNCE.BAS` come from Baza `ebc0281`. Its `BAZA.COM` is
+self-extracting, 13,056 bytes on the card. BAZA compiles integer statements
+as 16-bit code and takes BASIC-80's `&H`, `HEX$`, `MOD`, `\`, `XOR`, `WAIT`
+and `SWAP`. With it the card's A: has 935,936 bytes free. `BOUNCE.BAS` is
+unchanged from `45b138e`'s: a sprite game on the PICO9918,
 steered by tapping W, A, S and D, with Q to quit. New sessions still start at
 40 columns; 80 is a choice in the width selector, not the default.
 
