@@ -11,12 +11,16 @@
 // After a key is let go the next waits
 // through a gap with no key down, so
 // HELLO3 counts both of 1 and 2, and 1
-// then Esc ends it. On CRT:, and on the
-// GLCD board before STARTUP.CMD has put
-// GLCD.SVC in, the page's keys wait for
-// TEC-OS's scan and none is let go:
-// typed ahead while TAS builds DEMO,
-// or typed while the board starts.
+// then Esc ends it. On CRT: MON3.SVC
+// records the matrix keys it reads as
+// TEC-OS's scan does, so HELLO3 takes 1
+// then Esc, and EXIT reaches A>. On
+// CRT:, and on the GLCD board before
+// STARTUP.CMD has put GLCD.SVC in, the
+// page's keys wait for TEC-OS's scan
+// and none is let go: typed ahead
+// while TAS builds DEMO, or typed while
+// the board starts.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -158,4 +162,25 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan", { t
   m.enqueueInput("DIR\r", "matrix");
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
   assert.ok(m.videoConsole(), "UC1: is the console");
+});
+
+test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeout: 300_000 }, async () => {
+  const m = power(await card(), "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  assert.ok(m.videoConsole(), "CON: is CRT:");
+  m.command("MON3.SVC /E", { prompt: /MON3>$/ });
+  m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
+  m.type("GO\r");
+  run(m, 20_000_000, () => {});
+  const key = keyAddress(m);
+  const down = watchKeys(m);
+  let mark = m.output.length;
+  m.enqueueInput("1\x1b", "matrix");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && /MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
+  assert.equal(m.read(key), 1, "HELLO3 saw the 1");
+  mark = m.output.length;
+  m.enqueueInput("EXIT\r", "matrix");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "A> after EXIT");
+  assert.equal(down.size, 0, "no matrix key held");
+  assert.deepEqual(m.violations, []);
 });
