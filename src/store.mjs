@@ -1,10 +1,10 @@
 // Persist the card image in IndexedDB
 // across page reloads.
 // loadCard returns null for no record
-// and throws on read failure (KE-164).
+// and throws on read failure.
 // saveCard throws on failure so the
 // caller can report unsaved data and
-// retry (KE-153).
+// retry.
 
 const DB = "tecos";
 const STORE = "cards";

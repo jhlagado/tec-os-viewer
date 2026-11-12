@@ -1,4 +1,4 @@
-// KE-153: check card-storage failures
+// Check card-storage failures
 // and recovery. Use src/store.mjs in
 // Node with an IndexedDB stand-in.
 // Inject Chromium failures before page
@@ -54,7 +54,7 @@ function failing(where) {
   };
 }
 
-test("the real store's saveCard throws when IndexedDB can't open, or a put fails (KE-153)", async () => {
+test("the real store's saveCard throws when IndexedDB can't open, or a put fails", async () => {
   const { saveCard } = await import(pathToFileURL(resolve(ROOT, "src/store.mjs")).href);
   const warn = console.warn;
   console.warn = () => {};
@@ -71,7 +71,7 @@ test("the real store's saveCard throws when IndexedDB can't open, or a put fails
   }
 });
 
-test("the page keeps a card it couldn't save unsaved, says so, and saves it once storage works (KE-153)", async (t) => {
+test("the page keeps a card it couldn't save unsaved, says so, and saves it once storage works", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
   const { chromium } = fromTecos("playwright");
   const server = await serve();
@@ -159,7 +159,7 @@ test("the page saves one card at a time, and after three failures says saving ke
   }
 });
 
-test("a file import during a timer's save saves after it, so the stored card holds the copied files (KE-163)", async () => {
+test("a file import during a timer's save saves after it, so the stored card holds the copied files", async () => {
   const source = readFileSync(resolve(ROOT, "src/main.mjs"), "utf8");
   const start = source.indexOf("setInterval(async () =>");
   const end = source.indexOf("// ---- Run loop", start);
@@ -194,7 +194,7 @@ test("a file import during a timer's save saves after it, so the stored card hol
   assert.match(source, /await importSave\(staged\)/, "and the import's handler saves through it");
 });
 
-test("the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart (KE-164)", async () => {
+test("the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart", async () => {
   const { loadCard } = await import(pathToFileURL(resolve(ROOT, "src/store.mjs")).href);
   const warn = console.warn;
   console.warn = () => {};
@@ -209,7 +209,7 @@ test("the real store's loadCard gives null for no card and throws when the read 
   }
 });
 
-test("a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so (KE-164)", async (t) => {
+test("a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so", async (t) => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
   const { chromium } = fromTecos("playwright");
   const server = await serve();

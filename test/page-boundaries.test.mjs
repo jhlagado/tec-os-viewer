@@ -1,6 +1,5 @@
 // Check imports and width changes using
-// the actual page handlers
-// (KE-163, KE-168).
+// the actual page handlers.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -23,8 +22,7 @@ function fn(source, name) {
 
 /**
  * Include importSave and serial before
- * the requested page-source slice
- * (KE-163, KE-168).
+ * the requested page-source slice.
  */
 function withImportSave(source, start, end) {
   const serial = source.includes("function serial(") ? `let turn = Promise.resolve();\n${fn(source, "function serial(")}` : "";
@@ -196,7 +194,7 @@ for (const running of [true, false]) {
   }
 }
 
-test("a width chosen while an import's files are read is the width on the card the import publishes (KE-168)", async () => {
+test("a width chosen while an import's files are read is the width on the card the import publishes", async () => {
   const { image } = card();
   const source = readFileSync(new URL('../src/main.mjs', import.meta.url), 'utf8');
   const life = source.slice(source.indexOf("let turn = Promise.resolve();"), source.indexOf("\nfunction reset()"));
