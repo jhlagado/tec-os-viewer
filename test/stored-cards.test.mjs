@@ -7,8 +7,13 @@
 // SHELL.SVC and MON3.SVC and keeps the
 // user's files; the page shows the
 // note, and SERVICES lists the shell.
-// Compare each with the shared Node
-// card helpers. Run npm run tecos first.
+// With A:'s directory full the shell
+// isn't added and the note says so;
+// with no starter card to fetch the
+// note says the next power-on tries
+// again. Compare each with the shared
+// Node card helpers. Run npm run tecos
+// first.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -62,7 +67,7 @@ const drive = (image, name) => {
 /** Each file on IMAGE's drive NAME and its SHA-256. */
 const filesOf = (image, name) => Object.fromEntries(drive(image, name).list().map((f) => [f.name, sha(drive(image, name).read(f.name))]));
 
-/** MON3.SVC as the card held it at TEC-OS 55f0171: it installs without being entered. */
+/** MON3.SVC as the card held it before the shell: it installs without being entered. */
 const OLD_MON3 = JSON.parse(readFileSync(resolve(ROOT, "tec-os/test/fixtures/mon3-55f0171.json"), "utf8"));
 
 /**
@@ -189,6 +194,74 @@ test("a card stored before the shell is given the starter's SHELL.SVC and MON3.S
   await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^SHELL\b/.test(l)), null, { timeout: 60_000 }).catch(() => {});
   const rows = await page.evaluate(() => globalThis.tecos.screen());
   assert.ok(rows.some((l) => /^SHELL\b/.test(l)), `SERVICES lists the shell:\n${rows.join("\n")}`);
+  assert.deepEqual(opened.errors, []);
+  await opened.context.close();
+});
+
+/** Chromium, a server for the page and its URL, closed after T. */
+async function browse(t) {
+  web();
+  const { chromium } = fromTecos("playwright");
+  const server = await serve();
+  t.after(() => {
+    server.close();
+  });
+  const browser = await chromium.launch();
+  t.after(() => browser.close());
+  return { browser, url: `http://127.0.0.1:${server.address().port}/` };
+}
+
+/** Wait until PAGE's serial pane shows NOTE in brackets, then for A>. */
+async function noteThenPrompt(page, note) {
+  await page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), note, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+}
+
+test("a card stored before the shell whose A: directory is full boots without the shell, the page says the shell couldn't be added, and a power cycle tries again without fetching the starter card again", { timeout: 180_000 }, async (t) => {
+  const { browser, url } = await browse(t);
+  const old = await preShellCard();
+  const a = driveA(old);
+  let added = 0;
+  for (;;) {
+    try {
+      a.write(`F${String(added).padStart(4, "0")}.TXT`, Uint8Array.of(0x1a));
+      added += 1;
+    } catch {
+      break;
+    }
+  }
+  assert.ok(added > 0, "files added until A:'s directory is full");
+  const want = old.slice();
+  const { note } = prepareCard(want, "tms", "40", await card());
+  assert.match(note ?? "", /^This card is from before the shell, and the page couldn't add the shell to it/);
+  assert.equal(drive(want, "A").find("SHELL.SVC"), undefined, "no SHELL.SVC written");
+  let fetched = 0;
+  const setup = (context) => context.route(`${url}starter.recipe.json`, (route) => ((fetched += 1), route.continue()));
+  const opened = await open(browser, url, old, "tms", "40", { setup });
+  await noteThenPrompt(opened.page, note);
+  const stored = async () => (await storedSha(opened.page)) === sha(want);
+  for (let i = 0; i < 20 && !(await stored()); i += 1) await opened.page.waitForTimeout(500);
+  assert.ok(await stored(), "the stored card is Node's prepared card, byte for byte");
+  // A power cycle tries again with the
+  // starter card the page already has.
+  const shown = await opened.page.evaluate(() => document.getElementById("serial").textContent.split(`[`).length);
+  await opened.page.click("#power");
+  await opened.page.waitForFunction((n) => document.getElementById("serial").textContent.split(`[`).length > n + 1, shown, { timeout: 60_000 });
+  await noteThenPrompt(opened.page, note);
+  assert.equal(fetched, 1, "the starter card fetched once");
+  assert.deepEqual(opened.errors, []);
+  await opened.context.close();
+});
+
+test("a card stored before the shell boots without it when the starter card can't be fetched, and the page says the next power-on tries again", { timeout: 180_000 }, async (t) => {
+  const { browser, url } = await browse(t);
+  const old = await preShellCard();
+  const setup = (context) => context.route(`${url}starter.recipe.json`, (route) => route.abort());
+  const opened = await open(browser, url, old, "tms", "40", { setup });
+  await noteThenPrompt(opened.page, "This card is from before the shell, and the page couldn't fetch the starter card to add the shell to it, so it boots without the shell. The next power-on tries again.");
+  await opened.page.focus("#tms");
+  await opened.page.keyboard.type("services\n");
+  await opened.page.waitForFunction(() => globalThis.tecos.screen().some((l) => /SERVICES\?/.test(l)), null, { timeout: 60_000 });
   assert.deepEqual(opened.errors, []);
   await opened.context.close();
 });

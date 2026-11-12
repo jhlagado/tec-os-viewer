@@ -25,9 +25,13 @@ entered on install. If so it fetches the starter card and passes it to
 place of the card's own if it has one, puts `SHELL.SVC` first in
 `STARTUP.CMD` and leaves every other file as it was. The page shows the note
 `prepareCard` returns on the serial pane. If the files can't be written, a
-full A: for one, the card boots without the shell and the note says so. A
-card whose `SHELL.SVC` the user took off has today's `MON3.SVC` and is left
-without it.
+full A: for one, the card boots without the shell and the note says so. If
+the starter card can't be fetched, the card boots without the shell and the
+page's own note says so and that the next power-on tries again. The page
+keeps the starter card it fetched for the session, apart from the card in
+use, so a refused upgrade doesn't fetch it again at each power-on. A card
+whose `SHELL.SVC` the user took off has today's `MON3.SVC` and is left
+without it; one with both taken off gets the shell back.
 
 A volume not written behind, A: among them, now coalesces its data writes: a
 data write goes into its block's cache line in EXPAND 1 and returns, and the
@@ -164,7 +168,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 127 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 129 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -202,7 +206,11 @@ the page with the default setting and opens it in TED, and downloads
 `MON3.SVC` as it was at `55f01718`, in the page's storage: the page stores
 the card `prepareCard` gives with the starter card, byte for byte, with the
 starter's `SHELL.SVC` and `MON3.SVC` and the user's files on A: and B: as they
-were, shows its note on the serial pane, and `SERVICES` lists the shell.
+were, shows its note on the serial pane, and `SERVICES` lists the shell. With
+A:'s directory full the shell isn't added, the stored card is Node's
+prepared one and the note says so, and a power cycle shows it again without
+fetching the starter card again; with the starter's recipe refused, the page
+says it couldn't fetch the starter card and the next power-on tries again.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
 product `d193838`, with firmware `fe2097f4`; its completed evidence landed at
