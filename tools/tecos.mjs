@@ -91,6 +91,14 @@ export function problems() {
   if (systemVolumes.length !== 1 || systemVolumes[0].geometry !== "G1M" || systemVolumes[0].readOnly) {
     fault("starter files need one writable G1M volume mounted at A");
   }
+  // TEC-OS's card builder refuses a
+  // volume that names writeBehind: the
+  // logged drive is the one written
+  // behind, and the byte that marked a
+  // volume is reserved.
+  for (const volume of Array.isArray(recipe.volumes) ? recipe.volumes : []) {
+    if (volume !== null && typeof volume === "object" && "writeBehind" in volume) fault(`volume ${volume.label ?? "?"} names writeBehind, which TEC-OS refuses`);
+  }
   if (!Array.isArray(recipe.components)) {
     fault("components must be an array");
     return found;
@@ -156,7 +164,6 @@ export function recipeDigest(recipe) {
     if (v && typeof v === "object") {
       if (v.mount !== undefined && v.mount !== null) v.mount = letter(v.mount);
       v.readOnly = Boolean(v.readOnly);
-      v.writeBehind = Boolean(v.writeBehind);
     }
   }
   for (const c of Array.isArray(normal.components) ? normal.components : []) {
