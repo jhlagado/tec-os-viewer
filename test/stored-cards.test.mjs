@@ -219,7 +219,7 @@ async function browse(t) {
 /** Wait until PAGE's serial pane shows NOTE in brackets, then for A>. */
 async function noteThenPrompt(page, note) {
   await page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), note, { timeout: 60_000 });
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
 }
 
 test("a card stored before the shell whose A: directory is full boots without the shell, the page says the shell couldn't be added, and a power cycle tries again without fetching the starter card again", { timeout: 180_000 }, async (t) => {

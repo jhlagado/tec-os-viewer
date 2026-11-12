@@ -42,8 +42,15 @@ test("CD D:GAMES shows D: GAMES in the card line and the drive list, and Power c
   await page.selectOption("#drive", "A");
   assert.ok(await page.evaluate(() => document.querySelectorAll("#filelist tbody tr").length) > 0, "A:'s files listed");
 
+  await page.selectOption("#drive", "D");
+  await page.click("#pause");
+  assert.equal(await page.locator("#pause").textContent(), "Run");
   await page.click("#power");
   await page.waitForFunction(() => /-: GAMES/.test(document.getElementById("cardinfo").textContent), null, { timeout: 60_000 });
+  assert.deepEqual(await options(), ["A: SYSTEM", "B: WORK", "C: PROJECTS"]);
+  assert.equal(await page.locator("#drive").inputValue(), "A", "the removed D: selection falls back to A:");
+  assert.ok(await page.locator("#filelist tbody tr").count() > 0, "A:'s files remain available while paused");
+  await page.click("#pause");
   await prompt();
   assert.match(await line(), /A: SYSTEM .*B: WORK .*C: PROJECTS .*-: GAMES .*-: SPARE/, "the card's own drives after Power cycle");
   assert.deepEqual(errors, []);
