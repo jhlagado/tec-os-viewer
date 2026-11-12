@@ -144,7 +144,7 @@ test("under CON TTY the page lets a matrix key go, and EXIT behind it reaches A>
   const mark = m.output.length;
   m.enqueueInput("\x1b", "matrix");
   m.enqueueInput("EXIT\r", "serial");
-  m.runUntil(() => (pumpKeys(m), m.ready() && /A>$/.test(m.text(mark))), LIMIT, "A> after Esc and EXIT");
+  m.runUntil(() => (pumpKeys(m), m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "A> after Esc and EXIT");
   const out = m.text(mark);
   assert.match(out, /MON3>/, "Esc ended HELLO3");
   assert.match(out, /EXIT\r/, "EXIT was sent");
@@ -167,8 +167,8 @@ test("at A> under CON TTY a matrix key is let go and DIR behind it runs; without
   let mark = m.output.length;
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
-  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
+  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 
   m = await ttyPrompt();
@@ -202,13 +202,13 @@ test("at A> under CON TTY the second of two queued matrix keys goes down a hold 
 
 test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000 }, async () => {
   const m = power(await card(), "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
   const down = watchKeys(m);
   const mark = m.output.length;
   m.enqueueInput("dir\r", "matrix");
-  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
+  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 
@@ -235,7 +235,7 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
 
 test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY, or as the key read, don't let a key go", { timeout: 300_000 }, async () => {
   const m = power(await card(), "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   m.enqueueInput("x", "matrix");
   pumpKeys(m);
   assert.ok(m.pending[0].down, "x is down");
@@ -260,7 +260,7 @@ test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that 
 
 test("on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan", { timeout: 600_000 }, async () => {
   const m = power(await card(), "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   const text = "TAS DEMO\rDIR\r";
   m.enqueueInput(text, "matrix");
   assert.deepEqual(fates(m, 2_000_000_000), Array(text.length).fill("read"), "every key read by TEC-OS");
@@ -275,7 +275,7 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan", { t
 
 test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeout: 300_000 }, async () => {
   const m = power(await card(), "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
   m.command("MON3.SVC", { prompt: /MON3>$/ });
   m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
@@ -289,7 +289,7 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
   assert.equal(m.read(key), 1, "HELLO3 saw the 1");
   mark = m.output.length;
   m.enqueueInput("EXIT\r", "matrix");
-  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "A> after EXIT");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "A> after EXIT");
   assert.equal(down.size, 0, "no matrix key held");
   assert.deepEqual(m.violations, []);
 });
@@ -302,7 +302,7 @@ test("under CON TTY from STARTUP.CMD, at MON3> before anything is typed, a scree
   const mark = m.output.length;
   m.enqueueInput("x", "matrix");
   m.enqueueInput("EXIT\r", "serial");
-  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "A> after x and EXIT");
+  runPage(m, () => !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark)), "A> after x and EXIT");
   assert.match(m.text(mark), /EXIT\r/, "EXIT was sent");
   assert.equal(down.size, 0, "no matrix key held");
 });
@@ -315,8 +315,8 @@ test("with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is le
   const mark = m.output.length;
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
-  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
+  runPage(m, () => !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark)), "DIR and the prompt");
+  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 
@@ -330,8 +330,8 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   const m = power(image, "glcd", 40);
   m.enqueueInput("DIR\r", "matrix");
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
-  m.runUntil(() => /\[more\]|A>$/.test(m.text()), LIMIT, "DIR's listing");
-  assert.match(m.text(), /A>DIR\r\r\nMOUNT\.COM/, "DIR typed whole");
+  m.runUntil(() => /\[more\]|A:SYSTEM>$/.test(m.text()), LIMIT, "DIR's listing");
+  assert.match(m.text(), /A:SYSTEM>DIR\r\r\n\r\nSHELL +\.SVC/, "DIR typed whole");
 });
 
 test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO", { timeout: 300_000 }, async () => {
@@ -346,7 +346,7 @@ test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key i
   const x = m.pending[0];
   m.enqueueInput(" ", "serial");
   const from = m.cycles;
-  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "DEMO stopped and A>");
+  runPage(m, () => !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark)), "DEMO stopped and A>");
   assert.ok(x.letGo - from >= STARTUP_CYCLES, `x let go after ${x.letGo - from} cycles`);
   assert.match(m.text(mark), /Demo stopped\./, "the space stopped DEMO");
   assert.equal(down.size, 0, "no matrix key held");

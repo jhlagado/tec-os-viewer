@@ -29,7 +29,7 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   t.after(() => browser.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, await card(), "tms", "40");
   const screen = () => page.evaluate(() => globalThis.tecos.screen().map((l) => l.trimEnd()));
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
   assert.equal(await page.inputValue("#textmode"), "auto", "the default is text or binary, by file");
 
   await page.setInputFiles("#putfile", { name: "snake0.z80", mimeType: "application/octet-stream", buffer: Buffer.from(SOURCE) });
@@ -47,7 +47,7 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   assert.deepEqual(stored.subarray(0, crlf.length), crlf, "CRLF line ends and ^Z on the card");
   assert.ok(stored.subarray(crlf.length).every((b) => b === 0x1a), "the record padded with ^Z, not 00h");
 
-  await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
   await page.click("#tms");
   await page.keyboard.type("ted snake0.z80\n", { delay: 20 });
   await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^TED +SNAKE0\.Z80 +L1 C1/.test(l)) || globalThis.tecos.screen().some((l) => /EDIT error/.test(l)), null, { timeout: 60_000 });
@@ -59,7 +59,7 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   await context.close();
 });
 
-test("Download in the default setting gives TIMES.BAS back as LF text and MOUNT.COM byte for byte", { timeout: 180_000 }, async (t) => {
+test("Download in the default setting gives TIMES.BAS back as LF text and HELLO3.BIN byte for byte", { timeout: 180_000 }, async (t) => {
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
@@ -80,10 +80,10 @@ test("Download in the default setting gives TIMES.BAS back as LF text and MOUNT.
   };
   const times = await download("TIMES.BAS");
   assert.deepEqual(times, readFileSync(resolve(ROOT, "tec-os/programs/TIMES.BAS")), "TIMES.BAS as its LF source, with no CR and no ^Z");
-  const mount = await download("MOUNT.COM");
-  const pinned = readFileSync(resolve(ROOT, "dist/files/MOUNT.COM"));
-  assert.deepEqual(mount.subarray(0, pinned.length), pinned, "MOUNT.COM byte for byte");
-  assert.ok(mount.length % 128 === 0 && mount.length - pinned.length < 128 && mount.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
+  const hello3 = await download("HELLO3.BIN");
+  const pinned = readFileSync(resolve(ROOT, "dist/files/HELLO3.BIN"));
+  assert.deepEqual(hello3.subarray(0, pinned.length), pinned, "HELLO3.BIN byte for byte");
+  assert.ok(hello3.length % 128 === 0 && hello3.length - pinned.length < 128 && hello3.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
   assert.deepEqual(errors, []);
   await context.close();
 });

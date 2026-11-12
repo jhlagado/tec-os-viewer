@@ -26,7 +26,7 @@ function rows(m, board) {
  */
 async function boot(board, width = 80) {
   const m = power(await card(), board, width);
-  m.runUntilChecked(() => m.ready() && rows(m, board).some((l) => /^A>$/.test(l)), BOOT, `${board} at ${width}: the prompt`);
+  m.runUntilChecked(() => m.ready() && rows(m, board).some((l) => /^A:SYSTEM>$/.test(l)), BOOT, `${board} at ${width}: the prompt`);
   return m;
 }
 
@@ -56,5 +56,5 @@ test("with no card the serial board gives CARD? and no prompt", { timeout: 120_0
   const lcd = m.tec1g.state.lcdCtrl.lcd;
   const lines = [0, 1, 2, 3].map((r) => String.fromCharCode(...lcd.slice(r * 20, r * 20 + 20)));
   assert.ok(lines.some((l) => l.includes("CARD?")), `CARD? on the LCD:\n${lines.join("\n")}`);
-  assert.doesNotMatch(m.text(0), /A>/, "no prompt");
+  assert.doesNotMatch(m.text(0), /A(:\w*)?>/, "no prompt");
 });

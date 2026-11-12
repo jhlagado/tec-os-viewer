@@ -37,7 +37,7 @@ test("the single page boots to A> with no request but its own, and names both co
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(url);
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
   const label = await page.textContent("h1 .sub:last-child");
   assert.equal(label, `built from tec-os-viewer ${commit(ROOT)} and tec-os ${commit(resolve(ROOT, "tec-os"))}`);
   assert.deepEqual(refused, [], "no request left the page");
