@@ -53,7 +53,7 @@ test("power-on stops the old machine before it prepares the card", async () => {
     },
     loadRom: async () => ({ rom: new Uint8Array(1), symbols: {} }),
     Machine: class { constructor(options) { this.options = options; } },
-    appendSerial: () => {},
+    appendSerial: () => {}, refreshCard: () => {},
   };
   const life = source.slice(source.indexOf("let turn = Promise.resolve();"), source.indexOf("\nfunction reset()"));
   runInNewContext(`${life}\nthis.powerOn = powerOn;`, context);

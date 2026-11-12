@@ -26,7 +26,7 @@ function fn(source, name) {
  */
 function withImportSave(source, start, end) {
   const serial = source.includes("function serial(") ? `let turn = Promise.resolve();\n${fn(source, "function serial(")}` : "";
-  return `${fn(source, "async function importSave")}\n${serial}\n${source.slice(start, end)}`;
+  return `${fn(source, "function drivesOf(")}\n${fn(source, "function volumeOn(")}\n${fn(source, "async function importSave")}\n${serial}\n${source.slice(start, end)}`;
 }
 
 
@@ -207,7 +207,7 @@ test("a width chosen while an import's files are read is the width on the card t
   const volumeOf = (img) => { const v = parseContainer(img).volumes[0]; return new CpmVolume(volumePayload(img, v), v.g); };
   const context = {
     state, CpmVolume, parseContainer, volumePayload, chooseText, fromCard, $: (id) => elements[id],
-    saveCard: async () => {}, reset: () => {}, refreshFiles: () => {}, appendSerial: () => {},
+    saveCard: async () => {}, reset: () => {}, refreshFiles: () => {}, refreshCard: () => {}, appendSerial: () => {},
     fetch: async () => ({ json: async () => ({}) }), fetchBytes: async () => new Uint8Array(0),
     loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
     Machine: class {},
@@ -219,7 +219,7 @@ test("a width chosen while an import's files are read is the width on the card t
   const page = source.includes("let turn = Promise.resolve();")
     ? `${life}\n${fn(source, "async function importSave")}\n${source.slice(start, end)}\nthis.powerOn = powerOn;`
     : `${source.slice(source.indexOf("async function powerOn"), source.indexOf("\nfunction reset()"))}\n${withImportSave(source, start, end)}\nthis.powerOn = powerOn;`;
-  runInNewContext(page, context);
+  runInNewContext(`${fn(source, "function drivesOf(")}\n${fn(source, "function volumeOn(")}\n${page}`, context);
   await context.powerOn(); // Begin at 80 columns.
   const imported = handler({ target: { files: [{ name: 'new.txt', arrayBuffer: async () => { await readGate; return new Uint8Array([65]).buffer; } }], value: 'x' } });
   await new Promise((ok) => setTimeout(ok, 0));

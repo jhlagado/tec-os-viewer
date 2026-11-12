@@ -83,6 +83,7 @@ test("the real width handler persists each choice and prepares the card even whe
       loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
       Machine: class { constructor(options) { assert.equal(options.sdImage, image); powers++; } },
       appendSerial: (text) => messages.push(text),
+      refreshCard: () => {},
     });
     const lifeStart = source.indexOf("let turn = Promise.resolve();");
     const lifeEnd = source.indexOf("\nfunction reset()", lifeStart);
