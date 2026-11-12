@@ -16,6 +16,11 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/cs
  */
 export function serve() {
   const server = createServer(async (req, res) => {
+    if (req.url === "/__test_setup__") {
+      res.writeHead(200, { "content-type": "text/html" });
+      res.end("<!doctype html><title>Test setup</title>");
+      return;
+    }
     const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
     const file = path === DIST || path.endsWith(sep) ? resolve(path, "index.html") : path;
     try {
@@ -42,7 +47,7 @@ export async function open(browser, url, image, display, width, { setup } = {}) 
   const context = await browser.newContext();
   await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
   const planter = await context.newPage();
-  await planter.goto(`${url}missing`); // Set the origin without running the app.
+  await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
     async ([display, width]) => {
       localStorage.setItem("tecos.display", display);

@@ -241,7 +241,7 @@ test("a saved card that won't read, or won't parse, is left as it is: the page r
     // Close the planting page before the
     // test page can load or save the card.
     const planter = await context.newPage();
-    await planter.goto(`${url}missing`); // Set the origin without running the app.
+    await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
     await plant(planter, kind === "read" ? [...MARK, ...new Array(512).fill(0)] : MARK);
     await planter.close();
     const page = await context.newPage();
