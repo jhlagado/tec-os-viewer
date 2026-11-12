@@ -85,13 +85,11 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   // lines in turn, each after its own
   // prompt, so wait for the prompt
   // after the last of them.
-  await upgraded.page
-    .waitForFunction(() => {
-      const rows = globalThis.tecos?.screen() ?? [];
-      const at = rows.findIndex((l) => /^A>USER 0\s*$/.test(l));
-      return at >= 0 && rows.slice(at + 1).some((l) => /^A>\s*$/.test(l));
-    }, null, { timeout: 60_000 })
-    .catch(() => {});
+  await upgraded.page.waitForFunction(() => {
+    const rows = globalThis.tecos?.screen() ?? [];
+    const at = rows.findIndex((l) => /^A>USER 0\s*$/.test(l));
+    return at >= 0 && rows.slice(at + 1).some((l) => /^A>\s*$/.test(l));
+  }, null, { timeout: 60_000 });
   const rows = await upgraded.page.evaluate(() => globalThis.tecos.screen());
   // Width selection clears the screen.
   // Later startup output remains visible.
