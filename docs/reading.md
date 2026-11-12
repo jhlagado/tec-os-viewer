@@ -7,16 +7,18 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`e59e8c40ff26ac0f3c98dec0549d43988fe3c81c`, TEC-OS main, built with TAS alone, on the release 1
-candidate with BASIC: the Compact font, a 40-column cold console, the
-squeezed ROM with a minimal CCP and A:'s coalesced writes, `SHELL.SVC`, the resident shell, TED with its
-language table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
-`50dc512` and `MON3.SVC`. TEC-OS builds one card, the starter card, and the
-page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then holds the
-prompt: `COPY`, `DEL`, the `[more]` pager, the history on ^W and ^N, and lines
-joined by `!` and `&`. The card also holds `MON3.SVC`, `HELLO3.BIN` and
-`HELLO3.ASM`, a small MON-3 program and its source: `MON3.SVC`,
-`LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on the LCD.
+`1a6ce29af1238d7000b80fc18c2f834db8fc9ec9`, TEC-OS's shell stage 2, built with TAS alone, on the
+release 1 candidate with BASIC: the Compact font, a 40-column cold console,
+the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
+resident shell, with `CD` and the prompt `A:SYSTEM>`, TED with its language
+table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
+`50dc512` and `MON3.SVC`. TEC-OS builds one card, the starter card, of five
+volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
+holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with sizes, the `[more]` pager,
+the history on ^W and ^N, and lines joined by `!` and `&`. The card also holds
+`MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3 program and its
+source: `MON3.SVC`, `LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on
+the LCD.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
@@ -71,7 +73,8 @@ The firmware's console and device routines remain in `tec-os/src/` and
 
 ## 4. Trace a card change
 
-The card section in `main.mjs` lists files, downloads images and stages imported
+The card section in `main.mjs` shows each volume on the drive the running
+machine has it on, read from TEC-OS's `DRVIDX`, lists files, downloads images and stages imported
 files on a copy. A successful import publishes the staged card and resets the
 machine. Its storage step precedes publication when browser saving is enabled.
 [src/text.mjs](../src/text.mjs) decides, for each file copied onto or off the
@@ -89,8 +92,8 @@ binary instead, for Copy file to drive and for Download.
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
 Machine card writes mark it dirty for periodic saving. What is saved is the
 machine's card image, so a write TEC-OS still holds in its block cache isn't
-in it: on A: until the next flush point, such as a file's close or a console
-read, and on B:, written behind, until `^C` at `A>` (README). A failed save leaves
+in it until TEC-OS writes it: whenever TEC-OS waits for a key, every drive
+is on the card (README). A failed save leaves
 an unsaved indication and a copy in memory. A failed stored-card read leaves
 the original record alone and runs a starter card without saving over it.
 The Download image control provides a file copy.

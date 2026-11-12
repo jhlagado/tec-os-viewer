@@ -15,62 +15,70 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `e59e8c4`, which builds with TAS alone, on
-the release 1 candidate with BASIC: the Compact font, a cold 40-column
-console, the squeezed ROM with a minimal CCP, A:'s coalesced writes and
-`SHELL.SVC`, the resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`, TAS from
-Thorium `3d1e2c0`, which takes several statements on a line, and BAZA and
-`BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
+The firmware pin is TEC-OS `1a6ce29`, which builds with TAS alone, on the
+release 1 candidate with BASIC: the Compact font, a cold 40-column console,
+the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
+resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
+TAS from Thorium `3d1e2c0`, which takes several statements on a line, and BAZA
+and `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
-card's 15 files, `BAZA.COM`, `BAZA.RTL`, `BOUNCE.BAS`, `DEMO.ASM`,
-`GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MON3.SVC`, `MOUNT.COM`,
+card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
+GAMES and SPARE on no drive. A: holds its 14 files, `BAZA.COM`, `BAZA.RTL`,
+`BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MON3.SVC`,
 `SAMPLE.ASM`, `SHELL.SVC`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
-`TIMES.BAS`. The card's `STARTUP.CMD` loads `SHELL.SVC` first, so the shell
-holds the prompt after every reset: `COPY`, `DEL` and `SERVICES`, the
+`TIMES.BAS`; B: is an empty work disk. The card's `STARTUP.CMD` loads
+`SHELL.SVC` first, so the shell holds the prompt after every reset, and the
+prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
+puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
+`SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with each file's size, the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt is CP/M 2.2's, with `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/e59e8c4/docs/shell.md) has the rest. At `A>`,
-`TAS DEMO` then `DEMO` build and run the hardware demo, and `TED DEMO.ASM`
-reads it; `TAS SAMPLE` and `SAMPLE` build and run a first program,
-`BAZA TIMES` and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite
-game on the PICO9918: tap W, A, S and D or the arrow keys to steer, Q to quit.
-BAZA shows a spinner while it compiles. `MON3.SVC` gives
-`MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a MON-3 program that
-writes four lines on the LCD and counts on the digits; on the page, Esc on
-the matrix keyboard returns to `MON3>` (on the board, AD on its keypad does
-too), and `EXIT` to `A>`. A browser that already holds a card keeps it; press
-New starter card for this one. A card with no `SHELL.SVC` on A: and no
-`MON3.SVC` that is entered as it installs, as a card saved before the shell
-is, is brought up to date as the page powers it on: it gets the starter
-card's `SHELL.SVC`, and the starter's `MON3.SVC` in place of its own if it has
-one, and `SHELL.SVC` goes first in `STARTUP.CMD`. The serial pane says what
-was written, and the card's other files, on A: and B:, are as they were. So
-taking off both `SHELL.SVC` and `MON3.SVC` brings the shell back at the next
-power-on, while a card whose `SHELL.SVC` alone was taken off keeps today's
-`MON3.SVC` and is left at the ROM's bare prompt. If the files can't be
-written, a full A: for one, or the starter card can't be fetched, the card
-boots without the shell and the serial pane says why; the next power-on tries
-again.
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/1a6ce29/docs/shell.md)
+has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
+hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
+and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
+BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
+arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles.
+`MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
+MON-3 program that writes four lines on the LCD and counts on the digits; on
+the page, Esc on the matrix keyboard returns to `MON3>` (on the board, AD on
+its keypad does too), and `EXIT` to `A:SYSTEM>`.
+
+The card line under SD card and the Drive list show each volume on the drive
+the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
+reset keeps the drives as `CD` left them; Power cycle gives the card's own
+drives again, which is the way back after `CD A:` to a volume without
+`SHELL.SVC`, where a reset gives the bare `A>` on that volume.
+
+A browser that already holds a card keeps it; press New starter card for
+this one. A card with no `SHELL.SVC` on A: and no `MON3.SVC` that is entered
+as it installs, as a card saved before the shell is, is brought up to date as
+the page powers it on: it gets the starter card's `SHELL.SVC`, and the
+starter's `MON3.SVC` in place of its own if it has one, and `SHELL.SVC` goes
+first in `STARTUP.CMD`. The serial pane says what was written, and the card's
+other files and its volumes are as they were. So taking off both `SHELL.SVC`
+and `MON3.SVC` brings the shell back at the next power-on, while a card whose
+`SHELL.SVC` alone was taken off keeps today's `MON3.SVC` and is left at the
+ROM's bare prompt. If the files can't be written, a full A: for one, or the
+starter card can't be fetched, the card boots without the shell and the serial
+pane says why; the next power-on tries again.
 
 The page saves the card's image: in this browser within two seconds of the
 machine writing it, and in Download image. TEC-OS holds writes in its block
-cache, in the machine's memory, until it writes them to the card. On A: a
-program's data write reaches the card at the next flush point: the file's
-close, a directory request, a write to another block, a console read or a warm
-boot. Every command ends in a close, a directory write or a warm boot, each of
-which writes A:'s pending block, and the line read at the prompt, the shell's
-or the bare ROM's, writes anything left; so at `A>` A: is on the card and in
-what the page saves. While a program runs, a block it wrote is pending until
-it closes the file, makes a directory request, writes another block, reads
-the console or ends in a warm boot. B:, the work disk, is written behind, and
-`^C` at `A>` writes it out. Reset, Power cycle, New starter card, Open image,
-Copy file to drive and a change of width or display all start the machine
-again, as a reset does on the board, and what the cache held is lost: wait for
-the prompt first, and press `^C` there for B:. New starter card and Open
-image also replace the card itself, the one this browser keeps.
+cache, in the machine's memory, until it writes them to the card. The drive
+you are on is written behind; on every other drive a data write waits for the
+next flush point: the file's close, a directory request, a write to another
+block, a console read or a warm boot. Whenever TEC-OS waits for a key, every
+drive is on the card, so at the prompt the whole card is in what the page
+saves. While a program runs, what it wrote since it last waited for a key or
+wrote a directory may not be. Reset, Power cycle, New starter card, Open
+image, Copy file to drive and a change of width or display all start the
+machine again, as a reset does on the board, and what the cache held is lost:
+wait for the prompt first. New starter card and Open image also replace the
+card itself, the one this browser keeps.
 
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
