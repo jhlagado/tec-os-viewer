@@ -25,6 +25,11 @@
 // shell, with no SHELL.SVC, boots to
 // the ROM's bare prompt, which refuses
 // DEL and takes DIR!TYPE as one word.
+// TEC-OS holds A:'s data writes in its
+// cache until a flush point, and the
+// next prompt is one: a file SAVE
+// writes is in the card image, which
+// the page saves, by then.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -195,5 +200,18 @@ test("in the page's machine, a card from before the shell boots to the ROM's bar
   mark = m.output.length;
   keys(m, "dir!type times.bas\r", "DIR!TYPE", () => m.ready() && /A>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DIR!TYPE\?/, "the line is one word");
+  assert.deepEqual(m.violations, []);
+});
+
+test("in the page's machine, a file SAVE writes on A: is in the card image the page saves by the next prompt", { timeout: 300_000 }, async () => {
+  const image = await card();
+  const m = power(image, "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  const byte = (a) => (a * 7) & 0xff;
+  for (let a = 0x100; a < 0x100 + 16 * 256; a += 1) m.write(a, byte(a));
+  m.command("SAVE 16 X.COM");
+  const saved = driveA(image).read("X.COM");
+  assert.equal(saved.length, 4096, "16 pages");
+  assert.ok(saved.every((b, i) => b === byte(0x100 + i)), "the pages' bytes");
   assert.deepEqual(m.violations, []);
 });

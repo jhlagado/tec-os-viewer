@@ -15,10 +15,10 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `d556ec5`, which builds with TAS alone, on
+The firmware pin is TEC-OS main `fdd9e5b`, which builds with TAS alone, on
 the release 1 candidate with BASIC: the Compact font, a cold 40-column
-console, the squeezed ROM with a minimal CCP and `SHELL.SVC`, the resident
-shell, `MON3.SVC` for MON-3's programs, TED from Thorium `b69d544`, TAS from
+console, the squeezed ROM with a minimal CCP, A:'s coalesced writes and
+`SHELL.SVC`, the resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `b69d544`, TAS from
 Thorium `3d1e2c0`, which takes several statements on a line, and BAZA and
 `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
@@ -32,7 +32,7 @@ holds the prompt after every reset: `COPY`, `DEL` and `SERVICES`, the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt is CP/M 2.2's, with `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/d556ec5/docs/shell.md) has the rest. At `A>`,
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/fdd9e5b/docs/shell.md) has the rest. At `A>`,
 `TAS DEMO` then `DEMO` build and run the hardware demo, and `TED DEMO.ASM`
 reads it; `TAS SAMPLE` and `SAMPLE` build and run a first program,
 `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite
@@ -48,6 +48,20 @@ history, pager or joined lines, and TED's build comes back to `A>` in place
 of TED. Its `MON3.SVC` has no mark asking to be entered as it installs, so on
 this ROM `MON3.SVC` and `MON3.SVC /E` both return to `A>` without `MON3>`,
 each installing another copy. Use New starter card.
+
+The page saves the card's image: in this browser within two seconds of the
+machine writing it, and in Download image. TEC-OS holds writes in its block
+cache, in the machine's memory, until it writes them to the card. On A: a
+program's data write reaches the card at the next flush point: the file's
+close, a directory request, a write to another block, a console read, such as
+the next prompt, or a warm boot. B:, the work disk, is written behind, and
+`^C` at `A>` writes it out. So at `A>` A: is on the card and in what the page
+saves; while a program is still writing, its last block may not be. Reset,
+Power cycle, New starter card, Copy file to drive and a change of width or
+display all start the machine again, as a reset does on the board, and what
+the cache held is lost: wait for the prompt first, and press `^C` there for
+B:.
+
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
 

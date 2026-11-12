@@ -1,18 +1,37 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`d556ec50493725aeb8bb20671ff8b4f4c8ea74c9`, TEC-OS main, on the release 1
+`fdd9e5b9a241af2a740d7baac2673f9ddd181bf9`, TEC-OS main, on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
 40-column console and the debugger-support interfaces. TEC-OS builds it
-with TAS alone. It brings three changes from `55f01718`, the pin before it:
-the shell (Origo KD-279 and KD-301), Baza `50dc512`, and the card without
-`CHAIN.ASM`, by the owner's decision. It follows `55f01718`, `0e3c1a82`,
-`402f30ef`, `55114e4d`, `be654b39`, `31b60837`, `a39416ed`, `7fa28233`,
-`12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it
-keeps. `pins.json` binds the ROM, the card's 15 files and the starter
-recipe's canonical digest. The ROM, the card's files, the recipe and
-`starter.img` are byte for byte those of the qualified TEC-OS build at the
-pin.
+with TAS alone. It follows `d556ec50`, which brought the shell (Origo KD-279
+and KD-301), Baza `50dc512`, and the card without `CHAIN.ASM`, by the owner's
+decision; `fdd9e5b9` adds A:'s coalesced writes (Origo KD-303) and changes
+only the ROM. The card's 15 files and the starter recipe are the same bytes
+as at `d556ec50`. It follows `55f01718`, `0e3c1a82`, `402f30ef`, `55114e4d`,
+`be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`,
+`755636b1` and `a1023bd0`, whose font notices it keeps. `pins.json` binds the
+ROM, the card's 15 files and the starter recipe's canonical digest.
+
+A volume not written behind, A: among them, now coalesces its data writes: a
+data write goes into its block's cache line in EXPAND 1 and returns, and the
+one pending block is written to the card at the next flush point: the file's
+close, any directory request, a write to another block, a console read
+(BDOS 1, 6 input, 10 and 11, and the BIOS's CONIN), a warm boot, function 48,
+`MOUNT` and unmount. A failed write keeps the block pending, so the directory
+never names it before the card has it. B:, the work disk, is written behind,
+as before. TEC-OS's `docs/recovery.md` at the pin has the whole of it.
+
+The page saves the machine's card image, in IndexedDB within two seconds of the
+machine writes it and in Download image, and doesn't flush the cache itself:
+the cache is the machine's memory, and only TEC-OS can write it to the card.
+At a prompt the shell's line read is a flush point, so A: is on the card and
+in what the page saves after every command; a block is pending only while a
+program writes and hasn't yet closed, read the console or written another
+block. Reset, Power cycle, New starter card, Copy file to drive and a width
+or display change start the machine again and lose what the cache held, as a
+reset does on the board; README says to wait for the prompt, and press `^C`
+there for B:.
 
 The ROM's CCP is now minimal: it runs a `.COM` or a `.SVC`, changes drive,
 has CP/M's `DIR`, `ERA`, `REN`, `TYPE`, `SAVE` and `USER`, with `CON` and
@@ -31,10 +50,12 @@ execution record asks to be entered is entered as it installs, so
 `MON3.SVC` gives `MON3>`; an old `MON3.SVC /E` still does, with `/E` as its
 tail. TEC-OS's `docs/shell.md` at the pin is the shell's full description.
 
-The ROM uses 14,769 of 16,384 bytes, 1,615 free, with the SHA-256
-`327fe7a40617b1be629df53e5edc9091b5299a0e3cd8534fb31a2ca642a395ab`.
-It replaces `95467cae…`, which used 15,363 bytes. With no service loaded the
-TPA is 47,273 bytes; with `SHELL.SVC`, which takes 10 pages, the word at 0006h
+The ROM uses 14,875 of 16,384 bytes, 1,509 free, with the SHA-256
+`43ac0f1871cf3d979c94b74a030c1c06eeec500bd77e60ca7e3951a2de1c339e`.
+It replaces `327fe7a4…`, `d556ec50`'s, which used 14,769 bytes, and
+`95467cae…` before it, which used 15,363. Coalescing's one byte of state,
+CPEND, is in the high room above the RAM BIOS table, so with no service
+loaded the TPA is still 47,273 bytes; with `SHELL.SVC`, which takes 10 pages, the word at 0006h
 is AF00h, a TPA of 44,544 bytes. A `.COM` starts with HL=0100h and DE=0000h.
 
 TEC-OS builds one card: the starter card and the card the page runs are the
@@ -65,7 +86,7 @@ of each SHA-256 and their bytes on the card:
 
 `BAZA.RTL`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MOUNT.COM`,
 `SAMPLE.ASM`, `TAS.COM`, `TED.COM` and `TIMES.BAS` are the same bytes as at
-`55f01718`. `SHELL.SVC` is new. `STARTUP.CMD` gains its `SHELL.SVC` line.
+`55f01718`, the pin before `d556ec50`. `SHELL.SVC` is new. `STARTUP.CMD` gains its `SHELL.SVC` line.
 `MON3.SVC` is rebuilt for entry on install: `MON3.SVC` gives `MON3>`. The
 service records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own
 scan does, so a key the page holds during a MON-3 program is let go. At
@@ -123,7 +144,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 124 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 125 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -147,8 +168,8 @@ title and sprites, the ship moved by taps and by the arrow keys as the page's
 own key handling sends them through its key queue, and the console back at
 `A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
 erasing a file, and a card without `SHELL.SVC` booting to the ROM's bare
-prompt, where `DEL` is refused and `DIR!TYPE` is one word, all in the page's
-machine. These run the TEC-OS `Machine`
+prompt, where `DEL` is refused and `DIR!TYPE` is one word, and a file `SAVE`
+writes on A: in the card image by the next prompt, all in the page's machine. These run the TEC-OS `Machine`
 under Node with the page's ROM, card and settings, not a browser.
 `test/text-mode.test.mjs` covers how the page decides to copy a file as text
 or binary, and that binaries with text types and CP/M programs' data files
