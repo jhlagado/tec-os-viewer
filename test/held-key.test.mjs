@@ -28,13 +28,23 @@
 // page's keys wait for TEC-OS's scan
 // and none is let go: typed ahead
 // while TAS builds DEMO, or typed while
-// the board starts. Nor is one let go
+// the board starts, also with
+// STARTUP.CMD late in A:'s directory.
+// Nor is one let go, or taken as read,
 // on bytes read while a program has
 // EXPAND 1 in TEC-OS's 8000h-BFFFh
-// window, which may look like CON TTY.
+// window, which may look like CON TTY
+// or like the key in KBLAST. Startup
+// is over at the first console read
+// that waits: under CON TTY from
+// STARTUP.CMD a screen key is let go
+// at MON3> before anything is typed,
+// and at the first prompt.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
+import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { HOLD_CYCLES, pumpKeys } from "../src/keys.mjs";
 import { card, power } from "./lib/page.mjs";
 
@@ -44,6 +54,24 @@ const LIMIT = 400_000_000; // Per-step cycle limit.
 function run(m, cycles, pump) {
   const end = m.cycles + cycles;
   m.runUntil(() => (pump(m), m.cycles >= end), cycles + 1_000_000, "the run");
+}
+
+/** A: on IMAGE, writable. */
+function driveA(image) {
+  const v = findVolume(parseContainer(image), "A");
+  return new CpmVolume(volumePayload(image, v), v.g, { readOnly: false });
+}
+
+/** The starter card with STARTUP.CMD holding LINES. */
+async function startupCard(...lines) {
+  const image = await card();
+  driveA(image).write("STARTUP.CMD", Buffer.from(lines.map((l) => `${l}\r\n`).join("") + "\x1a", "latin1"));
+  return image;
+}
+
+/** Run M until DONE, moving its key queue after every step, as the page does. */
+function runPage(m, done, what, maxCycles = LIMIT) {
+  m.runUntil(() => (pumpKeys(m), done()), maxCycles, what);
 }
 
 /** Count the matrix keys M holds down. */
@@ -195,23 +223,26 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
   assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
 });
 
-test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY don't let a key go", { timeout: 300_000 }, async () => {
+test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY, or as the key read, don't let a key go", { timeout: 300_000 }, async () => {
   const m = power(await card(), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
   m.enqueueInput("x", "matrix");
   pumpKeys(m);
   assert.ok(m.pending[0].down, "x is down");
   const latch = m.sysCtrl;
-  const bytes = { STPOS: 0x80, STFLAG: 0, CONMOD: 0 };
+  const bytes = { STPOS: 0x80, STFLAG: 0, CONMOD: 0, KBLAST: m.pending[0].key };
   m.cpu.hardware.ioWrite(0xff, latch | 0x04);
   const kept = Object.keys(bytes).map((n) => [m.sym(n), m.read(m.sym(n))]);
   for (const [n, v] of Object.entries(bytes)) m.write(m.sym(n), v);
   assert.ok(!m.videoConsole(), "EXPAND 1's byte reads as CON TTY");
   pumpKeys(m, 0);
+  pumpKeys(m, 0);
   const head = m.pending[0];
+  const up = head.up;
   for (const [a, v] of kept) m.write(a, v);
   m.cpu.hardware.ioWrite(0xff, latch);
   assert.equal(head.letGo, undefined, "x not let go");
+  assert.ok(!up, "x not taken as read");
   assert.ok(m.videoConsole(), "CON: is CRT: again");
   m.runUntil(() => (pumpKeys(m), !m.pending.length), LIMIT, "x read");
   assert.equal(head.letGo, undefined, "x read by TEC-OS's scan");
@@ -251,4 +282,44 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A>$/.test(m.text(mark))), LIMIT, "A> after EXIT");
   assert.equal(down.size, 0, "no matrix key held");
   assert.deepEqual(m.violations, []);
+});
+
+test("under CON TTY from STARTUP.CMD, at MON3> before anything is typed, a screen key is let go and EXIT on serial reaches A>", { timeout: 300_000 }, async () => {
+  const m = power(await startupCard("SHELL.SVC", "GLCD.SVC", "CON TTY", "MON3.SVC"), "pico", 40);
+  runPage(m, () => /MON3>$/.test(m.text()), "MON3> from STARTUP.CMD");
+  assert.ok(!m.videoConsole(), "CON: is TTY:");
+  const down = watchKeys(m);
+  const mark = m.output.length;
+  m.enqueueInput("x", "matrix");
+  m.enqueueInput("EXIT\r", "serial");
+  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "A> after x and EXIT");
+  assert.match(m.text(mark), /EXIT\r/, "EXIT was sent");
+  assert.equal(down.size, 0, "no matrix key held");
+});
+
+test("with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is let go and DIR behind it runs", { timeout: 300_000 }, async () => {
+  const m = power(await startupCard("SHELL.SVC", "GLCD.SVC", "CON TTY"), "pico", 40);
+  runPage(m, () => m.ready(), "the first prompt");
+  assert.ok(!m.videoConsole(), "CON: is TTY:");
+  const down = watchKeys(m);
+  const mark = m.output.length;
+  m.enqueueInput("x", "matrix");
+  m.enqueueInput("DIR\r", "serial");
+  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "DIR and the prompt");
+  assert.match(m.text(mark), /HELLO3\.BIN/, "DIR lists the card");
+  assert.equal(down.size, 0, "no matrix key held");
+});
+
+test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when STARTUP.CMD is late in A:'s directory", { timeout: 300_000 }, async () => {
+  const image = await card();
+  const a = driveA(image);
+  const startup = a.read("STARTUP.CMD");
+  a.erase("STARTUP.CMD");
+  for (let i = 0; i < 60; i += 1) a.write(`F${String(i).padStart(4, "0")}.TXT`, Uint8Array.of(0x1a));
+  a.write("STARTUP.CMD", startup);
+  const m = power(image, "glcd", 40);
+  m.enqueueInput("DIR\r", "matrix");
+  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
+  m.runUntil(() => /\[more\]|A>$/.test(m.text()), LIMIT, "DIR's listing");
+  assert.match(m.text(), /A>DIR\r\r\nMOUNT\.COM/, "DIR typed whole");
 });
