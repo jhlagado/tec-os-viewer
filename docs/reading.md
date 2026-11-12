@@ -7,9 +7,9 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`d556ec50493725aeb8bb20671ff8b4f4c8ea74c9`, TEC-OS main, built with TAS alone, on the release 1
+`fdd9e5b9a241af2a740d7baac2673f9ddd181bf9`, TEC-OS main, built with TAS alone, on the release 1
 candidate with BASIC: the Compact font, a 40-column cold console, the
-squeezed ROM with a minimal CCP, `SHELL.SVC`, the resident shell, TED with its
+squeezed ROM with a minimal CCP and A:'s coalesced writes, `SHELL.SVC`, the resident shell, TED with its
 language table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
 `50dc512` and `MON3.SVC`. TEC-OS builds one card, the starter card, and the
 page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then holds the
@@ -87,7 +87,10 @@ for text; "binary, as it is" copies it unchanged. The Copy as control forces tex
 binary instead, for Copy file to drive and for Download.
 
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
-Machine card writes mark it dirty for periodic saving. A failed save leaves
+Machine card writes mark it dirty for periodic saving. What is saved is the
+machine's card image, so a write TEC-OS still holds in its block cache isn't
+in it: on A: until the next flush point, such as a file's close or the next
+prompt, and on B:, written behind, until `^C` at `A>` (README). A failed save leaves
 an unsaved indication and a copy in memory. A failed stored-card read leaves
 the original record alone and runs a starter card without saving over it.
 The Download image control provides a file copy.
