@@ -1,4 +1,4 @@
-// VG5: load older cards in Chromium.
+// Load older cards in Chromium.
 // Replace PICO.SVC and its startup line
 // with CON PICO 40, then check A> and
 // the stored image. Reject .DRV cards.
@@ -78,7 +78,7 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   const old = await picoSvcCard();
   const want = old.slice();
   assert.equal(prepareCard(want, "tms", "40").problem, null);
-  assert.equal(startup(want), "CON PICO 40\nUSER 0\n", "Node's reading: the PICO.SVC line gone, CON PICO 40 first");
+  assert.equal(startup(want), "SHELL.SVC\nCON PICO 40\nUSER 0\n", "Node's reading: the PICO.SVC line gone, SHELL.SVC then CON PICO 40 first");
 
   const upgraded = await open(browser, url, old, "tms", "40");
   await upgraded.page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
