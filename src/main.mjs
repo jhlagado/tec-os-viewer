@@ -24,6 +24,7 @@ const state = {
   display: ["tms", "glcd"].includes(savedDisplay) ? savedDisplay : "tms",
   machine: null,
   upgradeStarter: null, // The starter card an old card's upgrade copies from.
+  drives: null, // Each drive's volume in the running machine, from DRVIDX.
   card: null,
   cardDirty: false,
   unsaved: false, // Last save failed.
@@ -131,6 +132,10 @@ async function powerOnNow() {
       state.cardDirty = true;
     },
   });
+  // The card line shows the card's own
+  // drives until the new machine's can
+  // be read.
+  state.drives = null;
   state.serialSeen = 0;
   appendSerial("\n[power on]\n");
   for (const words of [problem, note]) if (words) appendSerial(`[${words}]\n`);
@@ -230,6 +235,11 @@ function frame(now) {
     }
     cyclesWindow += m.cycles - start;
     render(m);
+    const live = liveDrives(m);
+    if (live && live.join() !== state.drives?.join()) {
+      state.drives = live;
+      refreshCard();
+    }
   }
   if (now - windowStart > 1000) {
     $("speed").textContent = state.running ? `${(cyclesWindow / ((now - windowStart) * 1000)).toFixed(2)} MHz` : "paused";
@@ -562,11 +572,44 @@ function cardInfo() {
   }
 }
 
+/**
+ * Each drive's volume, A: to D:, as M
+ * has it: a descriptor index plus one,
+ * 0 for none. CD changes them, and a
+ * reset keeps them, so the card's own
+ * mounts can be out of date. Null when
+ * they can't be read: before startup,
+ * or while a program has EXPAND 1 in
+ * the window that holds them.
+ */
+function liveDrives(m) {
+  const at = m.symbols.get("DRVIDX");
+  const pos = m.symbols.get("STPOS");
+  if (at === undefined || pos === undefined || m.sysCtrl & 0x04 || m.read(pos) < 0x80) return null;
+  return [0, 1, 2, 3].map((d) => m.read(at + d));
+}
+
+/** INFO's volumes, each with the drive it is on: the running machine's, else the card's. */
+function drivesOf(info) {
+  const live = state.drives;
+  if (!live || live.some((i) => i > info.volumes.length)) return info.volumes.map((v) => ({ v, drive: v.drive }));
+  return info.volumes.map((v, i) => {
+    const d = live.indexOf(i + 1);
+    return { v, drive: d < 0 ? null : String.fromCharCode(65 + d) };
+  });
+}
+
+/** The volume on drive LETTER of INFO's card, or undefined. */
+function volumeOn(info, letter) {
+  return drivesOf(info).find((x) => x.drive === letter)?.v;
+}
+
 function refreshCard() {
   const info = cardInfo();
   if (!info) return;
+  const drives = drivesOf(info);
   $("cardinfo").textContent =
-    info.volumes.map((v) => `${v.drive ?? "-"}: ${v.label} (${v.g.name}${v.readOnly ? ", read-only" : ""})`).join("   ") +
+    drives.map(({ v, drive }) => `${drive ?? "-"}: ${v.label} (${v.g.name}${v.readOnly ? ", read-only" : ""})`).join("   ") +
     (state.noSave
       ? "   The saved card couldn't be read, so this card isn't saved; reload to try again."
       : state.unsaved
@@ -575,10 +618,10 @@ function refreshCard() {
   const select = $("drive");
   const current = select.value;
   select.innerHTML = "";
-  for (const v of info.volumes.filter((x) => x.drive)) {
+  for (const { v, drive } of drives.filter((x) => x.drive).sort((x, y) => x.drive.localeCompare(y.drive))) {
     const opt = document.createElement("option");
-    opt.value = v.drive;
-    opt.textContent = `${v.drive}: ${v.label}`;
+    opt.value = drive;
+    opt.textContent = `${drive}: ${v.label}`;
     select.appendChild(opt);
   }
   if (current) select.value = current;
@@ -587,7 +630,7 @@ function refreshCard() {
 
 function currentVolume() {
   const info = cardInfo();
-  const v = info?.volumes.find((x) => x.drive === $("drive").value);
+  const v = info && volumeOn(info, $("drive").value);
   return v ? new CpmVolume(volumePayload(state.card, v), v.g, { readOnly: v.readOnly }) : null;
 }
 
@@ -667,7 +710,7 @@ $("putfile").addEventListener("change", async (e) => {
     for (const file of e.target.files) files.push([file.name.toUpperCase(), new Uint8Array(await file.arrayBuffer())]);
     await serial(async () => {
       const staged = state.card.slice();
-      const v = parseContainer(staged).volumes.find((x) => x.drive === $("drive").value);
+      const v = volumeOn(parseContainer(staged), $("drive").value);
       if (!v) return;
       const fs = new CpmVolume(volumePayload(staged, v), v.g, { readOnly: v.readOnly });
       for (const [name, bytes] of files) fs.write(name, bytes, { text: chooseText($("textmode").value, name, bytes) });
