@@ -34,9 +34,11 @@ export function serve() {
 /**
  * Plant the card and display/width
  * preferences before opening the app
- * at the same origin.
+ * at the same origin. SETUP, if given,
+ * gets the browser context just before
+ * the app opens.
  */
-export async function open(browser, url, image, display, width) {
+export async function open(browser, url, image, display, width, { setup } = {}) {
   const context = await browser.newContext();
   await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
   const planter = await context.newPage();
@@ -59,6 +61,7 @@ export async function open(browser, url, image, display, width) {
     [display, width],
   );
   await planter.close();
+  if (setup) await setup(context);
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));

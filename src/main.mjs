@@ -23,6 +23,7 @@ const state = {
   width: ["32", "40", "80"].includes(savedWidth) ? savedWidth : "40",
   display: ["tms", "glcd"].includes(savedDisplay) ? savedDisplay : "tms",
   machine: null,
+  upgradeStarter: null, // The starter card an old card's upgrade copies from.
   card: null,
   cardDirty: false,
   unsaved: false, // Last save failed.
@@ -95,14 +96,25 @@ async function powerOnNow() {
   // card, SHELL.SVC and a MON3.SVC that
   // is entered on install; the note says
   // what was written.
+  // The starter is fetched once a session
+  // and kept apart from the card in use,
+  // so a refused upgrade doesn't fetch it
+  // again at every power-on.
   let starter = null;
-  try {
-    if (needsStarter(state.card)) starter = await starterCard();
-  } catch {
-    // No starter card to hand: the card
-    // gets its display line alone.
+  let unfetched = null;
+  if (needsStarter(state.card)) {
+    try {
+      state.upgradeStarter ??= await starterCard();
+      starter = state.upgradeStarter;
+    } catch {
+      // No starter card to hand: the card
+      // gets its display line alone.
+      unfetched = "This card is from before the shell, and the page couldn't fetch the starter card to add the shell to it, so it boots without the shell. The next power-on tries again.";
+    }
   }
-  const { problem, note, changed } = prepareCard(state.card, state.display, state.width, starter);
+  const prepared = prepareCard(state.card, state.display, state.width, starter);
+  const { problem, changed } = prepared;
+  const note = prepared.note ?? (problem ? null : unfetched);
   if (changed) state.cardDirty = true;
   const { rom, symbols } = await loadRom();
   state.machine = new Machine({

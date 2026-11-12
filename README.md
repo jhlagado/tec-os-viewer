@@ -42,13 +42,18 @@ BAZA shows a spinner while it compiles. `MON3.SVC` gives
 writes four lines on the LCD and counts on the digits; on the page, Esc on
 the matrix keyboard returns to `MON3>` (on the board, AD on its keypad does
 too), and `EXIT` to `A>`. A browser that already holds a card keeps it; press
-New starter card for this one. A card saved before the shell, with no
-`SHELL.SVC` and a `MON3.SVC` that installs without being entered, is brought
-up to date as the page powers it on: it gets the starter card's `SHELL.SVC`,
-and its `MON3.SVC`, if it has one, `SHELL.SVC` goes first in `STARTUP.CMD`,
-and the serial pane says what was written. Its other files, on A: and B:, are
-as they were. A card whose `SHELL.SVC` was taken off, and which has today's
-`MON3.SVC`, is left without the shell, at the ROM's bare prompt.
+New starter card for this one. A card with no `SHELL.SVC` on A: and no
+`MON3.SVC` that is entered as it installs, as a card saved before the shell
+is, is brought up to date as the page powers it on: it gets the starter
+card's `SHELL.SVC`, and the starter's `MON3.SVC` in place of its own if it has
+one, and `SHELL.SVC` goes first in `STARTUP.CMD`. The serial pane says what
+was written, and the card's other files, on A: and B:, are as they were. So
+taking off both `SHELL.SVC` and `MON3.SVC` brings the shell back at the next
+power-on, while a card whose `SHELL.SVC` alone was taken off keeps today's
+`MON3.SVC` and is left at the ROM's bare prompt. If the files can't be
+written, a full A: for one, or the starter card can't be fetched, the card
+boots without the shell and the serial pane says why; the next power-on tries
+again.
 
 The page saves the card's image: in this browser within two seconds of the
 machine writing it, and in Download image. TEC-OS holds writes in its block
