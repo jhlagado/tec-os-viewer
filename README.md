@@ -15,10 +15,10 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS main `fdd9e5b`, which builds with TAS alone, on
+The firmware pin is TEC-OS main `e59e8c4`, which builds with TAS alone, on
 the release 1 candidate with BASIC: the Compact font, a cold 40-column
 console, the squeezed ROM with a minimal CCP, A:'s coalesced writes and
-`SHELL.SVC`, the resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `b69d544`, TAS from
+`SHELL.SVC`, the resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`, TAS from
 Thorium `3d1e2c0`, which takes several statements on a line, and BAZA and
 `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
@@ -32,7 +32,7 @@ holds the prompt after every reset: `COPY`, `DEL` and `SERVICES`, the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt is CP/M 2.2's, with `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/fdd9e5b/docs/shell.md) has the rest. At `A>`,
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/e59e8c4/docs/shell.md) has the rest. At `A>`,
 `TAS DEMO` then `DEMO` build and run the hardware demo, and `TED DEMO.ASM`
 reads it; `TAS SAMPLE` and `SAMPLE` build and run a first program,
 `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA BOUNCE` and `BOUNCE` a sprite
@@ -42,12 +42,13 @@ BAZA shows a spinner while it compiles. `MON3.SVC` gives
 writes four lines on the LCD and counts on the digits; on the page, Esc on
 the matrix keyboard returns to `MON3>` (on the board, AD on its keypad does
 too), and `EXIT` to `A>`. A browser that already holds a card keeps it; press
-New starter card for this one. A card from before the shell has no
-`SHELL.SVC`, so it gives the ROM's bare prompt, with no `DEL`, `COPY`,
-history, pager or joined lines, and TED's build comes back to `A>` in place
-of TED. Its `MON3.SVC` has no mark asking to be entered as it installs, so on
-this ROM `MON3.SVC` and `MON3.SVC /E` both return to `A>` without `MON3>`,
-each installing another copy. Use New starter card.
+New starter card for this one. A card saved before the shell, with no
+`SHELL.SVC` and a `MON3.SVC` that installs without being entered, is brought
+up to date as the page powers it on: it gets the starter card's `SHELL.SVC`,
+and its `MON3.SVC`, if it has one, `SHELL.SVC` goes first in `STARTUP.CMD`,
+and the serial pane says what was written. Its other files, on A: and B:, are
+as they were. A card whose `SHELL.SVC` was taken off, and which has today's
+`MON3.SVC`, is left without the shell, at the ROM's bare prompt.
 
 The page saves the card's image: in this browser within two seconds of the
 machine writing it, and in Download image. TEC-OS holds writes in its block
@@ -76,7 +77,7 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`3d1e2c0` for `TAS.COM`,
-`b69d544` for `TED.COM`), jhlagado/baza (`50dc512`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+`a2fe556` for `TED.COM`), jhlagado/baza (`50dc512`) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
