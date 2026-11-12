@@ -106,9 +106,13 @@ async function powerOnNow() {
     try {
       state.upgradeStarter ??= await starterCard();
       starter = state.upgradeStarter;
-    } catch {
+    } catch (err) {
       // No starter card to hand: the card
-      // gets its display line alone.
+      // gets its display line alone. The
+      // console keeps the cause, which may be
+      // a fault in building the card rather
+      // than the network.
+      console.error("starter card for the upgrade", err);
       unfetched = "This card is from before the shell, and the page couldn't fetch the starter card to add the shell to it, so it boots without the shell. The next power-on tries again.";
     }
   }
