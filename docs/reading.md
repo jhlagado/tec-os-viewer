@@ -89,8 +89,8 @@ binary instead, for Copy file to drive and for Download.
 [src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
 Machine card writes mark it dirty for periodic saving. What is saved is the
 machine's card image, so a write TEC-OS still holds in its block cache isn't
-in it: on A: until the next flush point, such as a file's close or the next
-prompt, and on B:, written behind, until `^C` at `A>` (README). A failed save leaves
+in it: on A: until the next flush point, such as a file's close or a console
+read, and on B:, written behind, until `^C` at `A>` (README). A failed save leaves
 an unsaved indication and a copy in memory. A failed stored-card read leaves
 the original record alone and runs a starter card without saving over it.
 The Download image control provides a file copy.

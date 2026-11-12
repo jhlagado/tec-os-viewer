@@ -22,16 +22,20 @@ close, any directory request, a write to another block, a console read
 never names it before the card has it. B:, the work disk, is written behind,
 as before. TEC-OS's `docs/recovery.md` at the pin has the whole of it.
 
-The page saves the machine's card image, in IndexedDB within two seconds of the
-machine writes it and in Download image, and doesn't flush the cache itself:
-the cache is the machine's memory, and only TEC-OS can write it to the card.
-At a prompt the shell's line read is a flush point, so A: is on the card and
-in what the page saves after every command; a block is pending only while a
-program writes and hasn't yet closed, read the console or written another
-block. Reset, Power cycle, New starter card, Copy file to drive and a width
-or display change start the machine again and lose what the cache held, as a
-reset does on the board; README says to wait for the prompt, and press `^C`
-there for B:.
+The page saves the machine's card image, in IndexedDB within two seconds of
+the machine writing it and in Download image, and doesn't flush the cache
+itself: the cache is the machine's memory, and only TEC-OS can write it to
+the card. Every command ends in a close, a directory write or a warm boot,
+each of which writes A:'s pending block, and BDOS 10's line read at the
+prompt, the shell's or the bare ROM's, writes anything left; so A: is on the
+card, and in what the page saves, at every prompt, with or without the shell.
+While a program runs, a block it wrote is pending only until it closes the
+file, makes a directory request, writes another block, reads the console or
+ends in a warm boot. Reset, Power cycle, New starter card, Open image, Copy
+file to drive and a width or display change start the machine again and lose
+what the cache held, as a reset does on the board; New starter card and Open
+image also replace the stored card. README says to wait for the prompt, and
+press `^C` there for B:.
 
 The ROM's CCP is now minimal: it runs a `.COM` or a `.SVC`, changes drive,
 has CP/M's `DIR`, `ERA`, `REN`, `TYPE`, `SAVE` and `USER`, with `CON` and
@@ -144,7 +148,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 125 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 126 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -168,8 +172,10 @@ title and sprites, the ship moved by taps and by the arrow keys as the page's
 own key handling sends them through its key queue, and the console back at
 `A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
 erasing a file, and a card without `SHELL.SVC` booting to the ROM's bare
-prompt, where `DEL` is refused and `DIR!TYPE` is one word, and a file `SAVE`
-writes on A: in the card image by the next prompt, all in the page's machine. These run the TEC-OS `Machine`
+prompt, where `DEL` is refused and `DIR!TYPE` is one word, `SAVE`'s close
+putting its file in the card image by the time the prompt shows, and a
+record a program writes into an existing block of A: in the card image while
+the program waits at BDOS 1, all in the page's machine. These run the TEC-OS `Machine`
 under Node with the page's ROM, card and settings, not a browser.
 `test/text-mode.test.mjs` covers how the page decides to copy a file as text
 or binary, and that binaries with text types and CP/M programs' data files

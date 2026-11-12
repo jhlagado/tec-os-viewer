@@ -53,14 +53,18 @@ The page saves the card's image: in this browser within two seconds of the
 machine writing it, and in Download image. TEC-OS holds writes in its block
 cache, in the machine's memory, until it writes them to the card. On A: a
 program's data write reaches the card at the next flush point: the file's
-close, a directory request, a write to another block, a console read, such as
-the next prompt, or a warm boot. B:, the work disk, is written behind, and
-`^C` at `A>` writes it out. So at `A>` A: is on the card and in what the page
-saves; while a program is still writing, its last block may not be. Reset,
-Power cycle, New starter card, Copy file to drive and a change of width or
-display all start the machine again, as a reset does on the board, and what
-the cache held is lost: wait for the prompt first, and press `^C` there for
-B:.
+close, a directory request, a write to another block, a console read or a warm
+boot. Every command ends in a close, a directory write or a warm boot, each of
+which writes A:'s pending block, and the line read at the prompt, the shell's
+or the bare ROM's, writes anything left; so at `A>` A: is on the card and in
+what the page saves. While a program runs, a block it wrote is pending until
+it closes the file, makes a directory request, writes another block, reads
+the console or ends in a warm boot. B:, the work disk, is written behind, and
+`^C` at `A>` writes it out. Reset, Power cycle, New starter card, Open image,
+Copy file to drive and a change of width or display all start the machine
+again, as a reset does on the board, and what the cache held is lost: wait for
+the prompt first, and press `^C` there for B:. New starter card and Open
+image also replace the card itself, the one this browser keeps.
 
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
