@@ -1,22 +1,22 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`1a6ce29af1238d7000b80fc18c2f834db8fc9ec9`, the head of TEC-OS's `shell2` branch, which lands on
+`c4ec0f4950446f92b658643ee23b63e2c02bb33b`, the head of TEC-OS's `shell2` branch, which lands on
 main as it is (Origo shell stage 2, gate S2-14). It is on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
 40-column console and the debugger-support interfaces. TEC-OS builds it with
-TAS alone. It follows `e59e8c40` (Origo KD-305), which brought TED from
+TAS alone. It follows `b3134cfc` (Origo KD-305), which brought TED from
 Thorium `a2fe556` and the web host's upgrade of a card saved before the shell;
-`fdd9e5b9`, which added A:'s coalesced writes (KD-303); and `d556ec50`, which
+`8b69e51a`, which added A:'s coalesced writes (KD-303); and `1d21d363`, which
 brought the shell (KD-279 and KD-301), Baza `50dc512`, and the card without
-`CHAIN.ASM`. Before them it follows `55f01718`, `0e3c1a82`, `402f30ef`,
-`55114e4d`, `be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`,
-`9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it keeps.
+`CHAIN.ASM`. Before them it follows `042474df`, `1c759846`, `4d19e313`,
+`70f6d10d`, `bd7cd3d4`, `64eb8b35`, `2fb86cbe`, `665f17ef`, `17230aec`,
+`43e5a854`, `bdc75c31` and `46be5a45`, whose font notices it keeps.
 `pins.json` binds the ROM, the card's 14 files and the starter recipe's
 canonical digest. The ROM, the card's files, the recipe and `starter.img`
 (`dd44f1c2…`) are byte for byte those of TEC-OS's build at the pin.
 
-`1a6ce29` brings shell stage 2:
+`c4ec0f4` brings shell stage 2:
 
 - **Four equal drives.** A: to D: each hold one of the card's volumes, or
   none. The shell's `CD` puts a volume on a drive: `CD NAME` on the drive you
@@ -104,7 +104,7 @@ it installs, so `MON3.SVC` gives `MON3>`.
 
 The ROM uses 14,875 of 16,384 bytes, 1,509 free, with the SHA-256
 `a65b6e4523b5f7bab612810370ec13d4c0056deeab574acda80ef9a8e5d358d1`.
-It replaces `43ac0f18…`, `e59e8c40`'s, of the same size. The starter card
+It replaces `43ac0f18…`, `b3134cfc`'s, of the same size. The starter card
 asks for four drives, each with an allocation vector for an 8 MiB volume, so
 its TPA is 46,569 bytes (`0100h–B6E8h`) with nothing loaded; with
 `SHELL.SVC`, which now takes 15 pages, 42,496, and 41,728 with the GLCD's
@@ -136,9 +136,9 @@ of each SHA-256 and their bytes on the card:
 | `TED.COM` | `c6c8374a…` | 12,335 | Thorium `a2fe556` |
 | `TIMES.BAS` | `287f0237…` | 626 | TEC-OS, as CP/M text |
 
-`SHELL.SVC` is rebuilt at `1a6ce29`, and `MOUNT.COM` has left the card; every
-other file is the same bytes as at `e59e8c40`. `TED.COM` and `HELLO3.ASM`
-came at `e59e8c40`, `SHELL.SVC` first at `d556ec50`.
+`SHELL.SVC` is rebuilt at `c4ec0f4`, and `MOUNT.COM` has left the card; every
+other file is the same bytes as at `b3134cfc`. `TED.COM` and `HELLO3.ASM`
+came at `b3134cfc`, `SHELL.SVC` first at `1d21d363`.
 `MON3.SVC` is rebuilt for entry on install: `MON3.SVC` gives `MON3>`. The
 service records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own
 scan does, so a key the page holds during a MON-3 program is let go. At
@@ -196,7 +196,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 131 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. Qualification requires two complete passing Viewer suite runs at the final commit.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -233,7 +233,7 @@ the page with the default setting and opens it in TED, and downloads
 `test/card-mounts.test.mjs` types `CD D:GAMES` in Chromium: the card line
 and the Drive list show `D: GAMES` and list its files, and Power cycle gives
 the card's own drives again. `test/stored-cards.test.mjs` plants a card saved before the shell, of two
-volumes, with `MON3.SVC` as it was at `55f01718`, in the page's storage: the page stores
+volumes, with `MON3.SVC` as it was at `042474df`, in the page's storage: the page stores
 the card `prepareCard` gives with the starter card, byte for byte, with the
 starter's `SHELL.SVC` and `MON3.SVC` and the user's files on A: and B: as they
 were, shows its note on the serial pane, and `SERVICES` lists the shell. With
@@ -242,8 +242,8 @@ prepared one and the note says so, and a power cycle shows it again without
 fetching the starter card again; with the starter's recipe refused, the page
 says it couldn't fetch the starter card and the next power-on tries again.
 
-VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
-product `d193838`, with firmware `fe2097f4`; its completed evidence landed at
+VS1 qualified viewer product `5c99400`, with firmware `b706f61`. VS2 qualified
+product `d193838`, with firmware `101a98d5`; its completed evidence landed at
 `76c4aa0`. The retained `evidence/vs1-*` and `evidence/vs2` directories describe
 those particular runs, controls and clean-clone outputs. The subsequent
 `f68e3e3` adds the local-server command. Historical results do not establish a
