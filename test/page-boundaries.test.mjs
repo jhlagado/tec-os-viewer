@@ -211,6 +211,7 @@ test("a width chosen while an import's files are read is the width on the card t
     fetch: async () => ({ json: async () => ({}) }), fetchBytes: async () => new Uint8Array(0),
     loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
     Machine: class {},
+    needsStarter: () => false,
     // Record the prepared width on A:
     // instead of configuring a driver.
     prepareCard: (img, _display, width) => { volumeOf(img).write('WIDTH.TXT', new TextEncoder().encode(width)); return { problem: null, note: null, changed: true }; },
