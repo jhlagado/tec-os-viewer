@@ -1,4 +1,4 @@
-// VG11: check the page card's palette
+// Check the page card's palette
 // and glyphs through the viewer decoder.
 // Use ABI 5 PUTAT for normal and reverse
 // cells. These are emulator checks.
@@ -45,13 +45,13 @@ function checkConsole(m, width, t) {
   putPair(m);
   const snapshot = m.tec1g.state.display.tms9918.stateSnapshot();
   const { registers: r, vram: v } = snapshot;
-  assert.equal(r[7], 0x31, "VG11: register 7 selects light green (3) on black (1)");
+  assert.equal(r[7], 0x31, "register 7 selects light green (3) on black (1)");
   assert.equal(isText80(r), width === 80);
   assert.equal(Boolean(r[1] & 0x10), width !== 32);
   assert.ok(r[1] & 0x40, "the display is enabled");
   if (width === 32) {
     const groups = v.slice(r[3] * 0x40, r[3] * 0x40 + 32);
-    assert.deepEqual([...groups], Array(32).fill(0x31), "VG11: all Graphics I colour groups");
+    assert.deepEqual([...groups], Array(32).fill(0x31), "all Graphics I colour groups");
   }
   const names = width === 80 ? (r[2] & 0x0c) << 10 : (r[2] & 0x0f) * 0x400;
   const patterns = (r[4] & 7) * 0x800;
@@ -69,17 +69,17 @@ function checkConsole(m, width, t) {
   for (let row = 0; row < 8; row++) for (let x = 0; x < cell; x++) for (let reverse = 0; reverse < 2; reverse++) {
     const on = Boolean(glyph[row] & (0x80 >> x)) !== Boolean(reverse);
     const at = ((16 + row) * pixels + border + (3 + reverse) * cell + x) * 4;
-    assert.deepEqual([...image.data.slice(at, at + 4)], on ? [0x5e, 0xdc, 0x78, 255] : [0, 0, 0, 255], `VG11: ${width} column pixel ${reverse}/${row}/${x}`);
+    assert.deepEqual([...image.data.slice(at, at + 4)], on ? [0x5e, 0xdc, 0x78, 255] : [0, 0, 0, 255], `${width} column pixel ${reverse}/${row}/${x}`);
   }
   assert.deepEqual(m.violations, []);
   t.diagnostic(JSON.stringify({ width, register7: r[7], normal: [...glyph], reverse: [...glyph].map((b) => b ^ 255), frameWidth: pixels, frameHeight: 192, rgbaSha256: sha(image.data) }));
 }
 
-for (const width of widths) test(`VG11: cold boot, palette and reverse glyphs at ${width} columns`, { timeout: 120_000 }, async (t) => {
+for (const width of widths) test(`cold boot, palette and reverse glyphs at ${width} columns`, { timeout: 120_000 }, async (t) => {
   checkConsole(await boot(width), width, t);
 });
 for (const from of widths) for (const to of widths.filter((w) => w !== from)) {
-  test(`VG11: directed width switch ${from} to ${to}`, { timeout: 120_000 }, async (t) => {
+  test(`directed width switch ${from} to ${to}`, { timeout: 120_000 }, async (t) => {
     const m = await boot(from);
     const mark = m.output.length;
     m.typeMatrix(`con pico ${to}\r`);

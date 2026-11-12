@@ -1,4 +1,4 @@
-// VG6: boot the standalone HTML page
+// Boot the standalone HTML page
 // with all other requests blocked.
 // Check A> and both commit labels.
 // Run npm run tecos before this test.

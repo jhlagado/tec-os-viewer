@@ -1,8 +1,8 @@
-// VG3: boot the page card on serial,
+// Boot the page card on serial,
 // PICO9918, GLCD and dual-display boards.
 // Test PICO widths 80, 40 and 32.
 // A serial board at 40 must omit width
-// errors from startup (KE-191).
+// errors from startup.
 // With no card, require CARD? and no A>.
 // Emulator checks. Run npm run tecos
 // before these tests.
@@ -45,7 +45,7 @@ for (const [board, width] of CASES) {
   test(`the page's card reaches A> on ${name} at ${width}`, { timeout: 120_000 }, async () => {
     const m = await boot(board, width);
     if (BOARDS[board].tms) assert.equal(m.read(m.sym("VWID")), width, "the console's width");
-    if (board === "serial") assert.doesNotMatch(m.text(0), /\d\d\?/, "nothing said of the width at boot (KE-191)");
+    if (board === "serial") assert.doesNotMatch(m.text(0), /\d\d\?/, "nothing said of the width at boot");
     assert.deepEqual(m.violations, []);
   });
 }
