@@ -36,11 +36,24 @@
 // STARTUP.CMD starts and that waits
 // for a key. Nothing waits for a key
 // while the ROM reads STARTUP.CMD or
-// a service installs. The mark stays
-// until STPOS drops below 80h, as cold
-// boot clears it, or the page resets
-// the machine. The hold starts again
-// whenever the key would wait.
+// a service installs. A status poll
+// doesn't count: the ROM polls before
+// GLCD.SVC is in. The mark is cleared
+// when the CPU reaches COLD, as a reset
+// or a program's cold boot does, when
+// the page resets the machine, and when
+// a key is checked with STPOS below
+// 80h. The hold starts again whenever
+// the key would wait.
+//
+// A startup program that only polls,
+// such as DEMO run from STARTUP.CMD
+// under CON TTY, never marks startup
+// over. So on CON TTY or CON BAT a key
+// still waiting for startup is let go
+// after STARTUP_CYCLES. By then the
+// GLCD board has long had UC1: as its
+// console.
 //
 // While a program has EXPAND 1 in the
 // 8000h-BFFFh window, TEC-OS's own
@@ -52,6 +65,9 @@
 
 /** A tenth of a second at the page's 4 MHz. */
 export const HOLD_CYCLES = 400_000;
+
+/** Ten seconds at the page's 4 MHz. */
+export const STARTUP_CYCLES = 40_000_000;
 
 const ARROWS = { ArrowUp: "A", ArrowDown: "B", ArrowRight: "C", ArrowLeft: "D" };
 
@@ -98,11 +114,15 @@ const READS = [["CINLP", "CINWE"], ["CINMX", "CINME"]];
 /**
  * Mark M's startup over once its CPU is
  * in a waiting console read with STPOS
- * at 80h or above. Call it after each
- * step.
+ * at 80h or above, and forget it at
+ * COLD. Call it after each step.
  */
 function noteStart(m) {
-  if (m.keyGate) return;
+  m.keyCold ??= m.symbols.get("COLD") ?? -1;
+  if (m.keyGate) {
+    if (m.pc === m.keyCold) m.keyGate = false;
+    return;
+  }
   const pos = m.symbols.get("STPOS");
   if (pos === undefined) {
     m.keyGate = true;
@@ -126,8 +146,14 @@ function started(m) {
   return m.keyGate === true;
 }
 
-/** Move M's key queue on by one step. Call it after each step. */
-export function pumpKeys(m, hold = HOLD_CYCLES) {
+/**
+ * Move M's key queue on by one step.
+ * Call it after each step, so that the
+ * startup mark doesn't depend on when
+ * keys arrive. HOLD and STARTUPHOLD are
+ * the two bounds, in cycles.
+ */
+export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
   noteStart(m);
   const head = m.pending?.[0];
   if (!head) return;
@@ -137,17 +163,26 @@ export function pumpKeys(m, hold = HOLD_CYCLES) {
   }
   if (head.via === "matrix" && head.down) {
     if (m.sysCtrl & 0x04) return;
-    if (!started(m) || m.videoConsole()) delete head.heldFrom;
-    else {
+    let due = false;
+    if (m.videoConsole()) {
+      delete head.heldFrom;
+      delete head.waitFrom;
+    } else if (!started(m)) {
+      delete head.heldFrom;
+      head.waitFrom ??= m.cycles;
+      due = m.cycles - head.waitFrom >= startupHold;
+    } else {
+      delete head.waitFrom;
       head.heldFrom ??= m.cycles;
-      if (m.cycles - head.heldFrom >= hold) {
-        if (!head.up) {
-          m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
-          if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
-        }
-        head.letGo = m.cycles;
-        return;
+      due = m.cycles - head.heldFrom >= hold;
+    }
+    if (due) {
+      if (!head.up) {
+        m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
+        if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
       }
+      head.letGo = m.cycles;
+      return;
     }
   }
   m.pumpInput();

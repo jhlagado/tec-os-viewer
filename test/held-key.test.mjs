@@ -39,13 +39,23 @@
 // that waits: under CON TTY from
 // STARTUP.CMD a screen key is let go
 // at MON3> before anything is typed,
-// and at the first prompt.
+// and at the first prompt. While DEMO,
+// run from STARTUP.CMD under CON TTY,
+// polls for a key, the startup bound
+// lets a screen key go and a serial
+// space behind it stops DEMO. A cold
+// boot that a program enters at COLD
+// forgets the mark that startup is
+// over.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
-import { HOLD_CYCLES, pumpKeys } from "../src/keys.mjs";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { HOLD_CYCLES, STARTUP_CYCLES, pumpKeys } from "../src/keys.mjs";
+import { ROOT } from "./lib/root.mjs";
 import { card, power } from "./lib/page.mjs";
 
 const LIMIT = 400_000_000; // Per-step cycle limit.
@@ -322,4 +332,33 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
   m.runUntil(() => /\[more\]|A>$/.test(m.text()), LIMIT, "DIR's listing");
   assert.match(m.text(), /A>DIR\r\r\nMOUNT\.COM/, "DIR typed whole");
+});
+
+test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO", { timeout: 300_000 }, async () => {
+  const image = await startupCard("SHELL.SVC", "CON TTY", "DEMO");
+  driveA(image).write("DEMO.COM", new Uint8Array(readFileSync(resolve(ROOT, "tec-os/dist/DEMO.COM"))));
+  const m = power(image, "pico", 40);
+  runPage(m, () => /Press any key to stop\./.test(m.text()), "DEMO from STARTUP.CMD");
+  assert.ok(!m.videoConsole(), "CON: is TTY:");
+  const down = watchKeys(m);
+  const mark = m.output.length;
+  m.enqueueInput("x", "matrix");
+  const x = m.pending[0];
+  m.enqueueInput(" ", "serial");
+  const from = m.cycles;
+  runPage(m, () => !m.pending.length && m.ready() && /A>$/.test(m.text(mark)), "DEMO stopped and A>");
+  assert.ok(x.letGo - from >= STARTUP_CYCLES, `x let go after ${x.letGo - from} cycles`);
+  assert.match(m.text(mark), /Demo stopped\./, "the space stopped DEMO");
+  assert.equal(down.size, 0, "no matrix key held");
+});
+
+test("a cold boot that a program enters at COLD forgets the startup mark before STARTUP.CMD is read again", { timeout: 300_000 }, async () => {
+  const m = power(await card(), "glcd", 40);
+  runPage(m, () => m.ready() && m.videoConsole(), "the prompt");
+  assert.equal(m.keyGate, true, "startup over at A>");
+  m.cpu.cpu.pc = m.sym("COLD");
+  const pos = m.sym("STPOS");
+  runPage(m, () => m.read(pos) < 0x80, "STPOS cleared");
+  runPage(m, () => !(m.sysCtrl & 0x04) && m.read(pos) >= 0x80, "STBOOT's mark");
+  assert.equal(m.keyGate, false, "the mark is gone as STBOOT reads STARTUP.CMD");
 });

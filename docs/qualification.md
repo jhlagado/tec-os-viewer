@@ -101,9 +101,16 @@ first line: at the first prompt, or in a program that `STARTUP.CMD` starts
 and that waits for a key, such as `MON3>`. No such read happens while the ROM
 reads `STARTUP.CMD` or a service installs, so on the GLCD board no key is let
 go before the shell has run the `GLCD.SVC` line, however late `STARTUP.CMD`
-is in A:'s directory. The mark is cleared when STPOS reads below 80h, as cold
-boot leaves it, and when the page resets the machine. The hold starts again
-whenever the key would wait. While a program has EXPAND 1 in the 8000h-BFFFh
+is in A:'s directory. A status poll doesn't count, since the ROM polls before
+`GLCD.SVC` is in. The mark is cleared when the CPU reaches COLD, as a reset or
+a program's cold boot does, when the page resets the machine, and when a key
+is checked with STPOS below 80h. The page checks for the mark after every
+step, so that it doesn't depend on when keys arrive. A startup program that
+only polls, such as `DEMO` run from `STARTUP.CMD` under `CON TTY`, never marks
+startup over, so on `CON TTY` or `CON BAT` a key still waiting for startup is
+let go after 40,000,000 cycles, ten seconds; the GLCD board has UC1: as its
+console by about 9,500,000 cycles, even with `STARTUP.CMD` late in A:. The
+hold starts again whenever the key would wait. While a program has EXPAND 1 in the 8000h-BFFFh
 window, a matrix key that is down waits: the page reads none of TEC-OS's
 bytes for it there, and doesn't hand it to the machine's own key queue, which
 would read KBLAST through the bank. A hold already started runs on through
@@ -115,7 +122,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 122 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 124 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -129,7 +136,10 @@ TEC-OS's scan; a key isn't let go, or taken as read, on bytes read while
 EXPAND 1 is in TEC-OS's window that look like `CON TTY` or like the key in
 KBLAST; and under `CON TTY` from `STARTUP.CMD` a screen key is let go, with
 the serial keys behind it sent, at `MON3>` started by `STARTUP.CMD` and at
-the first prompt, before anything is typed. `test/basic-card.test.mjs` covers
+the first prompt, before anything is typed; while `DEMO` from `STARTUP.CMD`
+polls under `CON TTY`, a screen key is let go after the startup bound and a
+serial space behind it stops `DEMO`; and a cold boot a program enters at COLD
+forgets the mark before `STARTUP.CMD` is read again. `test/basic-card.test.mjs` covers
 the card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
 `BAZA BOUNCE` build and `BOUNCE` run (Graphics I with the ROM's font, its
 title and sprites, the ship moved by taps and by the arrow keys as the page's
