@@ -94,12 +94,20 @@ so two keys never go down back to back for a program that reads the matrix
 itself. The same bound ends the wait for a key whose release nothing sees: a
 MON-3 program's scan records its keys in KBLAST, and once the program ends
 nothing scans to clear it. On CRT: and UC1:, and until TEC-OS's startup is
-over, keys wait for TEC-OS's scan as before. Startup is over when a line has
-been typed, or at a prompt once `STARTUP.CMD` is done; with the shell running
-`STARTUP.CMD`'s later lines, the ROM's mark that it has taken the first line
-no longer says that `GLCD.SVC` is in. The hold starts again whenever the key
-would wait, and the page reads TEC-OS's bytes only while TEC-OS's own RAM is
-in the 8000h-BFFFh window.
+over, keys wait for TEC-OS's scan as before. The page marks startup over at
+the first console read that waits for a key (TEC-OS's `CINLP` or `CINMX`)
+once STPOS has reached 80h, the ROM's mark that it has taken `STARTUP.CMD`'s
+first line: at the first prompt, or in a program that `STARTUP.CMD` starts
+and that waits for a key, such as `MON3>`. No such read happens while the ROM
+reads `STARTUP.CMD` or a service installs, so on the GLCD board no key is let
+go before the shell has run the `GLCD.SVC` line, however late `STARTUP.CMD`
+is in A:'s directory. The mark is cleared when STPOS reads below 80h, as cold
+boot leaves it, and when the page resets the machine. The hold starts again
+whenever the key would wait. While a program has EXPAND 1 in the 8000h-BFFFh
+window, a matrix key that is down waits: the page reads none of TEC-OS's
+bytes for it there, and doesn't hand it to the machine's own key queue, which
+would read KBLAST through the bank. A hold already started runs on through
+such a spell; the key is down all the while.
 
 The page sends an arrow key typed on the PICO9918's or the GLCD's screen as
 the matrix's own arrow key, 03h to 06h for up, down, left and right, which
@@ -107,7 +115,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 118 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 122 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -116,14 +124,20 @@ down a whole hold after the first is let go; `HELLO3` counts both of a queued
 `12`, which MON3.SVC's scan gives with or without that gap, and `1` then Esc
 ends it; on CRT: `HELLO3` takes `1` then Esc and `EXIT` reaches `A>`, and keys
 typed ahead while `TAS DEMO` builds, and on the GLCD board keys typed while it
-starts, all wait for TEC-OS's scan, and a key isn't let go on bytes read while
-EXPAND 1 is in TEC-OS's window that look like `CON TTY`; and `test/basic-card.test.mjs` the card's
-BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
+starts, also with `STARTUP.CMD` late in A:'s directory, all wait for
+TEC-OS's scan; a key isn't let go, or taken as read, on bytes read while
+EXPAND 1 is in TEC-OS's window that look like `CON TTY` or like the key in
+KBLAST; and under `CON TTY` from `STARTUP.CMD` a screen key is let go, with
+the serial keys behind it sent, at `MON3>` started by `STARTUP.CMD` and at
+the first prompt, before anything is typed. `test/basic-card.test.mjs` covers
+the card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
 `BAZA BOUNCE` build and `BOUNCE` run (Graphics I with the ROM's font, its
 title and sprites, the ship moved by taps and by the arrow keys as the page's
 own key handling sends them through its key queue, and the console back at
-`A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, and `DEL`
-erasing a file, all in the page's machine. These run the TEC-OS `Machine`
+`A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
+erasing a file, and a card without `SHELL.SVC` booting to the ROM's bare
+prompt, where `DEL` is refused and `DIR!TYPE` is one word, all in the page's
+machine. These run the TEC-OS `Machine`
 under Node with the page's ROM, card and settings, not a browser.
 `test/text-mode.test.mjs` covers how the page decides to copy a file as text
 or binary, and that binaries with text types and CP/M programs' data files

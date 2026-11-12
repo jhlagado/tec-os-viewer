@@ -45,7 +45,9 @@ too), and `EXIT` to `A>`. A browser that already holds a card keeps it; press
 New starter card for this one. A card from before the shell has no
 `SHELL.SVC`, so it gives the ROM's bare prompt, with no `DEL`, `COPY`,
 history, pager or joined lines, and TED's build comes back to `A>` in place
-of TED.
+of TED. Its `MON3.SVC` has no mark asking to be entered as it installs, so on
+this ROM `MON3.SVC` and `MON3.SVC /E` both return to `A>` without `MON3>`,
+each installing another copy. Use New starter card.
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
 
