@@ -46,6 +46,7 @@ test("power-on stops the old machine before it prepares the card", async () => {
   const seen = [];
   const context = {
     state: { card: Uint8Array.of(0), display: "tms", width: "40", machine: old },
+    needsStarter: () => false,
     prepareCard: () => {
       seen.push(context.state.machine);
       return { problem: null, note: null, changed: true };

@@ -77,6 +77,8 @@ test("the real width handler persists each choice and prepares the card even whe
     const profile = { addEventListener: (type, fn) => { assert.equal(type, "change"); handler = fn; } };
     Object.assign(page.context, {
       $: (id) => { assert.equal(id, "profile"); return profile; },
+      // A bare card, not one to upgrade.
+      needsStarter: () => false,
       prepareCard,
       loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
       Machine: class { constructor(options) { assert.equal(options.sdImage, image); powers++; } },
