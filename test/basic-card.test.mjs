@@ -27,15 +27,19 @@
 // boots to the ROM's bare prompt, which
 // refuses DEL and takes DIR!TYPE as one
 // word.
-// TEC-OS holds A:'s data writes in its
-// cache until a flush point. SAVE's own
-// close puts its pages in the card
-// image, which the page saves, by the
-// time the prompt shows; and a record a
-// program writes into a file's existing
-// block is in the image while the
-// program waits for a key at BDOS 1, a
-// console read.
+// TEC-OS holds a program's writes in
+// its cache: the drive it is logged on
+// is written behind, and the others'
+// data writes wait for the next flush
+// point. Whenever TEC-OS waits for a
+// key, every drive is on the card.
+// SAVE's own close puts its pages in
+// the card image, which the page saves,
+// by the time the prompt shows; and a
+// record a program writes into a file's
+// existing block is in the image while
+// the program waits for a key at BDOS
+// 1, logged on A: and logged on B:.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -54,6 +58,12 @@ const FILES = ["BAZA.COM", "BAZA.RTL", "TIMES.BAS", "BOUNCE.BAS", "DEMO.ASM"];
 /** A: on IMAGE. */
 function driveA(image) {
   const v = findVolume(parseContainer(image), "A");
+  return new CpmVolume(volumePayload(image, v), v.g, { readOnly: false });
+}
+
+/** Drive LETTER's volume on IMAGE, writable. */
+function volumeOf(image, letter) {
+  const v = findVolume(parseContainer(image), letter);
   return new CpmVolume(volumePayload(image, v), v.g, { readOnly: false });
 }
 
@@ -81,14 +91,14 @@ test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.A
 test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   let mark = m.output.length;
   keys(m, "baza times\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
   assert.match(m.text(mark), /^baza times\r\r\n(?:[|\/\\-]\x08)+COM written\r\n/, "BAZA's spinner, each mark then a backspace, then COM written");
   mark = m.output.length;
   keys(m, "times\r", "TIMES's first question", () => /WHAT IS YOUR NAME\? $/.test(m.text(mark)));
   keys(m, "TEC\r", "TIMES's second question", () => /PICK A NUMBER, 1 TO 12\? $/.test(m.text(mark)));
-  keys(m, "7\r", "the table and the prompt", () => m.ready() && m.text(mark).endsWith("A>"));
+  keys(m, "7\r", "the table and the prompt", () => m.ready() && m.text(mark).endsWith("A:SYSTEM>"));
   const run = m.text(mark);
   assert.match(run, /HI, TEC\.\r\n/);
   assert.match(run, /THE 7 TIMES TABLE:\r\n/);
@@ -108,7 +118,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
     const end = m.cycles + cycles;
     m.runUntil(() => m.cycles >= end, cycles + 1_000_000, "BOUNCE running");
   };
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   const console40 = registers();
   let mark = m.output.length;
   keys(m, "baza bounce\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
@@ -144,7 +154,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   }
   mark = m.output.length;
   m.typeMatrix("Q");
-  m.runUntilChecked(() => m.ready() && /A>$/.test(m.text(mark)), LIMIT, "the prompt after Q");
+  m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text(mark)), LIMIT, "the prompt after Q");
   assert.match(m.text(mark), /THANKS FOR PLAYING\. SCORE -?\d+ \r\n/);
   assert.deepEqual(registers(), console40, "the console's VDP mode back");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
@@ -155,9 +165,9 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
 test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key", { timeout: 300_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   let mark = m.output.length;
-  keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A>$/.test(m.text(mark)));
+  keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DEMO\.COM written/);
   // The program TEC-OS's own build
   // makes from the same source.
@@ -171,7 +181,7 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
   assert.deepEqual(Array.from(m.tec1g.state.display.tms9918.stateSnapshot().registers.slice(0, 8)), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I on the PICO9918");
   assert.equal(String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20)), "TEC-OS hardware demo", "the LCD's first row");
   m.enqueueInput(" ", "matrix");
-  m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
+  m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A:SYSTEM>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
   assert.deepEqual(m.violations, []);
 });
@@ -179,13 +189,13 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
 test("in the page's machine, DEL erases a file, as ERA does", { timeout: 300_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   assert.ok(names(image).includes("TIMES.BAS") && names(image).includes("SAMPLE.ASM"));
   let mark = m.output.length;
-  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A>$/.test(m.text(mark)));
-  assert.equal(m.text(mark), "del times.bas\r\r\nA>", "DEL says nothing, as ERA");
+  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
+  assert.equal(m.text(mark), "del times.bas\r\r\nA:SYSTEM>", "DEL says nothing, as ERA");
   mark = m.output.length;
-  keys(m, "dir times.bas\r", "DIR", () => m.ready() && /A>$/.test(m.text(mark)));
+  keys(m, "dir times.bas\r", "DIR", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /No file/i, "DIR finds no TIMES.BAS");
   assert.ok(names(image).includes("SAMPLE.ASM"), "the other files stay");
   assert.deepEqual(m.violations, []);
@@ -212,7 +222,7 @@ test("in the page's machine, a card whose SHELL.SVC was taken off boots to the R
 test("in the page's machine, SAVE's close puts its file on A: in the card image by the time the prompt shows", { timeout: 300_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   const byte = (a) => (a * 7) & 0xff;
   for (let a = 0x100; a < 0x100 + 16 * 256; a += 1) m.write(a, byte(a));
   m.command("SAVE 16 X.COM");
@@ -222,12 +232,18 @@ test("in the page's machine, SAVE's close puts its file on A: in the card image 
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, async () => {
+/**
+ * Run W TIMES.BAS on DRIVE, logged there,
+ * with TIMES.BAS on that drive: W opens
+ * the file named in its tail, sets the
+ * DMA to 0200h, writes record 0 at
+ * random, waits for a key at BDOS 1 and
+ * returns. The card image must hold the
+ * new record while W waits, and at the
+ * prompt.
+ */
+async function recordAtKeyWait(drive) {
   const image = await card();
-  // Open the file named in the tail, set
-  // the DMA to 0200h, write record 0 at
-  // random, then wait for a key at BDOS
-  // 1 and return.
   const code = [
     0x11, 0x5c, 0x00, 0x0e, 0x0f, 0xcd, 0x05, 0x00,
     0x11, 0x00, 0x02, 0x0e, 0x1a, 0xcd, 0x05, 0x00,
@@ -240,9 +256,13 @@ test("in the page's machine, a record a program writes into an existing block of
   com.set(code);
   com.set(record, 0x100);
   driveA(image).write("W.COM", com);
+  const on = volumeOf(image, drive);
+  if (drive !== "A") on.write("TIMES.BAS", driveA(image).read("TIMES.BAS"));
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
-  const first = () => Array.from(driveA(image).read("TIMES.BAS").subarray(0, 128));
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
+  const prompt = new RegExp(`${drive}:[A-Z]+>$`);
+  if (drive !== "A") m.command(`${drive}:`, { prompt });
+  const first = () => Array.from(volumeOf(image, drive).read("TIMES.BAS").subarray(0, 128));
   assert.notDeepEqual(first(), record, "TIMES.BAS's first record before");
   m.type("W TIMES.BAS\r");
   const fncin = m.sym("FNCIN");
@@ -251,7 +271,11 @@ test("in the page's machine, a record a program writes into an existing block of
   assert.deepEqual(first(), record, "the new record in the card image while the program waits");
   const mark = m.output.length;
   m.type("x");
-  m.runUntil(() => m.ready() && /A>$/.test(m.text(mark)), LIMIT, "the prompt");
+  m.runUntil(() => m.ready() && prompt.test(m.text(mark)), LIMIT, "the prompt");
   assert.deepEqual(first(), record, "and at the prompt");
   assert.deepEqual(m.violations, []);
-});
+}
+
+test("in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, () => recordAtKeyWait("A"));
+
+test("in the page's machine, logged on B:, which is then the drive written behind, a record a program writes into a file there is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, () => recordAtKeyWait("B"));

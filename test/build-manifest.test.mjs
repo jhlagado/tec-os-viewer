@@ -69,15 +69,15 @@ test("each stale or altered dist is refused with its cause", { timeout: 600_000 
   refused(/dist\/files\/EXTRA\.COM is not in dist\/build\.json/);
 
   build();
-  rmSync(resolve(DIST, "files/MOUNT.COM"));
-  refused(/dist\/files\/MOUNT\.COM is missing/);
+  rmSync(resolve(DIST, "files/HELLO3.BIN"));
+  refused(/dist\/files\/HELLO3\.BIN is missing/);
 
   // A build whose input check fails leaves no manifest from before it.
   build();
   const recipe = resolve(ROOT, "tec-os/dist/starter.recipe.json");
   const kept = readFileSync(recipe);
   const changed = JSON.parse(kept.toString("utf8"));
-  changed.volumes.push({ geometry: "G1M", label: "EXTRA", mount: "C" });
+  changed.volumes.push({ geometry: "G1M", label: "EXTRA" });
   writeFileSync(recipe, JSON.stringify(changed));
   try {
     assert.throws(build);

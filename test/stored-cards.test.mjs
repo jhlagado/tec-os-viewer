@@ -20,7 +20,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
+import { createContainer, findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { cardProblem } from "../tec-os/host/card.mjs";
 import { card, prepareCard, web } from "./lib/page.mjs";
@@ -72,15 +72,20 @@ const OLD_MON3 = JSON.parse(readFileSync(resolve(ROOT, "tec-os/test/fixtures/mon
 
 /**
  * A card the page saved before the
- * shell: no SHELL.SVC, the old MON3.SVC,
- * the startup line the page wrote for
- * the PICO9918 at 40 columns, and the
- * user's own files on A: and B:.
+ * shell, of that time's shape: two
+ * volumes, SYSTEM on A: and WORK on B:,
+ * with the starter's files of today on
+ * A: but no SHELL.SVC, the old
+ * MON3.SVC, the startup line the page
+ * wrote for the PICO9918 at 40 columns,
+ * and the user's own files on A: and
+ * B:.
  */
 async function preShellCard() {
-  const image = await card();
+  const today = await card();
+  const image = createContainer([{ geometry: "G1M", label: "SYSTEM", mount: "A" }, { geometry: "G8M", label: "WORK", mount: "B" }]);
   const a = driveA(image);
-  a.erase("SHELL.SVC");
+  for (const f of driveA(today).list()) if (f.name !== "SHELL.SVC") a.write(f.name, driveA(today).read(f.name));
   a.write("MON3.SVC", Buffer.from(OLD_MON3.file, "base64"));
   a.write("STARTUP.CMD", startupFile("CON PICO 40"));
   a.write("NOTES.TXT", Buffer.from("my own notes\r\n\x1a", "latin1"));
@@ -130,13 +135,13 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   // after the last of them.
   await upgraded.page.waitForFunction(() => {
     const rows = globalThis.tecos?.screen() ?? [];
-    const at = rows.findIndex((l) => /^A>USER 0\s*$/.test(l));
-    return at >= 0 && rows.slice(at + 1).some((l) => /^A>\s*$/.test(l));
+    const at = rows.findIndex((l) => /^A:SYSTEM>USER 0\s*$/.test(l));
+    return at >= 0 && rows.slice(at + 1).some((l) => /^A:SYSTEM>\s*$/.test(l));
   }, null, { timeout: 60_000 });
   const rows = await upgraded.page.evaluate(() => globalThis.tecos.screen());
   // Width selection clears the screen.
   // Later startup output remains visible.
-  assert.ok(rows.some((l) => /^A>USER 0\s*$/.test(l)), `the startup file's other line ran:\n${rows.join("\n")}`);
+  assert.ok(rows.some((l) => /^A:SYSTEM>USER 0\s*$/.test(l)), `the startup file's other line ran:\n${rows.join("\n")}`);
   assert.ok(!rows.some((l) => /PICO\.SVC/.test(l)), `and not PICO.SVC's:\n${rows.join("\n")}`);
   await upgraded.page.waitForFunction(() => !/not saved/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });
   const stored = async () => (await storedSha(upgraded.page)) === sha(want);
@@ -185,7 +190,7 @@ test("a card stored before the shell is given the starter's SHELL.SVC and MON3.S
   const opened = await open(browser, url, old, "tms", "40");
   const { page } = opened;
   await page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), prepared.note, { timeout: 60_000 });
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
   const stored = async () => (await storedSha(page)) === sha(want);
   for (let i = 0; i < 20 && !(await stored()); i += 1) await page.waitForTimeout(500);
   assert.ok(await stored(), "the stored card is Node's upgraded card, byte for byte");
@@ -214,7 +219,7 @@ async function browse(t) {
 /** Wait until PAGE's serial pane shows NOTE in brackets, then for A>. */
 async function noteThenPrompt(page, note) {
   await page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), note, { timeout: 60_000 });
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
 }
 
 test("a card stored before the shell whose A: directory is full boots without the shell, the page says the shell couldn't be added, and a power cycle tries again without fetching the starter card again", { timeout: 180_000 }, async (t) => {

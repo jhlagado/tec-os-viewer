@@ -14,7 +14,7 @@ const sha = (b) => createHash("sha256").update(b).digest("hex");
 
 async function boot(width) {
   const m = power(await card(), "pico", width);
-  m.runUntilChecked(() => m.ready() && m.screen(width).some((l) => l.trim() === "A>"), LIMIT, `cold boot at ${width}`);
+  m.runUntilChecked(() => m.ready() && m.screen(width).some((l) => l.trim() === "A:SYSTEM>"), LIMIT, `cold boot at ${width}`);
   return m;
 }
 
@@ -83,7 +83,7 @@ for (const from of widths) for (const to of widths.filter((w) => w !== from)) {
     const m = await boot(from);
     const mark = m.output.length;
     m.typeMatrix(`con pico ${to}\r`);
-    m.runUntilChecked(() => m.ready() && m.text(mark).endsWith("A>"), LIMIT, `CON PICO ${from} to ${to}`);
+    m.runUntilChecked(() => m.ready() && m.text(mark).endsWith("A:SYSTEM>"), LIMIT, `CON PICO ${from} to ${to}`);
     assert.doesNotMatch(m.text(mark), /\?\r\n/, "the width command was accepted");
     checkConsole(m, to, t);
   });

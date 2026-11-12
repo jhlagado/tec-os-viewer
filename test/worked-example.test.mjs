@@ -77,11 +77,11 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   const image = await card();
   const m = power(image, "pico", 80);
   const screen = () => m.screen().map((l) => l.trimEnd());
-  m.runUntilChecked(() => m.ready() && screen().some((l) => l === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && screen().some((l) => l === "A:SYSTEM>"), LIMIT, "the prompt");
 
   keys(m, "tas sample\r", "TAS's build", () => m.ready() && screen().some((l) => /^SAMPLE\.COM written/.test(l)));
   keys(m, "sample\r", "SAMPLE's run", () => m.ready() && screen().includes("Back to the prompt."));
-  assert.match(screen().join("\n"), /Hello from TEC-OS\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA>/);
+  assert.match(screen().join("\n"), /Hello from TEC-OS\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA:SYSTEM>/);
 
   const { line, insertAt, cursor, edited } = samplePosition(image);
   keys(m, `ted sample.asm ${line}\r`, "TED at the hello line", () => new RegExp(`L${line} C1\\b`).test(screen()[23]));
@@ -94,6 +94,6 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   keys(m, "\x14r", "^T R's run", () => /Press a key/.test(m.text(mark)));
   assert.match(m.text(mark), /Hello from the TEC-OS\.\r\n/, "the edited line printed");
   keys(m, " ", "TED again", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
-  keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A>"));
+  keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A:SYSTEM>"));
   assert.deepEqual(m.violations, []);
 });

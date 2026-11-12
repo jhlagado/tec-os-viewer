@@ -65,14 +65,14 @@ test("on a phone, tapping the screen and typing dir on the phone's keyboard list
   // Read the running machine's screen
   // through the page's test hook.
   const screen = () => page.evaluate(() => globalThis.tecos.screen());
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>$/.test(l)), null, { timeout: 60_000 });
 
   await page.evaluate(phoneType, "dir\n");
-  await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^\d+ files, \d+K free$/.test(l)), null, { timeout: 60_000 }).catch(() => {});
+  await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^\d+ free on A:SYSTEM$/.test(l)), null, { timeout: 60_000 }).catch(() => {});
   const lines = await screen();
-  const at = lines.indexOf("A>dir");
+  const at = lines.indexOf("A:SYSTEM>dir");
   assert.ok(at >= 0, `the typed command is on the screen:\n${lines.join("\n")}`);
-  assert.match(lines[at + 1] ?? "", /^MOUNT\.COM +SHELL\.SVC +GLCD\.SVC/, `the directory follows it:\n${lines.join("\n")}`);
-  assert.ok(lines.slice(at).some((l) => /^\d+ files, \d+K free$/.test(l)), `the directory's count follows it:\n${lines.join("\n")}`);
+  assert.match(lines.slice(at + 1, at + 3).join("\n"), /^\n?SHELL +\.SVC +\d+$/m, `the directory follows it:\n${lines.join("\n")}`);
+  assert.ok(lines.slice(at).some((l) => /^\d+ files, \d+ bytes$/.test(l)), `the directory's count follows it:\n${lines.join("\n")}`);
   assert.deepEqual(errors, []);
 });
