@@ -136,6 +136,7 @@ async function powerOnNow() {
   // drives until the new machine's can
   // be read.
   state.drives = null;
+  refreshCard();
   state.serialSeen = 0;
   appendSerial("\n[power on]\n");
   for (const words of [problem, note]) if (words) appendSerial(`[${words}]\n`);
@@ -624,7 +625,7 @@ function refreshCard() {
     opt.textContent = `${drive}: ${v.label}`;
     select.appendChild(opt);
   }
-  if (current) select.value = current;
+  if ([...select.options].some((o) => o.value === current)) select.value = current;
   refreshFiles();
 }
 
