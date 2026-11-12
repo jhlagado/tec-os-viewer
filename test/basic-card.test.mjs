@@ -8,16 +8,20 @@
 // no DEMO.COM.
 // In the page's machine, PICO9918 at
 // 40 columns, BAZA TIMES builds
-// TIMES.COM and TIMES runs it back to
-// the prompt; BAZA BOUNCE builds
+// TIMES.COM, its spinner turning while
+// it compiles, and TIMES runs it back
+// to the prompt; BAZA BOUNCE builds
 // BOUNCE, which takes Graphics I with
 // the ROM's font, found by REG("HL"),
 // its title and its sprites, moves the
-// ship on W/A/S/D taps and gives the
-// console back on Q; TAS DEMO builds
-// DEMO.COM and DEMO runs it until a
-// key; and DEL erases a file as ERA
-// does.
+// ship on W/A/S/D taps and on the arrow
+// keys as the page sends them from the
+// screen, the matrix's own arrow keys
+// through the page's key queue, and
+// gives the console back on Q; TAS DEMO
+// builds DEMO.COM and DEMO runs it
+// until a key; and DEL erases a file
+// as ERA does.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -26,6 +30,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
+import { keyInput, pumpKeys } from "../src/keys.mjs";
 import { card, power, recipe } from "./lib/page.mjs";
 import { ROOT } from "./lib/root.mjs";
 
@@ -65,6 +70,7 @@ test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the promp
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
   let mark = m.output.length;
   keys(m, "baza times\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
+  assert.match(m.text(mark), /^baza times\r\r\n(?:[|\/\\-]\x08)+COM written\r\n/, "BAZA's spinner, each mark then a backspace, then COM written");
   mark = m.output.length;
   keys(m, "times\r", "TIMES's first question", () => /WHAT IS YOUR NAME\? $/.test(m.text(mark)));
   keys(m, "TEC\r", "TIMES's second question", () => /PICK A NUMBER, 1 TO 12\? $/.test(m.text(mark)));
@@ -78,7 +84,7 @@ test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the promp
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and gives A> back on Q", { timeout: 900_000 }, async () => {
+test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives A> back on Q", { timeout: 900_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
   const vdp = () => m.tec1g.state.display.tms9918.stateSnapshot();
@@ -112,6 +118,16 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   const moved = sprites();
   assert.deepEqual([moved[16], moved[17]], [150 - 18 + 6, 120 + 24 - 12], "the ship after DDDD AA WWW S");
   assert.notDeepEqual(moved.slice(0, 16), first.slice(0, 16), "the balls move");
+  const ship = () => sprites().slice(16, 18);
+  for (const [key, code, dy, dx] of [["ArrowLeft", "\x05", 0, -6], ["ArrowRight", "\x06", 0, 6], ["ArrowUp", "\x03", -6, 0], ["ArrowDown", "\x04", 6, 0]]) {
+    const input = keyInput({ key, ctrlKey: false, metaKey: false, altKey: false }, true);
+    assert.deepEqual(input, { text: code, via: "matrix" }, `${key} on the screen is the matrix's own arrow key`);
+    const [y, x] = ship();
+    m.enqueueInput(input.text, input.via);
+    m.runUntil(() => (pumpKeys(m), !m.pending.length), LIMIT, `${key} taken`);
+    run(20_000_000);
+    assert.deepEqual(ship(), [y + dy, x + dx], `the ship after ${key}`);
+  }
   mark = m.output.length;
   m.typeMatrix("Q");
   m.runUntilChecked(() => m.ready() && /A>$/.test(m.text(mark)), LIMIT, "the prompt after Q");

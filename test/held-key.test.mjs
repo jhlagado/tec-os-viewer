@@ -3,7 +3,7 @@
 // go after a short hold, and the keys
 // behind it are not stuck. In the page's
 // machine, PICO9918 at 40 columns: HELLO3
-// under MON3.SVC /E sees the page's Esc
+// under MON3.SVC sees the page's Esc
 // and returns to MON3>, and EXIT, queued
 // behind the Esc on the serial line,
 // reaches A>. At A> under CON TTY
@@ -11,20 +11,27 @@
 // the screen is let go and DIR, queued
 // behind it on serial, runs; without
 // the bound the key stays down and DIR
-// is never sent.
-// After a key is let go the next waits
-// through a gap with no key down, so
-// HELLO3 counts both of 1 and 2, and 1
-// then Esc ends it. On CRT: MON3.SVC
-// records the matrix keys it reads as
-// TEC-OS's scan does, so HELLO3 takes 1
-// then Esc, and EXIT reaches A>. On
-// CRT:, and on the GLCD board before
-// STARTUP.CMD has put GLCD.SVC in, the
+// is never sent. After a key is let go
+// the next waits through a gap with no
+// key down: at A> the second of two
+// queued keys goes down a whole hold
+// after the first goes up. HELLO3
+// counts both of 1 and 2, which
+// MON3.SVC's scan gives with or without
+// the gap, and 1 then Esc ends it. On
+// CRT: MON3.SVC records the matrix keys
+// it reads as TEC-OS's scan does, so
+// HELLO3 takes 1 then Esc, and EXIT
+// reaches A>. On CRT:, and on the GLCD
+// board before the shell has run
+// STARTUP.CMD's GLCD.SVC line, the
 // page's keys wait for TEC-OS's scan
 // and none is let go: typed ahead
 // while TAS builds DEMO, or typed while
-// the board starts.
+// the board starts. Nor is one let go
+// on bytes read while a program has
+// EXPAND 1 in TEC-OS's 8000h-BFFFh
+// window, which may look like CON TTY.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -83,7 +90,7 @@ async function hello3() {
   m.runUntilChecked(() => m.ready(), LIMIT, "the prompt");
   m.command("CON TTY");
   assert.ok(!m.videoConsole(), "CON: is TTY:");
-  m.command("MON3.SVC /E", { prompt: /MON3>$/ });
+  m.command("MON3.SVC", { prompt: /MON3>$/ });
   m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
   m.mark = m.output.length;
   m.type("GO\r");
@@ -137,6 +144,24 @@ test("at A> under CON TTY a matrix key is let go and DIR behind it runs; without
   assert.doesNotMatch(m.text(mark), /DIR/);
 });
 
+test("at A> under CON TTY the second of two queued matrix keys goes down a hold after the first is let go", { timeout: 300_000 }, async () => {
+  const m = await ttyPrompt();
+  const events = [];
+  const apply = m.tec1g.applyMatrixKey.bind(m.tec1g);
+  m.tec1g.applyMatrixKey = (row, col, pressed) => {
+    events.push({ key: `${row},${col}`, pressed, at: m.cycles });
+    return apply(row, col, pressed);
+  };
+  m.enqueueInput("xy", "matrix");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length), LIMIT, "an empty key queue");
+  const [xDown, xUp, yDown, yUp] = events;
+  assert.equal(events.length, 4, "each key down once and up once");
+  assert.ok(xDown.pressed && !xUp.pressed && xUp.key === xDown.key, "x down, then up");
+  assert.ok(yDown.pressed && !yUp.pressed && yDown.key !== xDown.key, "then y down, then up");
+  assert.ok(xUp.at - xDown.at >= HOLD_CYCLES, `x held ${xUp.at - xDown.at} cycles`);
+  assert.ok(yDown.at - xUp.at >= HOLD_CYCLES, `y went down ${yDown.at - xUp.at} cycles after x was let go`);
+});
+
 test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000 }, async () => {
   const m = power(await card(), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
@@ -170,6 +195,28 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
   assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
 });
 
+test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY don't let a key go", { timeout: 300_000 }, async () => {
+  const m = power(await card(), "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.enqueueInput("x", "matrix");
+  pumpKeys(m);
+  assert.ok(m.pending[0].down, "x is down");
+  const latch = m.sysCtrl;
+  const bytes = { STPOS: 0x80, STFLAG: 0, CONMOD: 0 };
+  m.cpu.hardware.ioWrite(0xff, latch | 0x04);
+  const kept = Object.keys(bytes).map((n) => [m.sym(n), m.read(m.sym(n))]);
+  for (const [n, v] of Object.entries(bytes)) m.write(m.sym(n), v);
+  assert.ok(!m.videoConsole(), "EXPAND 1's byte reads as CON TTY");
+  pumpKeys(m, 0);
+  const head = m.pending[0];
+  for (const [a, v] of kept) m.write(a, v);
+  m.cpu.hardware.ioWrite(0xff, latch);
+  assert.equal(head.letGo, undefined, "x not let go");
+  assert.ok(m.videoConsole(), "CON: is CRT: again");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length), LIMIT, "x read");
+  assert.equal(head.letGo, undefined, "x read by TEC-OS's scan");
+});
+
 test("on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan", { timeout: 600_000 }, async () => {
   const m = power(await card(), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
@@ -189,7 +236,7 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
   const m = power(await card(), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
-  m.command("MON3.SVC /E", { prompt: /MON3>$/ });
+  m.command("MON3.SVC", { prompt: /MON3>$/ });
   m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
   m.type("GO\r");
   run(m, 20_000_000, () => {});

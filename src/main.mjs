@@ -9,7 +9,7 @@ import { prepareCard } from "../tec-os/host/card.mjs";
 import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
-import { pumpKeys } from "./keys.mjs";
+import { keyInput, keyText, pumpKeys } from "./keys.mjs";
 import { loadCard, saveCard } from "./store.mjs";
 import { chooseText, fromCard } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
@@ -25,7 +25,7 @@ const state = {
   machine: null,
   card: null,
   cardDirty: false,
-  unsaved: false, // Last save failed (KE-153).
+  unsaved: false, // Last save failed.
   importBusy: false,
   running: true,
   serialSeen: 0,
@@ -73,7 +73,7 @@ async function starterCard() {
 // publication. Preparation may rewrite
 // STARTUP.CMD for the chosen display.
 // Imports then use the current card,
-// preserving that choice (KE-168).
+// preserving that choice.
 let turn = Promise.resolve();
 function serial(fn) {
   const run = turn.then(fn);
@@ -162,7 +162,7 @@ async function save(image = state.card) {
  * Save the staged import after any
  * pending save. Hold the save guard so
  * an older card cannot overwrite the
- * imported files (KE-163). Failure
+ * imported files. Failure
  * throws for the "Not copied" message.
  */
 async function importSave(staged) {
@@ -404,37 +404,12 @@ function appendSerial(text) {
 
 // ---- Keyboard
 
-const ARROWS = { ArrowUp: "A", ArrowDown: "B", ArrowRight: "C", ArrowLeft: "D" };
-
-function keyText(e) {
-  if (e.metaKey || e.altKey) return null;
-  if (e.key === "Enter") return "\r";
-  if (e.key === "Backspace") return "\b";
-  if (e.key === "Escape") return "\x1b";
-  if (e.key === "Tab") return "\t";
-  if (e.key === "Delete") return "\x7f";
-  if (ARROWS[e.key]) return `\x1b[${ARROWS[e.key]}`;
-  if (e.key.length !== 1) return null;
-  if (e.ctrlKey) {
-    const c = e.key.toUpperCase().charCodeAt(0);
-    return c >= 0x40 && c <= 0x5f ? String.fromCharCode(c - 0x40) : null;
-  }
-  return e.key;
-}
-
-// Send matrix arrow-key codes. TEC-OS
-// converts them to ESC [ A-D sequences.
-const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\x05", ArrowRight: "\x06" };
-
 function onKey(route) {
   return (e) => {
-    let text = keyText(e);
-    if (text === null || !state.machine) return;
+    const input = keyInput(e, route() === "matrix");
+    if (input === null || !state.machine) return;
     e.preventDefault();
-    const matrix = route() === "matrix";
-    if (matrix && MATRIX_ARROWS[e.key]) text = MATRIX_ARROWS[e.key];
-    const via = matrix && text.length === 1 ? "matrix" : "serial";
-    state.machine.enqueueInput(text, via);
+    state.machine.enqueueInput(input.text, input.via);
   };
 }
 
@@ -717,7 +692,7 @@ setInterval(refreshFiles, 5000);
 (async () => {
   // Preserve an unreadable stored record.
   // Run a starter card without saving
-  // over it. Reload to retry (KE-164).
+  // over it. Reload to retry.
   try {
     state.card = await loadCard();
     if (state.card) parseContainer(state.card);
