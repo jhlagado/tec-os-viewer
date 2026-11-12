@@ -26,10 +26,14 @@
 // the ROM's bare prompt, which refuses
 // DEL and takes DIR!TYPE as one word.
 // TEC-OS holds A:'s data writes in its
-// cache until a flush point, and the
-// next prompt is one: a file SAVE
-// writes is in the card image, which
-// the page saves, by then.
+// cache until a flush point. SAVE's own
+// close puts its pages in the card
+// image, which the page saves, by the
+// time the prompt shows; and a record a
+// program writes into a file's existing
+// block is in the image while the
+// program waits for a key at BDOS 1, a
+// console read.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -203,7 +207,7 @@ test("in the page's machine, a card from before the shell boots to the ROM's bar
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, a file SAVE writes on A: is in the card image the page saves by the next prompt", { timeout: 300_000 }, async () => {
+test("in the page's machine, SAVE's close puts its file on A: in the card image by the time the prompt shows", { timeout: 300_000 }, async () => {
   const image = await card();
   const m = power(image, "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
@@ -213,5 +217,39 @@ test("in the page's machine, a file SAVE writes on A: is in the card image the p
   const saved = driveA(image).read("X.COM");
   assert.equal(saved.length, 4096, "16 pages");
   assert.ok(saved.every((b, i) => b === byte(0x100 + i)), "the pages' bytes");
+  assert.deepEqual(m.violations, []);
+});
+
+test("in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, async () => {
+  const image = await card();
+  // Open the file named in the tail, set
+  // the DMA to 0200h, write record 0 at
+  // random, then wait for a key at BDOS
+  // 1 and return.
+  const code = [
+    0x11, 0x5c, 0x00, 0x0e, 0x0f, 0xcd, 0x05, 0x00,
+    0x11, 0x00, 0x02, 0x0e, 0x1a, 0xcd, 0x05, 0x00,
+    0xaf, 0x32, 0x7d, 0x00, 0x32, 0x7e, 0x00, 0x32, 0x7f, 0x00,
+    0x11, 0x5c, 0x00, 0x0e, 0x22, 0xcd, 0x05, 0x00,
+    0x0e, 0x01, 0xcd, 0x05, 0x00, 0xc9,
+  ];
+  const record = Array.from({ length: 128 }, (_, i) => 0x41 + (i % 26));
+  const com = new Uint8Array(0x180);
+  com.set(code);
+  com.set(record, 0x100);
+  driveA(image).write("W.COM", com);
+  const m = power(image, "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  const first = () => Array.from(driveA(image).read("TIMES.BAS").subarray(0, 128));
+  assert.notDeepEqual(first(), record, "TIMES.BAS's first record before");
+  m.type("W TIMES.BAS\r");
+  const fncin = m.sym("FNCIN");
+  let entered = false;
+  m.runUntil(() => (entered ||= m.pc === fncin, entered && m.waitingForInput()), LIMIT, "the program's BDOS 1");
+  assert.deepEqual(first(), record, "the new record in the card image while the program waits");
+  const mark = m.output.length;
+  m.type("x");
+  m.runUntil(() => m.ready() && /A>$/.test(m.text(mark)), LIMIT, "the prompt");
+  assert.deepEqual(first(), record, "and at the prompt");
   assert.deepEqual(m.violations, []);
 });
