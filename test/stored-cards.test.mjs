@@ -1,7 +1,7 @@
 // Load older cards in Chromium.
 // Replace PICO.SVC and its startup line
-// with CON PICO 40, then check A> and
-// the stored image. Reject .DRV cards.
+// with CON PICO 40 after SHELL.SVC's,
+// then check A> and the stored image. Reject .DRV cards.
 // Compare both with the shared Node
 // card helpers. Run npm run tecos first.
 
@@ -81,7 +81,17 @@ test("stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and
   assert.equal(startup(want), "SHELL.SVC\nCON PICO 40\nUSER 0\n", "Node's reading: the PICO.SVC line gone, SHELL.SVC then CON PICO 40 first");
 
   const upgraded = await open(browser, url, old, "tms", "40");
-  await upgraded.page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  // The shell runs the startup file's
+  // lines in turn, each after its own
+  // prompt, so wait for the prompt
+  // after the last of them.
+  await upgraded.page
+    .waitForFunction(() => {
+      const rows = globalThis.tecos?.screen() ?? [];
+      const at = rows.findIndex((l) => /^A>USER 0\s*$/.test(l));
+      return at >= 0 && rows.slice(at + 1).some((l) => /^A>\s*$/.test(l));
+    }, null, { timeout: 60_000 })
+    .catch(() => {});
   const rows = await upgraded.page.evaluate(() => globalThis.tecos.screen());
   // Width selection clears the screen.
   // Later startup output remains visible.
