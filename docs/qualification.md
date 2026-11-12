@@ -1,17 +1,33 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`fdd9e5b9a241af2a740d7baac2673f9ddd181bf9`, TEC-OS main, on the release 1
+`e59e8c40ff26ac0f3c98dec0549d43988fe3c81c`, TEC-OS main, on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
 40-column console and the debugger-support interfaces. TEC-OS builds it
 with TAS alone. It follows `d556ec50`, which brought the shell (Origo KD-279
 and KD-301), Baza `50dc512`, and the card without `CHAIN.ASM`, by the owner's
-decision; `fdd9e5b9` adds A:'s coalesced writes (Origo KD-303) and changes
-only the ROM. The card's 15 files and the starter recipe are the same bytes
-as at `d556ec50`. It follows `55f01718`, `0e3c1a82`, `402f30ef`, `55114e4d`,
-`be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`, `9f3931ce`,
-`755636b1` and `a1023bd0`, whose font notices it keeps. `pins.json` binds the
-ROM, the card's 15 files and the starter recipe's canonical digest.
+decision, and `fdd9e5b9`, which added A:'s coalesced writes (Origo KD-303).
+`e59e8c4` (Origo KD-305) brings TED from Thorium `a2fe556`, which stops a file
+name and `THOR.PRJ`'s `ARGS` at an `&` after a blank, where the shell splits a
+line; `HELLO3.ASM`, whose header now says `MON3.SVC`; and the web host's
+upgrade of a card saved before the shell. The ROM is unchanged. The ROM, the
+card's files, the recipe and `starter.img` (`a77467ab…`) are byte for byte
+those of the qualified TEC-OS build at the pin. It follows `55f01718`,
+`0e3c1a82`, `402f30ef`, `55114e4d`, `be654b39`, `31b60837`, `a39416ed`,
+`7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font
+notices it keeps. `pins.json` binds the ROM, the card's 15 files and the
+starter recipe's canonical digest.
+
+At power-on the page asks TEC-OS's `needsStarter` whether the card is from
+before the shell: no `SHELL.SVC` in user 0 on A:, and no `MON3.SVC` that is
+entered on install. If so it fetches the starter card and passes it to
+`prepareCard`, which writes the starter's `SHELL.SVC`, and its `MON3.SVC` in
+place of the card's own if it has one, puts `SHELL.SVC` first in
+`STARTUP.CMD` and leaves every other file as it was. The page shows the note
+`prepareCard` returns on the serial pane. If the files can't be written, a
+full A: for one, the card boots without the shell and the note says so. A
+card whose `SHELL.SVC` the user took off has today's `MON3.SVC` and is left
+without it.
 
 A volume not written behind, A: among them, now coalesces its data writes: a
 data write goes into its block's cache line in EXPAND 1 and returns, and the
@@ -65,7 +81,7 @@ is AF00h, a TPA of 44,544 bytes. A `.COM` starts with HL=0100h and DE=0000h.
 TEC-OS builds one card: the starter card and the card the page runs are the
 same image. Its recipe, `id` `starter` at revision 12, has the canonical
 SHA-256
-`41b99e57fe25fba84935cfc97b61642ea13245fd0e39e50dcb06acc9dff0b7d9`
+`0756ec08ac2249653777ca23479677ae4d6b87361f1be36b2f7721d42d9269d0`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
 separate page recipe is gone. Its 15 files, with the first eight hex digits
 of each SHA-256 and their bytes on the card:
@@ -77,7 +93,7 @@ of each SHA-256 and their bytes on the card:
 | `BOUNCE.BAS` | `a8d0d013…` | 5,305 | Baza `50dc512`, as CP/M text |
 | `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
 | `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
-| `HELLO3.ASM` | `e8ac3de7…` | 2,170 | TEC-OS, as CP/M text |
+| `HELLO3.ASM` | `7d05f115…` | 2,167 | TEC-OS, as CP/M text |
 | `HELLO3.BIN` | `666ca183…` | 173 | TEC-OS |
 | `MON3.SVC` | `a4742967…` | 5,032 | TEC-OS |
 | `MOUNT.COM` | `5273f0ba…` | 671 | TEC-OS |
@@ -85,12 +101,12 @@ of each SHA-256 and their bytes on the card:
 | `SHELL.SVC` | `7e23a61d…` | 2,224 | TEC-OS |
 | `STARTUP.CMD` | `76b798ba…` | 22 | TEC-OS |
 | `TAS.COM` | `e648a1d0…` | 10,343 | Thorium `3d1e2c0` |
-| `TED.COM` | `4f622390…` | 12,334 | Thorium `b69d544` |
+| `TED.COM` | `c6c8374a…` | 12,335 | Thorium `a2fe556` |
 | `TIMES.BAS` | `287f0237…` | 626 | TEC-OS, as CP/M text |
 
-`BAZA.RTL`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MOUNT.COM`,
-`SAMPLE.ASM`, `TAS.COM`, `TED.COM` and `TIMES.BAS` are the same bytes as at
-`55f01718`, the pin before `d556ec50`. `SHELL.SVC` is new. `STARTUP.CMD` gains its `SHELL.SVC` line.
+`TED.COM` and `HELLO3.ASM` are new at `e59e8c4`. `BAZA.RTL`, `DEMO.ASM`,
+`GLCD.SVC`, `HELLO3.BIN`, `MOUNT.COM`, `SAMPLE.ASM`, `TAS.COM` and `TIMES.BAS`
+are the same bytes as at `55f01718`, the pin before `d556ec50`. `SHELL.SVC` is new. `STARTUP.CMD` gains its `SHELL.SVC` line.
 `MON3.SVC` is rebuilt for entry on install: `MON3.SVC` gives `MON3>`. The
 service records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own
 scan does, so a key the page holds during a MON-3 program is let go. At
@@ -148,7 +164,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 126 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 127 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -171,8 +187,8 @@ the card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
 title and sprites, the ship moved by taps and by the arrow keys as the page's
 own key handling sends them through its key queue, and the console back at
 `A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
-erasing a file, and a card without `SHELL.SVC` booting to the ROM's bare
-prompt, where `DEL` is refused and `DIR!TYPE` is one word, `SAVE`'s close
+erasing a file, and a card whose `SHELL.SVC` was taken off booting to the
+ROM's bare prompt, where `DEL` is refused and `DIR!TYPE` is one word, `SAVE`'s close
 putting its file in the card image by the time the prompt shows, and a
 record a program writes into an existing block of A: in the card image while
 the program waits at BDOS 1, all in the page's machine. These run the TEC-OS `Machine`
@@ -182,6 +198,11 @@ or binary, and that binaries with text types and CP/M programs' data files
 round-trip intact. `test/copy-text.test.mjs` copies an LF `.z80` file through
 the page with the default setting and opens it in TED, and downloads
 `TIMES.BAS` as LF text and `MOUNT.COM` byte for byte.
+`test/stored-cards.test.mjs` plants a card saved before the shell, with
+`MON3.SVC` as it was at `55f01718`, in the page's storage: the page stores
+the card `prepareCard` gives with the starter card, byte for byte, with the
+starter's `SHELL.SVC` and `MON3.SVC` and the user's files on A: and B: as they
+were, shows its note on the serial pane, and `SERVICES` lists the shell.
 
 VS1 qualified viewer product `5c99400`, with firmware `78127ec`. VS2 qualified
 product `d193838`, with firmware `fe2097f4`; its completed evidence landed at
