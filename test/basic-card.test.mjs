@@ -21,7 +21,10 @@
 // gives the console back on Q; TAS DEMO
 // builds DEMO.COM and DEMO runs it
 // until a key; and DEL erases a file
-// as ERA does.
+// as ERA does. A card from before the
+// shell, with no SHELL.SVC, boots to
+// the ROM's bare prompt, which refuses
+// DEL and takes DIR!TYPE as one word.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -40,7 +43,7 @@ const FILES = ["BAZA.COM", "BAZA.RTL", "TIMES.BAS", "BOUNCE.BAS", "DEMO.ASM"];
 /** A: on IMAGE. */
 function driveA(image) {
   const v = findVolume(parseContainer(image), "A");
-  return new CpmVolume(volumePayload(image, v), v.g);
+  return new CpmVolume(volumePayload(image, v), v.g, { readOnly: false });
 }
 
 /** A:'s file names on IMAGE. */
@@ -174,5 +177,23 @@ test("in the page's machine, DEL erases a file, as ERA does", { timeout: 300_000
   keys(m, "dir times.bas\r", "DIR", () => m.ready() && /A>$/.test(m.text(mark)));
   assert.match(m.text(mark), /No file/i, "DIR finds no TIMES.BAS");
   assert.ok(names(image).includes("SAMPLE.ASM"), "the other files stay");
+  assert.deepEqual(m.violations, []);
+});
+
+test("in the page's machine, a card from before the shell boots to the ROM's bare prompt, where DEL and ! are not the shell's", { timeout: 300_000 }, async () => {
+  const image = await card();
+  const a = driveA(image);
+  a.erase("SHELL.SVC");
+  a.write("STARTUP.CMD", Buffer.from("GLCD.SVC\r\n\x1a", "latin1"));
+  const m = power(image, "pico", 40);
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  assert.equal(Buffer.from(driveA(image).read("STARTUP.CMD", { text: true })).toString("latin1"), "CON PICO 40\n", "the page's startup file, with no SHELL.SVC line");
+  let mark = m.output.length;
+  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A>$/.test(m.text(mark)));
+  assert.match(m.text(mark), /DEL\?/, "DEL is refused");
+  assert.ok(names(image).includes("TIMES.BAS"), "TIMES.BAS stays");
+  mark = m.output.length;
+  keys(m, "dir!type times.bas\r", "DIR!TYPE", () => m.ready() && /A>$/.test(m.text(mark)));
+  assert.match(m.text(mark), /DIR!TYPE\?/, "the line is one word");
   assert.deepEqual(m.violations, []);
 });
