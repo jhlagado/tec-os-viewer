@@ -63,7 +63,7 @@ test("the real store's saveCard throws when IndexedDB can't open, or a put fails
       globalThis.indexedDB = failing(where);
       closes = 0;
       await assert.rejects(saveCard(new Uint8Array(4)), /open refused|quota exceeded/, where);
-      assert.equal(closes, where === "open" ? 0 : 1, `${where}: a connection opened is closed (D2)`);
+      assert.equal(closes, where === "open" ? 0 : 1, `${where}: a connection opened is closed`);
     }
   } finally {
     console.warn = warn;
@@ -124,7 +124,7 @@ test("the page keeps a card it couldn't save unsaved, says so, and saves it once
   assert.deepEqual(errors, []);
 });
 
-test("the page saves one card at a time, and after three failures says saving keeps failing (D2, D3)", async () => {
+test("the page saves one card at a time, and after three failures says saving keeps failing", async () => {
   const source = readFileSync(resolve(ROOT, "src/main.mjs"), "utf8");
   const start = source.indexOf("setInterval(async () =>");
   const end = source.indexOf("// ---- Run loop", start);
@@ -148,7 +148,7 @@ test("the page saves one card at a time, and after three failures says saving ke
   await Promise.resolve();
   context.state.cardDirty = true;
   assert.equal(await context.save(), false, "a second save while one runs doesn't start");
-  assert.equal(calls, 1, "one saveCard at a time (D3)");
+  assert.equal(calls, 1, "one saveCard at a time");
   assert.equal(context.state.cardDirty, true, "and the card stays dirty for the next tick");
   release();
   await first;

@@ -57,6 +57,6 @@ export async function saveCard(image) {
     warn(e);
     throw e;
   } finally {
-    db?.close(); // Close this save's connection (D2).
+    db?.close(); // Close this save's connection.
   }
 }
