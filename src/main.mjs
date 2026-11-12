@@ -9,7 +9,7 @@ import { prepareCard } from "../tec-os/host/card.mjs";
 import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
-import { keyInput, keyText, pumpKeys } from "./keys.mjs";
+import { keyInput, keyText, pumpKeys, resetKeys } from "./keys.mjs";
 import { loadCard, saveCard } from "./store.mjs";
 import { chooseText, fromCard } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
@@ -109,6 +109,7 @@ async function powerOnNow() {
 }
 
 function reset() {
+  if (state.machine) resetKeys(state.machine);
   state.machine?.reset();
   appendSerial("\n[reset]\n");
 }
@@ -122,10 +123,10 @@ setInterval(async () => {
 /**
  * Save one card image at a time.
  * A concurrent request marks it dirty
- * for the next timer tick (D3).
+ * for the next timer tick.
  * Failure marks it unsaved for retry.
  * Show a persistent-failure message
- * after three consecutive failures (D2).
+ * after three consecutive failures.
  */
 async function save(image = state.card) {
   if (state.noSave) return false; // Preserve the unread stored record.
@@ -196,7 +197,7 @@ function frame(now) {
     let n = 0;
     while (m.cycles < target) {
       m.step();
-      if (m.pending?.length) pumpKeys(m);
+      pumpKeys(m);
       if ((++n & 1023) === 0 && performance.now() > deadline) break;
     }
     cyclesWindow += m.cycles - start;

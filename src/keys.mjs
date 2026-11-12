@@ -27,20 +27,28 @@
 // the matrix becomes the console only
 // when STARTUP.CMD's GLCD.SVC line has
 // run, and the shell runs that line
-// after the ROM has taken SHELL.SVC. A
-// program that STARTUP.CMD starts runs
-// before startup is over, so its keys
-// wait for TEC-OS's scan too. The hold
-// starts again whenever the key would
-// wait, so the short spells while the
-// ROM reads STARTUP.CMD don't add up
-// to a let-go.
+// after the ROM has taken SHELL.SVC.
+// Startup is over at the first console
+// read that waits for a key, once the
+// ROM has taken STARTUP.CMD's first
+// line (STPOS 80h): at the first
+// prompt, or in a program that
+// STARTUP.CMD starts and that waits
+// for a key. Nothing waits for a key
+// while the ROM reads STARTUP.CMD or
+// a service installs. The mark stays
+// until STPOS drops below 80h, as cold
+// boot clears it, or the page resets
+// the machine. The hold starts again
+// whenever the key would wait.
 //
-// TEC-OS's bytes are read only while
-// its own RAM is in the 8000h-BFFFh
-// window: a program that switches in
-// EXPAND 1 there shows other bytes at
-// the same addresses.
+// While a program has EXPAND 1 in the
+// 8000h-BFFFh window, TEC-OS's own
+// bytes there can't be read, so a key
+// that is down waits, neither let go
+// nor handed to the machine's own
+// queue, which reads KBLAST there. A
+// hold already started runs on.
 
 /** A tenth of a second at the page's 4 MHz. */
 export const HOLD_CYCLES = 400_000;
@@ -84,30 +92,51 @@ export function keyInput(e, matrix) {
   return { text, via: matrix && text.length === 1 ? "matrix" : "serial" };
 }
 
+/** TEC-OS's console reads that wait for a key: serial, then the matrix. */
+const READS = [["CINLP", "CINWE"], ["CINMX", "CINME"]];
+
 /**
- * True once M's startup is over: the
- * line being run was typed, or M waits
- * at a prompt with STARTUP.CMD done.
- * STFLAG is FFh while a line of
- * STARTUP.CMD runs, and stays so at the
- * first prompt after it, until a line
- * is typed there.
+ * Mark M's startup over once its CPU is
+ * in a waiting console read with STPOS
+ * at 80h or above. Call it after each
+ * step.
  */
-function started(m) {
-  const [pos, flag] = ["STPOS", "STFLAG"].map((n) => m.symbols.get(n));
-  if (pos === undefined) return true;
-  if (m.read(pos) < 0x80) return false;
-  return flag === undefined || m.read(flag) === 0 || m.ready();
+function noteStart(m) {
+  if (m.keyGate) return;
+  const pos = m.symbols.get("STPOS");
+  if (pos === undefined) {
+    m.keyGate = true;
+    return;
+  }
+  if (m.sysCtrl & 0x04 || m.read(pos) < 0x80) return;
+  m.keyReads ??= READS.filter((r) => r.every((n) => m.symbols.has(n))).map((r) => r.map((n) => m.sym(n)));
+  const pc = m.pc;
+  m.keyGate = m.keyReads.some(([from, to]) => pc >= from && pc < to);
 }
 
-/** Move M's key queue on by one step. */
+/** Forget M's startup mark, as at a reset. */
+export function resetKeys(m) {
+  m.keyGate = false;
+}
+
+/** True once M's startup is over. */
+function started(m) {
+  const pos = m.symbols.get("STPOS");
+  if (pos !== undefined && m.read(pos) < 0x80) m.keyGate = false;
+  return m.keyGate === true;
+}
+
+/** Move M's key queue on by one step. Call it after each step. */
 export function pumpKeys(m, hold = HOLD_CYCLES) {
+  noteStart(m);
   const head = m.pending?.[0];
-  if (head?.letGo !== undefined) {
+  if (!head) return;
+  if (head.letGo !== undefined) {
     if (m.cycles - head.letGo >= hold) m.pending.shift();
     return;
   }
-  if (head?.via === "matrix" && head.down && !(m.sysCtrl & 0x04)) {
+  if (head.via === "matrix" && head.down) {
+    if (m.sysCtrl & 0x04) return;
     if (!started(m) || m.videoConsole()) delete head.heldFrom;
     else {
       head.heldFrom ??= m.cycles;
