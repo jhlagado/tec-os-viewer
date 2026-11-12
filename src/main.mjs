@@ -5,7 +5,7 @@
 
 import { Machine, symbolsFromD8 } from "../tec-os/host/machine.mjs";
 import { serializeTec1gUpdateFromRuntimeState } from "@jhlagado/debug80-runtime/platforms/tec1g/update-controller";
-import { prepareCard } from "../tec-os/host/card.mjs";
+import { needsStarter, prepareCard } from "../tec-os/host/card.mjs";
 import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
@@ -90,7 +90,19 @@ async function powerOnNow() {
   // cannot write the card while it is
   // prepared, as at a real power-off.
   state.machine = null;
-  const { problem, note, changed } = prepareCard(state.card, state.display, state.width);
+  // A card saved before the shell takes
+  // its system files from the starter
+  // card, SHELL.SVC and a MON3.SVC that
+  // is entered on install; the note says
+  // what was written.
+  let starter = null;
+  try {
+    if (needsStarter(state.card)) starter = await starterCard();
+  } catch {
+    // No starter card to hand: the card
+    // gets its display line alone.
+  }
+  const { problem, note, changed } = prepareCard(state.card, state.display, state.width, starter);
   if (changed) state.cardDirty = true;
   const { rom, symbols } = await loadRom();
   state.machine = new Machine({

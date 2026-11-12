@@ -21,10 +21,12 @@
 // gives the console back on Q; TAS DEMO
 // builds DEMO.COM and DEMO runs it
 // until a key; and DEL erases a file
-// as ERA does. A card from before the
-// shell, with no SHELL.SVC, boots to
-// the ROM's bare prompt, which refuses
-// DEL and takes DIR!TYPE as one word.
+// as ERA does. A card whose SHELL.SVC
+// was taken off, which keeps today's
+// MON3.SVC and so isn't upgraded,
+// boots to the ROM's bare prompt, which
+// refuses DEL and takes DIR!TYPE as one
+// word.
 // TEC-OS holds A:'s data writes in its
 // cache until a flush point. SAVE's own
 // close puts its pages in the card
@@ -189,7 +191,7 @@ test("in the page's machine, DEL erases a file, as ERA does", { timeout: 300_000
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, a card from before the shell boots to the ROM's bare prompt, where DEL and ! are not the shell's", { timeout: 300_000 }, async () => {
+test("in the page's machine, a card whose SHELL.SVC was taken off boots to the ROM's bare prompt, where DEL and ! are not the shell's", { timeout: 300_000 }, async () => {
   const image = await card();
   const a = driveA(image);
   a.erase("SHELL.SVC");
