@@ -7,16 +7,16 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`55f01718316d365004b931e5837b181ddc8561c7`, TEC-OS main, built with TAS alone, on the release 1
-candidate with BASIC: the Compact font, a 40-column cold console, `DEL`
-beside `ERA`, the squeezed ROM, TED with its language table, TAS from Thorium
-`3d1e2c0` with chained lines, BAZA from Baza `0516794` and `MON3.SVC`. TEC-OS
-builds one card, the starter card, and the page runs it. Besides the earlier
-files it holds `MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3
-program and its source, and `CHAIN.ASM`, written with several statements on a
-line. `MON3.SVC /E`, `LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on
-the LCD; `TAS CHAIN` then `CHAIN` print `LINE 1` to `LINE 5`; and with 80
-chosen in the width selector `TED CHAIN.ASM` shows its lines whole.
+`d556ec50493725aeb8bb20671ff8b4f4c8ea74c9`, TEC-OS main, built with TAS alone, on the release 1
+candidate with BASIC: the Compact font, a 40-column cold console, the
+squeezed ROM with a minimal CCP, `SHELL.SVC`, the resident shell, TED with its
+language table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
+`50dc512` and `MON3.SVC`. TEC-OS builds one card, the starter card, and the
+page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then holds the
+prompt: `COPY`, `DEL`, the `[more]` pager, the history on ^W and ^N, and lines
+joined by `!` and `&`. The card also holds `MON3.SVC`, `HELLO3.BIN` and
+`HELLO3.ASM`, a small MON-3 program and its source: `MON3.SVC`,
+`LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on the LCD.
 [Qualification](qualification.md) records the accepted viewer baseline.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
@@ -49,15 +49,18 @@ uses IndexedDB, a separate browser database.
 
 The rendering, keyboard and controls sections in `main.mjs` contain the page's
 event handlers. Screen input uses the matrix-keyboard route and serial-terminal
-input uses the serial route. [src/keys.mjs](../src/keys.mjs) moves the queued
-keys on as the frame loop steps the machine. A matrix key stays down until
-TEC-OS's scan has read it, but TEC-OS scans the matrix only while CON: is CRT:
-or UC1:. Under `CON TTY` or `CON BAT` the page holds a matrix key for a tenth
-of a second, so a MON-3 program still sees it, and then lets it go, so the
-keys behind it are not stuck. The next key waits as long again with no key
-down, since a MON-3 program counts a key only when it goes down after a gap.
-Until startup is over, and on CRT: and UC1:, keys wait for TEC-OS's scan. Touch input passes through the hidden text field
-and the extra keys defined in `index.html`.
+input uses the serial route. [src/keys.mjs](../src/keys.mjs) says what each
+browser key sends, an arrow on the screen being the matrix's own arrow key,
+and moves the queued keys on as the frame loop steps the machine. A matrix key
+stays down until TEC-OS's scan has read it, but TEC-OS scans the matrix only
+while CON: is CRT: or UC1:. Under `CON TTY` or `CON BAT` the page holds a
+matrix key for a tenth of a second and then lets it go, so a key nothing reads
+doesn't hold up the keys behind it, and a key a MON-3 program read, whose
+release nothing clears once the program ends, doesn't either. The next key
+waits as long again with no key down, so a program that reads the matrix
+itself never sees two keys go down back to back. Until startup is over, and on
+CRT: and UC1:, keys wait for TEC-OS's scan. Touch input passes through the
+hidden text field and the extra keys defined in `index.html`.
 
 [src/tms.mjs](../src/tms.mjs) renders 80-column text, 40-column text and
 Graphics I from video registers and video memory. Other modes use the runtime's
