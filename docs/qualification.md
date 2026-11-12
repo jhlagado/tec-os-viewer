@@ -109,7 +109,8 @@ step, so that it doesn't depend on when keys arrive. A startup program that
 only polls, such as `DEMO` run from `STARTUP.CMD` under `CON TTY`, never marks
 startup over, so on `CON TTY` or `CON BAT` a key still waiting for startup is
 let go after 40,000,000 cycles, ten seconds; the GLCD board has UC1: as its
-console by about 9,500,000 cycles, even with `STARTUP.CMD` late in A:. The
+console by about 13,500,000 cycles even with A:'s directory full and
+`SHELL.SVC`, `GLCD.SVC` and `STARTUP.CMD` written last, a third of that bound. The
 hold starts again whenever the key would wait. While a program has EXPAND 1 in the 8000h-BFFFh
 window, a matrix key that is down waits: the page reads none of TEC-OS's
 bytes for it there, and doesn't hand it to the machine's own key queue, which
