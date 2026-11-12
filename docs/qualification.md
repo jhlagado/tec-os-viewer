@@ -1,29 +1,71 @@
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`e59e8c40ff26ac0f3c98dec0549d43988fe3c81c`, TEC-OS main, on the release 1
+`1a6ce29af1238d7000b80fc18c2f834db8fc9ec9`, the head of TEC-OS's `shell2` branch, which lands on
+main as it is (Origo shell stage 2, gate S2-14). It is on the release 1
 candidate with BASIC and TED's language support, the Compact font, a cold
-40-column console and the debugger-support interfaces. TEC-OS builds it
-with TAS alone. It follows `d556ec50`, which brought the shell (Origo KD-279
-and KD-301), Baza `50dc512`, and the card without `CHAIN.ASM`, by the owner's
-decision, and `fdd9e5b9`, which added A:'s coalesced writes (Origo KD-303).
-`e59e8c4` (Origo KD-305) brings TED from Thorium `a2fe556`, which stops a file
-name and `THOR.PRJ`'s `ARGS` at an `&` after a blank, where the shell splits a
-line; `HELLO3.ASM`, whose header now says `MON3.SVC`; and the web host's
-upgrade of a card saved before the shell. The ROM is unchanged. The ROM, the
-card's files, the recipe and `starter.img` (`a77467ab…`) are byte for byte
-those of the qualified TEC-OS build at the pin. It follows `55f01718`,
-`0e3c1a82`, `402f30ef`, `55114e4d`, `be654b39`, `31b60837`, `a39416ed`,
-`7fa28233`, `12b2ec5f`, `9f3931ce`, `755636b1` and `a1023bd0`, whose font
-notices it keeps. `pins.json` binds the ROM, the card's 15 files and the
-starter recipe's canonical digest.
+40-column console and the debugger-support interfaces. TEC-OS builds it with
+TAS alone. It follows `e59e8c40` (Origo KD-305), which brought TED from
+Thorium `a2fe556` and the web host's upgrade of a card saved before the shell;
+`fdd9e5b9`, which added A:'s coalesced writes (KD-303); and `d556ec50`, which
+brought the shell (KD-279 and KD-301), Baza `50dc512`, and the card without
+`CHAIN.ASM`. Before them it follows `55f01718`, `0e3c1a82`, `402f30ef`,
+`55114e4d`, `be654b39`, `31b60837`, `a39416ed`, `7fa28233`, `12b2ec5f`,
+`9f3931ce`, `755636b1` and `a1023bd0`, whose font notices it keeps.
+`pins.json` binds the ROM, the card's 14 files and the starter recipe's
+canonical digest. The ROM, the card's files, the recipe and `starter.img`
+(`dd44f1c2…`) are byte for byte those of TEC-OS's build at the pin.
+
+`1a6ce29` brings shell stage 2:
+
+- **Four equal drives.** A: to D: each hold one of the card's volumes, or
+  none. The shell's `CD` puts a volume on a drive: `CD NAME` on the drive you
+  are on, `CD D:NAME` on another, `CD` alone and `CD D:` read the card again,
+  and `CD ?` lists the volumes with their drives. The prompt names the drive
+  and its volume, `A:SYSTEM>`; a drive with no volume shows `C:>`. A command
+  not found on the current drive runs from A:. A reset keeps the drives as
+  `CD` left them; power off and on gives the card's own drives, so after `CD
+  A:` to a volume with no `SHELL.SVC` a reset gives the bare `A>` there, and
+  Power cycle is the way back.
+- **Write-behind on the logged drive.** The drive you are on keeps its writes
+  in the block cache, and logging onto another drive or `CD` moves it. Every
+  other volume coalesces its data writes: the one pending block is written at
+  the next flush point, the file's close, any directory request, a write to
+  another block, a console read, a warm boot, function 48 or a drive change.
+  Every directory write writes the cache first, and every console read (BDOS
+  1, 6 input, 10 and 11, and the BIOS's CONIN) writes every changed line, on
+  every drive: whenever TEC-OS waits for a key, every drive is on the card.
+- **Byte 15 reserved.** A volume no longer carries a written-behind mark:
+  TEC-OS's `createContainer` refuses a volume that names `writeBehind`, and
+  so does the Viewer's recipe check (`tools/tecos.mjs`), whose canonical
+  digest no longer adds the field.
+- **The shell's commands.** `DIR` lists each file with its size, then the
+  count and bytes and the drive's free space; `DIR /W` is the ROM's wide
+  listing. `CLS`, `ECHO` and `PAUSE` are new.
+- **The four-drive starter card**, recipe revision 13: five volumes, SYSTEM
+  (G1M) on A:, WORK (G8M) on B:, PROJECTS (G1M) on C:, and GAMES and SPARE
+  (G1M) on no drive, 13 MiB in all, with no `MOUNT.COM`.
+
+TEC-OS's `docs/shell.md`, `docs/recovery.md` and `docs/compatibility.md` at the
+pin have the whole of it.
+
+The page reads each drive's volume from the running machine, TEC-OS's
+`DRVIDX` (a descriptor index plus one for each of A: to D:, 0 for none), once
+a frame, when startup has taken STARTUP.CMD's first line and TEC-OS's RAM is
+in the 8000h-BFFFh window, and shows it in the card line and the Drive list,
+and uses it for the files listed and for Copy file to drive. So `CD D:GAMES`
+shows `D: GAMES`. Until the machine's drives can be read after a power-on the
+page shows the card's own mounts. The 13 MiB card is stored in IndexedDB,
+downloaded and opened as before.
 
 At power-on the page asks TEC-OS's `needsStarter` whether the card is from
 before the shell: no `SHELL.SVC` in user 0 on A:, and no `MON3.SVC` that is
 entered on install. If so it fetches the starter card and passes it to
 `prepareCard`, which writes the starter's `SHELL.SVC`, and its `MON3.SVC` in
 place of the card's own if it has one, puts `SHELL.SVC` first in
-`STARTUP.CMD` and leaves every other file as it was. The page shows the note
+`STARTUP.CMD` and leaves every other file, and the card's volumes, as they
+were: a card saved before the shell, of two volumes, keeps its two drives
+and boots with the four-drive starter's shell. The page shows the note
 `prepareCard` returns on the serial pane. If the files can't be written, a
 full A: for one, the card boots without the shell and the note says so. If
 the starter card can't be fetched, the card boots without the shell and the
@@ -33,61 +75,48 @@ use, so a refused upgrade doesn't fetch it again at each power-on. A card
 whose `SHELL.SVC` the user took off has today's `MON3.SVC` and is left
 without it; one with both taken off gets the shell back.
 
-A volume not written behind, A: among them, now coalesces its data writes: a
-data write goes into its block's cache line in EXPAND 1 and returns, and the
-one pending block is written to the card at the next flush point: the file's
-close, any directory request, a write to another block, a console read
-(BDOS 1, 6 input, 10 and 11, and the BIOS's CONIN), a warm boot, function 48,
-`MOUNT` and unmount. A failed write keeps the block pending, so the directory
-never names it before the card has it. B:, the work disk, is written behind,
-as before. TEC-OS's `docs/recovery.md` at the pin has the whole of it.
-
 The page saves the machine's card image, in IndexedDB within two seconds of
 the machine writing it and in Download image, and doesn't flush the cache
 itself: the cache is the machine's memory, and only TEC-OS can write it to
-the card. Every command ends in a close, a directory write or a warm boot,
-each of which writes A:'s pending block, and BDOS 10's line read at the
-prompt, the shell's or the bare ROM's, writes anything left; so A: is on the
-card, and in what the page saves, at every prompt, with or without the shell.
-While a program runs, a block it wrote is pending only until it closes the
-file, makes a directory request, writes another block, reads the console or
-ends in a warm boot. Reset, Power cycle, New starter card, Open image, Copy
-file to drive and a width or display change start the machine again and lose
-what the cache held, as a reset does on the board; New starter card and Open
-image also replace the stored card. README says to wait for the prompt, and
-press `^C` there for B:.
+the card. At the prompt, a console read, every drive is on the card, and in
+what the page saves; while a program runs, what it wrote on the drive it is
+logged on since it last waited for a key or wrote a directory, and at most
+one block on each other drive, may not be. Reset, Power cycle, New starter
+card, Open image, Copy file to drive and a width or display change start the
+machine again and lose what the cache held, as a reset does on the board;
+New starter card and Open image also replace the stored card. README says to
+wait for the prompt.
 
-The ROM's CCP is now minimal: it runs a `.COM` or a `.SVC`, changes drive,
-has CP/M's `DIR`, `ERA`, `REN`, `TYPE`, `SAVE` and `USER`, with `CON` and
+The ROM's CCP is minimal: it runs a `.COM` or a `.SVC`, changes drive, has
+CP/M's `DIR`, `ERA`, `REN`, `TYPE`, `SAVE` and `USER`, with `CON` and
 `UNLOAD`, and reads one line of `A:STARTUP.CMD` after a reset. `SHELL.SVC`, a
 resident service on the card, takes the prompt through the ROM's shell hook
-and holds the rest: `COPY`, `DEL` and `SERVICES`, the `[more]` pager in `TYPE`
-and `DIR`, the history on ^W and ^N, `.CMD` scripts and the rest of
-`STARTUP.CMD`, and lines of several commands. `!` always separates and the
-next piece runs whatever the last returned; `&` after a blank separates and
-the next piece runs only if the last didn't fail. CP/M 3's `:` prefix is gone:
-a piece starting `:` is refused as a bad name. The card's `STARTUP.CMD` is
-`SHELL.SVC` then `GLCD.SVC`. At power-on the page prepares the card with
-TEC-OS's `prepareCard`, which, on a card holding `SHELL.SVC`, keeps that line
-first and puts the display's line after it. A service whose
-execution record asks to be entered is entered as it installs, so
-`MON3.SVC` gives `MON3>`; an old `MON3.SVC /E` still does, with `/E` as its
-tail. TEC-OS's `docs/shell.md` at the pin is the shell's full description.
+and holds the rest: `CD`, `COPY`, `DEL`, `SERVICES`, `DIR` with sizes, `CLS`,
+`ECHO` and `PAUSE`, the `[more]` pager in `TYPE` and `DIR`, the history on ^W
+and ^N, `.CMD` scripts and the rest of `STARTUP.CMD`, and lines of several
+commands. `!` always separates and the next piece runs whatever the last
+returned; `&` after a blank separates and the next piece runs only if the
+last didn't fail. The card's `STARTUP.CMD` is `SHELL.SVC` then `GLCD.SVC`. At
+power-on the page prepares the card with TEC-OS's `prepareCard`, which, on a
+card holding `SHELL.SVC`, keeps that line first and puts the display's line
+after it. A service whose execution record asks to be entered is entered as
+it installs, so `MON3.SVC` gives `MON3>`.
 
 The ROM uses 14,875 of 16,384 bytes, 1,509 free, with the SHA-256
-`43ac0f1871cf3d979c94b74a030c1c06eeec500bd77e60ca7e3951a2de1c339e`.
-It replaces `327fe7a4…`, `d556ec50`'s, which used 14,769 bytes, and
-`95467cae…` before it, which used 15,363. Coalescing's one byte of state,
-CPEND, is in the high room above the RAM BIOS table, so with no service
-loaded the TPA is still 47,273 bytes; with `SHELL.SVC`, which takes 10 pages, the word at 0006h
-is AF00h, a TPA of 44,544 bytes. A `.COM` starts with HL=0100h and DE=0000h.
+`a65b6e4523b5f7bab612810370ec13d4c0056deeab574acda80ef9a8e5d358d1`.
+It replaces `43ac0f18…`, `e59e8c40`'s, of the same size. The starter card
+asks for four drives, each with an allocation vector for an 8 MiB volume, so
+its TPA is 46,569 bytes (`0100h–B6E8h`) with nothing loaded; with
+`SHELL.SVC`, which now takes 15 pages, 42,496, and 41,728 with the GLCD's
+driver too. A card of two volumes and no drives field still gives 47,273. A
+`.COM` starts with HL=0100h and DE=0000h.
 
 TEC-OS builds one card: the starter card and the card the page runs are the
-same image. Its recipe, `id` `starter` at revision 12, has the canonical
+same image. Its recipe, `id` `starter` at revision 13, has the canonical
 SHA-256
-`0756ec08ac2249653777ca23479677ae4d6b87361f1be36b2f7721d42d9269d0`
+`b65621aec46be7db3b3141eaa7d277a87847548f1a08e00bf905a1a523fd63c0`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
-separate page recipe is gone. Its 15 files, with the first eight hex digits
+separate page recipe is gone. A:'s 14 files, with the first eight hex digits
 of each SHA-256 and their bytes on the card:
 
 | File | SHA-256 | Bytes | From |
@@ -100,17 +129,16 @@ of each SHA-256 and their bytes on the card:
 | `HELLO3.ASM` | `7d05f115…` | 2,167 | TEC-OS, as CP/M text |
 | `HELLO3.BIN` | `666ca183…` | 173 | TEC-OS |
 | `MON3.SVC` | `a4742967…` | 5,032 | TEC-OS |
-| `MOUNT.COM` | `5273f0ba…` | 671 | TEC-OS |
 | `SAMPLE.ASM` | `1bfd9696…` | 4,485 | TEC-OS, as CP/M text |
-| `SHELL.SVC` | `7e23a61d…` | 2,224 | TEC-OS |
+| `SHELL.SVC` | `3609c78e…` | 3,663 | TEC-OS |
 | `STARTUP.CMD` | `76b798ba…` | 22 | TEC-OS |
 | `TAS.COM` | `e648a1d0…` | 10,343 | Thorium `3d1e2c0` |
 | `TED.COM` | `c6c8374a…` | 12,335 | Thorium `a2fe556` |
 | `TIMES.BAS` | `287f0237…` | 626 | TEC-OS, as CP/M text |
 
-`TED.COM` and `HELLO3.ASM` are new at `e59e8c4`. `BAZA.RTL`, `DEMO.ASM`,
-`GLCD.SVC`, `HELLO3.BIN`, `MOUNT.COM`, `SAMPLE.ASM`, `TAS.COM` and `TIMES.BAS`
-are the same bytes as at `55f01718`, the pin before `d556ec50`. `SHELL.SVC` is new. `STARTUP.CMD` gains its `SHELL.SVC` line.
+`SHELL.SVC` is rebuilt at `1a6ce29`, and `MOUNT.COM` has left the card; every
+other file is the same bytes as at `e59e8c40`. `TED.COM` and `HELLO3.ASM`
+came at `e59e8c40`, `SHELL.SVC` first at `d556ec50`.
 `MON3.SVC` is rebuilt for entry on install: `MON3.SVC` gives `MON3>`. The
 service records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own
 scan does, so a key the page holds during a MON-3 program is let go. At
@@ -118,14 +146,14 @@ scan does, so a key the page holds during a MON-3 program is let go. At
 `MON-3 ON TEC-OS`, `LCD BY RST 10H`, `DIGITS BY RST 20H` and
 `KEY BEEPS, AD QUITS`, and count on the digits. On the page, Esc on the
 matrix keyboard returns to `MON3>`; on the board, AD on its keypad does too.
-`EXIT` returns to `A>`. `CHAIN.ASM` has left the card; TAS still takes several
+`EXIT` returns to `A:SYSTEM>`. `CHAIN.ASM` has left the card; TAS still takes several
 statements on a line.
 
 BAZA, `BAZA.RTL` and `BOUNCE.BAS` come from Baza `50dc512`. `BAZA.COM` is
 self-extracting, 13,184 bytes on the card, and shows a spinner while it
 compiles: a mark, `|`, `/`, `-` or `\`, then a backspace, each time. BAZA
 compiles integer statements as 16-bit code and takes BASIC-80's `&H`, `HEX$`,
-`MOD`, `\`, `XOR`, `WAIT` and `SWAP`. With it the card's A: has 933,888 bytes
+`MOD`, `\`, `XOR`, `WAIT` and `SWAP`. With it the card's A: has 935,936 bytes
 free. `BOUNCE.BAS`, a sprite game on the PICO9918, is steered by tapping W,
 A, S and D or by the arrow keys, with Q to quit; it compiles on the card to a
 20,736-byte `BOUNCE.COM`. New sessions still start at 40 columns; 80 is a
@@ -168,7 +196,7 @@ TEC-OS turns into ESC [ A to D, the route TEC-OS's own starter test feeds
 `BOUNCE` by. On the serial pane it sends ESC [ A to D itself.
 
 The build ships the font notices as `FONT-NOTICES.txt` and inline in the
-page, checked by `tools/notices.mjs`. All 129 Viewer tests pass on this pin.
+page, checked by `tools/notices.mjs`. All 131 Viewer tests pass on this pin.
 Of these, `test/build-manifest.test.mjs` covers the VS4 build manifest,
 `test/font-notices.test.mjs` the notices, `test/held-key.test.mjs` the matrix
 keys: under `CON TTY` `HELLO3` takes the page's Esc and `EXIT` queued behind
@@ -190,20 +218,22 @@ the card's BASIC files and `DEMO.ASM`, a `BAZA TIMES` build and `TIMES` run, a
 `BAZA BOUNCE` build and `BOUNCE` run (Graphics I with the ROM's font, its
 title and sprites, the ship moved by taps and by the arrow keys as the page's
 own key handling sends them through its key queue, and the console back at
-`A>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
+`A:SYSTEM>` after Q), a `TAS DEMO` build and `DEMO` run until a key, `DEL`
 erasing a file, and a card whose `SHELL.SVC` was taken off booting to the
 ROM's bare prompt, where `DEL` is refused and `DIR!TYPE` is one word, `SAVE`'s close
 putting its file in the card image by the time the prompt shows, and a
-record a program writes into an existing block of A: in the card image while
-the program waits at BDOS 1, all in the page's machine. These run the TEC-OS `Machine`
+record a program writes into an existing block in the card image while the
+program waits at BDOS 1, logged on A: and logged on B:, all in the page's machine. These run the TEC-OS `Machine`
 under Node with the page's ROM, card and settings, not a browser.
 `test/text-mode.test.mjs` covers how the page decides to copy a file as text
 or binary, and that binaries with text types and CP/M programs' data files
 round-trip intact. `test/copy-text.test.mjs` copies an LF `.z80` file through
 the page with the default setting and opens it in TED, and downloads
-`TIMES.BAS` as LF text and `MOUNT.COM` byte for byte.
-`test/stored-cards.test.mjs` plants a card saved before the shell, with
-`MON3.SVC` as it was at `55f01718`, in the page's storage: the page stores
+`TIMES.BAS` as LF text and `HELLO3.BIN` byte for byte.
+`test/card-mounts.test.mjs` types `CD D:GAMES` in Chromium: the card line
+and the Drive list show `D: GAMES` and list its files, and Power cycle gives
+the card's own drives again. `test/stored-cards.test.mjs` plants a card saved before the shell, of two
+volumes, with `MON3.SVC` as it was at `55f01718`, in the page's storage: the page stores
 the card `prepareCard` gives with the starter card, byte for byte, with the
 starter's `SHELL.SVC` and `MON3.SVC` and the user's files on A: and B: as they
 were, shows its note on the serial pane, and `SERVICES` lists the shell. With

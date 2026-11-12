@@ -1,6 +1,6 @@
 # Compact font and cold 40-column source offer
 
-This offer has been received. The current pin, TEC-OS main `e59e8c4`,
+This offer has been received. The current pin, TEC-OS `1a6ce29`,
 descends from it. See [qualification](qualification.md). The rest of
 this page is the offer as it was made.
 
