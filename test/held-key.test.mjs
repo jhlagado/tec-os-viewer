@@ -128,6 +128,7 @@ async function hello3() {
   m.runUntilChecked(() => m.ready(), LIMIT, "the prompt");
   m.command("CON TTY");
   assert.ok(!m.videoConsole(), "CON: is TTY:");
+  assert.match(m.command("TAS HELLO3 HELLO3.BIN", { maxCycles: 3_000_000_000 }), /HELLO3\.BIN written/);
   m.command("MON3.SVC", { prompt: /MON3>$/ });
   m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
   m.mark = m.output.length;
@@ -168,7 +169,7 @@ test("at A> under CON TTY a matrix key is let go and DIR behind it runs; without
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
+  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 
   m = await ttyPrompt();
@@ -208,7 +209,7 @@ test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000
   const mark = m.output.length;
   m.enqueueInput("dir\r", "matrix");
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
+  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 
@@ -277,6 +278,7 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
   const m = power(await card(), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
+  assert.match(m.command("TAS HELLO3 HELLO3.BIN", { maxCycles: 3_000_000_000 }), /HELLO3\.BIN written/);
   m.command("MON3.SVC", { prompt: /MON3>$/ });
   m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
   m.type("GO\r");
@@ -316,7 +318,7 @@ test("with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is le
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
   runPage(m, () => !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark)), "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.BIN/, "DIR lists the card");
+  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 

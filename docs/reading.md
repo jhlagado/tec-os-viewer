@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`c4ec0f4950446f92b658643ee23b63e2c02bb33b`, TEC-OS's shell stage 2, built with TAS alone, on the
+`46cf3f1f1c6ea7ff361a568672a41ab1a7e2c1ee`, TEC-OS's ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, with `CD` and the prompt `A:SYSTEM>`, TED with its language
@@ -16,10 +16,12 @@ table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with sizes, the `[more]` pager,
 the history on ^W and ^N, and lines joined by `!` and `&`. The card also holds
-`MON3.SVC`, `HELLO3.BIN` and `HELLO3.ASM`, a small MON-3 program and its
-source: `MON3.SVC`, `LOAD HELLO3.BIN` and `GO` show `HELLO3`'s four lines on
-the LCD.
-[Qualification](qualification.md) records the accepted viewer baseline.
+`MON3.SVC` and `HELLO3.ASM`, a small MON-3 program's source. At the CP/M
+prompt, `TAS HELLO3 HELLO3.BIN` builds its binary; then `MON3.SVC`,
+`LOAD HELLO3.BIN` and `GO` show HELLO3's four lines on the LCD. The ROM's
+basic `CD` remains available if a reset starts without the shell: `CD ?`,
+`CD A:SYSTEM`, `USER 0` and `SHELL.SVC` restore the starter's shell.
+[Qualification](qualification.md) records the dependency, receiving scope and historical baselines.
 [pins.json](../pins.json) holds the expected ROM, card-file and canonical
 recipe digests.
 ROM means read-only memory, containing the firmware image.

@@ -15,7 +15,7 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `c4ec0f4`, which builds with TAS alone, on the
+The firmware pin is TEC-OS `46cf3f1`, which builds with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a cold 40-column console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
@@ -24,24 +24,25 @@ and `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
-GAMES and SPARE on no drive. A: holds its 14 files, `BAZA.COM`, `BAZA.RTL`,
-`BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `HELLO3.BIN`, `MON3.SVC`,
+GAMES and SPARE on no drive. A: holds its 13 files, `BAZA.COM`, `BAZA.RTL`,
+`BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `MON3.SVC`,
 `SAMPLE.ASM`, `SHELL.SVC`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
 `TIMES.BAS`; B: is an empty work disk. The card's `STARTUP.CMD` loads
-`SHELL.SVC` first, so the shell holds the prompt after every reset, and the
+`SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with each file's size, the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
-succeeded). The ROM's own prompt is CP/M 2.2's, with `DIR`, `ERA`, `REN`,
+succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/c4ec0f4/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/46cf3f1/docs/shell.md)
 has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
 BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
 arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles.
+Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
 `MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
 MON-3 program that writes four lines on the LCD and counts on the digits; on
 the page, Esc on the matrix keyboard returns to `MON3>` (on the board, AD on
@@ -49,9 +50,10 @@ its keypad does too), and `EXIT` to `A:SYSTEM>`.
 
 The card line under SD card and the Drive list show each volume on the drive
 the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
-reset keeps the drives as `CD` left them; Power cycle gives the card's own
-drives again, which is the way back after `CD A:` to a volume without
-`SHELL.SVC`, where a reset gives the bare `A>` on that volume.
+reset keeps the drives as `CD` left them. After `CD A:GAMES`, a reset can
+give the bare `A>` on GAMES. The ROM's `CD ?`, `CD A:SYSTEM` and `SHELL.SVC`
+restore the shell; if you changed the user area, use `USER 0` before loading
+the starter's shell. Power cycle restores the card's default drives and startup.
 
 A browser that already holds a card keeps it; press New starter card for
 this one. A card with no `SHELL.SVC` on A: and no `MON3.SVC` that is entered
