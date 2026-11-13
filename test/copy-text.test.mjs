@@ -4,7 +4,7 @@
 // CP/M text, and TED opens it cleanly.
 // Download in the same setting gives a
 // text file back with LF line ends and
-// no ^Z, and a .COM byte for byte.
+// no ^Z, and a service file byte for byte.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -59,7 +59,7 @@ test("an LF .z80 file copied with the default setting opens in TED with no EDIT 
   await context.close();
 });
 
-test("Download in the default setting gives TIMES.BAS back as LF text and HELLO3.BIN byte for byte", { timeout: 180_000 }, async (t) => {
+test("Download in the default setting gives TIMES.BAS back as LF text and MON3.SVC byte for byte", { timeout: 180_000 }, async (t) => {
   web();
   const { chromium } = fromTecos("playwright");
   const server = await serve();
@@ -80,10 +80,10 @@ test("Download in the default setting gives TIMES.BAS back as LF text and HELLO3
   };
   const times = await download("TIMES.BAS");
   assert.deepEqual(times, readFileSync(resolve(ROOT, "tec-os/programs/TIMES.BAS")), "TIMES.BAS as its LF source, with no CR and no ^Z");
-  const hello3 = await download("HELLO3.BIN");
-  const pinned = readFileSync(resolve(ROOT, "dist/files/HELLO3.BIN"));
-  assert.deepEqual(hello3.subarray(0, pinned.length), pinned, "HELLO3.BIN byte for byte");
-  assert.ok(hello3.length % 128 === 0 && hello3.length - pinned.length < 128 && hello3.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
+  const binary = await download("MON3.SVC");
+  const pinned = readFileSync(resolve(ROOT, "dist/files/MON3.SVC"));
+  assert.deepEqual(binary.subarray(0, pinned.length), pinned, "MON3.SVC byte for byte");
+  assert.ok(binary.length % 128 === 0 && binary.length - pinned.length < 128 && binary.subarray(pinned.length).every((b) => b === 0), "then only its last record's 00h padding");
   assert.deepEqual(errors, []);
   await context.close();
 });

@@ -1,22 +1,36 @@
 # Viewer qualification and source ownership
 
-The viewer's firmware dependency is its `tec-os/` gitlink, currently
-`c4ec0f4950446f92b658643ee23b63e2c02bb33b`, the head of TEC-OS's `shell2` branch, which lands on
-main as it is (Origo shell stage 2, gate S2-14). It is on the release 1
-candidate with BASIC and TED's language support, the Compact font, a cold
-40-column console and the debugger-support interfaces. TEC-OS builds it with
-TAS alone. It follows `b3134cfc` (Origo KD-305), which brought TED from
-Thorium `a2fe556` and the web host's upgrade of a card saved before the shell;
-`8b69e51a`, which added A:'s coalesced writes (KD-303); and `1d21d363`, which
-brought the shell (KD-279 and KD-301), Baza `50dc512`, and the card without
-`CHAIN.ASM`. Before them it follows `042474df`, `1c759846`, `4d19e313`,
-`70f6d10d`, `bd7cd3d4`, `64eb8b35`, `2fb86cbe`, `665f17ef`, `17230aec`,
-`43e5a854`, `bdc75c31` and `46be5a45`, whose font notices it keeps.
-`pins.json` binds the ROM, the card's 14 files and the starter recipe's
-canonical digest. The ROM, the card's files, the recipe and `starter.img`
-(`dd44f1c2…`) are byte for byte those of TEC-OS's build at the pin.
+The viewer's firmware dependency is its `tec-os/` gitlink,
+`46cf3f1f1c6ea7ff361a568672a41ab1a7e2c1ee`. It adds basic ROM `CD` recovery
+and a source-only HELLO3 starter to the qualified shell-stage-2 baseline
+`c4ec0f4950446f92b658643ee23b63e2c02bb33b`. Origo tracks this change's
+receiving scope and qualification status in
+`studies/p3-tec-os/stages/recovery-implementation.md` and the Viewer receiving
+review. A newer dependency alone does not establish a new Viewer test result.
 
-`c4ec0f4` brings shell stage 2:
+The pin retains TAS-only builds, the Compact font, a cold 40-column console,
+TED from Thorium `a2fe556`, TAS `3d1e2c0` and Baza `50dc512`. Earlier pins
+`b3134cfc`, `8b69e51a` and `1d21d363` introduced the current TED, cached
+writes and resident shell respectively. Existing font notices remain.
+`pins.json` binds the ROM, the card's 13 files and the starter recipe's
+canonical digest. The ROM, card files, recipe and `starter.img`
+(`b11cd5b0…`) are byte for byte those of TEC-OS's build at the pin.
+
+The recovery change makes `CD`, `CD D:`, `CD ?`, `CD NAME` and `CD D:NAME`
+available at the bare ROM prompt. CD changes the directory presented by a
+drive without changing the current drive or user area. After `CD A:GAMES`
+and Reset, `CD ?` lists SYSTEM with no drive, `CD A:SYSTEM` restores that
+selection and `SHELL.SVC` reloads the shell. If needed, `USER 0` selects the
+starter shell's user area first. Power cycle restores the card's default
+drives. The shell keeps its labelled prompt and script protections.
+
+The starter supplies HELLO3.ASM only. At the CP/M prompt,
+`TAS HELLO3 HELLO3.BIN` creates its binary before entering MON3. An existing
+user's HELLO3.BIN is preserved by the saved-card upgrade. This recovery pin
+still has the earlier cache policy described below; cooperative housekeeping
+is separate work.
+
+The pin retains shell stage 2:
 
 - **Four equal drives.** A: to D: each hold one of the card's volumes, or
   none. The shell's `CD` puts a volume on a drive: `CD NAME` on the drive you
@@ -24,9 +38,9 @@ canonical digest. The ROM, the card's files, the recipe and `starter.img`
   and `CD ?` lists the volumes with their drives. The prompt names the drive
   and its volume, `A:SYSTEM>`; a drive with no volume shows `C:>`. A command
   not found on the current drive runs from A:. A reset keeps the drives as
-  `CD` left them; power off and on gives the card's own drives, so after `CD
-  A:` to a volume with no `SHELL.SVC` a reset gives the bare `A>` there, and
-  Power cycle is the way back.
+  `CD` left them; after `CD A:GAMES`, a reset gives the bare `A>` there.
+  The ROM CD recovery above restores SYSTEM; power off and on gives the
+  card's default drives.
 - **Write-behind on the logged drive.** The drive you are on keeps its writes
   in the block cache, and logging onto another drive or `CD` moves it. Every
   other volume coalesces its data writes: the one pending block is written at
@@ -42,7 +56,7 @@ canonical digest. The ROM, the card's files, the recipe and `starter.img`
 - **The shell's commands.** `DIR` lists each file with its size, then the
   count and bytes and the drive's free space; `DIR /W` is the ROM's wide
   listing. `CLS`, `ECHO` and `PAUSE` are new.
-- **The four-drive starter card**, recipe revision 13: five volumes, SYSTEM
+- **The four-drive starter card**, recipe revision 14: five volumes, SYSTEM
   (G1M) on A:, WORK (G8M) on B:, PROJECTS (G1M) on C:, and GAMES and SPARE
   (G1M) on no drive, 13 MiB in all, with no `MOUNT.COM`.
 
@@ -89,9 +103,10 @@ wait for the prompt.
 
 The ROM's CCP is minimal: it runs a `.COM` or a `.SVC`, changes drive, has
 CP/M's `DIR`, `ERA`, `REN`, `TYPE`, `SAVE` and `USER`, with `CON` and
-`UNLOAD`, and reads one line of `A:STARTUP.CMD` after a reset. `SHELL.SVC`, a
+`UNLOAD`, and reads one line of `A:STARTUP.CMD` after a reset. Basic `CD` is also in
+ROM. `SHELL.SVC`, a
 resident service on the card, takes the prompt through the ROM's shell hook
-and holds the rest: `CD`, `COPY`, `DEL`, `SERVICES`, `DIR` with sizes, `CLS`,
+and holds the richer environment: `COPY`, `DEL`, `SERVICES`, `DIR` with sizes, `CLS`,
 `ECHO` and `PAUSE`, the `[more]` pager in `TYPE` and `DIR`, the history on ^W
 and ^N, `.CMD` scripts and the rest of `STARTUP.CMD`, and lines of several
 commands. `!` always separates and the next piece runs whatever the last
@@ -102,22 +117,23 @@ card holding `SHELL.SVC`, keeps that line first and puts the display's line
 after it. A service whose execution record asks to be entered is entered as
 it installs, so `MON3.SVC` gives `MON3>`.
 
-The ROM uses 14,875 of 16,384 bytes, 1,509 free, with the SHA-256
-`a65b6e4523b5f7bab612810370ec13d4c0056deeab574acda80ef9a8e5d358d1`.
-It replaces `43ac0f18…`, `b3134cfc`'s, of the same size. The starter card
+The ROM uses 15,312 of 16,384 bytes, 1,072 free, with SHA-256
+`ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3`.
+The shared recovery allocation adds 36 fixed RAM bytes: CCP stack 48,
+BDOS stack 64, BIOS stack 48 and a reserved two-byte return-PC slot. The starter card
 asks for four drives, each with an allocation vector for an 8 MiB volume, so
-its TPA is 46,569 bytes (`0100h–B6E8h`) with nothing loaded; with
+its TPA is 46,533 bytes (`0100h–B6C4h`) with nothing loaded; with
 `SHELL.SVC`, which now takes 15 pages, 42,496, and 41,728 with the GLCD's
-driver too. A card of two volumes and no drives field still gives 47,273. A
+driver too. A card of two volumes and no drives field still gives 47,237. A
 `.COM` starts with HL=0100h and DE=0000h.
 
 TEC-OS builds one card: the starter card and the card the page runs are the
-same image. Its recipe, `id` `starter` at revision 13, has the canonical
+same image. Its recipe, `id` `starter` at revision 14, has the canonical
 SHA-256
-`b65621aec46be7db3b3141eaa7d277a87847548f1a08e00bf905a1a523fd63c0`
+`ce5da25d60fd7b480866ba9ebb114683222a4e80cc6468832bb0f849e1392623`
 (VE-5). The page fetches it from TEC-OS's `dist/starter.recipe.json`; the
-separate page recipe is gone. A:'s 14 files, with the first eight hex digits
-of each SHA-256 and their bytes on the card:
+separate page recipe is gone. A:'s 13 files, with the first eight hex digits
+of each SHA-256 and their file payload bytes (before record padding):
 
 | File | SHA-256 | Bytes | From |
 | --- | --- | --- | --- |
@@ -127,22 +143,23 @@ of each SHA-256 and their bytes on the card:
 | `DEMO.ASM` | `5b9adf63…` | 15,335 | TEC-OS, as CP/M text |
 | `GLCD.SVC` | `ac040f75…` | 836 | TEC-OS |
 | `HELLO3.ASM` | `7d05f115…` | 2,167 | TEC-OS, as CP/M text |
-| `HELLO3.BIN` | `666ca183…` | 173 | TEC-OS |
 | `MON3.SVC` | `a4742967…` | 5,032 | TEC-OS |
 | `SAMPLE.ASM` | `1bfd9696…` | 4,485 | TEC-OS, as CP/M text |
-| `SHELL.SVC` | `3609c78e…` | 3,663 | TEC-OS |
+| `SHELL.SVC` | `5beea505…` | 3,660 | TEC-OS |
 | `STARTUP.CMD` | `76b798ba…` | 22 | TEC-OS |
 | `TAS.COM` | `e648a1d0…` | 10,343 | Thorium `3d1e2c0` |
 | `TED.COM` | `c6c8374a…` | 12,335 | Thorium `a2fe556` |
 | `TIMES.BAS` | `287f0237…` | 626 | TEC-OS, as CP/M text |
 
-`SHELL.SVC` is rebuilt at `c4ec0f4`, and `MOUNT.COM` has left the card; every
-other file is the same bytes as at `b3134cfc`. `TED.COM` and `HELLO3.ASM`
+`SHELL.SVC` is rebuilt at this recovery pin with its generic `CD FAILED`
+message. Apart from that file and removal of HELLO3.BIN, the recipe's file
+payloads match c4ec0f4. `MOUNT.COM` is still absent. `TED.COM` and `HELLO3.ASM`
 came at `b3134cfc`, `SHELL.SVC` first at `1d21d363`.
 `MON3.SVC` is rebuilt for entry on install: `MON3.SVC` gives `MON3>`. The
 service records the matrix keys it reads in TEC-OS's KBLAST, as TEC-OS's own
 scan does, so a key the page holds during a MON-3 program is let go. At
-`MON3>`, `LOAD HELLO3.BIN` and `GO` write four lines on the LCD,
+the CP/M prompt, first build `TAS HELLO3 HELLO3.BIN`; at `MON3>`,
+`LOAD HELLO3.BIN` and `GO` write four lines on the LCD,
 `MON-3 ON TEC-OS`, `LCD BY RST 10H`, `DIGITS BY RST 20H` and
 `KEY BEEPS, AD QUITS`, and count on the digits. On the page, Esc on the
 matrix keyboard returns to `MON3>`; on the board, AD on its keypad does too.
@@ -153,7 +170,7 @@ BAZA, `BAZA.RTL` and `BOUNCE.BAS` come from Baza `50dc512`. `BAZA.COM` is
 self-extracting, 13,184 bytes on the card, and shows a spinner while it
 compiles: a mark, `|`, `/`, `-` or `\`, then a backspace, each time. BAZA
 compiles integer statements as 16-bit code and takes BASIC-80's `&H`, `HEX$`,
-`MOD`, `\`, `XOR`, `WAIT` and `SWAP`. With it the card's A: has 935,936 bytes
+`MOD`, `\`, `XOR`, `WAIT` and `SWAP`. With it the card's A: has 937,984 bytes
 free. `BOUNCE.BAS`, a sprite game on the PICO9918, is steered by tapping W,
 A, S and D or by the arrow keys, with Q to quit; it compiles on the card to a
 20,736-byte `BOUNCE.COM`. New sessions still start at 40 columns; 80 is a
@@ -229,10 +246,14 @@ under Node with the page's ROM, card and settings, not a browser.
 or binary, and that binaries with text types and CP/M programs' data files
 round-trip intact. `test/copy-text.test.mjs` copies an LF `.z80` file through
 the page with the default setting and opens it in TED, and downloads
-`TIMES.BAS` as LF text and `HELLO3.BIN` byte for byte.
+`TIMES.BAS` as LF text and `MON3.SVC` byte for byte.
 `test/card-mounts.test.mjs` types `CD D:GAMES` in Chromium: the card line
 and the Drive list show `D: GAMES` and list its files, and Power cycle gives
-the card's own drives again. `test/stored-cards.test.mjs` plants a card saved before the shell, of two
+the card's own drives again. A second case selects GAMES on A:, presses
+Reset, checks the retained A:GAMES and bare prompt, then uses the real
+keyboard to list directories, select SYSTEM and reload the shell. It also
+checks that the fresh file list has HELLO3.ASM and no HELLO3.BIN.
+`test/stored-cards.test.mjs` plants a card saved before the shell, of two
 volumes, with `MON3.SVC` as it was at `042474df`, in the page's storage: the page stores
 the card `prepareCard` gives with the starter card, byte for byte, with the
 starter's `SHELL.SVC` and `MON3.SVC` and the user's files on A: and B: as they
@@ -264,7 +285,7 @@ leaves the current session choice in use. The
 [Compact offer](compact-source-offer.md), with its ROM, font and cold 40-column
 default, is received in the current pin.
 
-The complete current Viewer suite passed at
+The historical 50-case Viewer suite passed at
 `479a3b90f71b2e6c864c8a26b895addd60b262e1`: all 50 tests passed, with no failures,
 cancellations, skips or TODOs. The shared guard recorded 63.4 seconds,
 637 MB sampled peak, at most seven processes and zero wait. No native assembly

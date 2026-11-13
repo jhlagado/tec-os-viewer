@@ -69,8 +69,8 @@ test("each stale or altered dist is refused with its cause", { timeout: 600_000 
   refused(/dist\/files\/EXTRA\.COM is not in dist\/build\.json/);
 
   build();
-  rmSync(resolve(DIST, "files/HELLO3.BIN"));
-  refused(/dist\/files\/HELLO3\.BIN is missing/);
+  rmSync(resolve(DIST, "files/HELLO3.ASM"));
+  refused(/dist\/files\/HELLO3\.ASM is missing/);
 
   // A build whose input check fails leaves no manifest from before it.
   build();
