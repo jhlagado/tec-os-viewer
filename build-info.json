@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "13ea21396e3f43c81cead0fc788e25e8df18e456",
-  "firmwareCommit": "c4ec0f4950446f92b658643ee23b63e2c02bb33b",
-  "firmwareRomSha256": "a65b6e4523b5f7bab612810370ec13d4c0056deeab574acda80ef9a8e5d358d1",
+  "viewerCommit": "3494f4a960eb605391e0dca9be1cc80f48bf1d9b",
+  "firmwareCommit": "46cf3f1f1c6ea7ff361a568672a41ab1a7e2c1ee",
+  "firmwareRomSha256": "ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3",
   "publication": "standalone-demo",
   "sample": {
     "cpmBytes": 4485,
@@ -20,8 +20,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 354763,
-      "sha256": "3790590cc7b5070ce50d1931fc2eb3e0165ed3116d058c0b2b7cb2cdd2bfbbf7"
+      "bytes": 356472,
+      "sha256": "18efe07f103a7286f74bf551c6b482531f1dc082ff0dbc42ee0852ffba86ef43"
     }
   },
   "defaultColumns": 40,
@@ -39,9 +39,9 @@
   "mon3": {
     "cardFiles": [
       "MON3.SVC",
-      "HELLO3.BIN",
       "HELLO3.ASM"
-    ]
+    ],
+    "build": "TAS HELLO3 HELLO3.BIN"
   },
   "shell": {
     "cardFiles": [
