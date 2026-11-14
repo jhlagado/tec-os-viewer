@@ -138,3 +138,8 @@ TEC-OS's README describes, and TEC-OS checks the runner against its pins.
   repository's commit and TEC-OS's. It refuses, naming the cause, unless `dist/build.json` records a clean build of the current
   commits and every file in `dist/` still matches it.
 - `npm test` runs every test; `npm run quick` runs the bundle and the serial board's boot, in seconds. Both need `npm run tecos` first.
+
+Browser tests normally use Playwright's installed Chromium. Where browser
+downloads are unavailable, `TEST_CHROMIUM=/usr/bin/chromium npm test` selects
+an installed real Chromium explicitly. Record its version with the test result;
+this is not qualification of Playwright's separately distributed browser build.
