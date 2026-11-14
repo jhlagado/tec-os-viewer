@@ -5,6 +5,7 @@ qualification. The public test demo is intended for the author's gameplay review
 that review and a physical TEC-1G run remain to be done.
 
 - `artifacts.json`: exact firmware, compiler, source and executable identities.
+- `firmware-tests.log`: full TEC-OS suite, 1,319 passes, no failures/skips.
 - `viewer-tests.tap`: 134 passes, no failures/skips, after fixing drive remount
   sampling. Uses actual Debian Chromium 156.0.8078.79 through the explicit
   TEST_CHROMIUM option. Playwright's browser download was unavailable under

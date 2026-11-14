@@ -11,6 +11,14 @@ The upstream source and integration branches are published. The firmware test
 `test/caverns-ted.test.mjs` qualifies the exact edit/save/build/run/reopen cycle;
 `test/caverns.test.mjs` qualifies native game completion and all 54 rooms.
 Neither is physical TEC-1G evidence. Human gameplay review remains to be done.
+The current integration passed 1,319 TEC-OS tests with no failures or skips,
+134 Viewer tests with no failures or skips, and seven additional Caverns checks
+with explicit 80-column selection. The standalone build was smoke-tested in
+real Chromium before upload. Results and exact artifact identities are retained
+in `evidence/caverns-2026-11-14/`. The public Pages host could not be reached
+from this cloud workspace for a post-upload HTTP check; publishing-branch pushes
+were verified. No physical-board or completed author-review claim is made.
+
 The existing qualification below is retained as a historical baseline; its
 older file counts, recipe digest and BAZA pin do not describe this update.
 
