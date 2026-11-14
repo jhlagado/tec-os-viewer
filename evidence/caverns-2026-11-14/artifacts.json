@@ -38,5 +38,10 @@
     "fail": 0,
     "skipped": 0
   },
-  "assemblyOnStarter": false
+  "assemblyOnStarter": false,
+  "firmwareTests": {
+    "pass": 1319,
+    "fail": 0,
+    "skipped": 0
+  }
 }
