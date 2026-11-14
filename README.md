@@ -15,7 +15,7 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `5aacb5e`, which builds with TAS alone, on the
+The firmware pin is TEC-OS `241b438`, which builds with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a cold 40-column console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
@@ -30,13 +30,13 @@ GAMES and SPARE on no drive. A: holds its 16 files, `BAZA.COM`, `BAZA.RTL`,
 `TIMES.BAS`, plus `CAVBASIC.BAS`, `CAVBASIC.COM` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
-puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
+changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with each file's size, the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/5aacb5e/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/241b438/docs/shell.md)
 has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
@@ -84,19 +84,25 @@ ROM's bare prompt. If the files can't be written, a full A: for one, or the
 starter card can't be fetched, the card boots without the shell and the serial
 pane says why; the next power-on tries again.
 
-The page saves the card's image: in this browser within two seconds of the
-machine writing it, and in Download image. TEC-OS holds writes in its block
-cache, in the machine's memory, until it writes them to the card. The drive
-you are on is written behind; on every other drive a data write waits for the
-next flush point: the file's close, a directory request, a write to another
-block, a console read or a warm boot. Whenever TEC-OS waits for a key, every
-drive is on the card, so at the prompt the whole card is in what the page
-saves. While a program runs, what it wrote since it last waited for a key or
-wrote a directory may not be. Reset, Power cycle, New starter card, Open
-image, Copy file to drive and a change of width or display all start the
-machine again, as a reset does on the board, and what the cache held is lost:
-wait for the prompt first. New starter card and Open image also replace the
-card itself, the one this browser keeps.
+The page saves the card image to this browser, normally within two seconds
+of the emulated machine writing it, and includes that image in Download image.
+TEC-OS separately holds pending writes in the machine's memory. OS calls now
+prioritise that work, combining changes to the same block while they are queued.
+Required input drains pending writes before waiting. Failed acknowledged data writes stay pending
+and are reported for retry. A rejected directory update is not published;
+a prompt alone cannot certify a failed flush.
+Housekeeping is cooperative: it cannot run while a program keeps control of
+the CPU without calling the OS. It does not complete an application's unclosed
+file or promise crash-proof storage.
+
+If disk state cannot be rebuilt, `Disk reset failed` / `Enter retries` waits
+for Enter before normal commands resume. Reset, Power cycle, New starter card,
+Open image, Copy file to drive and a change of width or display restart the
+machine and lose any writes still in its RAM cache. Check and resolve disk
+errors before restarting. New starter card and Open image also replace the
+card itself. The Viewer does not yet independently confirm guest-cache and
+browser-storage completion; clearer save and recovery feedback is the next
+scheduled improvement.
 
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.

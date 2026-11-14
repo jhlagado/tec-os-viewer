@@ -1,11 +1,37 @@
-# Current Caverns integration
+# Housekeeping recipient integration
 
-The current TEC-OS gitlink is `5aacb5e`, with ROM SHA-256
+The firmware gitlink is `241b4381007a6b1e7f179c4f8358c65d564e06ae`, with
+ROM SHA-256 `c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f`.
+It preserves the Caverns integration and all sixteen starter file payloads.
+The starter recipe's canonical digest is
+`cfad4c0e6e788d1b9713d3e34647799d0a8e22a17aca09b4a6a13cbed1e009c7`;
+`pins.json` holds the exact ROM, recipe and file identities.
+
+The core's standard full strict qualification passed 1,383/1,383 twice at
+that exact firmware source; Origo retains the original two runs and their
+independent reviews. These are firmware emulator results, not a fresh Viewer
+suite or physical-board test. The Viewer recipient's build and full paired
+qualification are pending at this source-preparation checkpoint. The live
+page must be rebuilt and published after qualification; changing the gitlink
+alone does not change the public demo.
+
+OS API boundaries now prioritise dirty work; required input drains pending
+writes, and failed acknowledged data writes are retained and reported; rejected
+directory updates are not published. Bootstrap recovery waits
+for an explicit Enter retry when disk state cannot be rebuilt. README describes
+the remaining cooperative, restart and browser-saving limits. This recipient
+uses the original eighteen-page MON3 and TAS `3d1e2c0`; the separately qualified
+MON3 load-address/TAS HEX development branches are not adopted here.
+
+# Historical Caverns integration
+
+At this historical checkpoint the TEC-OS gitlink was `5aacb5e`, with ROM SHA-256
 `ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3`.
 Starter revision 16 contains sixteen files. The new files are the author-refined
 original BASIC game's CAVBASIC.BAS, CAVBASIC.COM and CAVERNS.TXT. BAZA compiler
 and runtime are pinned at `8578fe5`; executable size is 39,680 bytes. All exact
-ROM, recipe and file identities are in `pins.json`.
+ROM, recipe and file identities are in
+[`pins.json` at the original Viewer checkpoint](https://github.com/jhlagado/tec-os-viewer/blob/0b36cbeaa501389e5c01fd7ad518019c60809aea/pins.json).
 
 The upstream source and integration branches are published. The firmware test
 `test/caverns-ted.test.mjs` qualifies the exact edit/save/build/run/reopen cycle;
