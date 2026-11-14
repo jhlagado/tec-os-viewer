@@ -15,7 +15,7 @@ New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The width selector still provides all three choices. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `21518f7`, which builds with TAS alone, on the
+The firmware pin is TEC-OS `5aacb5e`, which builds with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a cold 40-column console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
@@ -36,7 +36,7 @@ puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/21518f7/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/5aacb5e/docs/shell.md)
 has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA

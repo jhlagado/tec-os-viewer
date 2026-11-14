@@ -1,0 +1,42 @@
+{
+  "scope": "emulator and browser qualification; author gameplay and physical-board review pending",
+  "tecosCommit": "5aacb5e4c80036c254e12355f3ea1c111eb02f24",
+  "viewerProductionCodeCommit": "c86225e",
+  "bazaArtifactCommit": "8578fe50fdfc66e16015c54f365d1403825979da",
+  "starterRevision": 16,
+  "romSha256": "ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3",
+  "files": {
+    "BAZA.COM": {
+      "bytes": 13184,
+      "sha256": "41f96c2716274327fd84180b3cadbb277a8d4f7faacf95b0e31fe3fdceb0acc6"
+    },
+    "BAZA.RTL": {
+      "bytes": 12800,
+      "sha256": "3c77dccda2221616dd2573183f137d5d4131218b9f024b521982c44b0567bc64"
+    },
+    "CAVBASIC.BAS": {
+      "bytes": 18451,
+      "sha256": "b8b607dd6c08070ed68de4fe6cd9ced29e16f9ee75691a37c9d9c0c43b462790"
+    },
+    "CAVBASIC.COM": {
+      "bytes": 39680,
+      "sha256": "b18a568223a9862117db8c815504e1a43038a9765c0e815a5c59d940874dbf8d"
+    },
+    "CAVERNS.TXT": {
+      "bytes": 2206,
+      "sha256": "98dc88c74db90a85c0ee0822968edc9a8522fcb504e25d95e96d9a8c9ca724c3"
+    }
+  },
+  "browser": "Chromium 156.0.8078.79 (Debian system executable)",
+  "viewerTests": {
+    "pass": 134,
+    "fail": 0,
+    "skipped": 0
+  },
+  "cavernsExplicit80ColumnTests": {
+    "pass": 7,
+    "fail": 0,
+    "skipped": 0
+  },
+  "assemblyOnStarter": false
+}

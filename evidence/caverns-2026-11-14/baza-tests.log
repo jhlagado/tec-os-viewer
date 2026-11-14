@@ -1,0 +1,29 @@
+
+> test
+> node test/spec.test.mjs && node test/numeric-model.test.mjs && node test/numeric-contract.test.mjs && node test/template-provenance.test.mjs && node test/corpus-evidence.test.mjs && node test/numeric-binding.test.mjs && node test/numeric-provenance.test.mjs && node test/numeric-artifact.test.mjs && node test/arithmetic-binding.test.mjs && node test/expression-artifact.test.mjs && node test/floor-binding.test.mjs && node test/int-artifact.test.mjs && node test/declaration-columns.test.mjs && node test/logic-binding.test.mjs
+
+✔ inventory valid; omission/duplicate/mislinked evidence/false native pass rejected (13.175837ms)
+✔ streaming liveness avoids dense fixup cost and charges third read (0.457259ms)
+✔ model checks capacity cliff and exact record rounding (0.205715ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28.659529
+numeric storage model: 8 assertions passed; 0 historical/native executions
+{"check":"f32-BASIC-contract-reference","assertions":44,"result":"pass","nativeBazaExecutions":0}
+{"check":"native-template-provenance","negativeControls":12,"result":"pass","nativeExecutions":0}
+{"check":"native-control-template-provenance","negativeControls":8,"result":"pass","nativeExecutions":0}
+{"check":"stored-native-control-corpus-evidence","qualifiedOracles":49,"nativeCaseMatches":49,"blockedCases":0,"negativeControls":29,"newNativeExecutions":0,"scope":"Validates retained attested execution; npm test does not run emulator"}
+{"check":"numeric-binding-metadata-admission","validBoundaryCases":7,"malformedDecodeCases":10,"malformedEncodeCases":5,"result":"pass","nativeExecutions":0}
+{"check":"native-numeric-provenance-drift","negativeControls":8,"result":"pass","nativeExecutions":0}
+{"check":"persisted-native-numeric-artifact","negativeControls":7,"result":"pass","newNativeExecutions":0}
+{"check":"arithmetic-native-binding-admission","positive":true,"rejectedControls":18}
+{"check":"persisted-native-expression-postfix","negativeControls":17,"result":"pass","newNativeExecutions":0,"scope":"Postfix binding and startup only; application semantics require native execution receipts"}
+{"check":"native-floor-binding-admission","negativeControls":17,"result":"pass","nativeExecutions":0}
+{"check":"persisted-native-INT-postfix","negativeControls":16,"result":"pass","newNativeExecutions":0}
+{"check":"shared-declaration-columns","positive":10,"negative":25,"result":"pass","nativeExecutions":0}
+{"check":"logic-manifest-provenance","sources":23,"negativeControls":25,"result":"pass"}

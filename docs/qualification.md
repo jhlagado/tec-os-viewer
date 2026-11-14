@@ -1,6 +1,6 @@
 # Current Caverns integration
 
-The current TEC-OS gitlink is `21518f7`, with ROM SHA-256
+The current TEC-OS gitlink is `5aacb5e`, with ROM SHA-256
 `ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3`.
 Starter revision 16 contains sixteen files. The new files are the author-refined
 original BASIC game's CAVBASIC.BAS, CAVBASIC.COM and CAVERNS.TXT. BAZA compiler
