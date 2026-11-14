@@ -8,12 +8,24 @@ The starter recipe's canonical digest is
 `pins.json` holds the exact ROM, recipe and file identities.
 
 The core's standard full strict qualification passed 1,383/1,383 twice at
-that exact firmware source; Origo retains the original two runs and their
-independent reviews. These are firmware emulator results, not a fresh Viewer
-suite or physical-board test. The Viewer recipient's build and full paired
-qualification are pending at this source-preparation checkpoint. The live
-page must be rebuilt and published after qualification; changing the gitlink
-alone does not change the public demo.
+that exact firmware source. The Viewer recipient source
+`4ee6e169ad51ed3517decc5a0140d2097ec894d6` also passed two complete,
+unfiltered runs of 134/134 tests, with no failures, cancellations or skips,
+and unchanged bound inputs. They include standalone-page boot without external
+asset requests, commit labels, ROM CD recovery, saved-card upgrades, Caverns
+preservation and the TED edit/build/run exercise. The browser tests used
+system Chromium 156.0.8078.79 explicitly; this does not qualify Playwright's
+separately distributed browser or a physical TEC-1G.
+
+An earlier complete 133/134 run failed the unchanged bundle source-path check
+because a shared dependency link resolved outside the recipient worktree.
+It remains a failed run. The successful pair uses an owned, byte-identical
+dependency copy and records resolved paths as well as content hashes. Origo
+retains the failed attempt, both passing runs, runtime inputs and independent
+reviews. The public demo's
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json)
+identify its actual published Viewer commit and firmware pin; source and
+qualification records alone do not update that page.
 
 OS API boundaries now prioritise dirty work; required input drains pending
 writes, and failed acknowledged data writes are retained and reported; rejected
