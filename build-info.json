@@ -1,15 +1,8 @@
 {
-  "viewerCommit": "0b36cbeaa501389e5c01fd7ad518019c60809aea",
-  "firmwareCommit": "5aacb5e4c80036c254e12355f3ea1c111eb02f24",
-  "firmwareRomSha256": "ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3",
+  "viewerCommit": "adf713bc7320f4b7e18bb3a4b3fc1c79f8e9f92f",
+  "firmwareCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
+  "firmwareRomSha256": "c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f",
   "publication": "standalone-demo",
-  "sample": {
-    "cpmBytes": 4485,
-    "cpmSHA256": "1bfd9696548327f5717f18b749ec2bcb3468df2e6c1dbea095b295673a00c20e",
-    "columns": 40,
-    "greetingLine": 193,
-    "editedCursor": "L193 C33"
-  },
   "payloads": {
     ".nojekyll": {
       "bytes": 0,
@@ -20,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 439864,
-      "sha256": "a0ba9677e0ce46303206255bcd2129bdfad08d5542ac2a6db998ff18f2be0d12"
+      "bytes": 443348,
+      "sha256": "8843bfc5d459e7642d367668864f3e26963ee5f4d1e52c05b7763bab632430ae"
     }
   },
   "defaultColumns": 40,
@@ -66,11 +59,35 @@
   "qualification": {
     "viewerTests": 134,
     "viewerFailures": 0,
-    "browser": "Chromium 156.0.8078.79",
+    "viewerCompleteRuns": 2,
+    "viewerQualifiedCommit": "adf713bc7320f4b7e18bb3a4b3fc1c79f8e9f92f",
+    "viewerRunDurationsMs": [
+      185774.997923,
+      184966.560592
+    ],
+    "viewerInputManifestSha256": "cd4e87c32e766ec117691774563cd341abf55505bd0f31affc01feaa8013566d",
+    "browser": "Chromium 156.0.8078.79 (explicit Debian system executable)",
+    "firmwareTests": 1383,
+    "firmwareFailures": 0,
+    "firmwareCompleteRuns": 2,
+    "firmwareQualifiedCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
     "cavernsExplicit80ColumnTests": 7,
     "physicalBoardTested": false,
-    "authorGameplayReview": "pending",
-    "firmwareTests": 1319,
-    "firmwareFailures": 0
+    "authorGameplayReview": "pending"
+  },
+  "historicalSample": {
+    "viewerCommit": "0b36cbeaa501389e5c01fd7ad518019c60809aea",
+    "firmwareCommit": "5aacb5e4c80036c254e12355f3ea1c111eb02f24",
+    "cpmBytes": 4485,
+    "cpmSHA256": "1bfd9696548327f5717f18b749ec2bcb3468df2e6c1dbea095b295673a00c20e",
+    "columns": 40,
+    "greetingLine": 193,
+    "editedCursor": "L193 C33"
+  },
+  "housekeeping": {
+    "policy": "Cooperative OS-call housekeeping prioritises acknowledged pending data; rejected metadata is not published. Required input drains data subject to errors. Browser persistence remains separate.",
+    "starterRecipeCanonicalSha256": "cfad4c0e6e788d1b9713d3e34647799d0a8e22a17aca09b4a6a13cbed1e009c7",
+    "starterImageSha256": "a7d4e6c8ec7953357e9d92eb6a3373a8183c017e9a7216d36553263ecff6ff27",
+    "mon3AndTas": "Original core components retained; separately qualified MON3 load-address and TAS HEX branches are not adopted by this build."
   }
 }
