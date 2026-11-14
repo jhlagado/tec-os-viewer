@@ -1,0 +1,825 @@
+TAP version 13
+# Subtest: the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on A:
+ok 1 - the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on A:
+  ---
+  duration_ms: 291.912391
+  type: 'test'
+  ...
+# Subtest: in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt
+ok 2 - in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt
+  ---
+  duration_ms: 1477.203479
+  type: 'test'
+  ...
+# Subtest: in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives A> back on Q
+ok 3 - in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives A> back on Q
+  ---
+  duration_ms: 10974.169695
+  type: 'test'
+  ...
+# Subtest: in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key
+ok 4 - in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key
+  ---
+  duration_ms: 2602.425782
+  type: 'test'
+  ...
+# Subtest: in the page's machine, DEL erases a file, as ERA does
+ok 5 - in the page's machine, DEL erases a file, as ERA does
+  ---
+  duration_ms: 421.79608
+  type: 'test'
+  ...
+# Subtest: in the page's machine, a card whose SHELL.SVC was taken off boots to the ROM's bare prompt, where DEL and ! are not the shell's
+ok 6 - in the page's machine, a card whose SHELL.SVC was taken off boots to the ROM's bare prompt, where DEL and ! are not the shell's
+  ---
+  duration_ms: 384.096725
+  type: 'test'
+  ...
+# Subtest: in the page's machine, SAVE's close puts its file on A: in the card image by the time the prompt shows
+ok 7 - in the page's machine, SAVE's close puts its file on A: in the card image by the time the prompt shows
+  ---
+  duration_ms: 440.086072
+  type: 'test'
+  ...
+# Subtest: in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1
+ok 8 - in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1
+  ---
+  duration_ms: 434.822271
+  type: 'test'
+  ...
+# Subtest: in the page's machine, logged on B:, which is then the drive written behind, a record a program writes into a file there is in the card image while the program waits at BDOS 1
+ok 9 - in the page's machine, logged on B:, which is then the drive written behind, a record a program writes into a file there is in the card image while the program waits at BDOS 1
+  ---
+  duration_ms: 626.11553
+  type: 'test'
+  ...
+# Subtest: Viewer Caverns disk includes BASIC source/executable, rebuilds identically and runs at 80 columns
+ok 10 - Viewer Caverns disk includes BASIC source/executable, rebuilds identically and runs at 80 columns
+  ---
+  duration_ms: 5214.347251
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the serial board at 80
+ok 11 - the page's card reaches A> on the serial board at 80
+  ---
+  duration_ms: 698.634023
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the serial board at 40
+ok 12 - the page's card reaches A> on the serial board at 40
+  ---
+  duration_ms: 347.423509
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the PICO9918 board at 80
+ok 13 - the page's card reaches A> on the PICO9918 board at 80
+  ---
+  duration_ms: 454.815199
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the PICO9918 board at 40
+ok 14 - the page's card reaches A> on the PICO9918 board at 40
+  ---
+  duration_ms: 338.363224
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the PICO9918 board at 32
+ok 15 - the page's card reaches A> on the PICO9918 board at 32
+  ---
+  duration_ms: 301.209069
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the GLCD board at 80
+ok 16 - the page's card reaches A> on the GLCD board at 80
+  ---
+  duration_ms: 449.390255
+  type: 'test'
+  ...
+# Subtest: the page's card reaches A> on the board with both displays at 80
+ok 17 - the page's card reaches A> on the board with both displays at 80
+  ---
+  duration_ms: 386.235522
+  type: 'test'
+  ...
+# Subtest: with no card the serial board gives CARD? and no prompt
+ok 18 - with no card the serial board gives CARD? and no prompt
+  ---
+  duration_ms: 52.765128
+  type: 'test'
+  ...
+# Subtest: a clean build labels the page, and dist/build.json records it
+ok 19 - a clean build labels the page, and dist/build.json records it
+  ---
+  duration_ms: 386.384003
+  type: 'test'
+  ...
+# Subtest: each stale or altered dist is refused with its cause
+ok 20 - each stale or altered dist is refused with its cause
+  ---
+  duration_ms: 3022.514026
+  type: 'test'
+  ...
+# Subtest: a card opened while the old card is still saving is the card stored
+ok 21 - a card opened while the old card is still saving is the card stored
+  ---
+  duration_ms: 11.962387
+  type: 'test'
+  ...
+# Subtest: power-on stops the old machine before it prepares the card
+ok 22 - power-on stops the old machine before it prepares the card
+  ---
+  duration_ms: 1.938103
+  type: 'test'
+  ...
+# Subtest: CD D:GAMES shows D: GAMES in the card line and the drive list, and Power cycle gives the card's own drives again
+ok 23 - CD D:GAMES shows D: GAMES in the card line and the drive list, and Power cycle gives the card's own drives again
+  ---
+  duration_ms: 9043.962127
+  type: 'test'
+  ...
+# Subtest: ROM CD restores SYSTEM and the shell after a reset with GAMES on A
+ok 24 - ROM CD restores SYSTEM and the shell after a reset with GAMES on A
+  ---
+  duration_ms: 10310.485
+  type: 'test'
+  ...
+# Subtest: the web build starts clean: a file left in dist from an older build doesn't reach the page
+ok 25 - the web build starts clean: a file left in dist from an older build doesn't reach the page
+  ---
+  duration_ms: 173.311058
+  type: 'test'
+  ...
+# Subtest: the firmware precheck verifies the starter recipe
+    # Subtest: matching recipe
+    ok 1 - matching recipe
+      ---
+      duration_ms: 13.938478
+      type: 'test'
+      ...
+    # Subtest: matching A volume spelled a
+    ok 2 - matching A volume spelled a
+      ---
+      duration_ms: 9.171789
+      type: 'test'
+      ...
+    # Subtest: matching A volume spelled A:
+    ok 3 - matching A volume spelled A:
+      ---
+      duration_ms: 20.108456
+      type: 'test'
+      ...
+    # Subtest: stale length
+    ok 4 - stale length
+      ---
+      duration_ms: 12.119019
+      type: 'test'
+      ...
+    # Subtest: wrong hash
+    ok 5 - wrong hash
+      ---
+      duration_ms: 11.989327
+      type: 'test'
+      ...
+    # Subtest: duplicate name
+    ok 6 - duplicate name
+      ---
+      duration_ms: 11.351131
+      type: 'test'
+      ...
+    # Subtest: missing name
+    ok 7 - missing name
+      ---
+      duration_ms: 8.753419
+      type: 'test'
+      ...
+    # Subtest: extra name
+    ok 8 - extra name
+      ---
+      duration_ms: 8.968047
+      type: 'test'
+      ...
+    # Subtest: wrong URL
+    ok 9 - wrong URL
+      ---
+      duration_ms: 11.214739
+      type: 'test'
+      ...
+    # Subtest: wrong drive
+    ok 10 - wrong drive
+      ---
+      duration_ms: 11.939122
+      type: 'test'
+      ...
+    # Subtest: wrong user
+    ok 11 - wrong user
+      ---
+      duration_ms: 22.072438
+      type: 'test'
+      ...
+    # Subtest: wrong schema
+    ok 12 - wrong schema
+      ---
+      duration_ms: 11.654421
+      type: 'test'
+      ...
+    # Subtest: wrong profile
+    ok 13 - wrong profile
+      ---
+      duration_ms: 11.818744
+      type: 'test'
+      ...
+    # Subtest: missing components
+    ok 14 - missing components
+      ---
+      duration_ms: 10.630022
+      type: 'test'
+      ...
+    # Subtest: invalid file list
+    ok 15 - invalid file list
+      ---
+      duration_ms: 11.560942
+      type: 'test'
+      ...
+    # Subtest: invalid file
+    ok 16 - invalid file
+      ---
+      duration_ms: 12.367518
+      type: 'test'
+      ...
+    # Subtest: missing A volume
+    ok 17 - missing A volume
+      ---
+      duration_ms: 14.727267
+      type: 'test'
+      ...
+    # Subtest: duplicate A volume
+    ok 18 - duplicate A volume
+      ---
+      duration_ms: 61.053267
+      type: 'test'
+      ...
+    # Subtest: read-only A volume
+    ok 19 - read-only A volume
+      ---
+      duration_ms: 40.896996
+      type: 'test'
+      ...
+    # Subtest: numeric read-only A volume
+    ok 20 - numeric read-only A volume
+      ---
+      duration_ms: 16.011832
+      type: 'test'
+      ...
+    # Subtest: string read-only A volume
+    ok 21 - string read-only A volume
+      ---
+      duration_ms: 9.174934
+      type: 'test'
+      ...
+    # Subtest: duplicate lowercase A mount
+    ok 22 - duplicate lowercase A mount
+      ---
+      duration_ms: 9.116278
+      type: 'test'
+      ...
+    # Subtest: duplicate colon A mount
+    ok 23 - duplicate colon A mount
+      ---
+      duration_ms: 8.90281
+      type: 'test'
+      ...
+    # Subtest: wrong A geometry
+    ok 24 - wrong A geometry
+      ---
+      duration_ms: 8.437722
+      type: 'test'
+      ...
+    # Subtest: changed B geometry
+    ok 25 - changed B geometry
+      ---
+      duration_ms: 9.123248
+      type: 'test'
+      ...
+    # Subtest: a volume naming writeBehind
+    ok 26 - a volume naming writeBehind
+      ---
+      duration_ms: 9.577561
+      type: 'test'
+      ...
+    # Subtest: extra volume
+    ok 27 - extra volume
+      ---
+      duration_ms: 8.690751
+      type: 'test'
+      ...
+    # Subtest: empty component
+    ok 28 - empty component
+      ---
+      duration_ms: 9.327289
+      type: 'test'
+      ...
+    # Subtest: extra file field
+    ok 29 - extra file field
+      ---
+      duration_ms: 8.968248
+      type: 'test'
+      ...
+    # Subtest: changed instruction
+    ok 30 - changed instruction
+      ---
+      duration_ms: 14.215027
+      type: 'test'
+      ...
+    # Subtest: missing recipe
+    ok 31 - missing recipe
+      ---
+      duration_ms: 8.305575
+      type: 'test'
+      ...
+    # Subtest: malformed recipe
+    ok 32 - malformed recipe
+      ---
+      duration_ms: 7.760347
+      type: 'test'
+      ...
+    # Subtest: non-object recipe
+    ok 33 - non-object recipe
+      ---
+      duration_ms: 7.740777
+      type: 'test'
+      ...
+    1..33
+ok 26 - the firmware precheck verifies the starter recipe
+  ---
+  duration_ms: 461.599841
+  type: 'test'
+  ...
+# Subtest: an LF .z80 file copied with the default setting opens in TED with no EDIT error
+ok 27 - an LF .z80 file copied with the default setting opens in TED with no EDIT error
+  ---
+  duration_ms: 77671.054914
+  type: 'test'
+  ...
+# Subtest: Download in the default setting gives TIMES.BAS back as LF text and MON3.SVC byte for byte
+ok 28 - Download in the default setting gives TIMES.BAS back as LF text and MON3.SVC byte for byte
+  ---
+  duration_ms: 3633.593267
+  type: 'test'
+  ...
+# Subtest: Download of a file whose entry names a block past DSM says why, and the page throws nothing
+ok 29 - Download of a file whose entry names a block past DSM says why, and the page throws nothing
+  ---
+  duration_ms: 4058.184115
+  type: 'test'
+  ...
+# Subtest: the font notices ship beside the page and inline in it
+ok 30 - the font notices ship beside the page and inline in it
+  ---
+  duration_ms: 430.046887
+  type: 'test'
+  ...
+# Subtest: the notice helper escapes markup and refuses each bad input by name
+ok 31 - the notice helper escapes markup and refuses each bad input by name
+  ---
+  duration_ms: 9.161196
+  type: 'test'
+  ...
+# Subtest: cold boot, palette and reverse glyphs at 32 columns
+ok 32 - cold boot, palette and reverse glyphs at 32 columns
+  ---
+  duration_ms: 1075.543457
+  type: 'test'
+  ...
+# {"width":32,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"d8b559dd20558d30418950afd234efd1ea99e0d44372253f9134b36921ec2a34"}
+# Subtest: cold boot, palette and reverse glyphs at 40 columns
+ok 33 - cold boot, palette and reverse glyphs at 40 columns
+  ---
+  duration_ms: 540.042308
+  type: 'test'
+  ...
+# {"width":40,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"4813181d017f1caf5123c0330d463c8db3fa60a83dee2498b80f0383bc0f118c"}
+# Subtest: cold boot, palette and reverse glyphs at 80 columns
+ok 34 - cold boot, palette and reverse glyphs at 80 columns
+  ---
+  duration_ms: 556.009454
+  type: 'test'
+  ...
+# {"width":80,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"2a1f0ee6f98d9879046452d6bbbf4806dfb8d123828897218fc24b3a0fd7d05f"}
+# Subtest: directed width switch 32 to 40
+ok 35 - directed width switch 32 to 40
+  ---
+  duration_ms: 431.712962
+  type: 'test'
+  ...
+# {"width":40,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"4813181d017f1caf5123c0330d463c8db3fa60a83dee2498b80f0383bc0f118c"}
+# Subtest: directed width switch 32 to 80
+ok 36 - directed width switch 32 to 80
+  ---
+  duration_ms: 500.703018
+  type: 'test'
+  ...
+# {"width":80,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"2a1f0ee6f98d9879046452d6bbbf4806dfb8d123828897218fc24b3a0fd7d05f"}
+# Subtest: directed width switch 40 to 32
+ok 37 - directed width switch 40 to 32
+  ---
+  duration_ms: 493.05699
+  type: 'test'
+  ...
+# {"width":32,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"d8b559dd20558d30418950afd234efd1ea99e0d44372253f9134b36921ec2a34"}
+# Subtest: directed width switch 40 to 80
+ok 38 - directed width switch 40 to 80
+  ---
+  duration_ms: 402.351414
+  type: 'test'
+  ...
+# {"width":80,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":512,"frameHeight":192,"rgbaSha256":"2a1f0ee6f98d9879046452d6bbbf4806dfb8d123828897218fc24b3a0fd7d05f"}
+# Subtest: directed width switch 80 to 32
+ok 39 - directed width switch 80 to 32
+  ---
+  duration_ms: 413.39989
+  type: 'test'
+  ...
+# {"width":32,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"d8b559dd20558d30418950afd234efd1ea99e0d44372253f9134b36921ec2a34"}
+# Subtest: directed width switch 80 to 40
+ok 40 - directed width switch 80 to 40
+  ---
+  duration_ms: 500.380241
+  type: 'test'
+  ...
+# {"width":40,"register7":49,"normal":[0,96,144,144,240,144,144,0],"reverse":[255,159,111,111,15,111,111,255],"frameWidth":256,"frameHeight":192,"rgbaSha256":"4813181d017f1caf5123c0330d463c8db3fa60a83dee2498b80f0383bc0f118c"}
+# Subtest: under CON TTY the page lets a matrix key go, and EXIT behind it reaches A>
+ok 41 - under CON TTY the page lets a matrix key go, and EXIT behind it reaches A>
+  ---
+  duration_ms: 2449.428002
+  type: 'test'
+  ...
+# Subtest: at A> under CON TTY a matrix key is let go and DIR behind it runs; without the bound it stays down
+ok 42 - at A> under CON TTY a matrix key is let go and DIR behind it runs; without the bound it stays down
+  ---
+  duration_ms: 2834.279452
+  type: 'test'
+  ...
+# Subtest: at A> under CON TTY the second of two queued matrix keys goes down a hold after the first is let go
+ok 43 - at A> under CON TTY the second of two queued matrix keys goes down a hold after the first is let go
+  ---
+  duration_ms: 759.877886
+  type: 'test'
+  ...
+# Subtest: on CRT: the page's matrix keys reach TEC-OS as before
+ok 44 - on CRT: the page's matrix keys reach TEC-OS as before
+  ---
+  duration_ms: 996.436159
+  type: 'test'
+  ...
+# Subtest: under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends it
+ok 45 - under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends it
+  ---
+  duration_ms: 5350.242948
+  type: 'test'
+  ...
+# Subtest: on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY, or as the key read, don't let a key go
+ok 46 - on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY, or as the key read, don't let a key go
+  ---
+  duration_ms: 598.943841
+  type: 'test'
+  ...
+# Subtest: on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan
+ok 47 - on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan
+  ---
+  duration_ms: 2496.02642
+  type: 'test'
+  ...
+# Subtest: on the GLCD board, keys typed while it starts wait for TEC-OS's scan
+ok 48 - on the GLCD board, keys typed while it starts wait for TEC-OS's scan
+  ---
+  duration_ms: 1647.51044
+  type: 'test'
+  ...
+# Subtest: on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>
+ok 49 - on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>
+  ---
+  duration_ms: 2967.329173
+  type: 'test'
+  ...
+# Subtest: under CON TTY from STARTUP.CMD, at MON3> before anything is typed, a screen key is let go and EXIT on serial reaches A>
+ok 50 - under CON TTY from STARTUP.CMD, at MON3> before anything is typed, a screen key is let go and EXIT on serial reaches A>
+  ---
+  duration_ms: 1813.28382
+  type: 'test'
+  ...
+# Subtest: with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is let go and DIR behind it runs
+ok 51 - with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is let go and DIR behind it runs
+  ---
+  duration_ms: 1925.913033
+  type: 'test'
+  ...
+# Subtest: on the GLCD board, keys typed while it starts wait for TEC-OS's scan when STARTUP.CMD is late in A:'s directory
+ok 52 - on the GLCD board, keys typed while it starts wait for TEC-OS's scan when STARTUP.CMD is late in A:'s directory
+  ---
+  duration_ms: 2273.34512
+  type: 'test'
+  ...
+# Subtest: under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO
+ok 53 - under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO
+  ---
+  duration_ms: 6085.337309
+  type: 'test'
+  ...
+# Subtest: a cold boot that a program enters at COLD forgets the startup mark before STARTUP.CMD is read again
+ok 54 - a cold boot that a program enters at COLD forgets the startup mark before STARTUP.CMD is read again
+  ---
+  duration_ms: 1534.919585
+  type: 'test'
+  ...
+# Subtest: no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin
+ok 55 - no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin
+  ---
+  duration_ms: 66.108859
+  type: 'test'
+  ...
+# Subtest: browser stages the whole import before saving or publishing
+ok 56 - browser stages the whole import before saving or publishing
+  ---
+  duration_ms: 16.856749
+  type: 'test'
+  ...
+# Subtest: browser import restores running=true after success
+ok 57 - browser import restores running=true after success
+  ---
+  duration_ms: 9.35913
+  type: 'test'
+  ...
+# Subtest: browser import restores running=true after read
+ok 58 - browser import restores running=true after read
+  ---
+  duration_ms: 3.540771
+  type: 'test'
+  ...
+# Subtest: browser import restores running=true after save
+ok 59 - browser import restores running=true after save
+  ---
+  duration_ms: 5.963684
+  type: 'test'
+  ...
+# Subtest: browser import restores running=false after success
+ok 60 - browser import restores running=false after success
+  ---
+  duration_ms: 38.77186
+  type: 'test'
+  ...
+# Subtest: browser import restores running=false after read
+ok 61 - browser import restores running=false after read
+  ---
+  duration_ms: 3.269369
+  type: 'test'
+  ...
+# Subtest: browser import restores running=false after save
+ok 62 - browser import restores running=false after save
+  ---
+  duration_ms: 3.687299
+  type: 'test'
+  ...
+# Subtest: browser import guard excludes competing operations, running=true, failure=false
+ok 63 - browser import guard excludes competing operations, running=true, failure=false
+  ---
+  duration_ms: 8.484243
+  type: 'test'
+  ...
+# Subtest: browser import guard excludes competing operations, running=true, failure=true
+ok 64 - browser import guard excludes competing operations, running=true, failure=true
+  ---
+  duration_ms: 3.605888
+  type: 'test'
+  ...
+# Subtest: browser import guard excludes competing operations, running=false, failure=false
+ok 65 - browser import guard excludes competing operations, running=false, failure=false
+  ---
+  duration_ms: 3.20935
+  type: 'test'
+  ...
+# Subtest: browser import guard excludes competing operations, running=false, failure=true
+ok 66 - browser import guard excludes competing operations, running=false, failure=true
+  ---
+  duration_ms: 6.164443
+  type: 'test'
+  ...
+# Subtest: a width chosen while an import's files are read is the width on the card the import publishes
+ok 67 - a width chosen while an import's files are read is the width on the card the import publishes
+  ---
+  duration_ms: 14.909503
+  type: 'test'
+  ...
+# Subtest: drive metadata does not publish the intermediate zero during a remount
+ok 68 - drive metadata does not publish the intermediate zero during a remount
+  ---
+  duration_ms: 1.841551
+  type: 'test'
+  ...
+# Subtest: the single page boots to A> with no request but its own, and names both commits
+ok 69 - the single page boots to A> with no request but its own, and names both commits
+  ---
+  duration_ms: 6278.192048
+  type: 'test'
+  ...
+# Subtest: stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words
+ok 70 - stored cards of older ROMs: PICO.SVC's card is upgraded at 40 columns, and a .DRV card is refused in card.mjs's words
+  ---
+  duration_ms: 8437.020737
+  type: 'test'
+  ...
+# Subtest: a card stored before the shell is given the starter's SHELL.SVC and MON3.SVC, keeps the user's files, says so, and boots with the shell
+ok 71 - a card stored before the shell is given the starter's SHELL.SVC and MON3.SVC, keeps the user's files, says so, and boots with the shell
+  ---
+  duration_ms: 4601.933046
+  type: 'test'
+  ...
+# Subtest: a card stored before the shell whose A: directory is full boots without the shell, the page says the shell couldn't be added, and a power cycle tries again without fetching the starter card again
+ok 72 - a card stored before the shell whose A: directory is full boots without the shell, the page says the shell couldn't be added, and a power cycle tries again without fetching the starter card again
+  ---
+  duration_ms: 6287.609009
+  type: 'test'
+  ...
+# Subtest: a card stored before the shell boots without it when the starter card can't be fetched, and the page says the next power-on tries again
+ok 73 - a card stored before the shell boots without it when the starter card can't be fetched, and the page says the next power-on tries again
+  ---
+  duration_ms: 3679.49505
+  type: 'test'
+  ...
+# Subtest: text types go on as text when their bytes are text, high bytes and FF included
+ok 74 - text types go on as text when their bytes are text, high bytes and FF included
+  ---
+  duration_ms: 1.449099
+  type: 'test'
+  ...
+# Subtest: a text type whose bytes aren't text goes on as it is
+ok 75 - a text type whose bytes aren't text goes on as it is
+  ---
+  duration_ms: 0.172516
+  type: 'test'
+  ...
+# Subtest: binary types stay as they are, even when their bytes look like text
+ok 76 - binary types stay as they are, even when their bytes look like text
+  ---
+  duration_ms: 0.116563
+  type: 'test'
+  ...
+# Subtest: other files are text only when they are plain ASCII
+ok 77 - other files are text only when they are plain ASCII
+  ---
+  duration_ms: 3.552789
+  type: 'test'
+  ...
+# Subtest: the control forces text or binary, and by file leaves it to the rule
+ok 78 - the control forces text or binary, and by file leaves it to the rule
+  ---
+  duration_ms: 0.223021
+  type: 'test'
+  ...
+# Subtest: a file's text on the card ends at a ^Z followed only by ^Z and 00h, or at 00h padding in its last record
+ok 79 - a file's text on the card ends at a ^Z followed only by ^Z and 00h, or at 00h padding in its last record
+  ---
+  duration_ms: 1.091649
+  type: 'test'
+  ...
+# Subtest: text round-trips through the card, and everything else comes back byte for byte, in whole records
+ok 80 - text round-trips through the card, and everything else comes back byte for byte, in whole records
+  ---
+  duration_ms: 12.195828
+  type: 'test'
+  ...
+# Subtest: a CP/M program's binary comes off intact: a banner, ^Z and data, or a header and whole 00h records
+ok 81 - a CP/M program's binary comes off intact: a banner, ^Z and data, or a header and whole 00h records
+  ---
+  duration_ms: 2.547378
+  type: 'test'
+  ...
+# Subtest: the web page's bundle uses no Node globals
+ok 82 - the web page's bundle uses no Node globals
+  ---
+  duration_ms: 94.77528
+  type: 'test'
+  ...
+# Subtest: the real store's saveCard throws when IndexedDB can't open, or a put fails
+ok 83 - the real store's saveCard throws when IndexedDB can't open, or a put fails
+  ---
+  duration_ms: 15.924807
+  type: 'test'
+  ...
+# Subtest: the page keeps a card it couldn't save unsaved, says so, and saves it once storage works
+ok 84 - the page keeps a card it couldn't save unsaved, says so, and saves it once storage works
+  ---
+  duration_ms: 7432.586916
+  type: 'test'
+  ...
+# Subtest: the page saves one card at a time, and after three failures says saving keeps failing
+ok 85 - the page saves one card at a time, and after three failures says saving keeps failing
+  ---
+  duration_ms: 2.302244
+  type: 'test'
+  ...
+# Subtest: a file import during a timer's save saves after it, so the stored card holds the copied files
+ok 86 - a file import during a timer's save saves after it, so the stored card holds the copied files
+  ---
+  duration_ms: 2.362064
+  type: 'test'
+  ...
+# Subtest: the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart
+ok 87 - the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart
+  ---
+  duration_ms: 5.091582
+  type: 'test'
+  ...
+# Subtest: a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so
+ok 88 - a saved card that won't read, or won't parse, is left as it is: the page runs a starter unsaved and says so
+  ---
+  duration_ms: 12656.464817
+  type: 'test'
+  ...
+# Subtest: on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory
+ok 89 - on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory
+  ---
+  duration_ms: 4917.276143
+  type: 'test'
+  ...
+# Subtest: missing or invalid saved widths start at 40
+ok 90 - missing or invalid saved widths start at 40
+  ---
+  duration_ms: 3.857942
+  type: 'test'
+  ...
+# Subtest: saved 32, 40 and 80-column choices are retained
+ok 91 - saved 32, 40 and 80-column choices are retained
+  ---
+  duration_ms: 1.361309
+  type: 'test'
+  ...
+# Subtest: unavailable preference storage starts at 40
+ok 92 - unavailable preference storage starts at 40
+  ---
+  duration_ms: 4.744858
+  type: 'test'
+  ...
+# Subtest: the initial HTML selects 40 and retains all three width choices
+ok 93 - the initial HTML selects 40 and retains all three width choices
+  ---
+  duration_ms: 1.926086
+  type: 'test'
+  ...
+# Subtest: the real width handler persists each choice and prepares the card even when storage writes fail
+ok 94 - the real width handler persists each choice and prepares the card even when storage writes fail
+  ---
+  duration_ms: 20.445122
+  type: 'test'
+  ...
+# Subtest: an 80-column fallback fails the same fresh-session assertion
+ok 95 - an 80-column fallback fails the same fresh-session assertion
+  ---
+  duration_ms: 2.205731
+  type: 'test'
+  ...
+# Subtest: missing or invalid saved displays start with the PICO9918 selector
+ok 96 - missing or invalid saved displays start with the PICO9918 selector
+  ---
+  duration_ms: 3.584566
+  type: 'test'
+  ...
+# Subtest: valid saved displays retain their selector and independent width choice
+ok 97 - valid saved displays retain their selector and independent width choice
+  ---
+  duration_ms: 2.844758
+  type: 'test'
+  ...
+# Subtest: unavailable preference storage uses PICO9918 and 40 columns
+ok 98 - unavailable preference storage uses PICO9918 and 40 columns
+  ---
+  duration_ms: 1.303604
+  type: 'test'
+  ...
+# Subtest: an unsupported saved display fails the same startup assertion without validation
+ok 99 - an unsupported saved display fails the same startup assertion without validation
+  ---
+  duration_ms: 0.862359
+  type: 'test'
+  ...
+# Subtest: the card's compact source has the qualified bytes and greeting coordinates
+ok 100 - the card's compact source has the qualified bytes and greeting coordinates
+  ---
+  duration_ms: 276.038952
+  type: 'test'
+  ...
+# {"line":193,"insertAt":28,"cursor":"L193 C33","edited":"HELLO:    DB    \\"Hello from the TEC-OS.\\""}
+# Subtest: the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited
+ok 101 - the page's card builds and runs SAMPLE at the prompt, and again from TED with its hello line edited
+  ---
+  duration_ms: 4278.088922
+  type: 'test'
+  ...
+1..101
+# tests 134
+# suites 0
+# pass 134
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 235755.047067
