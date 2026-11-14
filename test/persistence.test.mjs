@@ -115,3 +115,11 @@ test('primitive or frozen postpublication errors retain an explicit committed ma
     assert.deepEqual([...p.image], [2]); assert.equal(p.status().saved, true);
   }
 });
+
+test('Buffer-backed active images also produce owned snapshots while storage waits', async () => {
+  const held = gate(); let stored;
+  const p = new Persistence({ write: async bytes => { await held.promise; stored = [...bytes]; } });
+  const image = Buffer.from([1]); p.adopt(image); const saving = p.autosave(); await tick();
+  image[0] = 2; p.dirty(); held.release(); await saving;
+  assert.deepEqual(stored, [1]); assert.equal(p.status().saved, false);
+});

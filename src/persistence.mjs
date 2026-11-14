@@ -100,7 +100,7 @@ export class Persistence {
           saved = await this.exclusive(async () => {
             if (!this.image || this.protectedRecord || (this.matches(this.completed) && !this.failure)) return false;
             const token = this.token();
-            const owned = this.image.slice();
+            const owned = new Uint8Array(this.image);
             await this.persist(token, owned);
             return true;
           });

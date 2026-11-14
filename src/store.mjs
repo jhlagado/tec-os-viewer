@@ -45,14 +45,14 @@ export async function loadCard() {
 export async function saveCard(image, { owned = false } = {}) {
   // Snapshot before database open can yield. The coordinator can transfer
   // its already-owned snapshot without allocating a second card copy.
-  const snapshot = owned ? image : image.slice();
+  const snapshot = owned ? image : new Uint8Array(image);
   let db;
   try {
     db = await open();
     await new Promise((resolve, reject) => {
       const tx = db.transaction(STORE, "readwrite");
       tx.objectStore(STORE).put(snapshot.byteOffset === 0 && snapshot.byteLength === snapshot.buffer.byteLength
-        ? snapshot.buffer : snapshot.slice().buffer, KEY);
+        ? snapshot.buffer : new Uint8Array(snapshot).buffer, KEY);
       tx.oncomplete = resolve;
       tx.onerror = () => reject(tx.error);
       tx.onabort = () => reject(tx.error ?? new Error("the save was aborted"));

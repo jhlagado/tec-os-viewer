@@ -57,3 +57,13 @@ test('transaction error rejects the real adapter even if bytes were put', async 
   const db = database(); const saving = saveCard(Uint8Array.of(7)); const refused = assert.rejects(saving, /quota/);
   db.open(); await tick(); db.tx.error = Error('quota'); db.tx.onerror(); await refused; assert.equal(db.closes, 1);
 }));
+
+test('Buffer callers are copied before open and owned Buffer subviews cannot leak backing bytes', async () => muted(async () => {
+  for (const owned of [false, true]) {
+    const db = database(), backing = Buffer.from([99, 4, 5, 88]), image = backing.subarray(1, 3);
+    const saving = saveCard(image, { owned });
+    if (!owned) image[0] = 9;
+    db.open(); await tick(); assert.deepEqual([...db.buffers[0]], [4, 5]);
+    db.tx.oncomplete(); await saving;
+  }
+}));
