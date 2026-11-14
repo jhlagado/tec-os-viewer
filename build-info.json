@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "3494f4a960eb605391e0dca9be1cc80f48bf1d9b",
-  "firmwareCommit": "46cf3f1f1c6ea7ff361a568672a41ab1a7e2c1ee",
+  "viewerCommit": "5e70f27d253c23837c494d282394815682a0b573",
+  "firmwareCommit": "5aacb5e4c80036c254e12355f3ea1c111eb02f24",
   "firmwareRomSha256": "ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3",
   "publication": "standalone-demo",
   "sample": {
@@ -20,8 +20,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 356472,
-      "sha256": "18efe07f103a7286f74bf551c6b482531f1dc082ff0dbc42ee0852ffba86ef43"
+      "bytes": 439864,
+      "sha256": "e9f3522fe9d72afd3bb39108bf2fddf6860909c49c2f9be33d3eaba93225fb9b"
     }
   },
   "defaultColumns": 40,
@@ -30,9 +30,12 @@
       "BAZA.COM",
       "BAZA.RTL",
       "TIMES.BAS",
-      "BOUNCE.BAS"
+      "BOUNCE.BAS",
+      "CAVBASIC.BAS",
+      "CAVBASIC.COM",
+      "CAVERNS.TXT"
     ],
-    "bazaCommit": "50dc512d13e441b766f3b95a69427095d64c311d",
+    "bazaCommit": "8578fe50fdfc66e16015c54f365d1403825979da",
     "tedCommit": "a2fe5563658056f3dab7986b4ef861d1ea05426a"
   },
   "demoSource": "DEMO.ASM",
@@ -48,5 +51,24 @@
       "SHELL.SVC",
       "STARTUP.CMD"
     ]
+  },
+  "caverns": {
+    "source": "CAVBASIC.BAS",
+    "executable": "CAVBASIC.COM",
+    "instructions": "CAVERNS.TXT",
+    "comBytes": 39680,
+    "comSha256": "b18a568223a9862117db8c815504e1a43038a9765c0e815a5c59d940874dbf8d",
+    "sourceSha256": "b8b607dd6c08070ed68de4fe6cd9ced29e16f9ee75691a37c9d9c0c43b462790",
+    "starterRevision": 16,
+    "assemblyIncluded": false,
+    "status": "author gameplay review pending; emulator qualified; no physical-board claim"
+  },
+  "qualification": {
+    "viewerTests": 134,
+    "viewerFailures": 0,
+    "browser": "Chromium 156.0.8078.79",
+    "cavernsExplicit80ColumnTests": 7,
+    "physicalBoardTested": false,
+    "authorGameplayReview": "pending"
   }
 }
