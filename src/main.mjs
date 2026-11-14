@@ -586,7 +586,11 @@ function cardInfo() {
 function liveDrives(m) {
   const at = m.symbols.get("DRVIDX");
   const pos = m.symbols.get("STPOS");
-  if (at === undefined || pos === undefined || m.sysCtrl & 0x04 || m.read(pos) < 0x80) return null;
+  // TNMOUNT removes the old selection before publishing the new one. A frame
+  // may end between those writes: treating that transient zero as a finished
+  // unmount can move the file selector to another drive. Input waits are the
+  // firmware's stable boundary, with pending card writes flushed as well.
+  if (!m.waitingForInput() || at === undefined || pos === undefined || m.sysCtrl & 0x04 || m.read(pos) < 0x80) return null;
   return [0, 1, 2, 3].map((d) => m.read(at + d));
 }
 
