@@ -82,6 +82,7 @@ test("ROM CD restores SYSTEM and the shell after a reset with GAMES on A", { tim
   await page.waitForFunction(() => /A: SYSTEM/.test(document.getElementById("cardinfo").textContent), null, { timeout: 60_000 });
   await page.keyboard.type("shell.svc\n");
   await shellPrompt();
+  assert.equal(await page.locator("#drive").inputValue(), "A", "transient unmount must not switch the file selector to B");
   const rows = page.locator("#filelist tbody tr");
   await rows.filter({ hasText: "HELLO3.ASM" }).waitFor({ timeout: 60_000 });
   assert.equal(await rows.filter({ hasText: "HELLO3.BIN" }).count(), 0, "the new starter supplies the source only");

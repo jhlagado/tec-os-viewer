@@ -231,3 +231,23 @@ test("a width chosen while an import's files are read is the width on the card t
   assert.ok(a.find('NEW.TXT'), 'the import published');
   assert.equal(new TextDecoder().decode(a.read('WIDTH.TXT')).replace(/\0+$/, ''), '40', 'and the card holds the width chosen last');
 });
+
+test('drive metadata does not publish the intermediate zero during a remount', () => {
+  const source = readFileSync(new URL('../src/main.mjs', import.meta.url), 'utf8');
+  const context = {};
+  runInNewContext(fn(source, 'function liveDrives('), context);
+  let waiting = true;
+  const selected = [1, 2, 3, 0];
+  const m = {
+    symbols: new Map([['DRVIDX', 100], ['STPOS', 10]]), sysCtrl: 0,
+    waitingForInput: () => waiting,
+    read: (address) => address === 10 ? 0x80 : selected[address - 100],
+  };
+  assert.deepEqual(Array.from(context.liveDrives(m)), [1, 2, 3, 0]);
+  waiting = false; selected[0] = 0;
+  assert.equal(context.liveDrives(m), null, 'mid-remount mapping is not a UI selection');
+  selected[0] = 4;
+  assert.equal(context.liveDrives(m), null, 'wait for the complete firmware operation');
+  waiting = true;
+  assert.deepEqual(Array.from(context.liveDrives(m)), [4, 2, 3, 0]);
+});
