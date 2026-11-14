@@ -1,3 +1,19 @@
+# Current Caverns integration
+
+The current TEC-OS gitlink is `21518f7`, with ROM SHA-256
+`ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3`.
+Starter revision 16 contains sixteen files. The new files are the author-refined
+original BASIC game's CAVBASIC.BAS, CAVBASIC.COM and CAVERNS.TXT. BAZA compiler
+and runtime are pinned at `8578fe5`; executable size is 39,680 bytes. All exact
+ROM, recipe and file identities are in `pins.json`.
+
+The upstream source and integration branches are published. The firmware test
+`test/caverns-ted.test.mjs` qualifies the exact edit/save/build/run/reopen cycle;
+`test/caverns.test.mjs` qualifies native game completion and all 54 rooms.
+Neither is physical TEC-1G evidence. Human gameplay review remains to be done.
+The existing qualification below is retained as a historical baseline; its
+older file counts, recipe digest and BAZA pin do not describe this update.
+
 # Viewer qualification and source ownership
 
 The viewer's firmware dependency is its `tec-os/` gitlink,

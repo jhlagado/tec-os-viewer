@@ -279,3 +279,21 @@ async function recordAtKeyWait(drive) {
 test("in the page's machine, a record a program writes into an existing block of A: is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, () => recordAtKeyWait("A"));
 
 test("in the page's machine, logged on B:, which is then the drive written behind, a record a program writes into a file there is in the card image while the program waits at BDOS 1", { timeout: 300_000 }, () => recordAtKeyWait("B"));
+
+// Verify the actual Viewer recipe, rather than a separately constructed disk.
+test("Viewer Caverns disk includes BASIC source/executable, rebuilds identically and runs at 80 columns", { timeout: 600_000 }, async () => {
+  const image = await card(), a = driveA(image);
+  for (const name of ["CAVBASIC.BAS", "CAVBASIC.COM", "CAVERNS.TXT"]) assert.ok(names(image).includes(name));
+  assert.ok(!names(image).includes("CAVERNS.COM"), "assembly comparison stays development-only");
+  const expected = createHash("sha256").update(a.read("CAVBASIC.COM")).digest("hex");
+  const m = power(image, "pico", 80);
+  m.runUntilChecked(() => m.ready(), LIMIT, "Viewer shell");
+  keys(m, "baza cavbasic\r", "Viewer native Caverns rebuild", () => m.ready());
+  assert.match(m.text(), /COM written/);
+  assert.equal(createHash("sha256").update(a.read("CAVBASIC.COM")).digest("hex"), expected);
+  keys(m, "cavbasic\r", "Viewer Caverns launch", () => m.text().endsWith("? "));
+  assert.match(m.text(), /Find the lost treasure/);
+  keys(m, "quit\r", "Viewer game quit", () => m.text().endsWith("? ") && /Another adventure/.test(m.text()));
+  keys(m, "n\r", "Viewer return to shell", () => m.ready());
+  assert.deepEqual(m.violations, []);
+});
