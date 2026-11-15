@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import { prepareCard } from "../tec-os/host/card.mjs";
 import { createContainer, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
+import { pageHarness } from "./lib/lifecycle-page.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 
 const source = readFileSync(new URL("../src/main.mjs", import.meta.url), "utf8");
@@ -66,45 +67,25 @@ test("the initial HTML selects 40 and retains all three width choices", () => {
 
 test("the real width handler persists each choice and prepares the card even when storage writes fail", async () => {
   for (const writeFails of [false, true]) {
-    const page = startup(source, null, { writeFails });
     const image = createContainer([{ geometry: "G1M", label: "SYSTEM", mount: "A" }]);
     const v = parseContainer(image).volumes[0];
     const a = new CpmVolume(volumePayload(image, v), v.g);
     a.write("STARTUP.CMD", Buffer.from("USER 0\r\n\x1a", "latin1"));
-    page.state.card = image;
-    const messages = [];
-    let handler, powers = 0;
-    const profile = { addEventListener: (type, fn) => { assert.equal(type, "change"); handler = fn; } };
-    Object.assign(page.context, {
-      $: (id) => { assert.equal(id, "profile"); return profile; },
-      // A bare card, not one to upgrade.
-      needsStarter: () => false,
-      prepareCard,
-      loadRom: async () => ({ rom: new Uint8Array(0), symbols: new Map() }),
-      Machine: class { constructor(options) { assert.equal(options.sdImage, image); powers++; } },
-      appendSerial: (text) => messages.push(text),
-      refreshCard: () => {},
-    });
-    const lifeStart = source.indexOf("let turn = Promise.resolve();");
-    const lifeEnd = source.indexOf("\nfunction reset()", lifeStart);
-    const controlStart = source.indexOf('$("profile").value =');
-    const controlEnd = source.indexOf('$("reset").addEventListener', controlStart);
-    assert.ok(lifeStart >= 0 && lifeEnd > lifeStart && controlStart >= 0 && controlEnd > controlStart);
-    runInNewContext(`${source.slice(lifeStart, lifeEnd)}\n${source.slice(controlStart, controlEnd)}\nthis.powerOn = powerOn;`, page.context);
-    assert.equal(profile.value, "40");
+    const preference = startup(source, null, { writeFails });
+    const { writes, stored } = preference;
+    const page = pageHarness(image, { prepareCard, localStorageSet: preference.context.localStorageSet });
+    assert.equal(page.elements.profile.value, "40");
     await page.context.powerOn();
     assert.equal(Buffer.from(a.read("STARTUP.CMD", { text: true })).toString("latin1"), "CON PICO 40\nUSER 0\n");
     for (const width of ["32", "80", "40"]) {
-      await handler({ target: { value: width } });
-      expectWidth(page, width);
-      // The firmware writes a line for every width (TEC-OS's host/card.mjs).
-      const expected = `CON PICO ${width}\nUSER 0\n`;
-      assert.equal(Buffer.from(a.read("STARTUP.CMD", { text: true })).toString("latin1"), expected);
-      assert.equal(page.stored.get("tecos.width"), writeFails ? undefined : width);
+      page.elements.profile.value = width;
+      await page.handlers.profile({ target: { value: width } });
+      assert.equal(page.state.width, width);
+      assert.equal(Buffer.from(a.read("STARTUP.CMD", { text: true })).toString("latin1"), `CON PICO ${width}\nUSER 0\n`);
+      assert.equal(stored.get("tecos.width"), writeFails ? undefined : width);
     }
-    assert.deepEqual(page.writes, [["tecos.width", "32"], ["tecos.width", "80"], ["tecos.width", "40"]]);
-    assert.equal(powers, 4);
-    assert.deepEqual(messages, Array(4).fill("\n[power on]\n"));
+    assert.deepEqual(writes, [["tecos.width", "32"], ["tecos.width", "80"], ["tecos.width", "40"]]);
+    assert.deepEqual(page.messages, Array(4).fill("\n[power on]\n"));
   }
 });
 

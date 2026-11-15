@@ -277,3 +277,8 @@ td:nth-child(3) {
   border-color: var(--accent);
   color: #fff;
 }
+
+.persistence { border-left: 2px solid #61df79; padding-left: .8rem; margin: 1rem 0; }
+.persistence p { margin: .35rem 0; }
+.restart-note { grid-column: 1 / -1; }
+#cardproblem:empty { display: none; }

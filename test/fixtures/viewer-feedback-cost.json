@@ -1,0 +1,57 @@
+{
+  "schema": "viewer-feedback-cost-criteria-v1",
+  "scope": {
+    "display": "PICO9918 40 columns",
+    "cardBytes": 13631488,
+    "configuredCpuHz": 4000000,
+    "contextCore": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
+    "browser": "explicit real Chromium; host observations, no physical-board or universal timing guarantee"
+  },
+  "minimumPublicMHz": 3.9,
+  "freshRateUpdates": 4,
+  "requireNativeSaveObservationOverlap": true,
+  "maximumIndividualControlRoundTripMs": 100,
+  "individualControlStates": [
+    "Run",
+    "Pause",
+    "Run"
+  ],
+  "representativeCopyCount": 8,
+  "maximumRepresentativeCopyMs": 50,
+  "baseline": {
+    "viewer": "adf713bc7320f4b7e18bb3a4b3fc1c79f8e9f92f",
+    "pages": "0366ec44b82a6edd7839a979550f6c243f05a0d2",
+    "standaloneBytes": 443348,
+    "standaloneSha256": "8843bfc5d459e7642d367668864f3e26963ee5f4d1e52c05b7763bab632430ae",
+    "normalizedEmbeddedModuleBytes": 130450,
+    "normalization": "strip sourceMappingURL line; trim trailing whitespace; append one LF"
+  },
+  "maximumAddedNormalizedModuleBytes": 16384,
+  "basis": {
+    "semanticMeasurementPacket": "guest-save-transaction-runtime01",
+    "manifestSha256": "d3cf56c08c2165b95f6027e6608c97bd796bd80c43283038937ee8996a629248",
+    "observedPublicMHz": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "observedClickMs": [
+      36.842973,
+      37.703737,
+      39.710607
+    ],
+    "observedRepresentativeCopyMs": [
+      5.4,
+      4.3,
+      10.5,
+      29.8,
+      37.2,
+      33.8,
+      34.6,
+      34.3
+    ],
+    "observedAddedNormalizedModuleBytes": 15113
+  },
+  "memoryScope": "one active owned snapshot plus coalesced intent is a source/module invariant; RSS experiment controls and post-copy heap samples are recorded, no new general heap/RSS allowance"
+}

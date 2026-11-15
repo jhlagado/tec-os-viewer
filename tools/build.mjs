@@ -16,6 +16,7 @@ import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { check } from "./tecos.mjs";
+import { checkGuestProfile } from "./guest-profile.mjs";
 import { validateNotice } from "./notices.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -86,6 +87,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   // nothing that was there before.
   rmSync(resolve(OUT, "build.json"), { force: true });
   check(); // Check ROM and card-file pins.
+  checkGuestProfile();
   const before = sourceState();
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(resolve(OUT, "roms"), { recursive: true });

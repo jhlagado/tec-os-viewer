@@ -1,3 +1,43 @@
+# Persistence and recovery feedback
+
+This source separates the guest block cache, the current card image and completed
+browser storage. The firmware pin remains `241b4381007a6b1e7f179c4f8358c65d564e06ae`;
+its ROM, card-file and recipe identities stay in `pins.json`. Native cycle/state
+and physical-memory purity evidence is separate from browser storage completion.
+The observer admits only the exact bound firmware/memory/checkpoint model and
+otherwise reports unavailable or last-check information.
+
+Focused coverage includes owned snapshot/token ordering, actual IndexedDB
+completion/failure/retry, protected unread records, lifecycle races, native
+guest errors and real reporter callbacks. Actual-page cases distinguish a prior
+stored card from pending RAM and hold a native transaction after put success:
+Saving remains visible until native completion, while the paused guest retains
+its pending data. Full downloaded-card/IDB hashes and independent CP/M byte
+predictions check the physical image. No automatic guest flush or overall
+“All saved” indication is introduced.
+
+The [cost criteria](../test/fixtures/viewer-feedback-cost.json) are additive
+checks for the stock13MiB card on PICO40: four fresh public rate notifications
+of at least3.9MHz, an observed interval overlapping the unheld native save,
+three individual pause/run/pause clicks within100ms each, eight representative
+owned card copies within50ms each, and at most16KiB additional normalized
+module bytes against the named published baseline. These finite host checks
+include automation overhead and allocation pressure; they do not establish
+universal CPU percentages, instantaneous peak memory or physical-board timing.
+The copy measurements are representative stored-byte copies, not intercepted
+coordinator snapshots. Memory retains the single in-flight snapshot/coalesced
+intent contract; no general RSS or heap allowance is changed.
+
+The complete ordinary `npm test` command remains required twice at the same
+clean final source, with unchanged bound inputs, all authored cases passing
+and no filters/skips. The standalone build must match that source and firmware
+before publication. Exact run counts, component pins, payload hashes and
+publication results are retained in Origo and in the public demo's
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json).
+Earlier semantic/cost observations are not retroactively treated as registered
+gate passes. This is emulator/browser qualification; physical-board testing
+and an application's unclosed work remain outside its durability claims.
+
 # Housekeeping recipient integration
 
 The firmware gitlink is `241b4381007a6b1e7f179c4f8358c65d564e06ae`, with
