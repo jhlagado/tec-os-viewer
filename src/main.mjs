@@ -85,12 +85,14 @@ let turn = Promise.resolve();
 function lifecycle(fn) {
   state.observer?.invalidate();
   state.lifecyclePending++;
+  refreshCopyAvailability();
   persistence.beginLifecycle();
   const run = turn.then(fn);
   turn = run.catch(() => {});
   return run.finally(() => {
     state.lifecyclePending--;
     persistence.endLifecycle();
+    refreshCopyAvailability();
   });
 }
 
@@ -248,6 +250,7 @@ function frame(now) {
     windowStart = now;
   }
   refreshGuestStatus();
+  refreshCopyAvailability();
   requestAnimationFrame(frame);
 }
 
@@ -608,6 +611,25 @@ function liveDrives(m) {
   return [0, 1, 2, 3].map((d) => m.read(at + d));
 }
 
+function copyVolume(drive) {
+  const live = state.card && state.machine && liveDrives(state.machine);
+  const index = live?.[drive.charCodeAt(0) - 65];
+  return index ? parseContainer(state.card).volumes[index - 1] : null;
+}
+
+function refreshCopyAvailability() {
+  let ready = false;
+  if (!state.lifecyclePending) {
+    try { ready = Boolean(copyVolume($("drive").value)); }
+    catch { /* The import guard reports invalid card details on submission. */ }
+  }
+  $("putfile").disabled = !ready;
+  const text = ready ? "Copy available; copying resets the machine."
+    : state.lifecyclePending ? "Copy unavailable during a card operation."
+    : "Copy unavailable; wait for console input and a selected drive.";
+  if ($("copyavailability").textContent !== text) $("copyavailability").textContent = text;
+}
+
 /** INFO's volumes, each with the drive it is on: the running machine's, else the card's. */
 function drivesOf(info) {
   const live = state.drives;
@@ -708,10 +730,7 @@ $("putfile").addEventListener("change", (e) => {
   return lifecycle(async () => {
     if (!state.card) throw new Error("no card");
     const machine = state.machine;
-    const live = machine && liveDrives(machine);
-    const info = parseContainer(state.card);
-    const index = live?.[drive.charCodeAt(0) - 65];
-    const volume = index && info.volumes[index - 1];
+    const volume = copyVolume(drive);
     if (!volume) throw new Error("the live drive selection is unavailable; try at the command prompt");
     const staged = state.card.slice();
     const fs = new CpmVolume(volumePayload(staged, volume), volume.g, { readOnly: volume.readOnly });
@@ -741,7 +760,10 @@ $("putfile").addEventListener("change", (e) => {
     }
   }).catch(err => fileProblem(`Not copied: ${err.message}`, "copy"));
 });
-$("drive").addEventListener("change", refreshFiles);
+$("drive").addEventListener("change", () => {
+  refreshFiles();
+  refreshCopyAvailability();
+});
 
 // ---- Controls
 

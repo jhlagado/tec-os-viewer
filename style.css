@@ -87,6 +87,10 @@ button:hover,
 .file-button:hover {
   border-color: var(--accent);
 }
+.file-button:has(input:disabled) {
+  opacity: 0.55;
+  cursor: default;
+}
 .status {
   color: var(--muted);
   font-size: 0.85rem;

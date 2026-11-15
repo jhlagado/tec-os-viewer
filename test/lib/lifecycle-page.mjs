@@ -50,7 +50,7 @@ export function pageHarness(image, overrides = {}) {
   const life = pageSource.slice(pageSource.indexOf('// ---- Machine lifecycle'), pageSource.indexOf('// ---- Run loop'));
   const events = pageSource.slice(pageSource.indexOf('async function useCard('), pageSource.indexOf('// ---- Start'));
   const runLoop = pageSource.slice(pageSource.indexOf("// ---- Run loop"), pageSource.indexOf("// ---- Rendering"));
-  runInNewContext(`${life}\n${functionSource('liveDrives')}\n${events}\n${runLoop}\nthis.frame=frame;this.persistence=persistence;this.lifecycle=lifecycle;this.powerOn=powerOn;this.reset=reset;`, context);
+  runInNewContext(`${life}\n${functionSource('liveDrives')}\n${functionSource('copyVolume')}\n${functionSource('refreshCopyAvailability')}\n${events}\n${runLoop}\nthis.frame=frame;this.persistence=persistence;this.lifecycle=lifecycle;this.powerOn=powerOn;this.reset=reset;`, context);
   context.persistence.adopt(state.card, { stored: true });
   const start = () => { runInNewContext(`${pageSource.slice(pageSource.indexOf("// ---- Start"))}\nthis.startup=startup;`, context); return context.startup; };
   return { start, context, state, persistence: context.persistence, handlers, elements, messages, writes, timers };

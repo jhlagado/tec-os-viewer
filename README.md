@@ -123,6 +123,12 @@ changed card when browser saving is available, then resets the guest. New starte
 card and Open image also replace the card. The saving panel reports stages rather
 than an overall guarantee that every application change has been saved.
 
+Copy is disabled while a card operation is running or the current drive selection
+cannot be read safely. Its availability line is separate from save and error
+status. If the guest leaves input wait while a file picker is open, Copy can
+still refuse without reading the files or changing the card; return to console
+input and select the files again. Availability does not certify a flushed cache.
+
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.
 

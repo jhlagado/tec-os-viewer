@@ -88,7 +88,7 @@
           and an application's unclosed buffers or file metadata. Browser storage can fail or be cleared.</p>
         <div class="files">
           <label>Drive <select id="drive"></select></label>
-          <label class="file-button">Copy file to drive<input type="file" id="putfile" hidden multiple /></label>
+          <label class="file-button">Copy file to drive<input type="file" id="putfile" aria-describedby="copyavailability" hidden multiple disabled /></label>
           <label>Copy as
             <select id="textmode" aria-describedby="textmode-note">
               <option value="auto" selected>text or binary, by file</option>
@@ -97,6 +97,7 @@
             </select>
           </label>
         </div>
+        <p class="note" id="copyavailability">Copy unavailable during startup.</p>
         <p class="note" id="textmode-note">Copy as applies to Copy file to drive and to Download.
           With "text or binary, by file", a file whose bytes are all text goes on the card as text, with CRLF
           line ends and a ^Z at the end, and comes off with LF line ends and no ^Z; .COM, .SVC, .RTL, .BIN and

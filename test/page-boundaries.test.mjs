@@ -101,8 +101,43 @@ test('drive metadata does not publish the intermediate zero during a remount', (
 
 test('an unavailable live import target refuses without reading files or changing bytes', async () => {
   const image = card(), before = image.slice(), p = pageHarness(image); let reads = 0;
+  p.state.drives = [1, 0, 0, 0];
   p.state.machine.waitingForInput = () => false;
   await p.handlers.putfile(event([{ name: 'NO.TXT', arrayBuffer: async () => { reads++; return new ArrayBuffer(1); } }]));
   assert.equal(reads, 0); assert.equal(p.writes.length, 0); assert.deepEqual(image, before);
   assert.match(p.elements.cardproblem.textContent, /live drive selection is unavailable/);
+});
+
+test('Copy availability follows fresh input, volume, drive and lifecycle state even while paused', async () => {
+  const p = pageHarness(card(), { state: { running: false } });
+  let waiting = true, selected = 1;
+  const machine = p.state.machine;
+  machine.waitingForInput = () => waiting;
+  machine.read = at => at === 10 ? 0x80 : at === 100 ? selected : 0;
+  p.state.drives = [1, 0, 0, 0];
+  p.context.$('cardproblem').textContent = 'Earlier file error';
+  p.context.frame(10);
+  assert.equal(p.elements.putfile.disabled, false);
+  assert.match(p.elements.copyavailability.textContent, /^Copy available/);
+  waiting = false; selected = 0;
+  p.context.frame(20);
+  assert.equal(p.elements.putfile.disabled, true, 'cached mapping cannot authorize a transient remount');
+  waiting = true; selected = 2;
+  p.context.frame(30);
+  assert.equal(p.elements.putfile.disabled, true, 'a descriptor beyond the card is unavailable');
+  selected = 1;
+  p.elements.drive.value = 'B'; p.handlers.drive();
+  assert.equal(p.elements.putfile.disabled, true);
+  p.elements.drive.value = 'A'; p.handlers.drive();
+  assert.equal(p.elements.putfile.disabled, false);
+  const held = gate(), pending = p.context.lifecycle(() => held.promise);
+  assert.equal(p.elements.putfile.disabled, true, 'admission disables synchronously');
+  assert.match(p.elements.copyavailability.textContent, /card operation/);
+  held.release(); await pending;
+  assert.equal(p.elements.putfile.disabled, false, 'completion refreshes without another guest step');
+  assert.equal(p.state.running, false);
+  assert.equal(p.elements.cardproblem.textContent, 'Earlier file error');
+  p.state.machine = null;
+  p.context.frame(40);
+  assert.equal(p.elements.putfile.disabled, true);
 });
