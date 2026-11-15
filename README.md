@@ -24,10 +24,10 @@ from Baza `8578fe5` and `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNC
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
-GAMES and SPARE on no drive. A: holds its 16 files, `BAZA.COM`, `BAZA.RTL`,
+GAMES and SPARE on no drive. A: holds its 15 files, `BAZA.COM`, `BAZA.RTL`,
 `BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `MON3.SVC`,
 `SAMPLE.ASM`, `SHELL.SVC`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
-`TIMES.BAS`, plus `CAVBASIC.BAS`, `CAVBASIC.COM` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
+`TIMES.BAS`, plus `CAVBASIC.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
@@ -50,13 +50,16 @@ its keypad does too), and `EXIT` to `A:SYSTEM>`.
 
 ## BASIC Caverns
 
-Select PICO9918 at **80 columns**, then type `CAVBASIC`. The ready-to-run
-39,680-byte executable and its author-refined original BASIC source are on
-SYSTEM. `TYPE CAVERNS.TXT` gives instructions. `TED CAVBASIC.BAS` opens the
-source; `BAZA CAVBASIC` rebuilds it with the shell resident. The matching BAZA
-compiler/runtime pair is on the card. The game does not load BAZA.RTL at runtime.
-QUIT followed by N returns to the shell. This BASIC version has no game saves.
-The assembly Caverns80 comparison is not included in the release disk.
+Select PICO9918 at **80 columns**, type `BAZA CAVBASIC` to compile the supplied
+source, then `CAVBASIC` to play. The 39,808-byte executable is created on your
+card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
+`TED CAVBASIC.BAS` opens the author-refined BASIC source. The matching BAZA
+compiler/runtime pair is on the card; compilation works with the shell resident.
+The game includes its selected runtime rather than loading BAZA.RTL separately.
+QUIT followed by N returns to the shell. Returning home banks treasures and
+shows the score while permitting more exploration. Developer checkpoints are
+separate from this public source-only disk; there is no in-game SAVE command.
+The assembly Caverns80 comparison remains development-only.
 
 If this browser already holds a card, download it before selecting **New
 starter card** to receive the refreshed files. Reloading alone preserves your
