@@ -1,5 +1,5 @@
 {
-  "viewerCommit": "adf713bc7320f4b7e18bb3a4b3fc1c79f8e9f92f",
+  "viewerCommit": "0598b8f77392fc35d8f4167e215f32c39d48ea98",
   "firmwareCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
   "firmwareRomSha256": "c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f",
   "publication": "standalone-demo",
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 443348,
-      "sha256": "8843bfc5d459e7642d367668864f3e26963ee5f4d1e52c05b7763bab632430ae"
+      "bytes": 461048,
+      "sha256": "b7873f478b00c50c2b10beed6240c678695b5bc0ddce5644149c19e40ca2e1ad"
     }
   },
   "defaultColumns": 40,
@@ -57,15 +57,14 @@
     "status": "author gameplay review pending; emulator qualified; no physical-board claim"
   },
   "qualification": {
-    "viewerTests": 134,
+    "viewerTests": 202,
     "viewerFailures": 0,
     "viewerCompleteRuns": 2,
-    "viewerQualifiedCommit": "adf713bc7320f4b7e18bb3a4b3fc1c79f8e9f92f",
+    "viewerQualifiedCommit": "0598b8f77392fc35d8f4167e215f32c39d48ea98",
     "viewerRunDurationsMs": [
-      185774.997923,
-      184966.560592
+      202613.232158,
+      200553.783312
     ],
-    "viewerInputManifestSha256": "cd4e87c32e766ec117691774563cd341abf55505bd0f31affc01feaa8013566d",
     "browser": "Chromium 156.0.8078.79 (explicit Debian system executable)",
     "firmwareTests": 1383,
     "firmwareFailures": 0,
@@ -73,7 +72,17 @@
     "firmwareQualifiedCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
     "cavernsExplicit80ColumnTests": 7,
     "physicalBoardTested": false,
-    "authorGameplayReview": "pending"
+    "authorGameplayReview": "pending",
+    "viewerInputManifestsSha256": [
+      "401cba876babaa5e842a5c39107dcb2745392d964cbf80a2c870bfe1c3792462",
+      "730647a0bf9f6216ff219325aa1e1ad67f4a24b49d1424c0cddf24a3793f0216"
+    ],
+    "viewerRunReceiptSha256": [
+      "76056f00e44210ce4d1bfdd323d1cff47331def3d6bcb1964fe7b86ed7d09625",
+      "8de46d310657820a79828d0479c14e3306843a98e2f25071e89c085ce74c6052"
+    ],
+    "viewerFullMethodSha256": "f1d621f24c019948c6d7f780395648a306da7da71b219fb68f4101e1ea6f23e5",
+    "viewerInputScope": "Two exact attempt manifests; same source/materialized/SDK bytes, only declared external profile/limits identities differ."
   },
   "historicalSample": {
     "viewerCommit": "0b36cbeaa501389e5c01fd7ad518019c60809aea",
@@ -89,5 +98,56 @@
     "starterRecipeCanonicalSha256": "cfad4c0e6e788d1b9713d3e34647799d0a8e22a17aca09b4a6a13cbed1e009c7",
     "starterImageSha256": "a7d4e6c8ec7953357e9d92eb6a3373a8183c017e9a7216d36553263ecff6ff27",
     "mon3AndTas": "Original core components retained; separately qualified MON3 load-address and TAS HEX branches are not adopted by this build."
+  },
+  "persistenceFeedback": {
+    "policy": "Guest cache observations, current emulated card and completed browser transactions are separate. Paused guests are not stepped or forcibly flushed. File copying uses fresh live drive selection and resets the guest, discarding pending RAM/unclosed work.",
+    "qualification": "Emulator/browser evidence only; not an overall All saved indication or physical-board power-loss guarantee.",
+    "criteriaSha256": "33b38240b125e9d76979b082a680bdd6133bcfdf4d4d2b9b629589b94c452249",
+    "publicRatesMHz": [
+      [
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        3.98,
+        4,
+        4,
+        4
+      ]
+    ],
+    "minimumPublicMHz": 3.9,
+    "nativeTransactionIntervalOverlap": [
+      true,
+      true
+    ],
+    "individualControlMaxMs": [
+      41.315891,
+      41.02147
+    ],
+    "representativeCopyMaxMs": [
+      42.6,
+      39.3
+    ],
+    "normalizedModuleBytes": 146011,
+    "baselineNormalizedModuleBytes": 130450,
+    "maximumAdditionalModuleBytes": 16384,
+    "normalizedModuleSha256": "4fc6884ec8dabf637c61e9944d098b67a26af6439066b6d2230ff0ea201fe97b"
+  },
+  "standaloneQa": {
+    "tests": 1,
+    "failures": 0,
+    "completeRuns": 1,
+    "normalBuild": "npm run web; node tools/page.mjs; whole existing single-page smoke",
+    "emittedAndSmokeFinalHtmlIdentical": true,
+    "htmlBytes": 461048,
+    "htmlSha256": "b7873f478b00c50c2b10beed6240c678695b5bc0ddce5644149c19e40ca2e1ad",
+    "embeddedAssets": 19,
+    "externalAssetRequests": 0,
+    "pageErrors": 0,
+    "receiptSha256": "d9af601598ffe10444f3f9428f2fdea1df0ef102d541c0cf50bc7cf0057283e9",
+    "methodSha256": "747b46179129871413edc24f22eda30be83b55a88bf80d73d0d70dd4d47c1e87",
+    "scope": "Artifact identity plus unchanged smoke assertions; no separate inner HTTP-response digest was captured."
   }
 }
