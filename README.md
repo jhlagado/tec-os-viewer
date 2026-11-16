@@ -51,7 +51,7 @@ its keypad does too), and `EXIT` to `A:SYSTEM>`.
 ## BASIC Caverns
 
 Select PICO9918 at **80 columns**, type `BAZA CAVBASIC` to compile the supplied
-source, then `CAVBASIC` to play. The 39,808-byte executable is created on your
+source, then `CAVBASIC` to play. The 39,680-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
 `TED CAVBASIC.BAS` opens the author-refined BASIC source. The matching BAZA
 compiler/runtime pair is on the card; compilation works with the shell resident.
@@ -59,7 +59,9 @@ The game includes its selected runtime rather than loading BAZA.RTL separately.
 QUIT followed by N returns to the shell. Returning home banks treasures and
 shows the score while permitting more exploration. Developer checkpoints are
 separate from this public source-only disk; there is no in-game SAVE command.
-The assembly Caverns80 comparison remains development-only.
+The listing uses ten-step line numbers, uppercase keywords and lowercase
+variables, leaving room for reader experiments. The assembly Caverns80
+comparison remains development-only.
 
 If this browser already holds a card, download it before selecting **New
 starter card** to receive the refreshed files. Reloading alone preserves your
