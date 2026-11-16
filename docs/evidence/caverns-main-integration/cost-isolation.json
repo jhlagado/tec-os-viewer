@@ -1,0 +1,10 @@
+{
+  "scope": "Temporarily suspend the competing firmware test runner and its workers for the registered browser cost check; resume in finally",
+  "pausedProcesses": [
+    64823,
+    71880
+  ],
+  "resumed": true,
+  "elapsedSeconds": 10.678230047225952,
+  "exitCode": 0
+}

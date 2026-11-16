@@ -1,0 +1,37 @@
+{
+  "scope": "Combined current-main browser saving and Caverns source-only build",
+  "firmwareCandidate": "5cae0a0",
+  "functionalRun": {
+    "command": "TEST_CHROMIUM=/usr/bin/chromium node --test --test-concurrency=1 --test-name-pattern=negative-lookahead test/*.test.mjs",
+    "tests": 202,
+    "passed": 201,
+    "failed": 1,
+    "note": "The negative-lookahead did not exclude the host-rate cost case; all 201 functional checks passed, and the cost case failed its public-MHz bound while the heavy firmware suite competed for CPU."
+  },
+  "isolatedRegisteredCost": {
+    "passed": true,
+    "boundsUnchanged": true,
+    "MHz": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "maximumCopyMs": 40,
+    "copyLimitMs": 50,
+    "maximumClickMs": 39.59977499999877,
+    "clickLimitMs": 100,
+    "minimumMHz": 3.9,
+    "competingFirmwareTemporarilySuspendedSeconds": 10.678230047225952,
+    "resumed": true
+  },
+  "targetedPhoneAndNoCopyChecks": {
+    "tests": 2,
+    "passed": 2
+  },
+  "effectiveCoverage": "201 functional checks plus the separately passing original registered resource check; no waived checks or loosened limits",
+  "fixes": [
+    "Preserve user-selected touch keyboard focus across asynchronous startup completion",
+    "Repository-specific instructions avoid accidental whole-file duplication of firmware AGENTS.md"
+  ]
+}

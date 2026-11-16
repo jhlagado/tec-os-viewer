@@ -1,0 +1,10 @@
+✔ no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin (25.479369ms)
+✔ on a phone, tapping the screen and typing dir on the phone's keyboard lists the directory (5687.803384ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5895.853679
