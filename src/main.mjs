@@ -808,5 +808,7 @@ const startup = lifecycle(async () => {
   await persistence.autosave();
   refreshCard();
   requestAnimationFrame(frame);
-  $("tms").focus();
+  // An async startup may finish after the user has focused the phone keyboard
+  // or another control. Only supply default focus while none was selected.
+  if (document.activeElement === document.body) $("tms").focus();
 }).catch(err => fileProblem(`Startup failed: ${err.message}`, "startup"));

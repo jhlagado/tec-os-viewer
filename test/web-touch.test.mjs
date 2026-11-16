@@ -67,6 +67,8 @@ test("on a phone, tapping the screen and typing dir on the phone's keyboard list
   const screen = () => page.evaluate(() => globalThis.tecos.screen());
   await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>$/.test(l)), null, { timeout: 60_000 });
 
+  assert.equal(await page.evaluate(() => document.activeElement?.id), focused.id,
+    "startup completion preserves the phone keyboard's focus");
   await page.evaluate(phoneType, "dir\n");
   await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^\d+ free on A:SYSTEM$/.test(l)), null, { timeout: 60_000 }).catch(() => {});
   const lines = await screen();
