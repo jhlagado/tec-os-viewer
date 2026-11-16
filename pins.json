@@ -1,9 +1,9 @@
 {
   "rom": "c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f",
-  "recipe": "16c292513f10b80a128fc18efbf3ea4403a5f03b4b4f54803d2ab925684fce29",
+  "recipe": "d42afaa209a66cda36912caed03ffc263fa6ce5014ec2a82048da53ffb0bdb5d",
   "files": {
-    "BAZA.COM": "087d3a4073fe1c2dcd41ccd5e5ca7efcb9f21628c714a2e37986028839c2fa36",
-    "BAZA.RTL": "f79d57328eb152ecba86a9c203f5ead5544a95b07da131c0fd0ad5821d5d5e07",
+    "BAZA.COM": "c9625842dceee5f68361cbb14c43c2aecbe65defd49536880d1613159a29d123",
+    "BAZA.RTL": "64510ae26d654bcc4329f302b184ff507ee164bee905aa17d35eb3cac018ce9e",
     "BOUNCE.BAS": "a8d0d013af31853e3ca49ac9d30574a783c4ebd1f19eaab7d6724b10bc84e50d",
     "CAVBASIC.BAS": "2c01cf5f039aaf79bc1ef10da4dfa541a2a59e79ee4b97c8c43a1a2b3ec002a9",
     "CAVERNS.TXT": "2af862adcec1c0bfd3a3e82fbf71df35e77113a97e96a7f5c39c7db95d24c730",
