@@ -1,8 +1,8 @@
 {
   "scope": "Combined current-main browser saving and Caverns source-only build",
-  "firmwareCandidate": "5cae0a0",
+  "firmwareCandidate": "6f7bf32fbd8672978f188cbaacfa23e0c469cb9a",
   "functionalRun": {
-    "command": "TEST_CHROMIUM=/usr/bin/chromium node --test --test-concurrency=1 --test-name-pattern=negative-lookahead test/*.test.mjs",
+    "command": "TEST_CHROMIUM=/usr/bin/chromium node --test --test-concurrency=1 --test-name-pattern='^(?!normal browser saving meets)' test/*.test.mjs",
     "tests": 202,
     "passed": 201,
     "failed": 1,
