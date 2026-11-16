@@ -1,0 +1,12 @@
+{
+  "status": "Qualified source-only card compiler update",
+  "firmwareCommit": "bb70535",
+  "compilerCommit": "bffccace3a41f055049ea53984abbcd59f580a75",
+  "nativeChecks": 11,
+  "freshBrowserNativeCompilationMatchesExactCOM": true,
+  "checkpointRestoredInFreshBrowserContext": true,
+  "programFileBytes": 36736,
+  "publicSiteDeployed": false,
+  "physicalHardwareTested": false,
+  "note": "No Viewer application code changed in this increment. Final firmware pin differs from tested candidate only in qualified input-commit metadata and evidence; ROM, card files and recipe hashes are identical."
+}
