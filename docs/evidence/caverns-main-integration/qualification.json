@@ -32,6 +32,6 @@
   "effectiveCoverage": "201 functional checks plus the separately passing original registered resource check; no waived checks or loosened limits",
   "fixes": [
     "Preserve user-selected touch keyboard focus across asynchronous startup completion",
-    "Repository-specific instructions avoid accidental whole-file duplication of firmware AGENTS.md"
+    "Repository-specific instructions avoid accidental whole-file duplication of the firmware repository's rules"
   ]
 }
