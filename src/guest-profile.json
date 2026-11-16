@@ -1,0 +1,83 @@
+{
+  "rom": "c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f",
+  "d8": "9284275568c3cbb28122ad416b706eb25252bb93cda8d8cd3167638b150d0f74",
+  "symbolMap": "1b6c02e5af32b7336e9ef13c12f1ba433f9c088075acb0dd3e09cf7607eee0ad",
+  "memoryProfile": {
+    "ram96": false,
+    "windowRam": true,
+    "mains": 2,
+    "expands": 2
+  },
+  "spans": [
+    {
+      "symbol": "COLD",
+      "offset": 0,
+      "bytes": "f33100803e01d3ffed56cde4c6"
+    },
+    {
+      "symbol": "COLD",
+      "offset": 13,
+      "bytes": "3e0121000011010001ff0075edb0324000cd17c821c8ba11c9ba0137053600edb03100bfcd97cacd75f5200521e7bfcbde21b1c4cd09cccd3ac7"
+    },
+    {
+      "symbol": "MEMINIT",
+      "offset": 0,
+      "bytes": "3a4000f604d3ff21008011018001ff3f3600edb02100bc1101bc01770036ffedb03a4000d3ffc9"
+    },
+    {
+      "symbol": "BENTRY",
+      "offset": 0,
+      "bytes": "ed736dbe3100bf219be6e5ed5370becde6f9"
+    },
+    {
+      "symbol": "RETWORD",
+      "offset": 0,
+      "bytes": "cd0afa7d44ed7b6dbec9"
+    },
+    {
+      "symbol": "SVCDSP",
+      "offset": 0,
+      "bytes": "3aa6bfb720113aa7bfb7200bcde6f9e322a0bd2190fae3"
+    },
+    {
+      "symbol": "HKBENTER",
+      "offset": 0,
+      "bytes": "f53aa6bfb7201d3aa7bfb72017f1cde6f9e322a9bfe1e322a0bd2190fae3e52aa9bfe3c9f1c9"
+    },
+    {
+      "symbol": "HKAPIRET",
+      "offset": 0,
+      "bytes": "cd0afae52aa0bde3c9"
+    },
+    {
+      "symbol": "HKWORK",
+      "offset": 0,
+      "bytes": "ed73a9bf31e5bfc5d5e5dde5fde5f53e0132a7bfcd61caf1b7c4a9f9cd8ccacd5dfaaf32a7bffde1dde1e1d1c1ed7ba9bff1c9"
+    },
+    {
+      "symbol": "HKNOTICE",
+      "offset": 0,
+      "bytes": "3a6fbe3cc83aa8bfb7c83aa3bfb728103aa8bf3dc03e0232a8bf21c9c5c309cc3aa8bf3d21ebc5280321dbc5af32a8bfc309cc"
+    },
+    {
+      "symbol": "BCONIN",
+      "offset": 0,
+      "bytes": "cd7df8cdb5cacd8ed03ae5bfb720173aa5bc0f3034cd2ad0"
+    },
+    {
+      "symbol": "CINMX",
+      "offset": 0,
+      "bytes": "cd68cc28fbcd84cbf5cd37d0f1c9"
+    },
+    {
+      "symbol": "CINLP",
+      "offset": 0,
+      "bytes": "db00db030738f9cdb6cbe67f28f2c9"
+    },
+    {
+      "symbol": "CCPRKEY",
+      "offset": 0,
+      "bytes": "0e01cd0500fe0d"
+    }
+  ]
+}

@@ -1,11 +1,89 @@
-# Current Caverns integration
+# Persistence and recovery feedback
 
-The current TEC-OS gitlink is `5aacb5e`, with ROM SHA-256
+This source separates the guest block cache, the current card image and completed
+browser storage. The firmware pin remains `241b4381007a6b1e7f179c4f8358c65d564e06ae`;
+its ROM, card-file and recipe identities stay in `pins.json`. Native cycle/state
+and physical-memory purity evidence is separate from browser storage completion.
+The observer admits only the exact bound firmware/memory/checkpoint model and
+otherwise reports unavailable or last-check information.
+
+Focused coverage includes owned snapshot/token ordering, actual IndexedDB
+completion/failure/retry, protected unread records, lifecycle races, native
+guest errors and real reporter callbacks. Actual-page cases distinguish a prior
+stored card from pending RAM and hold a native transaction after put success:
+Saving remains visible until native completion, while the paused guest retains
+its pending data. Full downloaded-card/IDB hashes and independent CP/M byte
+predictions check the physical image. No automatic guest flush or overall
+“All saved” indication is introduced.
+
+The [cost criteria](../test/fixtures/viewer-feedback-cost.json) are additive
+checks for the stock13MiB card on PICO40: four fresh public rate notifications
+of at least3.9MHz, an observed interval overlapping the unheld native save,
+three individual pause/run/pause clicks within100ms each, eight representative
+owned card copies within50ms each, and at most16KiB additional normalized
+module bytes against the named published baseline. These finite host checks
+include automation overhead and allocation pressure; they do not establish
+universal CPU percentages, instantaneous peak memory or physical-board timing.
+The copy measurements are representative stored-byte copies, not intercepted
+coordinator snapshots. Memory retains the single in-flight snapshot/coalesced
+intent contract; no general RSS or heap allowance is changed.
+
+The complete ordinary `npm test` command remains required twice at the same
+clean final source, with unchanged bound inputs, all authored cases passing
+and no filters/skips. The standalone build must match that source and firmware
+before publication. Exact run counts, component pins, payload hashes and
+publication results are retained in Origo and in the public demo's
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json).
+Earlier semantic/cost observations are not retroactively treated as registered
+gate passes. This is emulator/browser qualification; physical-board testing
+and an application's unclosed work remain outside its durability claims.
+
+# Housekeeping recipient integration
+
+The firmware gitlink is `241b4381007a6b1e7f179c4f8358c65d564e06ae`, with
+ROM SHA-256 `c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f`.
+It preserves the Caverns integration and all sixteen starter file payloads.
+The starter recipe's canonical digest is
+`cfad4c0e6e788d1b9713d3e34647799d0a8e22a17aca09b4a6a13cbed1e009c7`;
+`pins.json` holds the exact ROM, recipe and file identities.
+
+The core's standard full strict qualification passed 1,383/1,383 twice at
+that exact firmware source. The Viewer recipient source
+`4ee6e169ad51ed3517decc5a0140d2097ec894d6` also passed two complete,
+unfiltered runs of 134/134 tests, with no failures, cancellations or skips,
+and unchanged bound inputs. They include standalone-page boot without external
+asset requests, commit labels, ROM CD recovery, saved-card upgrades, Caverns
+preservation and the TED edit/build/run exercise. The browser tests used
+system Chromium 156.0.8078.79 explicitly; this does not qualify Playwright's
+separately distributed browser or a physical TEC-1G.
+
+An earlier complete 133/134 run failed the unchanged bundle source-path check
+because a shared dependency link resolved outside the recipient worktree.
+It remains a failed run. The successful pair uses an owned, byte-identical
+dependency copy and records resolved paths as well as content hashes. Origo
+retains the failed attempt, both passing runs, runtime inputs and independent
+reviews. The public demo's
+[build details](https://jhlagado.github.io/tec-os-viewer/build-info.json)
+identify its actual published Viewer commit and firmware pin; source and
+qualification records alone do not update that page.
+
+OS API boundaries now prioritise dirty work; required input drains pending
+writes, and failed acknowledged data writes are retained and reported; rejected
+directory updates are not published. Bootstrap recovery waits
+for an explicit Enter retry when disk state cannot be rebuilt. README describes
+the remaining cooperative, restart and browser-saving limits. This recipient
+uses the original eighteen-page MON3 and TAS `3d1e2c0`; the separately qualified
+MON3 load-address/TAS HEX development branches are not adopted here.
+
+# Historical Caverns integration
+
+At this historical checkpoint the TEC-OS gitlink was `5aacb5e`, with ROM SHA-256
 `ac86ad233696d22a46b4f98a4119c53b718bfe89881952a08e9f92223f3fa1c3`.
 Starter revision 16 contains sixteen files. The new files are the author-refined
 original BASIC game's CAVBASIC.BAS, CAVBASIC.COM and CAVERNS.TXT. BAZA compiler
 and runtime are pinned at `8578fe5`; executable size is 39,680 bytes. All exact
-ROM, recipe and file identities are in `pins.json`.
+ROM, recipe and file identities are in
+[`pins.json` at the original Viewer checkpoint](https://github.com/jhlagado/tec-os-viewer/blob/0b36cbeaa501389e5c01fd7ad518019c60809aea/pins.json).
 
 The upstream source and integration branches are published. The firmware test
 `test/caverns-ted.test.mjs` qualifies the exact edit/save/build/run/reopen cycle;

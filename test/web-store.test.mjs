@@ -14,6 +14,7 @@ import { pathToFileURL } from "node:url";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import { ROOT, fromTecos } from "./lib/root.mjs";
+import { pageHarness, gate, tick } from "./lib/lifecycle-page.mjs";
 import { serve } from "./lib/serve.mjs";
 
 let closes = 0;
@@ -106,10 +107,10 @@ test("the page keeps a card it couldn't save unsaved, says so, and saves it once
     };
   });
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
-  await page.waitForFunction(() => /not saved/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });
+  await page.waitForFunction(() => /not saved/.test(document.getElementById("browserstatus").textContent), null, { timeout: 30_000 });
   await page.waitForFunction(() => window.saveTries >= 3, null, { timeout: 30_000 });
   await page.evaluate(() => (window.failSaves = false));
-  await page.waitForFunction(() => !/not saved|keeps failing/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });
+  await page.waitForFunction(() => !/not saved|keeps failing/.test(document.getElementById("browserstatus").textContent), null, { timeout: 30_000 });
   const stored = await page.evaluate(
     () =>
       new Promise((ok) => {
@@ -125,73 +126,31 @@ test("the page keeps a card it couldn't save unsaved, says so, and saves it once
 });
 
 test("the page saves one card at a time, and after three failures says saving keeps failing", async () => {
-  const source = readFileSync(resolve(ROOT, "src/main.mjs"), "utf8");
-  const start = source.indexOf("setInterval(async () =>");
-  const end = source.indexOf("// ---- Run loop", start);
-  const info = { textContent: "" };
-  let release;
-  let calls = 0;
-  let fail = false;
-  const context = {
-    state: { card: new Uint8Array(4), cardDirty: true },
-    $: () => info,
-    refreshCard: () => {},
-    setInterval: (fn) => (context.tick = fn),
-    saveCard: async () => {
-      calls += 1;
-      if (fail) throw new Error("quota exceeded");
-      await new Promise((ok) => (release = ok));
-    },
-  };
-  runInNewContext(`${source.slice(start, end)}\nthis.save = save;`, context);
-  const first = context.tick(); // Start the first save.
-  await Promise.resolve();
-  context.state.cardDirty = true;
-  assert.equal(await context.save(), false, "a second save while one runs doesn't start");
-  assert.equal(calls, 1, "one saveCard at a time");
-  assert.equal(context.state.cardDirty, true, "and the card stays dirty for the next tick");
-  release();
-  await first;
-  fail = true;
-  for (let i = 1; i <= 3; i += 1) {
-    await context.save();
-    assert.match(info.textContent, i < 3 ? /saved again shortly/ : /keeps failing.*Download image/, `failure ${i}`);
+  const held = gate(); let calls = 0, fail = false;
+  const p = pageHarness(Uint8Array.of(1), { saveCard: async () => {
+    calls++; if (fail) throw Error('quota exceeded'); await held.promise;
+  } });
+  p.persistence.dirty(); const first = p.timers[0](); await tick();
+  p.state.card[0] = 2; p.persistence.dirty(); const second = p.timers[0]();
+  assert.equal(calls, 1); held.release(); await Promise.all([first, second]);
+  assert.equal(calls, 2); fail = true;
+  for (let i = 1; i <= 3; i++) {
+    p.persistence.dirty(); await p.timers[0]();
+    assert.match(p.elements.browserstatus.textContent, i < 3 ? /not saved.*quota exceeded/ : /keeps failing.*Download image/);
   }
 });
 
 test("a file import during a timer's save saves after it, so the stored card holds the copied files", async () => {
-  const source = readFileSync(resolve(ROOT, "src/main.mjs"), "utf8");
-  const start = source.indexOf("setInterval(async () =>");
-  const end = source.indexOf("// ---- Run loop", start);
-  const releases = [];
-  let stored = null;
-  const context = {
-    state: { card: Uint8Array.of(1), cardDirty: true },
-    $: () => ({ textContent: "" }),
-    refreshCard: () => {},
-    setInterval: (fn) => (context.tick = fn),
-    // Complete each save only when the
-    // test releases its promise.
-    saveCard: (image) => new Promise((ok) => releases.push(() => ((stored = image), ok()))),
-  };
-  runInNewContext(`${source.slice(start, end)}\nthis.importSave = typeof importSave === "function" ? importSave : (s) => saveCard(s);`, context);
-  const timer = context.tick(); // Start saving the old card.
-  await Promise.resolve();
-  const imported = context.importSave(Uint8Array.of(2)); // Queue the imported card.
-  await new Promise((ok) => setTimeout(ok, 0));
-  // If saves overlap, complete the import
-  // first and the older timer save last.
-  const concurrent = releases.length > 1;
-  if (concurrent) releases[1]();
-  releases[0]();
-  await timer;
-  // Serial saves complete the timer first,
-  // then start and complete the import.
-  while (releases.length < 2) await new Promise((ok) => setTimeout(ok, 0));
-  if (!concurrent) releases[1]();
-  await imported;
-  assert.deepEqual(Array.from(stored), [2], "the copied files are the card stored last");
-  assert.match(source, /await importSave\(staged\)/, "and the import's handler saves through it");
+  const held = gate(), writes = [];
+  const p = pageHarness(Uint8Array.of(1), { saveCard: async bytes => {
+    if (!writes.length) await held.promise; writes.push([...bytes]);
+  } });
+  p.persistence.dirty(); const timer = p.timers[0](); await tick();
+  const staged = p.persistence.commit(Uint8Array.of(2));
+  const queued = p.timers[0](); await tick(); assert.deepEqual(writes, []);
+  held.release(); await Promise.all([timer, staged, queued]);
+  assert.deepEqual(writes, [[1], [2]]); assert.deepEqual([...p.state.card], [2]);
+  assert.match(readFileSync(resolve(ROOT, 'src/main.mjs'), 'utf8'), /await persistence.commit\(staged\)/, 'actual Copy handler uses the same commit barrier');
 });
 
 test("the real store's loadCard gives null for no card and throws when the read fails, so the page can tell them apart", async () => {
@@ -258,7 +217,7 @@ test("a saved card that won't read, or won't parse, is left as it is: the page r
         };
       });
     await page.goto(url);
-    await page.waitForFunction(() => /couldn't be read/.test(document.getElementById("cardinfo").textContent), null, { timeout: 30_000 });
+    await page.waitForFunction(() => /could not be read/.test(document.getElementById("browserstatus").textContent), null, { timeout: 30_000 });
     await page.waitForTimeout(5_000); // Allow two autosave intervals.
     assert.deepEqual(await record(page), MARK, `${kind}: the stored record is untouched`);
     await page.close();

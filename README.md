@@ -12,10 +12,11 @@ before they appear on that site.
 storage and the build through their files.
 
 New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
-The width selector still provides all three choices. Missing, invalid or
+The **Columns** selector provides all three choices. Changing Columns or Display
+restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `5aacb5e`, which builds with TAS alone, on the
+The firmware pin is TEC-OS `241b438`, which builds with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a cold 40-column console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
@@ -30,13 +31,13 @@ GAMES and SPARE on no drive. A: holds its 15 files, `BAZA.COM`, `BAZA.RTL`,
 `TIMES.BAS`, plus `CAVBASIC.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
-puts a volume on a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
+changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with each file's size, the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/5aacb5e/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/241b438/docs/shell.md)
 has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
@@ -89,19 +90,49 @@ ROM's bare prompt. If the files can't be written, a full A: for one, or the
 starter card can't be fetched, the card boots without the shell and the serial
 pane says why; the next power-on tries again.
 
-The page saves the card's image: in this browser within two seconds of the
-machine writing it, and in Download image. TEC-OS holds writes in its block
-cache, in the machine's memory, until it writes them to the card. The drive
-you are on is written behind; on every other drive a data write waits for the
-next flush point: the file's close, a directory request, a write to another
-block, a console read or a warm boot. Whenever TEC-OS waits for a key, every
-drive is on the card, so at the prompt the whole card is in what the page
-saves. While a program runs, what it wrote since it last waited for a key or
-wrote a directory may not be. Reset, Power cycle, New starter card, Open
-image, Copy file to drive and a change of width or display all start the
-machine again, as a reset does on the board, and what the cache held is lost:
-wait for the prompt first. New starter card and Open image also replace the
-card itself, the one this browser keeps.
+The saving panel under SD card reports three separate stages:
+
+- **Guest cache** reports a pending-block count at validated firmware boundaries.
+  “Last check” describes an earlier observation; “unavailable” means the page
+  cannot validate this firmware or memory state. A zero count does not prove
+  that an application closed its file.
+- **Card image** is the current emulated SD contents. File browsing and
+  **Download image** read these bytes, excluding pending guest RAM and an
+  application's unclosed buffers or directory information.
+- **Browser storage** shows pending, saving, saved, failed or protected state.
+  “Saved card image in this browser” follows a completed IndexedDB transaction
+  for the current card bytes. It can appear alongside pending guest data.
+
+The page attempts autosaves at two-second intervals; this is a retry opportunity,
+not a completion deadline. A failed save leaves the card in memory and keeps its
+failure visible while retrying. If a stored record cannot be read or parsed,
+saving stays disabled to protect it, including after Open image, New starter
+card or imports. Download image keeps the session's card bytes; reload retries
+the protected read. Browser storage can fail or be cleared.
+
+TEC-OS separately holds pending writes in the machine's memory. OS calls
+prioritise that work, combining changes to the same block while queued.
+Required input tries to drain pending writes before waiting. Failed acknowledged
+data writes stay pending and are reported for retry. A rejected directory update
+is not published; a prompt alone cannot certify a failed flush. Housekeeping is
+cooperative: it cannot run while a program keeps the CPU without calling the OS.
+It does not complete an application's unclosed file or promise crash-proof storage.
+The page never advances a paused guest to inspect or flush it.
+
+If disk state cannot be rebuilt, `Disk reset failed` / `Enter retries` waits
+for Enter before normal commands resume. Reset, Power cycle, New starter card,
+Open image, Copy file to drive and a change of Columns or Display restart the
+machine and discard writes still in its RAM cache and unclosed application work.
+Check and resolve disk errors before restarting. Copy file stages and saves the
+changed card when browser saving is available, then resets the guest. New starter
+card and Open image also replace the card. The saving panel reports stages rather
+than an overall guarantee that every application change has been saved.
+
+Copy is disabled while a card operation is running or the current drive selection
+cannot be read safely. Its availability line is separate from save and error
+status. If the guest leaves input wait while a file picker is open, Copy can
+still refuse without reading the files or changing the card; return to console
+input and select the files again. Availability does not certify a flushed cache.
 
 [Qualification](docs/qualification.md) records the pin, its ROM and the tests
 that pass on it.

@@ -11,7 +11,7 @@
     <header class="bar">
       <h1>TEC-OS <span class="sub">on an emulated TEC-1G</span></h1>
       <div class="controls">
-        <label>ROM
+        <label>Columns
           <select id="profile">
             <option value="80">PICO9918, 80 columns</option>
             <option value="40" selected>PICO9918, 40 columns</option>
@@ -32,6 +32,9 @@
     </header>
 
     <main>
+      <p class="note restart-note">Columns and Display restart the machine, restore the card's default drives,
+        and may update startup configuration. Reset keeps selected directories where possible;
+        Power cycle restores defaults. These actions discard pending guest RAM writes.</p>
       <section class="monitor">
         <canvas id="tms" width="1024" height="768" tabindex="0" aria-label="PICO9918 screen: click to type"></canvas>
         <div id="touchkeys" class="touchkeys" role="toolbar" aria-label="Keys a phone keyboard lacks">
@@ -74,9 +77,18 @@
           <button id="saveimg">Download image</button>
         </div>
         <div id="cardinfo" class="status"></div>
+        <div id="cardproblem" class="status" role="status"></div>
+        <div class="persistence" aria-label="Card saving">
+          <p id="gueststatus">Guest cache: state unavailable</p>
+          <p>Card image: current emulated SD contents</p>
+          <p id="browserstatus" role="status" aria-live="polite">Changes pending</p>
+        </div>
+        <p class="note">Guest cache, card image and browser storage are separate stages.
+          A browser save or Download image includes card bytes, excluding pending guest data
+          and an application's unclosed buffers or file metadata. Browser storage can fail or be cleared.</p>
         <div class="files">
           <label>Drive <select id="drive"></select></label>
-          <label class="file-button">Copy file to drive<input type="file" id="putfile" hidden multiple /></label>
+          <label class="file-button">Copy file to drive<input type="file" id="putfile" aria-describedby="copyavailability" hidden multiple disabled /></label>
           <label>Copy as
             <select id="textmode" aria-describedby="textmode-note">
               <option value="auto" selected>text or binary, by file</option>
@@ -85,12 +97,26 @@
             </select>
           </label>
         </div>
+        <p class="note" id="copyavailability">Copy unavailable during startup.</p>
         <p class="note" id="textmode-note">Copy as applies to Copy file to drive and to Download.
           With "text or binary, by file", a file whose bytes are all text goes on the card as text, with CRLF
           line ends and a ^Z at the end, and comes off with LF line ends and no ^Z; .COM, .SVC, .RTL, .BIN and
           any file with other bytes are copied as they are. "text" and "binary, as it is" force one or the other.</p>
         <table id="filelist"><thead><tr><th>User</th><th>Name</th><th>Bytes</th><th></th></tr></thead><tbody></tbody></table>
-        <p class="note">Changing files resets the TEC-1G so CP/M sees the new directory.</p>
+        <p class="note">Copy file stages the selected files, saves the changed card when browser saving is
+          available, then resets the TEC-1G. That reset can discard pending guest RAM writes and unclosed
+          application work; browser saving includes card bytes only.
+          Open image and New starter card replace the card and restart.</p>
+        <details class="note"><summary>Recover the shell after changing A's directory</summary>
+          <p>At the bare prompt, list directories and restore SYSTEM, select user area 0,
+            then load the shell. CD changes the directory presented by a drive.</p>
+          <pre>A&gt;CD ?
+A&gt;CD A:SYSTEM
+A&gt;USER 0
+A&gt;SHELL.SVC</pre>
+          <p>Reset can retain A's selected directory. Power cycle restores the card's defaults.
+            Neither action flushes pending guest RAM writes first.</p>
+        </details>
       </section>
     </main>
     <textarea id="phonekeys" class="phonekeys" rows="1" tabindex="-1" aria-label="Keyboard for the TEC-1G"

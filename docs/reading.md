@@ -7,12 +7,13 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`46cf3f1f1c6ea7ff361a568672a41ab1a7e2c1ee`, TEC-OS's ROM CD recovery, built with TAS alone, on the
+`241b4381007a6b1e7f179c4f8358c65d564e06ae`, with cooperative housekeeping and
+ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
 resident shell, with `CD` and the prompt `A:SYSTEM>`, TED with its language
 table, TAS from Thorium `3d1e2c0` with chained lines, BAZA from Baza
-`50dc512` and `MON3.SVC`. TEC-OS builds one card, the starter card, of five
+`8578fe5` for compiler/runtime, BOUNCE from `50dc512`, and `MON3.SVC`. TEC-OS builds one card, the starter card, of five
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with sizes, the `[more]` pager,
 the history on ^W and ^N, and lines joined by `!` and `&`. The card also holds
@@ -37,14 +38,18 @@ A newer firmware checkout elsewhere does not change this page's dependency.
 [index.html](../index.html) defines the controls and screen elements.
 [style.css](../style.css) supplies their presentation.
 [src/main.mjs](../src/main.mjs) connects the elements to machine state.
-Its final startup block loads the saved card or makes a starter card, attempts
-to save it, powers on the machine and starts the animation loop.
+Its final startup block owns the first lifecycle turn: it loads and validates
+the saved card or makes a starter, prepares the card and powers on the machine,
+attempts browser persistence, then starts the animation loop.
 
 `starterCard` fetches a recipe and builds its card through the shared library.
 `powerOnNow` prepares that card for the selected display and width, loads the
 ROM and symbols, then creates a `Machine`. The frame loop steps that machine
-and renders its state. Reset calls the existing machine's reset method.
-Power cycle creates a new machine with the current card.
+and renders its state. Lifecycle requests queue before file/fetch awaits, so a
+slow earlier request cannot publish over a later choice. Guest execution is
+suppressed during each turn; the user's Pause/Run intent remains separate.
+Reset calls the existing machine's reset method. Power cycle creates a new
+machine with the current card. Columns and Display use that power-on path.
 
 The width and display preferences use browser localStorage. The card image
 uses IndexedDB, a separate browser database.
@@ -91,14 +96,38 @@ they are. A short binary whose bytes all happen to be text can still pass
 for text; "binary, as it is" copies it unchanged. The Copy as control forces text or
 binary instead, for Copy file to drive and for Download.
 
-[src/store.mjs](../src/store.mjs) loads and saves the image in IndexedDB.
-Machine card writes mark it dirty for periodic saving. What is saved is the
-machine's card image, so a write TEC-OS still holds in its block cache isn't
-in it until TEC-OS writes it: whenever TEC-OS waits for a key, every drive
-is on the card (README). A failed save leaves
-an unsaved indication and a copy in memory. A failed stored-card read leaves
-the original record alone and runs a starter card without saving over it.
-The Download image control provides a file copy.
+[src/persistence.mjs](../src/persistence.mjs) serializes owned snapshots for
+all save sources. Card epochs and revisions distinguish current bytes from an
+older completed snapshot. Writer admission captures the token and an owned copy
+before any asynchronous database open; later autosave intents coalesce rather
+than retaining another full image each tick. Staged operations hold the writer
+through transaction completion and synchronous publication. Obsolete machine
+callbacks and continuations cannot dirty or resume a replacement image.
+
+[src/store.mjs](../src/store.mjs) performs the actual IndexedDB operation. Save
+success means transaction `oncomplete`, not request success. Only completion
+for the still-current card token can produce the browser Saved label. Failures
+remain visible during retry; an unreadable stored record is protected across
+imports/replacements and the session remains in memory. File-operation errors,
+card information and persistence feedback have separate display regions, so
+periodic refreshes cannot erase a still-relevant saving failure.
+
+[src/guest-cache.mjs](../src/guest-cache.mjs) passively observes selected normal
+steps in the existing instruction loop. Its [binding profile](../src/guest-profile.json)
+checks the full ROM, symbol map, opcode spans and physical-memory configuration.
+It reads small cache metadata only at validated returns/default-input/report
+boundaries; arbitrary PCs and mismatched state cannot invent a clean sample.
+A nonlocal exit or custom hook can leave the last check stale. Observed errors
+survive unrelated refreshes; host reset starts a new observation epoch. These
+internal firmware symbols are not a public flush/status API.
+
+Guest cache, current SD bytes and completed browser storage are separate facts.
+Failed guest writes can remain pending at an input wait; neither a prompt nor
+a zero count completes an application's unclosed file. The page's Download
+image reads current card bytes and never drains RAM. While paused, browser
+saving can complete but guest housekeeping cannot run. Copy deliberately resets
+after successful host publication and can discard pending/unclosed guest work;
+the nearby text describes that effect before activation.
 
 ## 5. Follow the build and its checks
 
@@ -110,7 +139,7 @@ The Download image control provides a file copy.
   starter recipe, structurally and by its pinned canonical digest.
 - [tools/build.mjs](../tools/build.mjs): bundle `src/main.mjs` with esbuild and
   copy the page, ROM, derived symbols, recipe and card files into `dist/`.
-  It validates and ships the font notices, beside the page and inline, and
+  It checks the observer binding, validates and ships the font notices, beside the page and inline, and
   writes `dist/build.json` last. Dependencies resolve from `tec-os/node_modules`.
 - [tools/page.mjs](../tools/page.mjs): embed that distribution's assets into
   `dist/tec-os-viewer.html`. Its fetch shim supplies embedded files. It labels
@@ -128,6 +157,14 @@ sample through assembly and editing. [stored-cards](../test/stored-cards.test.mj
 [single-page](../test/single-page.test.mjs) covers standalone delivery, and
 [held-key](../test/held-key.test.mjs) the matrix keys under `CON TTY`, on CRT:
 and at the GLCD board's start.
+[persistence](../test/persistence.test.mjs) and
+[store transactions](../test/store-snapshots.test.mjs) exercise writer/token
+and transaction-completion boundaries. [Guest cache units](../test/guest-cache.test.mjs)
+are distinct from [actual CPU returns](../test/guest-cache-runtime.test.mjs) and
+[actual failure/callback traces](../test/guest-cache-errors-runtime.test.mjs).
+[Browser pending data](../test/guest-save-feedback-browser.test.mjs) and
+[real transactions/costs](../test/guest-save-transaction-browser.test.mjs) exercise
+the actual page; representative cost bounds are recorded in the test fixture.
 The shared setup in [test/lib/page.mjs](../test/lib/page.mjs) relates generated
 assets to the machine and card helpers.
 

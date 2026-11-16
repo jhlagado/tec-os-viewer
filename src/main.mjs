@@ -11,6 +11,8 @@ import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
 import { keyInput, keyText, pumpKeys, resetKeys } from "./keys.mjs";
 import { loadCard, saveCard } from "./store.mjs";
+import { Persistence } from "./persistence.mjs";
+import { bindGuestProfile, GuestCacheObserver } from "./guest-cache.mjs";
 import { chooseText, fromCard } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
 
@@ -23,12 +25,12 @@ const state = {
   width: ["32", "40", "80"].includes(savedWidth) ? savedWidth : "40",
   display: ["tms", "glcd"].includes(savedDisplay) ? savedDisplay : "tms",
   machine: null,
+  observer: null,
   upgradeStarter: null, // The starter card an old card's upgrade copies from.
   drives: null, // Each drive's volume in the running machine, from DRVIDX.
   card: null,
-  cardDirty: false,
-  unsaved: false, // Last save failed.
-  importBusy: false,
+  lifecyclePending: 0,
+  machineGeneration: 0,
   running: true,
   serialSeen: 0,
   serialText: "",
@@ -61,7 +63,8 @@ async function loadRom() {
     fetchBytes("roms/tecos.rom"),
     fetch("roms/tecos.symbols.json", { cache: "no-cache" }).then((r) => r.json()),
   ]);
-  return { rom, symbols: symbolsFromD8({ symbols }) };
+  const map = symbolsFromD8({ symbols });
+  return { rom, symbols: map, cacheBinding: await bindGuestProfile(rom, map) };
 }
 
 async function starterCard() {
@@ -71,147 +74,139 @@ async function starterCard() {
 
 // ---- Machine lifecycle
 
-// Serialise card preparation and import
-// publication. Preparation may rewrite
-// STARTUP.CMD for the chosen display.
-// Imports then use the current card,
-// preserving that choice.
+const persistence = new Persistence({
+  write: image => saveCard(image, { owned: true }),
+  changed: () => refreshPersistence(),
+});
 let turn = Promise.resolve();
-function serial(fn) {
+
+// Enqueue the entire request before it can read a file or fetch a starter.
+// Execution suppression is separate from the user's Pause/Run choice.
+function lifecycle(fn) {
+  state.observer?.invalidate();
+  state.lifecyclePending++;
+  refreshCopyAvailability();
+  persistence.beginLifecycle();
   const run = turn.then(fn);
   turn = run.catch(() => {});
-  return run;
+  return run.finally(() => {
+    state.lifecyclePending--;
+    persistence.endLifecycle();
+    refreshCopyAvailability();
+  });
 }
 
-function powerOn() {
-  return serial(powerOnNow);
+function choices() { return { width: $("profile").value, display: $("display").value }; }
+
+function powerOn(options = choices()) {
+  return lifecycle(() => powerOnNow(options));
 }
 
-async function powerOnNow() {
-  // Detach the old machine first, so it
-  // cannot write the card while it is
-  // prepared, as at a real power-off.
-  state.machine = null;
-  // A card saved before the shell takes
-  // its system files from the starter
-  // card, SHELL.SVC and a MON3.SVC that
-  // is entered on install; the note says
-  // what was written.
-  // The starter is fetched once a session
-  // and kept apart from the card in use,
-  // so a refused upgrade doesn't fetch it
-  // again at every power-on.
+async function powerOnNow(options, replacement = null) {
+  const previous = state.machine;
+  const previousObserver = state.observer;
+  const staged = replacement ?? state.card.slice();
+  let committed = false;
   let starter = null;
   let unfetched = null;
-  if (needsStarter(state.card)) {
+  if (needsStarter(staged)) {
     try {
       state.upgradeStarter ??= await starterCard();
       starter = state.upgradeStarter;
     } catch (err) {
-      // No starter card to hand: the card
-      // gets its display line alone. The
-      // console keeps the cause, which may be
-      // a fault in building the card rather
-      // than the network.
       console.error("starter card for the upgrade", err);
       unfetched = "This card is from before the shell, and the page couldn't fetch the starter card to add the shell to it, so it boots without the shell. The next power-on tries again.";
     }
   }
-  const prepared = prepareCard(state.card, state.display, state.width, starter);
-  const { problem, changed } = prepared;
-  const note = prepared.note ?? (problem ? null : unfetched);
-  if (changed) state.cardDirty = true;
-  const { rom, symbols } = await loadRom();
-  state.machine = new Machine({
-    rom,
-    symbols,
-    sdImage: state.card,
-    tms: state.display === "tms",
-    matrix: true,
-    onSdWrite: () => {
-      state.cardDirty = true;
-    },
-  });
-  // The card line shows the card's own
-  // drives until the new machine's can
-  // be read.
-  state.drives = null;
-  refreshCard();
-  state.serialSeen = 0;
-  appendSerial("\n[power on]\n");
-  for (const words of [problem, note]) if (words) appendSerial(`[${words}]\n`);
+  const loaded = await loadRom();
+  // Fence old frame continuations before preparation or active publication.
+  state.machine = null;
+  state.machineGeneration++;
+  try {
+    const prepared = prepareCard(staged, options.display, options.width, starter);
+    if (replacement) {
+      await persistence.commit(staged, {
+        replace: true,
+        publish: image => { state.card = image; },
+      });
+      committed = true;
+    } else if (prepared.changed) {
+      // Preparation is usable in memory even when browser storage fails.
+      // Publish inside the writer barrier, and mark pending before mutation.
+      await persistence.exclusive(() => {
+        persistence.dirty();
+        state.card.set(staged);
+      });
+      committed = true;
+    }
+    const image = state.card;
+    const epoch = persistence.epoch;
+    let machine;
+    const memoryProfile = { ram96: false, windowRam: true, mains: 2, expands: 2 };
+    machine = new Machine({
+      ...loaded,
+      ...memoryProfile,
+      sdImage: image,
+      tms: options.display === "tms",
+      matrix: true,
+      onSdWrite: () => {
+        if (state.machine === machine && state.card === image && persistence.epoch === epoch) persistence.dirty(image, epoch);
+      },
+    });
+    state.machine = machine;
+    state.observer = new GuestCacheObserver(machine, loaded.cacheBinding, memoryProfile, image);
+    state.width = options.width;
+    state.display = options.display;
+    state.drives = null;
+    state.serialSeen = 0;
+    appendSerial("\n[power on]\n");
+    const note = prepared.note ?? (prepared.problem ? null : unfetched);
+    for (const words of [prepared.problem, note]) if (words) appendSerial(`[${words}]\n`);
+    refreshCard();
+  } catch (error) {
+    if (!committed) {
+      state.machine = previous;
+      state.observer = previousObserver;
+    } else {
+      state.machine = null;
+      state.observer = null;
+      error.published = true;
+    }
+    throw error;
+  }
 }
 
 function reset() {
+  state.observer?.reset();
+  state.machineGeneration++;
   if (state.machine) resetKeys(state.machine);
-  state.machine?.reset();
+  try { state.machine?.reset(); }
+  catch (error) { state.machine = null; throw error; }
   appendSerial("\n[reset]\n");
 }
 
-setInterval(async () => {
-  if (state.importBusy || !state.cardDirty || !state.card) return;
-  state.cardDirty = false;
-  await save();
-}, 2000);
+setInterval(() => persistence.autosave(), 2000);
 
-/**
- * Save one card image at a time.
- * A concurrent request marks it dirty
- * for the next timer tick.
- * Failure marks it unsaved for retry.
- * Show a persistent-failure message
- * after three consecutive failures.
- */
-async function save(image = state.card) {
-  if (state.noSave) return false; // Preserve the unread stored record.
-  if (state.saving) {
-    state.cardDirty = true;
-    return false;
-  }
-  state.saving = true;
-  let done;
-  state.saveDone = new Promise((ok) => (done = ok));
-  try {
-    await saveCard(image);
-    const was = state.unsaved;
-    state.unsaved = false;
-    state.saveFailures = 0;
-    if (was) refreshCard();
-    return true;
-  } catch (e) {
-    state.cardDirty = true;
-    state.unsaved = true;
-    state.saveFailures = (state.saveFailures ?? 0) + 1;
-    $("cardinfo").textContent =
-      state.saveFailures >= 3
-        ? `Saving the card in this browser keeps failing (${e?.message ?? e}). It is kept in memory only: Download image keeps a copy.`
-        : `Card not saved in this browser: ${e?.message ?? e}. It is kept in memory and saved again shortly.`;
-    return false;
-  } finally {
-    state.saving = false;
-    done();
-  }
+function refreshPersistence() {
+  const status = persistence.status();
+  let text;
+  if (status.protectedRecord) {
+    text = "Browser saving disabled: the stored card could not be read. This session is in memory only; Download image keeps the card bytes. Reload to retry.";
+  } else if (status.failure) {
+    text = `Card not saved in this browser${status.failures >= 3 ? ": saving keeps failing" : ""}: ${status.failure}. ${status.saving ? "Retrying…" : "Changes remain in memory; Download image keeps a copy."}`;
+  } else if (status.saved) text = "Saved card image in this browser";
+  else if (status.saving) text = "Saving card image… Changes pending";
+  else text = "Changes pending";
+  const element = $("browserstatus");
+  if (element.textContent !== text) element.textContent = text;
 }
 
-/**
- * Save the staged import after any
- * pending save. Hold the save guard so
- * an older card cannot overwrite the
- * imported files. Failure
- * throws for the "Not copied" message.
- */
-async function importSave(staged) {
-  if (state.noSave) return; // Keep the imported copy in memory.
-  while (state.saving) await state.saveDone;
-  state.saving = true;
-  let done;
-  state.saveDone = new Promise((ok) => (done = ok));
-  try {
-    await saveCard(staged);
-  } finally {
-    state.saving = false;
-    done();
-  }
+function fileProblem(text = "", operation = null) {
+  state.fileProblemOperation = operation;
+  $("cardproblem").textContent = text;
+}
+function clearFileProblem(operation) {
+  if (state.fileProblemOperation === operation) fileProblem();
 }
 
 // ---- Run loop
@@ -224,22 +219,29 @@ function frame(now) {
   const m = state.machine;
   const dt = Math.min(100, now - last);
   last = now;
-  if (m && state.running && !state.importBusy) {
+  if (m && state.running && !state.lifecyclePending) {
     const target = m.cycles + (dt * CPU_HZ) / 1000;
     const deadline = performance.now() + 30;
     const start = m.cycles;
     let n = 0;
-    while (m.cycles < target) {
+    const generation = state.machineGeneration;
+    while (m.cycles < target && state.machine === m && state.machineGeneration === generation && !state.lifecyclePending) {
+      const observed = state.observer?.machine === m && state.observer.image === state.card ? state.observer : null;
+      const pre = observed?.beforeStep();
       m.step();
+      if (state.machine === m && state.machineGeneration === generation && observed?.machine === m && observed.image === state.card) observed.afterStep(pre);
+      else observed?.invalidate();
       pumpKeys(m);
       if ((++n & 1023) === 0 && performance.now() > deadline) break;
     }
     cyclesWindow += m.cycles - start;
-    render(m);
-    const live = liveDrives(m);
-    if (live && live.join() !== state.drives?.join()) {
-      state.drives = live;
-      refreshCard();
+    if (state.machine === m && state.machineGeneration === generation) {
+      render(m);
+      const live = liveDrives(m);
+      if (live && live.join() !== state.drives?.join()) {
+        state.drives = live;
+        refreshCard();
+      }
     }
   }
   if (now - windowStart > 1000) {
@@ -247,7 +249,22 @@ function frame(now) {
     cyclesWindow = 0;
     windowStart = now;
   }
+  refreshGuestStatus();
+  refreshCopyAvailability();
   requestAnimationFrame(frame);
+}
+
+function refreshGuestStatus() {
+  const matched = state.machine && state.observer?.machine === state.machine && state.observer.image === state.card;
+  const status = matched ? state.observer.status() : null;
+  let text = "Guest cache: state unavailable";
+  if (status?.supported && state.machine && !state.lifecyclePending && status.sample) {
+    text = `Guest cache: ${status.current ? "" : "last check: "}${status.sample.count} pending blocks`;
+  } else if (status && !status.supported) text = "Guest cache: unavailable for this firmware or memory profile";
+  if (status?.error) text += ". Guest write error observed; application files may be incomplete";
+  else if (status?.resolvedPending) text += ". Earlier pending-write report resolved";
+  const element = $("gueststatus");
+  if (element.textContent !== text) element.textContent = text;
 }
 
 // ---- Rendering
@@ -568,7 +585,7 @@ function cardInfo() {
   try {
     return parseContainer(state.card);
   } catch (e) {
-    $("cardinfo").textContent = `Card is not a valid container: ${e.message}`;
+    fileProblem(`Card is not a valid container: ${e.message}`);
     return null;
   }
 }
@@ -588,10 +605,29 @@ function liveDrives(m) {
   const pos = m.symbols.get("STPOS");
   // TNMOUNT removes the old selection before publishing the new one. A frame
   // may end between those writes: treating that transient zero as a finished
-  // unmount can move the file selector to another drive. Input waits are the
-  // firmware's stable boundary, with pending card writes flushed as well.
+  // unmount can move the file selector to another drive. Use the input-wait
+  // boundary for the live mapping; a failed flush can still leave dirty data.
   if (!m.waitingForInput() || at === undefined || pos === undefined || m.sysCtrl & 0x04 || m.read(pos) < 0x80) return null;
   return [0, 1, 2, 3].map((d) => m.read(at + d));
+}
+
+function copyVolume(drive) {
+  const live = state.card && state.machine && liveDrives(state.machine);
+  const index = live?.[drive.charCodeAt(0) - 65];
+  return index ? parseContainer(state.card).volumes[index - 1] : null;
+}
+
+function refreshCopyAvailability() {
+  let ready = false;
+  if (!state.lifecyclePending) {
+    try { ready = Boolean(copyVolume($("drive").value)); }
+    catch { /* The import guard reports invalid card details on submission. */ }
+  }
+  $("putfile").disabled = !ready;
+  const text = ready ? "Copy available; copying resets the machine."
+    : state.lifecyclePending ? "Copy unavailable during a card operation."
+    : "Copy unavailable; wait for console input and a selected drive.";
+  if ($("copyavailability").textContent !== text) $("copyavailability").textContent = text;
 }
 
 /** INFO's volumes, each with the drive it is on: the running machine's, else the card's. */
@@ -614,12 +650,7 @@ function refreshCard() {
   if (!info) return;
   const drives = drivesOf(info);
   $("cardinfo").textContent =
-    drives.map(({ v, drive }) => `${drive ?? "-"}: ${v.label} (${v.g.name}${v.readOnly ? ", read-only" : ""})`).join("   ") +
-    (state.noSave
-      ? "   The saved card couldn't be read, so this card isn't saved; reload to try again."
-      : state.unsaved
-        ? "   Card not saved in this browser: it is kept in memory and saved again shortly."
-        : "");
+    drives.map(({ v, drive }) => `${drive ?? "-"}: ${v.label} (${v.g.name}${v.readOnly ? ", read-only" : ""})`).join("   ");
   const select = $("drive");
   const current = select.value;
   select.innerHTML = "";
@@ -652,7 +683,7 @@ function refreshFiles() {
       try {
         bytes = fromCard($("textmode").value, f.name, fs.read(f.name, { user: f.user }));
       } catch (err) {
-        $("cardinfo").textContent = `Not downloaded: ${err.message}`; // Report the damaged entry.
+        fileProblem(`Not downloaded: ${err.message}`, "download"); // Report the damaged entry.
         return;
       }
       download(bytes, f.name);
@@ -670,95 +701,90 @@ function download(bytes, name) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-async function useCard(image) {
-  if (state.importBusy) {
-    $("cardinfo").textContent = "Not opened: file import in progress";
-    return;
-  }
+async function useCard(image, options = choices()) {
   parseContainer(image);
-  state.card = image;
-  // Let a save of the old card finish
-  // first, so the new card is the one
-  // stored and an unsaved one says so.
-  while (state.saving) await state.saveDone;
-  await save(image);
-  await powerOn();
-  refreshCard();
+  await powerOnNow(options, image);
+  clearFileProblem("open");
 }
 
-$("starter").addEventListener("click", async () => useCard(await starterCard()));
-$("saveimg").addEventListener("click", () => state.card && download(state.card, "tecos-card.img"));
-$("openimg").addEventListener("change", async (e) => {
+$("starter").addEventListener("click", () => {
+  const options = choices();
+  return lifecycle(async () => useCard(await starterCard(), options))
+    .catch(err => fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open"));
+});
+$("saveimg").addEventListener("click", () => state.card && download(state.card.slice(), "tecos-card.img"));
+$("openimg").addEventListener("change", (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
-  try {
-    await useCard(new Uint8Array(await file.arrayBuffer()));
-  } catch (err) {
-    $("cardinfo").textContent = `Not opened: ${err.message}`;
-  }
+  const options = choices();
   e.target.value = "";
+  return lifecycle(async () => useCard(new Uint8Array(await file.arrayBuffer()), options))
+    .catch(err => fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open"));
 });
-$("putfile").addEventListener("change", async (e) => {
-  if (state.importBusy) {
-    $("cardinfo").textContent = "Not copied: file import in progress";
-    e.target.value = "";
-    return;
-  }
-  if (!state.card) return;
-  state.importBusy = true;
-  const wasRunning = state.running;
-  state.running = false;
-  try {
-    // Read files before taking the card
-    // turn. Stage them on its current copy.
-    const files = [];
-    for (const file of e.target.files) files.push([file.name.toUpperCase(), new Uint8Array(await file.arrayBuffer())]);
-    await serial(async () => {
-      const staged = state.card.slice();
-      const v = volumeOn(parseContainer(staged), $("drive").value);
-      if (!v) return;
-      const fs = new CpmVolume(volumePayload(staged, v), v.g, { readOnly: v.readOnly });
-      for (const [name, bytes] of files) fs.write(name, bytes, { text: chooseText($("textmode").value, name, bytes) });
-      await importSave(staged); // Save failure leaves the card intact.
-      state.card.set(staged);
+$("putfile").addEventListener("change", (e) => {
+  const files = Array.from(e.target.files ?? []);
+  const drive = $("drive").value;
+  const mode = $("textmode").value;
+  e.target.value = "";
+  if (!files.length) return;
+  return lifecycle(async () => {
+    if (!state.card) throw new Error("no card");
+    const machine = state.machine;
+    const volume = copyVolume(drive);
+    if (!volume) throw new Error("the live drive selection is unavailable; try at the command prompt");
+    const staged = state.card.slice();
+    const fs = new CpmVolume(volumePayload(staged, volume), volume.g, { readOnly: volume.readOnly });
+    for (const file of files) {
+      const name = file.name.toUpperCase();
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      fs.write(name, bytes, { text: chooseText(mode, name, bytes) });
+    }
+    state.machine = null;
+    state.machineGeneration++;
+    let published = false;
+    try {
+      await persistence.commit(staged);
+      published = true;
+      state.machine = machine;
       reset();
-    });
-  } catch (err) {
-    $("cardinfo").textContent = `Not copied: ${err.message}`;
-  } finally {
-    state.running = wasRunning;
-    state.importBusy = false;
-  }
-  e.target.value = "";
-  refreshFiles();
+      clearFileProblem("copy");
+      refreshFiles();
+    } catch (error) {
+      if (published) {
+        state.machine = null;
+        fileProblem(`Files copied; restart or refresh failed: ${error.message}`, "copy");
+        return;
+      }
+      state.machine = machine;
+      throw error;
+    }
+  }).catch(err => fileProblem(`Not copied: ${err.message}`, "copy"));
 });
-$("drive").addEventListener("change", refreshFiles);
+$("drive").addEventListener("change", () => {
+  refreshFiles();
+  refreshCopyAvailability();
+});
 
 // ---- Controls
 
 $("display").value = state.display;
-$("display").addEventListener("change", async (e) => {
-  state.display = e.target.value;
-  localStorageSet("tecos.display", state.display);
-  await powerOn();
-  (state.display === "tms" ? $("tms") : $("glcd")).focus();
+$("display").addEventListener("change", (e) => {
+  const options = { ...choices(), display: e.target.value };
+  return powerOn(options)
+    .then(() => { localStorageSet("tecos.display", options.display); (options.display === "tms" ? $("tms") : $("glcd")).focus(); })
+    .catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`));
 });
 $("profile").value = state.width;
-$("profile").addEventListener("change", async (e) => {
-  state.width = e.target.value;
-  localStorageSet("tecos.width", state.width);
-  await powerOn();
+$("profile").addEventListener("change", (e) => {
+  const options = { ...choices(), width: e.target.value };
+  return powerOn(options).then(() => localStorageSet("tecos.width", options.width)).catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`));
 });
-$("reset").addEventListener("click", () => {
+$("reset").addEventListener("click", () => lifecycle(() => {
   reset();
   refreshFiles();
-});
-$("power").addEventListener("click", async () => {
-  await powerOn();
-  refreshFiles();
-});
+}).catch(err => fileProblem(`Reset failed: ${err.message}`)));
+$("power").addEventListener("click", () => powerOn().catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`)));
 $("pause").addEventListener("click", () => {
-  if (state.importBusy) return;
   state.running = !state.running;
   $("pause").textContent = state.running ? "Pause" : "Run";
 });
@@ -766,22 +792,21 @@ setInterval(refreshFiles, 5000);
 
 // ---- Start
 
-(async () => {
-  // Preserve an unreadable stored record.
-  // Run a starter card without saving
-  // over it. Reload to retry.
+const initialOptions = choices();
+const startup = lifecycle(async () => {
+  let stored = false;
   try {
     state.card = await loadCard();
-    if (state.card) parseContainer(state.card);
+    if (state.card) { parseContainer(state.card); stored = true; }
   } catch {
     state.card = null;
-    state.noSave = true;
-    state.unsaved = true;
+    persistence.protectedRecord = true;
   }
   state.card ??= await starterCard();
-  await save();
-  await powerOn();
+  persistence.adopt(state.card, { stored });
+  await powerOnNow(initialOptions);
+  await persistence.autosave();
   refreshCard();
   requestAnimationFrame(frame);
   $("tms").focus();
-})();
+}).catch(err => fileProblem(`Startup failed: ${err.message}`, "startup"));

@@ -1,5 +1,5 @@
 // Report a damaged file entry in
-// the card-status line without a page
+// the file-problem line without a page
 // exception or download. Plant the card
 // in Chromium's store. Run npm run tecos
 // before this test.
@@ -52,7 +52,7 @@ test("Download of a file whose entry names a block past DSM says why, and the pa
   const row = page.locator("#filelist tbody tr", { hasText: "MON3.SVC" });
   await row.waitFor({ timeout: 60_000 });
   await row.locator("button").click();
-  await page.waitForFunction((w) => document.getElementById("cardinfo").textContent === `Not downloaded: ${w}`, words, { timeout: 10_000 });
+  await page.waitForFunction((w) => document.getElementById("cardproblem").textContent === `Not downloaded: ${w}`, words, { timeout: 10_000 });
   assert.deepEqual(downloads, [], "nothing downloaded");
   assert.deepEqual(errors, [], "nothing thrown in the page");
   await context.close();

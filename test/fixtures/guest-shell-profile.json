@@ -1,0 +1,13 @@
+{
+  "fileSha256": "5beea5051f93853f43ac54143665f741a19db6ddba873fe0a2c8834aab31c4c4",
+  "symbolMapSha256": "6e5ea81ad1a168719fd985987e869cb91edfb0b79e998d622005f7e6d84b2cc4",
+  "offsets": {
+    "TABLE": 43,
+    "TYPED": 330,
+    "LBUF": 3314,
+    "STKTOP": 3579,
+    "REMOVE": 84
+  },
+  "fileBytes": 3660,
+  "paddedFileSha256": "8da6e8f2c0a325dc97bbb56e09789913a58d70d3e63b7f7174d8ac30d56d3488"
+}
