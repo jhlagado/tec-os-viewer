@@ -169,7 +169,7 @@ test("at A> under CON TTY a matrix key is let go and DIR behind it runs; without
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
+  assert.match(m.text(mark), /\r\nHELLO3\.ASM {6}2176\r\n/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 
   m = await ttyPrompt();
@@ -209,7 +209,7 @@ test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000
   const mark = m.output.length;
   m.enqueueInput("dir\r", "matrix");
   m.runUntil(() => (pumpKeys(m), !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark))), LIMIT, "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
+  assert.match(m.text(mark), /\r\nHELLO3\.ASM {6}2176\r\n/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 
@@ -318,7 +318,7 @@ test("with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is le
   m.enqueueInput("x", "matrix");
   m.enqueueInput("DIR\r", "serial");
   runPage(m, () => !m.pending.length && m.ready() && /A:SYSTEM>$/.test(m.text(mark)), "DIR and the prompt");
-  assert.match(m.text(mark), /HELLO3 +\.ASM/, "DIR lists the card");
+  assert.match(m.text(mark), /\r\nHELLO3\.ASM {6}2176\r\n/, "DIR lists the card");
   assert.equal(down.size, 0, "no matrix key held");
 });
 
@@ -333,7 +333,7 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   m.enqueueInput("DIR\r", "matrix");
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
   m.runUntil(() => /\[more\]|A:SYSTEM>$/.test(m.text()), LIMIT, "DIR's listing");
-  assert.match(m.text(), /A:SYSTEM>DIR\r\r\n\r\nSHELL +\.SVC/, "DIR typed whole");
+  assert.match(m.text(), /A:SYSTEM>DIR\r\r\n\r\nSHELL\.SVC {7}4224\r\n/, "DIR typed whole");
 });
 
 test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO", { timeout: 300_000 }, async () => {
