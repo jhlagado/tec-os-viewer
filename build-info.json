@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "0598b8f77392fc35d8f4167e215f32c39d48ea98",
-  "firmwareCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
+  "viewerCommit": "099e884b0b5408956dd736abaf77ef759939e62a",
+  "firmwareCommit": "782b0074f11019efe9d1fd0f02e8862421128853",
   "firmwareRomSha256": "c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 461048,
-      "sha256": "b7873f478b00c50c2b10beed6240c678695b5bc0ddce5644149c19e40ca2e1ad"
+      "bytes": 410456,
+      "sha256": "4d5c27ce4badfd1e15072beec64236d029509cca05e04d325abb7192cb67aa17"
     }
   },
   "defaultColumns": 40,
@@ -25,11 +25,11 @@
       "TIMES.BAS",
       "BOUNCE.BAS",
       "CAVBASIC.BAS",
-      "CAVBASIC.COM",
       "CAVERNS.TXT"
     ],
-    "bazaCommit": "8578fe50fdfc66e16015c54f365d1403825979da",
-    "tedCommit": "a2fe5563658056f3dab7986b4ef861d1ea05426a"
+    "bazaCommit": "74c438207f787685f961dd972a3a5289f679ddba",
+    "bounceCommit": "45f2598465e0a2670f0f8d78ae7430089671e6bf",
+    "tedCommit": "20339b89b5c2e5767367b18d31c323352c5bc39c"
   },
   "demoSource": "DEMO.ASM",
   "mon3": {
@@ -37,22 +37,36 @@
       "MON3.SVC",
       "HELLO3.ASM"
     ],
-    "build": "TAS HELLO3 HELLO3.BIN"
+    "build": "TAS HELLO3 HELLO3.BIN",
+    "hexBuild": "TAS HELLO3 HELLO3.HEX",
+    "pages": 19,
+    "fileBytes": 5237,
+    "tpaWithShellAndMon3": 37120,
+    "tpaWithShellGlcdAndMon3": 36352
   },
   "shell": {
     "cardFiles": [
       "SHELL.SVC",
       "STARTUP.CMD"
-    ]
+    ],
+    "pages": 17,
+    "fileBytes": 4203,
+    "tpaWithShell": 41984,
+    "dir": "one row a file: the whole name in twelve columns, its size in eight"
+  },
+  "tas": {
+    "commit": "0c8adea809ff8752e504bad9c40256e2572f2462",
+    "fileBytes": 11013,
+    "intelHex": true
   },
   "caverns": {
     "source": "CAVBASIC.BAS",
     "executable": "CAVBASIC.COM",
     "instructions": "CAVERNS.TXT",
-    "comBytes": 39680,
-    "comSha256": "b18a568223a9862117db8c815504e1a43038a9765c0e815a5c59d940874dbf8d",
-    "sourceSha256": "b8b607dd6c08070ed68de4fe6cd9ced29e16f9ee75691a37c9d9c0c43b462790",
-    "starterRevision": 16,
+    "comBytes": 36736,
+    "comSha256": "c2ce4aecfae8a4439e0a7fb37d92b2427d8e5afb728e843caf0704fea5fd9fcd",
+    "sourceSha256": "2c01cf5f039aaf79bc1ef10da4dfa541a2a59e79ee4b97c8c43a1a2b3ec002a9",
+    "starterRevision": 17,
     "assemblyIncluded": false,
     "status": "author gameplay review pending; emulator qualified; no physical-board claim"
   },
@@ -60,29 +74,16 @@
     "viewerTests": 202,
     "viewerFailures": 0,
     "viewerCompleteRuns": 2,
-    "viewerQualifiedCommit": "0598b8f77392fc35d8f4167e215f32c39d48ea98",
+    "viewerQualifiedCommit": "099e884b0b5408956dd736abaf77ef759939e62a",
     "viewerRunDurationsMs": [
-      202613.232158,
-      200553.783312
+      246736.963061,
+      246409.631763
     ],
-    "browser": "Chromium 156.0.8078.79 (explicit Debian system executable)",
-    "firmwareTests": 1383,
-    "firmwareFailures": 0,
-    "firmwareCompleteRuns": 2,
-    "firmwareQualifiedCommit": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
-    "cavernsExplicit80ColumnTests": 7,
+    "browser": "Chrome for Testing 153.0.8010.12 (named explicitly)",
+    "firmwareQualifiedCommit": "782b0074f11019efe9d1fd0f02e8862421128853",
+    "firmwareQualification": "TEC-OS integration 1; its full strict passes are recorded with the integration, not re-run for this publication",
     "physicalBoardTested": false,
-    "authorGameplayReview": "pending",
-    "viewerInputManifestsSha256": [
-      "401cba876babaa5e842a5c39107dcb2745392d964cbf80a2c870bfe1c3792462",
-      "730647a0bf9f6216ff219325aa1e1ad67f4a24b49d1424c0cddf24a3793f0216"
-    ],
-    "viewerRunReceiptSha256": [
-      "76056f00e44210ce4d1bfdd323d1cff47331def3d6bcb1964fe7b86ed7d09625",
-      "8de46d310657820a79828d0479c14e3306843a98e2f25071e89c085ce74c6052"
-    ],
-    "viewerFullMethodSha256": "f1d621f24c019948c6d7f780395648a306da7da71b219fb68f4101e1ea6f23e5",
-    "viewerInputScope": "Two exact attempt manifests; same source/materialized/SDK bytes, only declared external profile/limits identities differ."
+    "authorGameplayReview": "pending"
   },
   "historicalSample": {
     "viewerCommit": "0b36cbeaa501389e5c01fd7ad518019c60809aea",
@@ -95,9 +96,9 @@
   },
   "housekeeping": {
     "policy": "Cooperative OS-call housekeeping prioritises acknowledged pending data; rejected metadata is not published. Required input drains data subject to errors. Browser persistence remains separate.",
-    "starterRecipeCanonicalSha256": "cfad4c0e6e788d1b9713d3e34647799d0a8e22a17aca09b4a6a13cbed1e009c7",
-    "starterImageSha256": "a7d4e6c8ec7953357e9d92eb6a3373a8183c017e9a7216d36553263ecff6ff27",
-    "mon3AndTas": "Original core components retained; separately qualified MON3 load-address and TAS HEX branches are not adopted by this build."
+    "starterRecipeCanonicalSha256": "7241e02c68a5d4d02cea605fc381fc80f906079bb60e821d110bd5faefaa94e2",
+    "starterImageSha256": "1cdc614e01eacab7c4507310914cbacbbcbdc5b3269ab7bfb995fd9b3a3fc2c1",
+    "mon3AndTas": "Adopted: MON3.SVC in 19 pages, whose HEX LOAD passes over a type 05h record, whose bare GO starts at the lowest data address and which refuses GO while a write is pending; TAS from Thorium 0c8adea writes Intel HEX."
   },
   "persistenceFeedback": {
     "policy": "Guest cache observations, current emulated card and completed browser transactions are separate. Paused guests are not stepped or forcibly flushed. File copying uses fresh live drive selection and resets the guest, discarding pending RAM/unclosed work.",
@@ -111,7 +112,7 @@
         4
       ],
       [
-        3.98,
+        4,
         4,
         4,
         4
@@ -123,31 +124,29 @@
       true
     ],
     "individualControlMaxMs": [
-      41.315891,
-      41.02147
+      40.519126,
+      54.227997
     ],
     "representativeCopyMaxMs": [
-      42.6,
-      39.3
+      12.6,
+      15.8
     ],
-    "normalizedModuleBytes": 146011,
+    "normalizedModuleBytes": 146051,
     "baselineNormalizedModuleBytes": 130450,
     "maximumAdditionalModuleBytes": 16384,
-    "normalizedModuleSha256": "4fc6884ec8dabf637c61e9944d098b67a26af6439066b6d2230ff0ea201fe97b"
+    "normalizedModuleSha256": "55d6d0bab68b47ebf24cc03d60a389af0b76f2e9bb09af5dc88a29c074a4760b"
   },
   "standaloneQa": {
     "tests": 1,
     "failures": 0,
     "completeRuns": 1,
-    "normalBuild": "npm run web; node tools/page.mjs; whole existing single-page smoke",
+    "normalBuild": "npm run page; the page loaded once: boot to A:SYSTEM>, then DIR",
     "emittedAndSmokeFinalHtmlIdentical": true,
-    "htmlBytes": 461048,
-    "htmlSha256": "b7873f478b00c50c2b10beed6240c678695b5bc0ddce5644149c19e40ca2e1ad",
-    "embeddedAssets": 19,
+    "htmlBytes": 410456,
+    "htmlSha256": "4d5c27ce4badfd1e15072beec64236d029509cca05e04d325abb7192cb67aa17",
+    "embeddedAssets": 18,
     "externalAssetRequests": 0,
     "pageErrors": 0,
-    "receiptSha256": "d9af601598ffe10444f3f9428f2fdea1df0ef102d541c0cf50bc7cf0057283e9",
-    "methodSha256": "747b46179129871413edc24f22eda30be83b55a88bf80d73d0d70dd4d47c1e87",
-    "scope": "Artifact identity plus unchanged smoke assertions; no separate inner HTTP-response digest was captured."
+    "scope": "The emitted page, served locally: the prompt, fifteen sized DIR rows and the count and free lines; no page errors and no other requests."
   }
 }
