@@ -16,12 +16,13 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `241b438`, which builds with TAS alone, on the
-release 1 candidate with BASIC: the Compact font, a cold 40-column console,
-the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
-resident shell, `MON3.SVC` for MON-3's programs, TED from Thorium `a2fe556`,
-TAS from Thorium `3d1e2c0`, which takes several statements on a line, and BAZA
-from Baza `8578fe5` and `BOUNCE.BAS` from Baza `50dc512`, with the card's `BOUNCE.BAS` and
+The firmware pin is TEC-OS `782b007`, TEC-OS integration 1, which builds with
+TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
+40-column console, the squeezed ROM with a minimal CCP and four equal drives,
+`SHELL.SVC`, the resident shell, in 17 pages, `MON3.SVC` for MON-3's programs,
+in 19 pages, TED from Thorium `20339b8`, TAS from Thorium `0c8adea`, which takes
+several statements on a line and writes Intel HEX, and BAZA from Baza `74c4382`
+and `BOUNCE.BAS` from Baza `45f2598`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
@@ -32,13 +33,18 @@ GAMES and SPARE on no drive. A: holds its 15 files, `BAZA.COM`, `BAZA.RTL`,
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
-`SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with each file's size, the
+`SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with a row for each file, its
+whole name and its size, as `SHELL.SVC       4224`, then the count, the bytes
+and the drive's free space (`DIR /W` is the ROM's wide listing), the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/241b438/docs/shell.md)
-has the rest. At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/782b007/docs/shell.md)
+has the rest. With the shell loaded the TPA is 41,984 bytes (the word at
+`0006h` is `A500h`), 37,120 with `MON3.SVC` installed too, and 36,352 with
+`GLCD.SVC` as well; TED's text then holds 28,182, 23,318 and 22,550 bytes.
+At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
 BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
@@ -47,12 +53,16 @@ Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
 `MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
 MON-3 program that writes four lines on the LCD and counts on the digits; on
 the page, Esc on the matrix keyboard returns to `MON3>` (on the board, AD on
-its keypad does too), and `EXIT` to `A:SYSTEM>`.
+its keypad does too), and `EXIT` to `A:SYSTEM>`. `TAS HELLO3 HELLO3.HEX`
+writes the program as Intel HEX instead, which `LOAD HELLO3.HEX` takes. `MON3.SVC`'s
+loader passes over a HEX file's start-address record (type 05h), which TAS
+doesn't write, and a bare `GO` starts at the lowest address loaded; while a
+write is still pending `GO` prints `?` and starts nothing.
 
 ## BASIC Caverns
 
 Select PICO9918 at **80 columns**, type `BAZA CAVBASIC` to compile the supplied
-source, then `CAVBASIC` to play. The 39,680-byte executable is created on your
+source, then `CAVBASIC` to play. The 36,736-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
 `TED CAVBASIC.BAS` opens the author-refined BASIC source. The matching BAZA
 compiler/runtime pair is on the card; compilation works with the shell resident.
@@ -143,8 +153,8 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`3d1e2c0` for `TAS.COM`,
-`a2fe556` for `TED.COM`), jhlagado/baza (`8578fe5` for compiler/runtime, `50dc512` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`0c8adea` for `TAS.COM`,
+`20339b8` for `TED.COM`), jhlagado/baza (`74c4382` for compiler/runtime, `45f2598` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
