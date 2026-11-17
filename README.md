@@ -147,8 +147,8 @@ status. If the guest leaves input wait while a file picker is open, Copy can
 still refuse without reading the files or changing the card; return to console
 input and select the files again. Availability does not certify a flushed cache.
 
-[Qualification](docs/qualification.md) records the pin, its ROM and the tests
-that pass on it.
+[Qualification](docs/qualification.md) records the selected pin, its ROM
+and the qualification records.
 
 TEC-OS is a submodule at `tec-os/`, and its commit there is the pin. The page imports TEC-OS's machine, card and recipe libraries
 from it and holds no copy of them. The viewer installs nothing of its own: the runtime, esbuild and Playwright resolve from
