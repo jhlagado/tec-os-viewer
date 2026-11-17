@@ -1,6 +1,6 @@
 {
-  "status": "Full final-source Viewer suite qualified; fresh browser and final main pin/publication pending",
-  "firmware": "ae61d294",
+  "status": "Qualified full suite; final qualified-main firmware pin; standalone publication and final browser receipt follow",
+  "firmware": "1dd75f5bc97672d71a885010ba3aff9c2f598d6c",
   "sourceOnly": true,
   "gameFileBytes": 37248,
   "observerLogicUnchanged": true,
@@ -40,5 +40,7 @@
     "fail": 0,
     "skipped": 0
   },
-  "unchangedResourceLimitsPassed": true
+  "unchangedResourceLimitsPassed": true,
+  "finalPinRuntimeDiffEmpty": true,
+  "freshBrowserTrial": true
 }
