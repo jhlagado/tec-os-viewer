@@ -1,5 +1,5 @@
 {
-  "status": "WIP: 22 receiving checks pass; fresh full suite and browser pending",
+  "status": "WIP: 202 full checks passed; final doorway-prose revision is being rechecked",
   "firmware": "ae61d294",
   "sourceOnly": true,
   "gameFileBytes": 37376,
@@ -18,5 +18,11 @@
     "tests": 22,
     "pass": 22,
     "fail": 0
+  },
+  "fullBeforeFinalProse": {
+    "tests": 202,
+    "pass": 202,
+    "fail": 0,
+    "skipped": 0
   }
 }
