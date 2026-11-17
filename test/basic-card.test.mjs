@@ -283,16 +283,16 @@ test("in the page's machine, logged on B:, which is then the drive written behin
 // Verify the actual Viewer recipe, rather than a separately constructed disk.
 test("Viewer Caverns disk includes BASIC source only, compiles identically and runs at 80 columns", { timeout: 600_000 }, async () => {
   const image = await card(), a = driveA(image);
-  for (const name of ["CAVBASIC.BAS", "CAVERNS.TXT"]) assert.ok(names(image).includes(name));
-  assert.ok(!names(image).includes("CAVERNS.COM"), "assembly comparison stays development-only");
-  assert.ok(!names(image).includes("CAVBASIC.COM"), "user compiles the source");
+  for (const name of ["CAVERNS.BAS", "CAVERNS.TXT"]) assert.ok(names(image).includes(name));
+  assert.ok(!names(image).includes("CAVASM.COM"), "assembly comparison stays development-only");
+  assert.ok(!names(image).includes("CAVERNS.COM"), "user compiles the source");
   const expected = JSON.parse(readFileSync(new URL("../tec-os/test/caverns-basic.json", import.meta.url))).comSha256;
   const m = power(image, "pico", 80);
   m.runUntilChecked(() => m.ready(), LIMIT, "Viewer shell");
-  keys(m, "baza cavbasic\r", "Viewer native Caverns rebuild", () => m.ready());
+  keys(m, "baza caverns\r", "Viewer native Caverns rebuild", () => m.ready());
   assert.match(m.text(), /COM written/);
-  assert.equal(createHash("sha256").update(a.read("CAVBASIC.COM")).digest("hex"), expected);
-  keys(m, "cavbasic\r", "Viewer Caverns launch", () => m.text().endsWith("? "));
+  assert.equal(createHash("sha256").update(a.read("CAVERNS.COM")).digest("hex"), expected);
+  keys(m, "caverns\r", "Viewer Caverns launch", () => m.text().endsWith("? "));
   assert.match(m.text(), /Bring treasure home/);
   keys(m, "quit\r", "Viewer game quit", () => m.text().endsWith("? ") && /Another adventure/.test(m.text()));
   keys(m, "n\r", "Viewer return to shell", () => m.ready());

@@ -29,7 +29,7 @@ card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
 GAMES and SPARE on no drive. A: holds its 15 files, `BAZA.COM`, `BAZA.RTL`,
 `BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `MON3.SVC`,
 `SAMPLE.ASM`, `SHELL.SVC`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
-`TIMES.BAS`, plus `CAVBASIC.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
+`TIMES.BAS`, plus `CAVERNS.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
@@ -61,10 +61,10 @@ write is still pending `GO` prints `?` and starts nothing.
 
 ## BASIC Caverns
 
-Select PICO9918 at **80 columns**, type `BAZA CAVBASIC` to compile the supplied
-source, then `CAVBASIC` to play. The 36,736-byte executable is created on your
+Select PICO9918 at **80 columns**, type `BAZA CAVERNS` to compile the supplied
+source, then `CAVERNS` to play. The 37,376-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
-`TED CAVBASIC.BAS` opens the author-refined BASIC source. The matching BAZA
+`TED CAVERNS.BAS` opens the author-refined BASIC source. The matching BAZA
 compiler/runtime pair is on the card; compilation works with the shell resident.
 The game includes its selected runtime rather than loading BAZA.RTL separately.
 QUIT followed by N returns to the shell. Returning home banks treasures and
