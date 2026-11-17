@@ -1,3 +1,37 @@
+# Buffered navigation and updated starter
+
+The selected firmware is TEC-OS `24613dc51ebf74a4a008c18a9aacdcb3e512d78c`.
+The shared BDOS line editor consumes CSI and SS3 keys before storage and
+echo, covering both shell and bare CCP. The page continues forwarding keys;
+programs using raw input and editors keep their navigation. Shell history
+remains Ctrl-W and Ctrl-N.
+
+The native ROM uses 15,758 bytes with 626 free, above the 128-byte floor.
+Its SHA-256 is
+`606b4163f182f9dddd94d3287de7eaa5c40e5bcbad4815a605817ed8553bd1c5`.
+The symbol file SHA-256 is
+`4033ef49a41737678aa960cc9a7f38386233dbfd2cb2b8f886de833413d3714f`.
+The passive observer retains its complete ROM and canonical-symbol binding,
+14 opcode spans, instruction offsets and physical-memory admission checks.
+Updated operands resolve through the matching map; no admission is relaxed.
+
+The starter retains its 15 files. BAZA.COM (13,440 bytes) and BAZA.RTL
+(13,056 bytes) are from Baza `eee4ee6`. SHELL.SVC is 4,191 bytes and still
+uses 17 pages. All other file digests match the prior starter. The recipe's
+canonical SHA-256 is
+`d18f4ed54dff3480fc1a2cef021e3eefcb471413c14d4e61bb6931ad3c9cb55a`.
+[pins.json](../pins.json) names every complete file digest.
+
+The page-queue regressions exercise both prompts on serial, PICO and GLCD,
+checking up and down separately against the line bytes, count, pointer,
+cursor and zero output, then executing the completed command. Existing raw
+keyboard, observer, editor and browser checks remain required. Qualification
+runs and landing decisions are recorded in Origo's
+`studies/p3-tec-os/stages/viewer-navigation.md`. This is emulator evidence;
+physical-board testing and firmware release authority remain separate.
+
+The earlier sections retain the exact pins and measurements they describe.
+
 # TEC-OS integration 1
 
 The firmware gitlink is `782b0074f11019efe9d1fd0f02e8862421128853`, TEC-OS

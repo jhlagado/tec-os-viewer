@@ -11,18 +11,22 @@ before they appear on that site.
 [Reading the source](docs/reading.md) follows page startup, the controls, card
 storage and the build through their files.
 
+At shell and bare CCP prompts, cursor and function keys are ignored during
+line entry: they neither enter escape bytes nor move the cursor. Ctrl-W and
+Ctrl-N retain shell history. Programs reading raw keys still receive arrows.
+
 New sessions use 40 columns. Saved 32, 40 or 80-column preferences are retained.
 The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `782b007`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `24613dc`, with buffered navigation filtering, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 17 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from Thorium `20339b8`, TAS from Thorium `0c8adea`, which takes
-several statements on a line and writes Intel HEX, and BAZA from Baza `74c4382`
-and `BOUNCE.BAS` from Baza `45f2598`, with the card's `BOUNCE.BAS` and
+in 19 pages, TED from Thorium `02b63d8`, TAS from Thorium `7a217f9`, which takes
+several statements on a line and writes Intel HEX, and BAZA from Baza `eee4ee6`
+and `BOUNCE.BAS` from Baza `eee4ee6`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
@@ -39,8 +43,8 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 `[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
-`TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/782b007/docs/shell.md)
+`TYPE`, `CON` and `UNLOAD`; TEC-OS's
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/24613dc/docs/shell.md)
 has the rest. With the shell loaded the TPA is 41,984 bytes (the word at
 `0006h` is `A500h`), 37,120 with `MON3.SVC` installed too, and 36,352 with
 `GLCD.SVC` as well; TED's text then holds 28,182, 23,318 and 22,550 bytes.
@@ -62,7 +66,7 @@ write is still pending `GO` prints `?` and starts nothing.
 ## BASIC Caverns
 
 Select PICO9918 at **80 columns**, type `BAZA CAVBASIC` to compile the supplied
-source, then `CAVBASIC` to play. The 36,736-byte executable is created on your
+source, then `CAVBASIC` to play. The 29,056-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
 `TED CAVBASIC.BAS` opens the author-refined BASIC source. The matching BAZA
 compiler/runtime pair is on the card; compilation works with the shell resident.
@@ -84,8 +88,7 @@ The card line under SD card and the Drive list show each volume on the drive
 the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
 reset keeps the drives as `CD` left them. After `CD A:GAMES`, a reset can
 give the bare `A>` on GAMES. The ROM's `CD ?`, `CD A:SYSTEM` and `SHELL.SVC`
-restore the shell; if you changed the user area, use `USER 0` before loading
-the starter's shell. Power cycle restores the card's default drives and startup.
+restore the shell. The command processor always returns to user area 0. Power cycle restores the card's default drives and startup.
 
 A browser that already holds a card keeps it; press New starter card for
 this one. A card with no `SHELL.SVC` on A: and no `MON3.SVC` that is entered
@@ -153,8 +156,8 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`0c8adea` for `TAS.COM`,
-`20339b8` for `TED.COM`), jhlagado/baza (`74c4382` for compiler/runtime, `45f2598` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`7a217f9` for `TAS.COM`,
+`02b63d8` for `TED.COM`), jhlagado/baza (`eee4ee6` for compiler/runtime and BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
