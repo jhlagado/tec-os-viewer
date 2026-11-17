@@ -1,6 +1,6 @@
 # Buffered navigation and updated starter
 
-The selected firmware is TEC-OS `24613dc51ebf74a4a008c18a9aacdcb3e512d78c`.
+The selected firmware is TEC-OS `e2b06709f6d7f856080e2fd9d1b9c89cd34af270`.
 The shared BDOS line editor consumes CSI and SS3 keys before storage and
 echo, covering both shell and bare CCP. The page continues forwarding keys;
 programs using raw input and editors keep their navigation. Shell history
