@@ -1,5 +1,5 @@
 {
-  "status": "Qualified full suite; final qualified-main firmware pin; standalone publication and final browser receipt follow",
+  "status": "Qualified; pushed to main and hosting branch. Live-site HTTP verification blocked by executor proxy.",
   "firmware": "1dd75f5bc97672d71a885010ba3aff9c2f598d6c",
   "sourceOnly": true,
   "gameFileBytes": 37248,
@@ -42,5 +42,16 @@
   },
   "unchangedResourceLimitsPassed": true,
   "finalPinRuntimeDiffEmpty": true,
-  "freshBrowserTrial": true
+  "freshBrowserTrial": true,
+  "viewerSourceCommit": "d90925012de391a6b7e1c5dbddd011820dcd44e8",
+  "hostingCommit": "0a02a27d8ce1a16332562e9766595e0d530d82f8",
+  "testedAndPublishedHtmlIdentical": true,
+  "standaloneSha256": "2a64b408ac3b5ef2103c9965d63ebc528e6960666f02841bb3a06058e6e7d9bd",
+  "liveHttpVerification": {
+    "verified": false,
+    "reason": "Executor CONNECT proxy returns HTTP 403 before the public site can be reached",
+    "uploadedPayloadVerifiedViaGit": true
+  },
+  "physicalHardwareTested": false,
+  "finalAuthorReadThrough": "pending"
 }

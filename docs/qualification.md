@@ -534,3 +534,27 @@ and Mac native qualification from the requirements (KD-257). VS4's VE-4 and
 VE-5 are implemented: `dist/build.json` certifies the standalone page, and
 the starter recipe is pinned by its canonical digest. Source relocation records no new runtime result
 and supplies no Mac qualification.
+
+## Restored Caverns prose and current firmware
+
+The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
+CAVERNS.COM with Baza eee4ee6. The game's preferred display is 80 columns.
+Original MicroWorld prose is restored while modern directions and puzzles
+remain. The displayed copyright is 1982-83; the GPL notice retains 2019.
+
+The final full Viewer run passes 202 checks, zero failures/skips, with the
+same feedback/copy criteria. A shared-host copy-time failure is retained;
+isolated CPU time passes the unchanged limit. Passive ROM bindings and shell
+fixtures were regenerated from current firmware, without changing observer
+logic. The removed OS SAVE fixture is replaced by a native 32-record
+make/write/close test that verifies all 4096 output bytes.
+
+The public standalone is built from Viewer d909250 and qualified TEC-OS
+1dd75f5b, and its exact tested bytes are pushed to gh-pages at 0a02a27.
+Fresh Chromium compiles the exact executable, plays the opening and restores
+an exported checkpoint in independent storage. The cloud HTTP proxy refuses
+the live site, so the uploaded files are verified through Git rather than
+claimed as observed over public HTTP. Physical testing and final author review
+remain separate. [Current receipts](evidence/caverns-prose-restoration/qualification.json)
+include all full-suite and browser results, known failed attempts and exact
+publication identities.
