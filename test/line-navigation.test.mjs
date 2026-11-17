@@ -10,7 +10,8 @@ import {card,power} from './lib/page.mjs';
 const LIMIT=300_000_000;
 const word=(m,at)=>m.read(at)|(m.read(at+1)<<8);
 function run(m,done,what){
- m.runUntilChecked(()=>{pumpKeys(m);return done();},LIMIT,what);
+ // Serial delivery observes individual receive instructions, as the page does.
+ m.runUntil(()=>{pumpKeys(m);return done();},LIMIT,what);
 }
 function held(m){
  const first=m.sym(m.videoConsole()?'CINMX':'CINLP');
