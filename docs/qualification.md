@@ -1,3 +1,109 @@
+# TEC-OS integration 1
+
+The firmware gitlink is `782b0074f11019efe9d1fd0f02e8862421128853`, TEC-OS
+integration 1: the sized `DIR`, the nineteen-page MON3 with its Intel HEX
+loader, and TAS from Thorium `0c8adea`, which writes Intel HEX. The sections
+after this one describe earlier pins and keep their own figures.
+
+The figures here are measured from TEC-OS's build at the pin, through
+`npm run tecos`, and from the page's machine running its starter card. The ROM
+is unchanged, SHA-256
+`c95862634ee002bb9a5ef1d3d0ee8ea831e12fda4e96792b36454170aafabf7f`. Its
+symbol file, `tecos.d8.json`, is now
+`5c8495e0037a9c878764ddd0db8d6ae8e7e4aa18085a359a92773bcfa470d26d`; it
+differs from the previous build's only in naming the TAS commit that made it,
+so the guest observer's binding (`src/guest-profile.json`) changes in that
+hash alone: the same symbol map, opcode spans and memory profile. The starter
+card, `starter.img`, is
+`1cdc614e01eacab7c4507310914cbacbbcbdc5b3269ab7bfb995fd9b3a3fc2c1`, and its
+recipe `ff7172e502f825f28abd0f5260017baee106aef633f1645e9c945b8ac69afae3`
+as a file, with the canonical digest
+`7241e02c68a5d4d02cea605fc381fc80f906079bb60e821d110bd5faefaa94e2` that
+`pins.json` holds. Three of A:'s fifteen files change; the other twelve are
+byte for byte as before:
+
+| File | SHA-256 | Bytes | On the card | From |
+| --- | --- | --- | --- | --- |
+| `MON3.SVC` | `9cf63c79…` | 5,237 | 5,248 | TEC-OS, 19 pages |
+| `SHELL.SVC` | `2697cc8d…` | 4,203 | 4,224 | TEC-OS, 17 pages |
+| `TAS.COM` | `8e1f0efb…` | 11,013 | 11,136 | Thorium `0c8adea` |
+
+TED's bytes are those of Thorium `20339b8`'s `TED.COM`, and BAZA's, `BAZA.RTL`'s
+and `BOUNCE.BAS`'s those of Baza `74c4382` and `45f2598`, the commits TEC-OS
+names for them. On the starter card `BAZA CAVBASIC` writes a 36,736-byte
+`CAVBASIC.COM` and `BAZA BOUNCE` an 18,560-byte `BOUNCE.COM`.
+
+`DIR` under the shell gives one row a file, the whole name left in twelve
+columns and its size in records times 128 right in eight, then the count and
+bytes and the free space, at every width and on the serial console. On the
+starter card, at 40 columns:
+
+```
+A:SYSTEM>DIR
+
+SHELL.SVC       4224
+GLCD.SVC         896
+STARTUP.CMD      128
+TED.COM        12416
+SAMPLE.ASM      4608
+TIMES.BAS        640
+TAS.COM        11136
+BAZA.COM       13184
+BAZA.RTL       12928
+BOUNCE.BAS      5376
+CAVERNS.TXT     2688
+DEMO.ASM       15360
+MON3.SVC        5248
+HELLO3.ASM      2176
+CAVBASIC.BAS   18816
+15 files, 109824 bytes
+909312 free on A:SYSTEM
+```
+
+On the GLCD's eight rows it stops at `[more]` after `TIMES.BAS`. `DIR /W` is
+the ROM's wide listing. The TPA on the starter card, by what is installed:
+
+| Installed | Word at `0006h` | TPA |
+| --- | --- | --- |
+| nothing | `B6C5h` | 46,533 |
+| `SHELL.SVC` | `A500h` | 41,984 |
+| `SHELL.SVC`, `GLCD.SVC` | `A200h` | 41,216 |
+| `SHELL.SVC`, `MON3.SVC` | `9200h` | 37,120 |
+| `MON3.SVC` | `A300h` | 41,472 |
+| `GLCD.SVC`, `MON3.SVC` | `A000h` | 40,704 |
+| `SHELL.SVC`, `GLCD.SVC`, `MON3.SVC` | `8F00h` | 36,352 |
+
+TED's text holds 28,182 bytes with the shell, on serial and on the PICO9918
+at 40 columns, 23,318 with `MON3.SVC` installed and left by `EXIT`, and 22,550
+with `GLCD.SVC` as well, on the GLCD board. `TAS HELLO3 HELLO3.HEX` writes
+`HELLO3.HEX`, 512 bytes on the card, and at `MON3>` `LOAD HELLO3.HEX` and a
+bare `GO` run HELLO3 at 4000h, its lowest address, as `LOAD HELLO3.BIN` and
+`GO` do.
+
+The guest observer's shell fixtures, `test/fixtures/guest-shell.symbols.json`
+and `test/fixtures/guest-shell-profile.json`, are taken again from an assembly
+of the pinned `drivers/shell.asm` at 100h with the pinned TAS: the line buffer
+is now at 3830 bytes into the shell and its stack top at 4096. The same method
+at the previous pin gives the previous symbol fixture byte for byte.
+
+A card saved before the shell, of two volumes, is still brought up to date at
+power-on: it gets the starter's 17-page `SHELL.SVC` and 19-page `MON3.SVC`,
+with the note on the serial pane, and its TPA is then 42,752 bytes with the
+shell (`A800h`) and 37,888 with `MON3.SVC` too. A card saved from the previous
+starter keeps its own `SHELL.SVC`, `MON3.SVC` and `TAS.COM`, and the earlier
+`DIR` rows, with 42,496 bytes of TPA under its shell; New starter card gives
+this pin's files.
+
+The tests that read `DIR`'s rows now look for the sized rows the starter card
+gives: `HELLO3.ASM` at 2176 and `SHELL.SVC` at 4224. The compact-print
+evidence's browser result and test log were byte for byte TEC-OS's own
+`docs/evidence/caverns-print-helpers/viewer-result.json` and
+`docs/evidence/caverns-print-helpers/viewer-tests.log`, which the no-copy check
+refuses, so they are now read in `tec-os/` at the pin;
+`docs/evidence/print-helpers/qualification.json` stays here. The two complete
+`npm test` runs at this source, their summaries and the browser they used are
+recorded in Origo's `studies/p3-tec-os/stages/viewer-int1-landing.md`.
+
 # Persistence and recovery feedback
 
 This source separates the guest block cache, the current card image and completed

@@ -1,13 +1,13 @@
 {
-  "fileSha256": "5beea5051f93853f43ac54143665f741a19db6ddba873fe0a2c8834aab31c4c4",
-  "symbolMapSha256": "6e5ea81ad1a168719fd985987e869cb91edfb0b79e998d622005f7e6d84b2cc4",
+  "fileSha256": "2697cc8dc1ce4376ca0e52d552360d95bbfb39c34de40a1bc4fad1dbd735517f",
+  "symbolMapSha256": "bf1db11ded515a2eadd17e420acf2cc6c52c2c9cc081788297e967a958353f58",
   "offsets": {
     "TABLE": 43,
     "TYPED": 330,
-    "LBUF": 3314,
-    "STKTOP": 3579,
+    "LBUF": 3830,
+    "STKTOP": 4096,
     "REMOVE": 84
   },
-  "fileBytes": 3660,
-  "paddedFileSha256": "8da6e8f2c0a325dc97bbb56e09789913a58d70d3e63b7f7174d8ac30d56d3488"
+  "fileBytes": 4203,
+  "paddedFileSha256": "46caa75167a057a44e637d3736b0b25e4898fd945663ecc0dd4eaf1081765b66"
 }
