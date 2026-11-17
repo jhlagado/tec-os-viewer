@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "copyMs": [
+    3.599999997764826,
+    10.200000002980232,
+    30.300000000745058,
+    44.399999998509884,
+    38,
+    11.300000000745058,
+    6.300000000745058,
+    5.800000000745058
+  ],
+  "publicMHz": [
+    4,
+    4,
+    4,
+    4
+  ],
+  "individualControlMs": [
+    64.47734199999832,
+    44.23077700000067,
+    46.723666000001685
+  ],
+  "maximumCopyMs": 50,
+  "maximumControlMs": 100,
+  "limitsChanged": false,
+  "viewerCpu": 1,
+  "concurrentNativeTestCpu": 0,
+  "hostCpuQuotaCores": 2
+}
