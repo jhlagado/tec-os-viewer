@@ -1,8 +1,8 @@
 {
-  "status": "WIP: 202 full checks passed; final doorway-prose revision is being rechecked",
+  "status": "WIP: final full suite 201 pass, 1 host-copy-time failure; idle-host full rerun queued",
   "firmware": "ae61d294",
   "sourceOnly": true,
-  "gameFileBytes": 37376,
+  "gameFileBytes": 37248,
   "observerLogicUnchanged": true,
   "receivingChanges": [
     "Rebound ROM opcode spans and full identities",
@@ -24,5 +24,14 @@
     "pass": 202,
     "fail": 0,
     "skipped": 0
+  },
+  "gameSha256": "d2ad7340741da02f5f5553875128b14f23bfb9f9db6d9c55e8be5d033f152301",
+  "sourceSha256": "b9bb843da998b757297831e46fbacd7e4de405d995807ee462351332e5c5e880",
+  "fullOnSharedHost": {
+    "tests": 202,
+    "pass": 201,
+    "fail": 1,
+    "skipped": 0,
+    "failure": "One representative card-image copy exceeded 50ms; runtime and storage functional checks passed. No limit changed."
   }
 }
