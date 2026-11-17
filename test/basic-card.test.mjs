@@ -33,7 +33,7 @@
 // data writes wait for the next flush
 // point. Whenever TEC-OS waits for a
 // key, every drive is on the card.
-// SAVE's own close puts its pages in
+// A program's close puts its pages in
 // the card image, which the page saves,
 // by the time the prompt shows; and a
 // record a program writes into a file's
@@ -219,17 +219,23 @@ test("in the page's machine, a card whose SHELL.SVC was taken off boots to the R
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, SAVE's close puts its file on A: in the card image by the time the prompt shows", { timeout: 300_000 }, async () => {
+test("in the page's machine, a native program closes sixteen pages onto A: before the prompt", { timeout: 300_000 }, async () => {
   const image = await card();
-  const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
-  const byte = (a) => (a * 7) & 0xff;
-  for (let a = 0x100; a < 0x100 + 16 * 256; a += 1) m.write(a, byte(a));
-  m.command("SAVE 16 X.COM");
-  const saved = driveA(image).read("X.COM");
-  assert.equal(saved.length, 4096, "16 pages");
-  assert.ok(saved.every((b, i) => b === byte(0x100 + i)), "the pages' bytes");
-  assert.deepEqual(m.violations, []);
+  // Make the tail's file, write 32 sequential records from 0200h, close, return.
+  const code = [0x11,0x5c,0,0x0e,22,0xcd,5,0,0x21,0,2,0x06,32,
+    0xc5,0xe5,0xeb,0x0e,26,0xcd,5,0,0x11,0x5c,0,0x0e,21,0xcd,5,0,
+    0xe1,0x11,0x80,0,0x19,0xc1,0x10,0xe8,0x11,0x5c,0,0x0e,16,0xcd,5,0,0xc9];
+  const writer = new Uint8Array(0x1100);writer.set(code);
+  const byte = a => (a * 7) & 0xff;
+  for (let i=0;i<4096;i++) writer[0x100+i]=byte(0x200+i);
+  driveA(image).write("WRITE16.COM",writer);
+  const m = power(image,"pico",40);
+  m.runUntilChecked(()=>m.ready()&&m.screen().some(l=>l.trimEnd()==="A:SYSTEM>"),LIMIT,"the prompt");
+  m.command("WRITE16 X.COM");
+  const saved=driveA(image).read("X.COM");
+  assert.equal(saved.length,4096,"16 pages");
+  assert.ok(saved.every((b,i)=>b===byte(0x200+i)),"all pages' bytes");
+  assert.deepEqual(m.violations,[]);
 });
 
 /**

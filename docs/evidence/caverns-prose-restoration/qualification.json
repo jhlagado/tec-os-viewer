@@ -1,0 +1,22 @@
+{
+  "status": "WIP: 22 receiving checks pass; fresh full suite and browser pending",
+  "firmware": "ae61d294",
+  "sourceOnly": true,
+  "gameFileBytes": 37376,
+  "observerLogicUnchanged": true,
+  "receivingChanges": [
+    "Rebound ROM opcode spans and full identities",
+    "Reassembled pinned shell symbols and padded-file identity",
+    "Replaced removed SAVE built-in fixture with native 32-record make/write/close program, checking all 4096 bytes"
+  ],
+  "initialFullRun": {
+    "pass": 189,
+    "fail": 13,
+    "reason": "Twelve stale shell identity guards and removed SAVE command fixture"
+  },
+  "targetedReceiving": {
+    "tests": 22,
+    "pass": 22,
+    "fail": 0
+  }
+}
