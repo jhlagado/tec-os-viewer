@@ -30,14 +30,20 @@ function lineState(m){
 }
 
 for(const shell of [false,true])for(const board of ['serial','pico','glcd']){
- test(`${shell?'shell':'bare CCP'} ignores page up/down keys on ${board}`,async()=>{
+ test(`${shell?'shell':'bare CCP'} ignores up/down arrows from the page on ${board}`,async()=>{
   const image=await card();
   const a=findVolume(parseContainer(image),'A');
   const files=new CpmVolume(volumePayload(image,a),a.g);
   files.write('ONE.TXT',Buffer.from('ARROW-CANARY\r\n'),{text:true});
-  if(!shell)files.write('STARTUP.CMD',Buffer.from('\x1a','latin1'));
+  if(!shell){
+   // Display preparation inserts the shell whenever its file is present.
+   files.erase('SHELL.SVC');
+   files.write('STARTUP.CMD',Buffer.from('\x1a','latin1'));
+  }
   const m=power(image,board,40);
   run(m,()=>m.ready(),'the first prompt');
+  assert.equal(Boolean(word(m,m.sym('SHOWN'))),shell,'the actual shell hook');
+  assert.equal(m.read(m.sym('CONMOD')),{serial:0,pico:1,glcd:3}[board],'the actual console');
   for(const key of 'TYPE ')queue(m,key);
   run(m,()=>held(m),'the partial command');
   assert.equal(Buffer.from(lineState(m).bytes).toString('latin1'),'TYPE ');
