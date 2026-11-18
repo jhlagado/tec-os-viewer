@@ -1,7 +1,7 @@
 # Prompt history integration
 
 The selected native source is TEC-OS `c688458f7404b2f4cae9ab0bed5ebbf870ca86ba`,
-based on current main `de440992`. It preserves the separately qualified card,
+incorporating main `4d581d0e`. It preserves the separately qualified card,
 Caverns and book integration. This increment changes buffered console input.
 At the shell prompt plain Up/Down recalls older/newer commands using the
 existing Ctrl-W/Ctrl-N history. Recall replaces partial input, down past the
