@@ -16,7 +16,7 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `6e002a7`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `5971cb59`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 17 pages, `MON3.SVC` for MON-3's programs,
@@ -40,7 +40,7 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/6e002a7/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/5971cb59/docs/shell.md)
 has the rest. With the shell loaded the TPA is 41,984 bytes (the word at
 `0006h` is `A500h`), 37,120 with `MON3.SVC` installed too, and 36,352 with
 `GLCD.SVC` as well; TED's text then holds 28,182, 23,318 and 22,550 bytes.

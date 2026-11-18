@@ -1,7 +1,7 @@
 # Prompt history integration
 
-The selected native source is TEC-OS `6e002a77061950c5a39a58d60787527b985522f7`,
-based on current main `b36ca98`. It preserves the separately qualified card,
+The selected native source is TEC-OS `5971cb59d98bef86c067dc19cbae678b9d153c60`,
+based on current main `2b0b41e`. It preserves the separately qualified card,
 Caverns and book integration. This increment changes buffered console input.
 At the shell prompt plain Up/Down recalls older/newer commands using the
 existing Ctrl-W/Ctrl-N history. Recall replaces partial input, down past the
@@ -21,7 +21,14 @@ Page-queue cases cover empty and populated history on serial, PICO and GLCD.
 The real Chromium case checks each recall against the active last screen line,
 then edits and executes the recalled command. Earlier command echoes cannot
 satisfy those active-line checks. The bare-CCP cases verify no shell hook.
-No runtime result is claimed by this prepared source. Origo's
+The preceding Viewer head `f7ccdc44bbe863338d22a21f2a2088453b166fcd`, with
+firmware `6e002a7`, passed all 43 focused navigation, cache and bundle cases,
+including real Chromium browser events. Chromium was 156.0.8078.79; the
+1,024 MiB guard measured an 820 MiB peak. The run completed on 18 November
+2026 at 15:09:16 UTC. This receiving pin preserves those runtime sources
+and incorporates later main documentation and its editorial audit tool.
+The focused result is supporting evidence; it does not replace full
+qualification at this final clean receiving head. Origo's
 studies/p3-tec-os/stages/viewer-navigation.md records qualification and landing.
 Physical-board tests remain separate and no firmware release is authorised.
 

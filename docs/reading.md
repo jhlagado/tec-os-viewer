@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`6e002a77061950c5a39a58d60787527b985522f7`, TEC-OS integration 1, with
+`5971cb59d98bef86c067dc19cbae678b9d153c60`, TEC-OS integration 1, with
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
@@ -19,7 +19,7 @@ Thorium `7a217f9` with chained lines and Intel HEX output, BAZA from Baza
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with a row of name and size for
 each file, the `[more]` pager,
-the history on ^W and ^N, and lines joined by `!` and `&`. The card also holds
+the history on Up/Down and ^W/^N, and lines joined by `!` and `&`. The card also holds
 `MON3.SVC` and `HELLO3.ASM`, a small MON-3 program's source. At the CP/M
 prompt, `TAS HELLO3 HELLO3.BIN` builds its binary, or `TAS HELLO3 HELLO3.HEX`
 its Intel HEX; then `MON3.SVC`, `LOAD HELLO3.BIN` (or `LOAD HELLO3.HEX`) and
