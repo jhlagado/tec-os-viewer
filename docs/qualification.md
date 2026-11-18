@@ -578,3 +578,15 @@ Chromium is selected through the existing TEST_CHROMIUM option.
 failed environment/single-CPU attempts and the passing full log. Firmware main
 integration is pending the two strict native platform runs. The browser scene
 captures remain canonical in TEC-OS to comply with the no-copy boundary.
+
+
+## Final Caverns prose recovery and light editing
+
+Viewer source2242bb7b pins TEC-OS f4b0423b and final CAVERNS.COM d5637368
+(35,968 bytes). The source-only starter is refreshed. All202 receiving checks
+pass with no failures or skips using system Chromium on two CPUs, matching
+the container quota. Timing criteria, runtime and observer code are unchanged.
+Two prior unbound-host timing failures are retained alongside the successful
+full run in docs/evidence/caverns-prose-concision/final-receiving.json.
+Native validation scopes and final browser proof remain canonical in TEC-OS.
+Physical testing and the author's final read-through remain outstanding.
