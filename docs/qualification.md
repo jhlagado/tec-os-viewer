@@ -1,3 +1,32 @@
+# Prompt history integration
+
+The selected native source is TEC-OS `6e002a77061950c5a39a58d60787527b985522f7`,
+based on current main `b36ca98`. It preserves the separately qualified card,
+Caverns and book integration. This increment changes buffered console input.
+At the shell prompt plain Up/Down recalls older/newer commands using the
+existing Ctrl-W/Ctrl-N history. Recall replaces partial input, down past the
+newest gives an empty line and the recalled command can be edited. Bare CCP
+and program line input ignore navigation; raw character input retains it.
+
+The ROM uses 15,787 bytes with 597 free. Its SHA-256 is
+`41c87b73e189aa2057c38f31751f5645ac8b61e6b4b3bbd6d3d13fc7bb4423f0`.
+The symbol-file SHA-256 is
+`1557067177614d60d59e36cd940c198371283479cb0f8ca2d0814bdf896c479c`.
+The passive observer retains all admission checks and instruction-span lengths.
+Its shifted address operands are bound to the complete matching ROM and map.
+The 15 starter files and canonical recipe remain unchanged from the current
+main dependency; pins.json names their actual digests.
+
+Page-queue cases cover empty and populated history on serial, PICO and GLCD.
+The real Chromium case checks each recall against the active last screen line,
+then edits and executes the recalled command. Earlier command echoes cannot
+satisfy those active-line checks. The bare-CCP cases verify no shell hook.
+No runtime result is claimed by this prepared source. Origo's
+studies/p3-tec-os/stages/viewer-navigation.md records qualification and landing.
+Physical-board tests remain separate and no firmware release is authorised.
+
+Earlier sections retain the pins and results they describe.
+
 # TEC-OS integration 1
 
 The firmware gitlink is `782b0074f11019efe9d1fd0f02e8862421128853`, TEC-OS
