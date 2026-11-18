@@ -201,3 +201,5 @@ qualification. Normal `npm test` is unchanged.
 
 Browser save and stored-card scenarios have individual entry files so each
 scenario has its own process lifetime. Shared helpers register no tests.
+Stored-card setup reuses its seed tab for a fresh application document after
+the native storage transaction completes.

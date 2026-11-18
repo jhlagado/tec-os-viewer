@@ -24,7 +24,12 @@ import { CpmVolume } from "../../tec-os/tools/lib/cpmfs.mjs";
 import { cardProblem } from "../../tec-os/host/card.mjs";
 import { card, prepareCard, web } from "./page.mjs";
 import { ROOT, fromTecos } from "./root.mjs";
-import { open, serve } from "./serve.mjs";
+import { open as openPage, serve } from "./serve.mjs";
+
+// Reuse the seeded tab for a fresh app document. The shared helper keeps
+// native storage completion, route removal and supplied setup in order.
+const open = (browser, url, image, display, width, options = {}) =>
+  openPage(browser, url, image, display, width, { ...options, reuseSetupPage: true });
 
 const sha = (b) => createHash("sha256").update(b).digest("hex");
 const startupFile = (...lines) => Buffer.from(lines.map((l) => `${l}\r\n`).join("") + "\x1a", "latin1");
