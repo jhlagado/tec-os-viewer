@@ -1,0 +1,19 @@
+{
+  "kind": "Publication receipt for final Caverns prose",
+  "testedViewerMain": "9ca6aa093fe68a9fa115289b3fbf876da9660600",
+  "firmwarePin": "f4b0423bb249fe381081ec44babb1acbd5f2f6a0",
+  "hostingCommit": "3b8dce07c489f382ee5184a8fe156d4cd904c1f9",
+  "remoteBranch": "gh-pages",
+  "remoteContainsCommit": true,
+  "htmlBytes": 418779,
+  "htmlSha256": "c61a1ec136c5d722b6faa2cdc6a3fbdf33b23c6e63e8d22bcc54e9b71343eed6",
+  "testedAndPublishedHtmlIdentical": true,
+  "freshBrowserCompileMatchesNativeCOM": true,
+  "sourceOnlyStarter": true,
+  "freshContextCheckpointRestore": true,
+  "canonicalBrowserEvidence": "jhlagado/tec-os docs/evidence/caverns-prose-concision/final-browser-result.json",
+  "httpProbe": "Environment CONNECT proxy returned403; direct live HTTP verification unavailable.",
+  "temporaryDevelopmentBranchRemoved": true,
+  "temporaryPublishingWorktreeRemoved": true,
+  "physicalHardwareTested": false
+}

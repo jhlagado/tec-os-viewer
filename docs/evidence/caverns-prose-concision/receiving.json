@@ -1,0 +1,30 @@
+{
+  "kind": "Viewer-specific receiving qualification for Caverns prose concision",
+  "status": "All receiving tests pass; firmware main integration pending two native strict runs.",
+  "viewerTestedSource": "adb09fd5076ca6f233ccca6929fee45c47020967",
+  "firmwareTestedSource": "7cea9d0b52bb4a9d3e8c3dd83d2dcc3155278b20",
+  "gameFileBytes": 36096,
+  "gameSHA256": "594b1e393681a4a3f3e3cd87b077979e56e3ab13d43ba69ff1498d068b28cf3a",
+  "sourceOnlyStarter": true,
+  "fullSuite": {
+    "tests": 202,
+    "pass": 202,
+    "fail": 0,
+    "skipped": 0
+  },
+  "runtimeAndObserverCodeChanged": false,
+  "resourceLimitsChanged": false,
+  "testEnvironment": "Installed system Chromium via supported TEST_CHROMIUM option; browser tests assigned two CPUs while native platform runner uses a separate CPU.",
+  "retainedFailures": [
+    "Default headless-shell executable missing; rerun using installed Chromium.",
+    "200/202 on one browser CPU: cold sample3.77MHz below unchanged3.9MHz threshold and four byte-identical prior evidence copies failed the no-copy guard.",
+    "Duplicate evidence consolidated as pinned canonical links; full rerun with two browser CPUs passes unchanged gates."
+  ],
+  "nativeBrowserEvidence": "Canonical captures and source-only compilation/checkpoint proof are maintained in TEC-OS docs/evidence/caverns-prose-concision/; no copies are stored here.",
+  "physicalHardwareTested": false,
+  "browserCostGate": {
+    "passed": true,
+    "criteriaSHA256": "33b38240b125e9d76979b082a680bdd6133bcfdf4d4d2b9b629589b94c452249",
+    "browserVersion": "156.0.8078.79"
+  }
+}

@@ -1,7 +1,7 @@
 # Prompt history integration
 
-The selected native source is TEC-OS `5971cb59d98bef86c067dc19cbae678b9d153c60`,
-based on current main `2b0b41e`. It preserves the separately qualified card,
+The selected native source is TEC-OS `d5eca04faf1f1f49bdac3efd9f9849b243da0606`,
+based on current main `de440992`. It preserves the separately qualified card,
 Caverns and book integration. This increment changes buffered console input.
 At the shell prompt plain Up/Down recalls older/newer commands using the
 existing Ctrl-W/Ctrl-N history. Recall replaces partial input, down past the
@@ -31,6 +31,13 @@ The focused result is supporting evidence; it does not replace full
 qualification at this final clean receiving head. Origo's
 studies/p3-tec-os/stages/viewer-navigation.md records qualification and landing.
 Physical-board tests remain separate and no firmware release is authorised.
+
+The two real transaction/browser cases also passed at Viewer fe726fc with
+native5971cb59, using unchanged storage and cost criteria. The sampled peak
+was1,003MiB under the same1,024MiB guard. A preceding full Viewer attempt
+stopped at the host memory limit and counts as no full pass. These focused
+results remain historical supporting evidence after receiving the newer
+card. Both full runs must complete at this exact final Viewer head.
 
 Earlier sections retain the pins and results they describe.
 
@@ -594,3 +601,45 @@ claimed as observed over public HTTP. Physical testing and final author review
 remain separate. [Current receipts](evidence/caverns-prose-restoration/qualification.json)
 include all full-suite and browser results, known failed attempts and exact
 publication identities.
+
+The shared browser screenshots/result are now
+[linked to their byte-identical pinned TEC-OS records](evidence/caverns-prose-restoration/shared-native-evidence.md)
+instead of duplicated here. The prose-concision receiving run exposed these
+copies through the existing no-copy gate. No gate or evidence bytes were
+weakened or lost by consolidating the canonical records.
+
+## Caverns prose recovery and concision receiving checks
+
+The current receiving candidate supplies the restored and lightly edited
+CAVERNS.BAS. Its native COM is now 35,968 bytes after the literal-only crypt correction. Full Viewer qualification passes
+202 tests with zero failures/skips and unchanged speed/control/copy bounds.
+Runtime and observer code are unchanged. The prior evidence-duplication issue
+is fixed by canonical links, not by weakening the no-copy test. The installed
+Chromium is selected through the existing TEST_CHROMIUM option.
+
+[Receiving receipts](evidence/caverns-prose-concision/receiving.json) retain the
+failed environment/single-CPU attempts and the passing full log. Firmware main
+integration is pending the two strict native platform runs. The browser scene
+captures remain canonical in TEC-OS to comply with the no-copy boundary.
+
+
+## Final Caverns prose recovery and light editing
+
+Viewer source 2242bb7b pins TEC-OS f4b0423b and final CAVERNS.COM d5637368
+(35,968 bytes). The source-only starter is refreshed. All 202 receiving checks
+pass with no failures or skips using system Chromium on two CPUs, matching
+the container quota. Timing criteria, runtime and observer code are unchanged.
+Two prior unbound-host timing failures are retained alongside the successful
+full run in docs/evidence/caverns-prose-concision/final-receiving.json.
+Native validation scopes and final browser proof remain canonical in TEC-OS.
+Physical testing and the author's final read-through remain outstanding.
+
+
+The tested main standalone is built from Viewer 9ca6aa09 and native f4b0423b.
+Its 418,779 bytes (SHA-256 c61a1ec1…) compile the exact final COM and restore
+an exported checkpoint in fresh browser storage. These exact HTML bytes are
+pushed to gh-pages 3b8dce07; both the remote commit and file hash are verified.
+The environment CONNECT proxy blocks a live HTTP probe with 403. Publication
+does not imply a physical-board test or final author prose approval.
+See docs/evidence/caverns-prose-concision/publication.json. The owned active
+development branch and publishing worktree are now removed.

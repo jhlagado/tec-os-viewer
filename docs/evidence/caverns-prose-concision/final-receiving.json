@@ -1,0 +1,56 @@
+{
+  "kind": "Final Viewer receiving qualification for Caverns prose recovery and light editing",
+  "status": "Passed",
+  "viewerTestedSource": "2242bb7b110ab04b58e6366083217be56b82f99e",
+  "firmwareTestedSource": "f4b0423bb249fe381081ec44babb1acbd5f2f6a0",
+  "gameSHA256": "d563736861387ebf9152e730d28b0d5513ceba1c1b0f7666ddc4c5942bab956d",
+  "gameFileBytes": 35968,
+  "fullSuite": {
+    "tests": 202,
+    "pass": 202,
+    "fail": 0,
+    "skipped": 0,
+    "exitCode": 0
+  },
+  "sourceOnlyStarter": true,
+  "runtimeAndObserverCodeChanged": false,
+  "resourceLimitsChanged": false,
+  "browserCostGate": {
+    "criteriaSha256": "33b38240b125e9d76979b082a680bdd6133bcfdf4d4d2b9b629589b94c452249",
+    "minimumPublicMHz": 3.9,
+    "maximumIndividualControlMs": 100,
+    "maximumRepresentativeCopyMs": 50,
+    "observedPublicMHz": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "observedControlMs": [
+      58.170680999999604,
+      39.38538200000039,
+      38.42407600000115
+    ],
+    "observedCopyMs": [
+      3.599999999627471,
+      6.599999999627471,
+      35.40000000037253,
+      35.90000000037253,
+      36.09999999962747,
+      35.70000000111759,
+      8.199999999254942,
+      4.700000001117587
+    ],
+    "limitsChanged": false,
+    "passed": true,
+    "scope": "System Chromium, taskset CPUs 0,1 matching this container two-CPU quota. Host observations, not physical-board or universal performance guarantee."
+  },
+  "logSha256": "a91fb1301efe649501eb6782052154bd6bc3d3600552548c72504c2bbf84f4c4",
+  "retainedFailures": [
+    "Unbound final run:201/202; copy samples60.5/51.1 ms exceeded unchanged50 ms bound.",
+    "Unbound rerun:201/202; copy gate passed but first CPU sample3.82 MHz below unchanged3.9 MHz bound.",
+    "Both logs retained. Two-CPU full rerun passes all202 checks with unchanged criteria."
+  ],
+  "nativeBrowserEvidence": "Canonical final fresh-browser compilation and checkpoint evidence is in TEC-OS docs/evidence/caverns-prose-concision/final-*; no duplicate captures here.",
+  "physicalHardwareTested": false
+}
