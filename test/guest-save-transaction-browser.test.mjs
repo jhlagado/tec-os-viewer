@@ -16,6 +16,17 @@ const costBytes = readFileSync(new URL('./fixtures/viewer-feedback-cost.json', i
 const costCriteria = JSON.parse(costBytes);
 const pendingText = 'Guest cache: last check: 1 pending blocks';
 const savedText = 'Saved card image in this browser';
+// Compare all bytes without making a whole-card assertion diff on failure.
+// The snapshots remain separate; Buffer views add no duplicate card copy.
+function sameCard(actual, expected, label) {
+  assert.equal(actual.length, expected.length, `${label}: length`);
+  const a = Buffer.from(actual.buffer, actual.byteOffset, actual.byteLength);
+  const b = Buffer.from(expected.buffer, expected.byteOffset, expected.byteLength);
+  if (Buffer.compare(a, b) === 0) return;
+  let at = 0;
+  while (actual[at] === expected[at]) at++;
+  assert.equal(actual[at], expected[at], `${label}: byte ${at}`);
+}
 function fileSystem(image) {
   const v = findVolume(parseContainer(image), 'A');
   return new CpmVolume(volumePayload(image, v), v.g);
@@ -198,7 +209,7 @@ async function finalBytes(f, predicted, copies = false) {
   const { page, evidence, block } = f;
   const stored = await storedSummary(page, block, copies), after = await downloadImage(page); evidence.image('after', after);
   await evidence.phase('completed card', { stored, downloaded: sha(after), predicted: sha(predicted) });
-  assert.deepEqual(after, predicted); assert.equal(stored.sha256, sha(predicted)); assert.equal(stored.bytes, predicted.length);
+  sameCard(after, predicted, 'completed card'); assert.equal(stored.sha256, sha(predicted)); assert.equal(stored.bytes, predicted.length);
   assert.deepEqual(stored.block, [...new Uint8Array(512)]);
   assert.equal(fileSystem(after).find('OBSREV.DAT').records, 0);
   assert.equal(fileSystem(after).find('OBSPEND.DAT').records, 4);
@@ -217,7 +228,7 @@ test('a real browser save completes after the guest is paused with pending data'
     const held = await evidence.phase('native put succeeded, transaction held');
     assert.equal(held.guest, pendingText); assert.equal(held.pause, 'Run'); assert.match(held.browser, /^Saving card image/);
     assert.equal(held.probe.completions.length, 0); assert.deepEqual(held.probe.aborts, []); assert.deepEqual(held.probe.errors, []); assert.equal(held.probe.keepError, null);
-    const pending = await downloadImage(page); evidence.image('pending', pending); assert.deepEqual(pending, predicted);
+    const pending = await downloadImage(page); evidence.image('pending', pending); sameCard(pending, predicted, 'pending card');
     await page.evaluate(() => { window.saveProbe.hold = false; });
     await page.waitForFunction(() => window.saveProbe.completions.length === 1 && document.getElementById('browserstatus').textContent === 'Saved card image in this browser');
     const completed = await evidence.phase('native transaction completed');
