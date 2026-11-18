@@ -198,3 +198,6 @@ input requirements. The enclosing guard covers the entire suite. Set
 and the verified `full-suite.json` aggregate; otherwise a temporary directory
 is created. Missing, changed, incomplete, failed or skipped evidence refuses
 qualification. Normal `npm test` is unchanged.
+
+Browser save and stored-card scenarios have individual entry files so each
+scenario has its own process lifetime. Shared helpers register no tests.
