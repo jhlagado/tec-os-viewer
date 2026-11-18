@@ -62,7 +62,7 @@ write is still pending `GO` prints `?` and starts nothing.
 ## BASIC Caverns
 
 Select PICO9918 at **80 columns**, type `BAZA CAVERNS` to compile the supplied
-source, then `CAVERNS` to play. The 36,096-byte executable is created on your
+source, then `CAVERNS` to play. The 35,968-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
 `TED CAVERNS.BAS` opens the author-refined BASIC source. The matching BAZA
 compiler/runtime pair is on the card; compilation works with the shell resident.

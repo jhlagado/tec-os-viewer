@@ -568,7 +568,7 @@ weakened or lost by consolidating the canonical records.
 ## Caverns prose recovery and concision receiving checks
 
 The current receiving candidate supplies the restored and lightly edited
-CAVERNS.BAS. Its native COM is 36,096 bytes. Full Viewer qualification passes
+CAVERNS.BAS. Its native COM is now 35,968 bytes after the literal-only crypt correction. Full Viewer qualification passes
 202 tests with zero failures/skips and unchanged speed/control/copy bounds.
 Runtime and observer code are unchanged. The prior evidence-duplication issue
 is fixed by canonical links, not by weakening the no-copy test. The installed
