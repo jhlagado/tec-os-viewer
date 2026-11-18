@@ -107,7 +107,9 @@ function observeTransactions() {
 async function downloadImage(page) {
   const [download] = await Promise.all([page.waitForEvent('download'), page.click('#saveimg')]);
   assert.equal(download.suggestedFilename(), 'tecos-card.img');
-  return new Uint8Array(readFileSync(await download.path()));
+  const bytes = readFileSync(await download.path());
+  // Each read owns fresh bytes; keep its view instead of copying the card.
+  return new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
 }
 async function storedSummary(page, block, measureCopies = false) {
   return page.evaluate(({ block, measureCopies }) => new Promise((resolve, reject) => {
