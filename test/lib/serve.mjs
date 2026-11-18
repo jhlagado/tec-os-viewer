@@ -43,9 +43,12 @@ export function serve() {
  * gets the browser context just before
  * the app opens.
  */
-export async function open(browser, url, image, display, width, { setup } = {}) {
+export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false } = {}) {
   const context = await browser.newContext();
-  await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
+  const plantedUrl = `${url}planted.img`;
+  const plant = (route) => route.fulfill({ status: 200, body: reuseSetupPage
+    ? Buffer.from(image.buffer, image.byteOffset, image.byteLength) : Buffer.from(image) });
+  await context.route(plantedUrl, plant);
   const planter = await context.newPage();
   await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
@@ -65,9 +68,10 @@ export async function open(browser, url, image, display, width, { setup } = {}) 
     },
     [display, width],
   );
-  await planter.close();
+  if (reuseSetupPage) await context.unroute(plantedUrl, plant);
+  else await planter.close();
   if (setup) await setup(context);
-  const page = await context.newPage();
+  const page = reuseSetupPage ? planter : await context.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(url);

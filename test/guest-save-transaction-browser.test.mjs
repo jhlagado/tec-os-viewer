@@ -187,6 +187,7 @@ async function fixture(t, small, name) {
   const { chromium } = fromTecos('playwright'), browser = await chromium.launch(); t.after(() => browser.close());
   const server = await serve(); t.after(() => server.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, image, 'tms', '40', {
+    reuseSetupPage: true,
     setup: context => context.addInitScript(observeTransactions),
   });
   t.after(() => context.close());
