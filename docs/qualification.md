@@ -582,11 +582,21 @@ captures remain canonical in TEC-OS to comply with the no-copy boundary.
 
 ## Final Caverns prose recovery and light editing
 
-Viewer source2242bb7b pins TEC-OS f4b0423b and final CAVERNS.COM d5637368
-(35,968 bytes). The source-only starter is refreshed. All202 receiving checks
+Viewer source 2242bb7b pins TEC-OS f4b0423b and final CAVERNS.COM d5637368
+(35,968 bytes). The source-only starter is refreshed. All 202 receiving checks
 pass with no failures or skips using system Chromium on two CPUs, matching
 the container quota. Timing criteria, runtime and observer code are unchanged.
 Two prior unbound-host timing failures are retained alongside the successful
 full run in docs/evidence/caverns-prose-concision/final-receiving.json.
 Native validation scopes and final browser proof remain canonical in TEC-OS.
 Physical testing and the author's final read-through remain outstanding.
+
+
+The tested main standalone is built from Viewer 9ca6aa09 and native f4b0423b.
+Its 418,779 bytes (SHA-256 c61a1ec1…) compile the exact final COM and restore
+an exported checkpoint in fresh browser storage. These exact HTML bytes are
+pushed to gh-pages 3b8dce07; both the remote commit and file hash are verified.
+The environment CONNECT proxy blocks a live HTTP probe with 403. Publication
+does not imply a physical-board test or final author prose approval.
+See docs/evidence/caverns-prose-concision/publication.json. The owned active
+development branch and publishing worktree are now removed.
