@@ -1,6 +1,6 @@
 # Prompt history integration
 
-The selected native source is TEC-OS `d5eca04faf1f1f49bdac3efd9f9849b243da0606`,
+The selected native source is TEC-OS `c688458f7404b2f4cae9ab0bed5ebbf870ca86ba`,
 based on current main `de440992`. It preserves the separately qualified card,
 Caverns and book integration. This increment changes buffered console input.
 At the shell prompt plain Up/Down recalls older/newer commands using the
