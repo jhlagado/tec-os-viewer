@@ -14,11 +14,18 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/cs
  * Serve dist/ at 127.0.0.1 on the port
  * returned by server.address().port.
  */
-export function serve() {
+export function serve({ seedImage = null } = {}) {
   const server = createServer(async (req, res) => {
     if (req.url === "/__test_setup__") {
       res.writeHead(200, { "content-type": "text/html" });
       res.end("<!doctype html><title>Test setup</title>");
+      return;
+    }
+    if (req.url === "/planted.img" && seedImage) {
+      const body = Buffer.from(seedImage.buffer, seedImage.byteOffset, seedImage.byteLength);
+      seedImage = null;
+      res.writeHead(200, { "content-type": "application/octet-stream", "content-length": body.length, "cache-control": "no-store" });
+      res.end(body);
       return;
     }
     const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
@@ -43,12 +50,12 @@ export function serve() {
  * gets the browser context just before
  * the app opens.
  */
-export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false } = {}) {
+export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false, serverSeed = false } = {}) {
   const context = await browser.newContext();
   const plantedUrl = `${url}planted.img`;
   const plant = (route) => route.fulfill({ status: 200, body: reuseSetupPage
     ? Buffer.from(image.buffer, image.byteOffset, image.byteLength) : Buffer.from(image) });
-  await context.route(plantedUrl, plant);
+  if (!serverSeed) await context.route(plantedUrl, plant);
   const planter = await context.newPage();
   await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
@@ -68,8 +75,9 @@ export async function open(browser, url, image, display, width, { setup, reuseSe
     },
     [display, width],
   );
-  if (reuseSetupPage) await context.unroute(plantedUrl, plant);
-  else await planter.close();
+  if (reuseSetupPage) {
+    if (!serverSeed) await context.unroute(plantedUrl, plant);
+  } else await planter.close();
   if (setup) await setup(context);
   const page = reuseSetupPage ? planter : await context.newPage();
   const errors = [];

@@ -185,9 +185,10 @@ async function fixture(t, small, name) {
   const v = findVolume(parseContainer(image), 'A'), allocation = fs.find('OBSPEND.DAT').entries[0].blocks[0];
   const block = v.start + allocation * fs.blockBytes / 512;
   const { chromium } = fromTecos('playwright'), browser = await chromium.launch(); t.after(() => browser.close());
-  const server = await serve(); t.after(() => server.close());
+  const server = await serve({ seedImage: image }); t.after(() => server.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, image, 'tms', '40', {
     reuseSetupPage: true,
+    serverSeed: true,
     setup: context => context.addInitScript(observeTransactions),
   });
   t.after(() => context.close());
