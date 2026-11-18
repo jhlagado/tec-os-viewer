@@ -558,3 +558,9 @@ claimed as observed over public HTTP. Physical testing and final author review
 remain separate. [Current receipts](evidence/caverns-prose-restoration/qualification.json)
 include all full-suite and browser results, known failed attempts and exact
 publication identities.
+
+The shared browser screenshots/result are now
+[linked to their byte-identical pinned TEC-OS records](evidence/caverns-prose-restoration/shared-native-evidence.md)
+instead of duplicated here. The prose-concision receiving run exposed these
+copies through the existing no-copy gate. No gate or evidence bytes were
+weakened or lost by consolidating the canonical records.
