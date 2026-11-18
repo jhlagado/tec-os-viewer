@@ -564,3 +564,17 @@ The shared browser screenshots/result are now
 instead of duplicated here. The prose-concision receiving run exposed these
 copies through the existing no-copy gate. No gate or evidence bytes were
 weakened or lost by consolidating the canonical records.
+
+## Caverns prose recovery and concision receiving checks
+
+The current receiving candidate supplies the restored and lightly edited
+CAVERNS.BAS. Its native COM is 36,096 bytes. Full Viewer qualification passes
+202 tests with zero failures/skips and unchanged speed/control/copy bounds.
+Runtime and observer code are unchanged. The prior evidence-duplication issue
+is fixed by canonical links, not by weakening the no-copy test. The installed
+Chromium is selected through the existing TEST_CHROMIUM option.
+
+[Receiving receipts](evidence/caverns-prose-concision/receiving.json) retain the
+failed environment/single-CPU attempts and the passing full log. Firmware main
+integration is pending the two strict native platform runs. The browser scene
+captures remain canonical in TEC-OS to comply with the no-copy boundary.
