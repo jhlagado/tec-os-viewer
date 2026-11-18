@@ -188,3 +188,13 @@ Browser tests normally use Playwright's installed Chromium. Where browser
 downloads are unavailable, `TEST_CHROMIUM=/usr/bin/chromium npm test` selects
 an installed real Chromium explicitly. Record its version with the test result;
 this is not qualification of Playwright's separately distributed browser build.
+
+
+For a complete strict run under Origo's shared memory guard, use
+`TEST_CHROMIUM=/path/to/chromium npm run test:strict`. Each test entry file
+runs once in a fresh Node process with the existing assertions and strict
+input requirements. The enclosing guard covers the entire suite. Set
+`TEST_REPORT_DIR` to a fresh empty directory to retain every per-file TAP
+and the verified `full-suite.json` aggregate; otherwise a temporary directory
+is created. Missing, changed, incomplete, failed or skipped evidence refuses
+qualification. Normal `npm test` is unchanged.
