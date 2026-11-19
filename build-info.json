@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "51d6635316b2d9cf1967b4ee7e9985d0421b76ba",
-  "firmwareCommit": "318812f0dbc9e5fba1fb104ae14d0992a324527b",
+  "viewerCommit": "0d008c5f881a02084fc7ed0ae08c0a90677ba7ef",
+  "firmwareCommit": "c95dfa9b926aa5bc11e165c844c40effa463db99",
   "firmwareRomSha256": "35893cab810bf6757e5992ec492ec37a113828674e33d10da2e48dfa706b0bc8",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 559356,
-      "sha256": "f648b69172ebc37ff2c6da6fec5016da6ec317794ff1c2149aa95e7c8d9590b5"
+      "bytes": 559472,
+      "sha256": "f07d4d587d618a8c72f2b55dff722e76b7c043f512fe542c0a960bd17113783e"
     }
   },
   "defaultColumns": 40,
@@ -36,7 +36,14 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Local Chromium: standalone boot, Snake9 launch from starter, enlarged RGB panel, orientation and ArrowUp."
+    "scope": "Local system Chromium: standalone boot with external requests blocked and both source labels verified. Viewer card emulator: Snake9 COM refusal and explicit BIN assembly each show 96 ordered progress frames; rebuilt BIN equals shipped game.",
+    "previousSnake9Qualification": "27202c8fad83050762fa351dd741bb76bd65c667"
   },
-  "previousQualification": "3b8dce07"
+  "previousQualification": "27202c8fad83050762fa351dd741bb76bd65c667",
+  "tas": {
+    "thoriumCommit": "9752fde15349861e5b3caaff3fefe58dbdae8fc7",
+    "bytes": 11098,
+    "sha256": "00e34db203603062c985c31ee53bdd21cb505281d388c8d64155d31cd9b6ccc4",
+    "progressIndicator": true
+  }
 }
