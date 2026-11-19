@@ -7,14 +7,14 @@ import { CpmVolume } from '../tec-os/tools/lib/cpmfs.mjs';
 import { card, power } from './lib/page.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const expected = '5962c854717de913b20990454cf299bd9045a000be1feb1c8e878c0b6b41c291';
+const expected = 'b77762f7c2172def224c45b0ab88035d95532309b0522349e6bcf1f5a16f3af3';
 const limit = 800_000_000;
 
 test('the bundled card TAS turns progress during Snake9 COM refusal and BIN assembly', { timeout: 300_000 }, async t => {
   const image = await card();
   const v = findVolume(parseContainer(image), 'A');
   const drive = () => new CpmVolume(volumePayload(image, v), v.g);
-  assert.equal(sha(drive().read('TAS.COM').subarray(0, 11157)), expected);
+  assert.equal(sha(drive().read('TAS.COM').subarray(0, 11131)), expected);
   assert.equal(sha(readFileSync(new URL('../dist/files/TAS.COM', import.meta.url))), expected);
   const original = drive().read('SNAKE9.BIN');
   const m = power(image, 'pico', 40);
@@ -30,7 +30,7 @@ test('the bundled card TAS turns progress during Snake9 COM refusal and BIN asse
   };
   const refusal = invoke('TAS SNAKE9.ASM');
   t.diagnostic(JSON.stringify({ refusal }));
-  assert.match(refusal, /COM output must start at 0100H \(COM is the default\). For BIN: TAS NAME NAME\.BIN/);
+  assert.match(refusal, /COM output selected\. COM must start at 0100H\./);
   assert.ok(!drive().list().some(f => f.name === 'SNAKE9.COM'));
   assert.deepEqual(drive().read('SNAKE9.BIN'), original);
   assert.match(invoke('TAS SNAKE9.ASM SNAKE9.BIN'), /SNAKE9.BIN written/);
@@ -46,6 +46,7 @@ test('the bundled TAS accepts bare END without stopping assembly and refuses an 
   drive().write('ENDBAD.ASM', Buffer.from('ORG 100H\n RET\n END 100H\n'), { text: true });
   const m = power(image, 'pico', 40);
   m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text()), limit, 'boot');
+  assert.match(m.command('TAS'), /usage: TAS INPUT\.ASM \[OUTPUT\.TYP\]/);
   assert.match(m.command('TAS ENDOK'), /ENDOK.COM written/);
   assert.deepEqual([...drive().read('ENDOK.COM').subarray(0, 2)], [1, 2]);
   assert.doesNotMatch(m.command('TAS ENDBAD'), /ENDBAD.COM written/);

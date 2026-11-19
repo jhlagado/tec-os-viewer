@@ -25,7 +25,7 @@ The firmware pin is TEC-OS `782b007`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 17 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from Thorium `20339b8`, TAS from Thorium `4573e21`, which takes
+in 19 pages, TED from Thorium `20339b8`, TAS from Thorium `b8a9994`, which takes
 several statements on a line and writes Intel HEX, and BAZA from Baza `74c4382`
 and `BOUNCE.BAS` from Baza `45f2598`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
@@ -158,7 +158,7 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`4573e21` for `TAS.COM`,
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`b8a9994` for `TAS.COM`,
 `20339b8` for `TED.COM`), jhlagado/baza (`74c4382` for compiler/runtime, `45f2598` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
