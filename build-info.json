@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "e765646568ccd60c8a226c47fa14e84542d58fbe",
-  "firmwareCommit": "d551fd50989227d05ffc1307d814c425388feec4",
+  "viewerCommit": "19448caef636bb8c245749923433b29aec29a2dc",
+  "firmwareCommit": "a6ece5a9e774fe2383877fa4918745394ad833f6",
   "firmwareRomSha256": "35893cab810bf6757e5992ec492ec37a113828674e33d10da2e48dfa706b0bc8",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 559480,
-      "sha256": "29fc2341a449d075fcd0c45cfb292a35e5c4148473b3cf64faea53962c4accc8"
+      "bytes": 559516,
+      "sha256": "069d4c5c55d9135c103d29798a1efbbc50243376a2f777fee3e87f8682ce453a"
     }
   },
   "defaultColumns": 40,
@@ -36,15 +36,17 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "System Chromium standalone boot with external requests blocked. All 39 selected Viewer tests pass, including native card END continuation and operand refusal, Snake9 spinner and unchanged BIN, SAMPLE/TED and observer bindings.",
+    "scope": "All 39 selected Viewer tests pass: exact native Snake9 COM diagnostic, no-argument usage, successful BIN, spinner, bare END, boards, observer, SAMPLE/TED and standalone Chromium boot.",
     "previousSnake9Qualification": "27202c8fad83050762fa351dd741bb76bd65c667"
   },
-  "previousQualification": "a77444f88b935f5ac88add4522a0af382b360dac",
+  "previousQualification": "735f4da98751d351bb539093bcdc4637cbb191bc",
   "tas": {
-    "thoriumCommit": "4085619d7692d16ae030d082480f345792d4b68f",
-    "bytes": 11104,
-    "sha256": "e512c53fce2c6a69180abb4602186c98f9e2f46f8524296013ac7f8817f67add",
+    "thoriumCommit": "b8a9994a91e8a36bb2ae402df5297cbbe8599a99",
+    "bytes": 11131,
+    "sha256": "b77762f7c2172def224c45b0ab88035d95532309b0522349e6bcf1f5a16f3af3",
     "progressIndicator": true,
-    "bareEnd": "No-op; assembly continues; operands refused"
+    "bareEnd": "No-op; assembly continues; operands refused",
+    "comOriginDiagnostic": "COM output selected. COM must start at 0100H.",
+    "usage": "usage: TAS INPUT.ASM [OUTPUT.TYP]"
   }
 }
