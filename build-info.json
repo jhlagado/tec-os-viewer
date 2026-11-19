@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "0d008c5f881a02084fc7ed0ae08c0a90677ba7ef",
-  "firmwareCommit": "c95dfa9b926aa5bc11e165c844c40effa463db99",
+  "viewerCommit": "e765646568ccd60c8a226c47fa14e84542d58fbe",
+  "firmwareCommit": "d551fd50989227d05ffc1307d814c425388feec4",
   "firmwareRomSha256": "35893cab810bf6757e5992ec492ec37a113828674e33d10da2e48dfa706b0bc8",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 559472,
-      "sha256": "f07d4d587d618a8c72f2b55dff722e76b7c043f512fe542c0a960bd17113783e"
+      "bytes": 559480,
+      "sha256": "29fc2341a449d075fcd0c45cfb292a35e5c4148473b3cf64faea53962c4accc8"
     }
   },
   "defaultColumns": 40,
@@ -36,14 +36,15 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Local system Chromium: standalone boot with external requests blocked and both source labels verified. Viewer card emulator: Snake9 COM refusal and explicit BIN assembly each show 96 ordered progress frames; rebuilt BIN equals shipped game.",
+    "scope": "System Chromium standalone boot with external requests blocked. All 39 selected Viewer tests pass, including native card END continuation and operand refusal, Snake9 spinner and unchanged BIN, SAMPLE/TED and observer bindings.",
     "previousSnake9Qualification": "27202c8fad83050762fa351dd741bb76bd65c667"
   },
-  "previousQualification": "27202c8fad83050762fa351dd741bb76bd65c667",
+  "previousQualification": "a77444f88b935f5ac88add4522a0af382b360dac",
   "tas": {
-    "thoriumCommit": "9752fde15349861e5b3caaff3fefe58dbdae8fc7",
-    "bytes": 11098,
-    "sha256": "00e34db203603062c985c31ee53bdd21cb505281d388c8d64155d31cd9b6ccc4",
-    "progressIndicator": true
+    "thoriumCommit": "4085619d7692d16ae030d082480f345792d4b68f",
+    "bytes": 11104,
+    "sha256": "e512c53fce2c6a69180abb4602186c98f9e2f46f8524296013ac7f8817f67add",
+    "progressIndicator": true,
+    "bareEnd": "No-op; assembly continues; operands refused"
   }
 }
