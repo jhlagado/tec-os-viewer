@@ -383,7 +383,7 @@ function drawLeds(p) {
   };
   for (let row = 0; row < 8; row += 1) {
     for (let col = 0; col < 8; col += 1) {
-      const bit = 1 << col;
+      const bit = 0x80 >> col;
       const r = plane("matrix", row) & bit ? 255 : 0;
       const g = plane("matrixGreen", row) & bit ? 220 : 0;
       const b = plane("matrixBlue", row) & bit ? 255 : 0;
@@ -475,6 +475,8 @@ $("serial").addEventListener("keydown", onKey(() => "serial"));
 $("tms").addEventListener("click", () => $("tms").focus());
 $("glcd").addEventListener("keydown", onKey(() => "matrix"));
 $("glcd").addEventListener("click", () => $("glcd").focus());
+$("leds").addEventListener("keydown", onKey(() => "matrix"));
+$("leds").addEventListener("click", () => $("leds").focus());
 
 // ---- Phones and tablets
 // Open the touch keyboard by focusing a
@@ -532,7 +534,7 @@ function phoneFocus(el, target) {
   el.after($("touchkeys"));
 }
 
-for (const [id, target] of [["tms", "matrix"], ["glcd", "matrix"], ["serial", "serial"]]) {
+for (const [id, target] of [["tms", "matrix"], ["glcd", "matrix"], ["leds", "matrix"], ["serial", "serial"]]) {
   const el = $(id);
   el.addEventListener("pointerdown", (e) => {
     phone.pointer = e.pointerType;

@@ -8,6 +8,11 @@ GitHub Pages serves the standalone build from the `gh-pages` branch. Its
 the Viewer source and firmware pin. Changes to `main` need a new demo build
 before they appear on that site.
 
+The starter card includes Tutankhamen's Snake. At the TEC-OS prompt,
+enter `MON3.SVC`, then `LOAD SNAKE9.BIN` and `GO` at `MON3>`.
+Click the RGB panel to route arrow keys to the matrix keyboard.
+To rebuild the game, run `TAS SNAKE9 SNAKE9.BIN` from the TEC-OS prompt.
+
 [Reading the source](docs/reading.md) follows page startup, the controls, card
 storage and the build through their files.
 
