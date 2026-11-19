@@ -39,3 +39,14 @@ These changes are published on task branches. The live Pages deployment
 has not been changed. Build the review branch with `npm run page`.
 Detailed provenance and retained logs are in
 [Origo](https://github.com/jhlagado/origo/blob/fix/tas-progress-distribution/studies/p2-thorium/reports/tas-progress-distribution.md).
+
+
+## Bare END compatibility update
+
+Thorium `4085619` adds bare `END` as a no-op: no bytes, no termination of
+the source or include, and no entry address. Operands remain errors.
+The new TAS is 11,104 bytes with SHA-256
+`e512c53fce2c6a69180abb4602186c98f9e2f46f8524296013ac7f8817f67add`.
+The progress indicator is retained. The host runner stays at `9752fde`.
+A native card test verifies that bytes after END are assembled and an END
+operand fails without publishing a COM file.
