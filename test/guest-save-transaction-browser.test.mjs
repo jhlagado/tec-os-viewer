@@ -5,7 +5,7 @@ import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
-import { card, web } from './lib/page.mjs';
+import { card, web } from './lib/assets.mjs';
 import { open, serve } from './lib/serve.mjs';
 import { fromTecos } from './lib/root.mjs';
 import { createContainer, parseContainer, findVolume, volumePayload } from '../tec-os/tools/lib/container.mjs';
