@@ -15,6 +15,7 @@ import { Persistence } from "./persistence.mjs";
 import { bindGuestProfile, GuestCacheObserver } from "./guest-cache.mjs";
 import { chooseText, fromCard } from "./text.mjs";
 import { isText80, renderText80, renderTms } from "./tms.mjs";
+import { createLcdRenderer } from "./lcd.mjs";
 
 const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
@@ -163,6 +164,7 @@ async function powerOnNow(options, replacement = null) {
     const note = prepared.note ?? (prepared.problem ? null : unfetched);
     for (const words of [prepared.problem, note]) if (words) appendSerial(`[${words}]\n`);
     refreshCard();
+    render(machine);
   } catch (error) {
     if (!committed) {
       state.machine = previous;
@@ -183,6 +185,7 @@ function reset() {
   try { state.machine?.reset(); }
   catch (error) { state.machine = null; throw error; }
   appendSerial("\n[reset]\n");
+  if (state.machine) render(state.machine);
 }
 
 setInterval(() => persistence.autosave(), 2000);
@@ -236,7 +239,7 @@ function frame(now) {
     }
     cyclesWindow += m.cycles - start;
     if (state.machine === m && state.machineGeneration === generation) {
-      render(m);
+      render(m, now);
       const live = liveDrives(m);
       if (live && live.join() !== state.drives?.join()) {
         state.drives = live;
@@ -244,6 +247,7 @@ function frame(now) {
       }
     }
   }
+  lcdRenderer.tick(now);
   if (now - windowStart > 1000) {
     $("speed").textContent = state.running ? `${(cyclesWindow / ((now - windowStart) * 1000)).toFixed(2)} MHz` : "paused";
     cyclesWindow = 0;
@@ -282,6 +286,7 @@ wideBitmap.height = 192;
 const wideBitmapCtx = wideBitmap.getContext("2d");
 const wideImage = wideBitmapCtx.createImageData(512, 192);
 
+const lcdRenderer = createLcdRenderer($("lcd"));
 const glcdCanvas = $("glcd");
 const glcdCtx = glcdCanvas.getContext("2d");
 const glcdBitmap = document.createElement("canvas");
@@ -290,12 +295,12 @@ glcdBitmap.height = 64;
 const glcdBitmapCtx = glcdBitmap.getContext("2d");
 const glcdImage = glcdBitmapCtx.createImageData(128, 64);
 
-function render(m) {
+function render(m, now = performance.now()) {
   const p = serializeTec1gUpdateFromRuntimeState(m.tec1g.state);
   drawTms(p.tms9918, m.tec1g.state.display.tms9918);
   drawDigits(p.digits);
   drawLeds(p);
-  drawLcd(p.lcd, p.lcdState);
+  lcdRenderer.update(p, now);
   drawGlcd(p.glcd, p.glcdState);
   $("latch").textContent =
     `latch ${hex2(m.sysCtrl)}  window ${m.physicalBank < 0 ? "classic" : `bank ${m.physicalBank}`}` +
@@ -390,24 +395,6 @@ function drawLeds(p) {
       ledEls[row * 8 + col].style.background = r || g || b ? `rgb(${r},${g},${b})` : "";
     }
   }
-}
-
-function drawLcd(bytes, lcdState) {
-  if (!bytes || lcdState?.displayOn === false) {
-    $("lcd").textContent = "";
-    return;
-  }
-  const rows = [];
-  for (let r = 0; r < 4; r += 1) {
-    let line = "";
-    for (let c = 0; c < 20; c += 1) {
-      const v = bytes[r * 20 + c] ?? 0x20;
-      line += v >= 0x20 && v < 0x7f ? String.fromCharCode(v) : " ";
-    }
-    rows.push(line);
-  }
-  const text = rows.join("\n");
-  if ($("lcd").textContent !== text) $("lcd").textContent = text;
 }
 
 function drawGlcd(bytes, glcdState) {

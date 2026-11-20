@@ -40,6 +40,7 @@ export function pageHarness(image, overrides = {}) {
     resetKeys() {}, localStorageSet() {}, download() {},
     setInterval: fn => { timers.push(fn); }, console,
     performance: { now: () => 0 }, requestAnimationFrame() {}, CPU_HZ: 4000000, render() {}, pumpKeys() {},
+    lcdRenderer: { tick() {} },
     ...contextOverrides,
   };
   const functionSource = name => {
