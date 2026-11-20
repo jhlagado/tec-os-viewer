@@ -29,6 +29,6 @@ font request or browser font substitution supplies its LCD dots.
 
 ## Qualification status
 
-The focused renderer/controller tests are implementation checks. Actual
+The focused renderer/adapter tests are implementation checks. Actual
 Snake9 menu exercise, bundle limits and complete Viewer qualification remain
 required before publication.
