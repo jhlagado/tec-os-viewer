@@ -1,10 +1,17 @@
 # LCD and bare command receiving candidate
 
 This candidate combines the LCD renderer, prompt history and exact-extension
-fixes with the published TAS and Snake9 inputs. Native `1518fb7` retains
+fixes with the published TAS and Snake9 inputs. Native `6c2bf8a` retains
 506 free ROM bytes and the approved eighteen-page shell leaves 41,728 bytes
 of TPA on the starter card. Bare names try COM, SVC then CMD, with script
 interpretation in the shell. Explicit extensions remain authoritative.
+
+A complete Viewer run at `633fc5a` with Native `1518fb7` passed all 231 tests
+across 38 files using default Chromium, at a 982 MiB peak. Nine focused Native
+checks pass at `5171390` after the reviewed trace and shell-page expectation
+updates. Current Native `6c2bf8a` changes those expectations, diagnostics and
+capacity documentation. Its ROM and shell bytes are unchanged. These records
+support the candidate and do not replace its required final strict pairs.
 
 The earlier component records prove actual bare MON3 entry and Snake9 inverse
 menus. The serial strict runner starts a fresh Node process for every file. On
