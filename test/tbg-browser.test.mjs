@@ -16,6 +16,11 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   disk.write("TBG.SVC", readFileSync(process.env.TBG_SVC));
   const program = Uint8Array.of(0x21, 0x34, 0x12, 0xe5, 0xd1, 0xc9);
   disk.write("STEP.COM", program);
+  // BDOS 10 reads a line, then BDOS 9 prints it once after RESULT=.
+  disk.write("LINE.COM", Buffer.from(
+    "112f010e0acd05003a30015f16002131011936241125010e09cd05001131010e09cd0500c90d0a524553554c543d2408000000000000000000",
+    "hex",
+  ));
   const sidecar = Buffer.alloc(256);
   sidecar.writeUInt16LE(1600, 0); // Label A.
   sidecar[5] = 0x50;
@@ -40,7 +45,11 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   } : undefined;
   const { page, errors } = await open(browser, url, image, "tms", "40", { setup });
   const lcd = (text) => page.waitForFunction((s) => document.getElementById("lcd").textContent.includes(s), text, { timeout: 12000 });
-  const prompt = () => page.waitForFunction(() => globalThis.tecos?.screen().some((line) => /^A>\s*$/.test(line)), null, { timeout: 12000 });
+  const prompt = (command = "") => page.waitForFunction((expected) => {
+    const lines = globalThis.tecos?.screen().filter((line) => line.trim()) ?? [];
+    return /^A>\s*$/.test(lines.at(-1) ?? "")
+      && (!expected || lines.at(-2)?.toLowerCase().endsWith(expected));
+  }, command, { timeout: 12000 });
   await page.waitForFunction(() => globalThis.tecos?.screen().some((line) => /^A:?[A-Z]*>\s*$/.test(line)), null, { timeout: 12000 });
   await page.focus("#tms");
   // Release the shell before allocating the resident debugger.
@@ -48,7 +57,7 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   await prompt();
   if (armed) {
     await page.keyboard.type("tbg.svc arm\n");
-    await prompt();
+    await prompt("tbg.svc arm");
   }
   await page.focus("#tms");
   await page.keyboard.type(armed ? "step\n" : "tbg.svc step\n", { delay: 80 });
@@ -101,5 +110,24 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("q");
   await prompt();
+  if (armed) {
+    await page.focus("#tms");
+    await page.keyboard.type("tbg.svc line\n", { delay: 80 });
+    await lcd("PC: 0100");
+    await page.locator("#lcd").click();
+    await key("r");
+    await page.focus("#tms");
+    await page.keyboard.type("AB", { delay: 100 });
+    await page.waitForFunction(() => globalThis.tecos.screen().some((line) => /^AB\s*$/.test(line)), null, { timeout: 12000 });
+    await key("Control+x");
+    await lcd("INPUT PAUSED");
+    await page.locator("#lcd").click();
+    await key("r");
+    await page.focus("#tms");
+    await page.keyboard.type("C\n", { delay: 100 });
+    await page.waitForFunction(() => globalThis.tecos.screen().some((line) => /^RESULT=ABC\s*$/.test(line)), null, { timeout: 12000 });
+    await lcd("EX");
+    assert.equal((await page.evaluate(() => globalThis.tecos.screen())).filter((line) => line.includes("RESULT=")).length, 1);
+  }
   assert.deepEqual(errors, []);
 });
