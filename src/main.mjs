@@ -3,6 +3,7 @@
 // Draw its displays and serial output.
 // Keep the SD card image in IndexedDB.
 
+import { getMatrixCombosForAscii } from "@jhlagado/debug80-runtime/platforms/tec1g/matrix-keymap";
 import { Machine, symbolsFromD8 } from "../tec-os/host/machine.mjs";
 import { serializeTec1gUpdateFromRuntimeState } from "@jhlagado/debug80-runtime/platforms/tec1g/update-controller";
 import { needsStarter, prepareCard } from "../tec-os/host/card.mjs";
@@ -477,6 +478,40 @@ $("glcd").addEventListener("keydown", onKey(() => "matrix"));
 $("glcd").addEventListener("click", () => $("glcd").focus());
 $("leds").addEventListener("keydown", onKey(() => "matrix"));
 $("leds").addEventListener("click", () => $("leds").focus());
+
+// The character LCD is an input surface for programs that poll the
+// physical matrix. Browser key release opens the emulated switch.
+const lcd = $("lcd");
+const matrixModifiers = { shift: 0, ctrl: 1, fn: 2 };
+let lcdKey;
+function releaseLcdKey() {
+  if (!lcdKey) return;
+  const { matrix, row, col, modifier } = lcdKey;
+  matrix.applyMatrixKey(row, col, false);
+  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, false);
+  lcdKey = undefined;
+}
+lcd.addEventListener("keydown", (event) => {
+  if (event.key === "Tab") return;
+  const input = keyInput(event, true);
+  if (input?.via !== "matrix" || !state.machine) return;
+  const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
+    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt");
+  if (!combo) return;
+  event.preventDefault();
+  if (event.repeat || lcdKey) return;
+  const matrix = state.machine.tec1g;
+  const { row, col } = combo;
+  const modifier = matrixModifiers[combo.modifier];
+  lcdKey = { matrix, row, col, modifier, code: event.code };
+  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, true);
+  matrix.applyMatrixKey(row, col, true);
+});
+lcd.addEventListener("keyup", (event) => {
+  if (lcdKey?.code === event.code) releaseLcdKey();
+});
+lcd.addEventListener("blur", releaseLcdKey);
+window.addEventListener("blur", releaseLcdKey);
 
 // ---- Phones and tablets
 // Open the touch keyboard by focusing a
