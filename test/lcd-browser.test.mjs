@@ -79,10 +79,12 @@ test('Snake9 settings render inverse labels and refresh unchanged custom codes',
     await page.waitForFunction(label => document.getElementById('lcd').textContent.includes(label), label);
   }
   const elderly = await waitWord(page, 0, 7, 'ELDERLY');
+  await page.waitForFunction(() => document.getElementById('lcd').textContent.includes('Longer is harder.'));
   const beforeText = await page.locator('#lcd').textContent();
   await evidence(page, 'snake-elderly', { label: 'ELDERLY', rows: elderly });
   await page.keyboard.press('ArrowUp');
   const midlife = await waitWord(page, 0, 7, 'MIDLIFE');
+  await page.waitForFunction(() => document.getElementById('lcd').textContent.includes('Longer is harder.'));
   assert.equal(await page.locator('#lcd').textContent(), beforeText, 'accessible custom-cell placeholders unchanged; PUTNAME source supplies the code identity');
   assert.notDeepEqual(midlife, elderly);
   await page.keyboard.press('ArrowRight');
