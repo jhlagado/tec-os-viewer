@@ -12,8 +12,12 @@ if node --test-isolation=none --version >/dev/null 2>&1; then
 fi
 printf 'strict runner: %s, per-file isolation=%s\n' "$(node --version)" "$VIEWER_TEST_ISOLATION" >&2
 node tools/strict-reports.mjs init "$report_dir"
+evidence_root=${TEST_EVIDENCE_DIR:-}
 while IFS= read -r -d '' test_file; do
   report="$report_dir/${test_file##*/}.tap"
+  if [[ -n "$evidence_root" ]]; then
+    export TEST_EVIDENCE_DIR="$evidence_root/${test_file##*/}"
+  fi
   set +e
   node "${test_flags[@]}" "$test_file" > "$report" 2>&1
   result=$?
