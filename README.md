@@ -31,9 +31,9 @@ and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
-GAMES and SPARE on no drive. A: holds its 15 files, `BAZA.COM`, `BAZA.RTL`,
+GAMES and SPARE on no drive. A: holds its 17 files, `BAZA.COM`, `BAZA.RTL`,
 `BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `MON3.SVC`,
-`SAMPLE.ASM`, `SHELL.SVC`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
+`SAMPLE.ASM`, `SHELL.SVC`, `SNAKE9.ASM`, `SNAKE9.BIN`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
 `TIMES.BAS`, plus `CAVERNS.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
