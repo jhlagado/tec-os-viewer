@@ -1,3 +1,18 @@
+# LCD and bare command receiving candidate
+
+This candidate combines the LCD renderer, prompt history and exact-extension
+fixes with the published TAS and Snake9 inputs. Native `c75fd32` retains
+506 free ROM bytes and the approved eighteen-page shell leaves 41,728 bytes
+of TPA on the starter card. Bare names try COM, SVC then CMD, with script
+interpretation in the shell. Explicit extensions remain authoritative.
+
+The earlier component records prove actual bare MON3 entry and Snake9 inverse
+menus. The final receiving strict pair and publication remain pending. An
+older USER-removal timing bound still fails on the shell's new bare-name
+lookup and remains unchanged. No earlier component or historical pass is
+claimed as full receiving qualification. The following records retain their
+own pins and measurements.
+
 # Prompt history integration
 
 The selected native source is TEC-OS `c688458f7404b2f4cae9ab0bed5ebbf870ca86ba`,

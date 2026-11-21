@@ -21,10 +21,10 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `7a75399`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `c75fd32`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
-`SHELL.SVC`, the resident shell, in 18 pages in this unqualified candidate, `MON3.SVC` for MON-3's programs,
+`SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
 in 19 pages, TED from Thorium `02b63d8`, TAS from Thorium `b8a9994`, which takes
 several statements on a line and writes Intel HEX, and BAZA from Baza `eee4ee6`
 and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
@@ -45,12 +45,11 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/7a75399/docs/shell.md)
-has the rest. This candidate's shell uses one more 256-byte page than the published
-17-page version. Measured TPA with the shell is 41,728 bytes (the word at
-`0006h` is `A400h`). The standing 17-page size checks remain failed and
-unchanged pending the owner's allocation decision. This candidate is not
-a qualified publication.
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/c75fd32/docs/shell.md)
+has the rest. The shell's approved eighteen-page allocation leaves 41,728 bytes of TPA
+(the word at `0006h` is `A400h`). The additional page costs 256 bytes compared
+with the earlier seventeen-page shell. Qualification remains in progress.
+The hosted build details identify the version currently available online.
 At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
