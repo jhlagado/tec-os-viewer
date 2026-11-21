@@ -60,8 +60,8 @@ test('postcommit reset failure reports copied bytes without claiming an unchange
 });
 
 test('unread-record protection survives imports, replacements and preferences', async () => {
-  const image = card(); let downloaded;
-  const p = pageHarness(image, { starterCard: async () => card(), download: bytes => { downloaded = bytes; }, prepareCard: () => ({ changed: true }) });
+  const image = card();
+  const p = pageHarness(image, { starterCard: async () => card(), prepareCard: () => ({ changed: true }) });
   p.persistence.protectedRecord = true;
   await p.handlers.putfile(copying()); await p.handlers.starter(); await p.handlers.openimg(opening(card()));
   p.elements.profile.value = '80'; await p.handlers.profile({ target: { value: '80' } });
@@ -69,7 +69,9 @@ test('unread-record protection survives imports, replacements and preferences', 
   await p.handlers.reset(); await p.handlers.power(); await p.persistence.autosave();
   assert.equal(p.writes.length, 0); assert.equal(p.persistence.protectedRecord, true); assert.equal(p.persistence.status().saved, false);
   assert.match(p.elements.browserstatus.textContent, /stored card could not be read/);
-  p.handlers.saveimg(); assert.deepEqual(downloaded, p.state.card); assert.notEqual(downloaded, p.state.card);
+  p.handlers.saveimg();
+  const downloaded = new Uint8Array(await p.downloads[0].arrayBuffer());
+  assert.equal(Buffer.compare(downloaded, p.state.card), 0); assert.notEqual(downloaded.buffer, p.state.card.buffer);
 });
 
 
@@ -128,4 +130,25 @@ test('mismatched observers cannot inspect steps or render another machine image 
     p.context.frame(10);
     assert.equal(observed, 0); assert.equal(p.elements.gueststatus.textContent, 'Guest cache: state unavailable');
   }
+});
+
+
+test('Save image snapshots the active card before later writes and keeps download controls', async () => {
+  const image = card(), expected = image.slice(), p = pageHarness(image);
+  p.handlers.saveimg();
+  image.fill(0x5a);
+  assert.deepEqual(new Uint8Array(await p.downloads[0].arrayBuffer()), expected);
+  assert.deepEqual(p.downloadLinks, [{ href: 'blob:test-1', download: 'tecos-card.img' }]);
+  assert.equal(p.timeouts.length, 1); assert.equal(p.timeouts[0].delay, 1000);
+  assert.deepEqual(p.revoked, []);
+  p.timeouts[0].fn(); assert.deepEqual(p.revoked, ['blob:test-1']);
+});
+
+test('the actual download snapshots only a selected typed-array view', async () => {
+  const p = pageHarness(card()), backing = Uint8Array.of(90, 10, 20, 30, 91);
+  p.context.download(backing.subarray(1, 4), 'view.bin');
+  backing.fill(0);
+  assert.equal(p.downloads[0].size, 3);
+  assert.deepEqual(new Uint8Array(await p.downloads[0].arrayBuffer()), Uint8Array.of(10, 20, 30));
+  assert.deepEqual(p.downloadLinks, [{ href: 'blob:test-1', download: 'view.bin' }]);
 });

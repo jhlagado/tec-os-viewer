@@ -13,6 +13,7 @@ export const tick = () => new Promise(r => setImmediate(r));
 
 export function pageHarness(image, overrides = {}) {
   const handlers = {}, elements = {}, messages = [], timers = [], writes = [];
+  const downloads = [], downloadLinks = [], timeouts = [], revoked = [];
   const element = id => elements[id] ??= {
     value: '', textContent: '', focus() {},
     addEventListener(_type, fn) { handlers[id] = fn; },
@@ -37,7 +38,17 @@ export function pageHarness(image, overrides = {}) {
     loadRom: async () => ({ rom: new Uint8Array(), symbols: new Map() }),
     Machine: class { constructor(options) { Object.assign(this, createMachine(), { options }); } },
     appendSerial: text => messages.push(text), refreshCard() {}, refreshFiles() {},
-    resetKeys() {}, localStorageSet() {}, download() {},
+    resetKeys() {}, localStorageSet() {}, Blob,
+    URL: {
+      createObjectURL(blob) { downloads.push(blob); return `blob:test-${downloads.length}`; },
+      revokeObjectURL(url) { revoked.push(url); },
+    },
+    document: { createElement(tag) {
+      if (tag !== 'a') throw Error(`unexpected element ${tag}`);
+      const link = { click() { downloadLinks.push({ href: this.href, download: this.download }); } };
+      return link;
+    } },
+    setTimeout: (fn, delay) => { timeouts.push({ fn, delay }); },
     setInterval: fn => { timers.push(fn); }, console,
     performance: { now: () => 0 }, requestAnimationFrame() {}, CPU_HZ: 4000000, render() {}, pumpKeys() {},
     lcdRenderer: { tick() {} },
@@ -51,8 +62,8 @@ export function pageHarness(image, overrides = {}) {
   const life = pageSource.slice(pageSource.indexOf('// ---- Machine lifecycle'), pageSource.indexOf('// ---- Run loop'));
   const events = pageSource.slice(pageSource.indexOf('async function useCard('), pageSource.indexOf('// ---- Start'));
   const runLoop = pageSource.slice(pageSource.indexOf("// ---- Run loop"), pageSource.indexOf("// ---- Rendering"));
-  runInNewContext(`${life}\n${functionSource('liveDrives')}\n${functionSource('copyVolume')}\n${functionSource('refreshCopyAvailability')}\n${events}\n${runLoop}\nthis.frame=frame;this.persistence=persistence;this.lifecycle=lifecycle;this.powerOn=powerOn;this.reset=reset;`, context);
+  runInNewContext(`${life}\n${functionSource('download')}\n${functionSource('liveDrives')}\n${functionSource('copyVolume')}\n${functionSource('refreshCopyAvailability')}\n${events}\n${runLoop}\nthis.frame=frame;this.persistence=persistence;this.lifecycle=lifecycle;this.powerOn=powerOn;this.reset=reset;`, context);
   context.persistence.adopt(state.card, { stored: true });
   const start = () => { runInNewContext(`${pageSource.slice(pageSource.indexOf("// ---- Start"))}\nthis.startup=startup;`, context); return context.startup; };
-  return { start, context, state, persistence: context.persistence, handlers, elements, messages, writes, timers };
+  return { start, context, state, persistence: context.persistence, handlers, elements, messages, writes, timers, downloads, downloadLinks, timeouts, revoked };
 }

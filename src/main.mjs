@@ -701,7 +701,7 @@ $("starter").addEventListener("click", () => {
   return lifecycle(async () => useCard(await starterCard(), options))
     .catch(err => fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open"));
 });
-$("saveimg").addEventListener("click", () => state.card && download(state.card.slice(), "tecos-card.img"));
+$("saveimg").addEventListener("click", () => state.card && download(state.card, "tecos-card.img"));
 $("openimg").addEventListener("change", (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
