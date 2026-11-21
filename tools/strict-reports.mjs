@@ -48,7 +48,9 @@ function main([command,directory,file,rawPath,exit]){
   mkdirSync(dir,{recursive:true});assert.equal(readdirSync(dir).length,0,'fresh report directory required');
   assert.equal(git('status','--porcelain'),'','clean source required');
   const files=discover();assert.ok(files.length,'no test files');
-  save(manifestPath,{schema:'viewer-strict-files-v1',head:git('rev-parse','HEAD'),node:process.version,files});
+  const testIsolation=process.env.VIEWER_TEST_ISOLATION??'process';
+  assert.ok(['none','process'].includes(testIsolation),'unknown test isolation');
+  save(manifestPath,{schema:'viewer-strict-files-v1',head:git('rev-parse','HEAD'),node:process.version,testIsolation,files});
   writeFileSync(join(dir,'files.nul'),files.map(f=>f.path+'\0').join(''));return;
  }
  const m=load(manifestPath);assert.equal(m.schema,'viewer-strict-files-v1');
@@ -70,7 +72,7 @@ function main([command,directory,file,rawPath,exit]){
   const raw=readFileSync(join(dir,basename(r.file)+'.tap'));
   assert.equal(sha(raw),r.rawReportSHA256,'raw report changed');assert.deepEqual(parseStrictTap(raw.toString('utf8'),r.exitCode),r.counts,'receipt counts differ');
  }
- const report={schema:'viewer-strict-suite-v1',head:m.head,complete:true,node:m.node,files:m.files,records,totals,manifestSHA256:sha(readFileSync(manifestPath)),method:'Every test entry file ran once in a fresh Node invocation, concurrency one, strict checks and original assertions unchanged.'};
+ const report={schema:'viewer-strict-suite-v1',head:m.head,complete:true,node:m.node,testIsolation:m.testIsolation,files:m.files,records,totals,manifestSHA256:sha(readFileSync(manifestPath)),method:'Every test entry file ran once in a fresh Node invocation, concurrency one, strict checks and original assertions unchanged.'};
  save(join(dir,'full-suite.json'),report);console.log(JSON.stringify({complete:true,files:m.files.length,...totals}));
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){

@@ -7,7 +7,13 @@ of TPA on the starter card. Bare names try COM, SVC then CMD, with script
 interpretation in the shell. Explicit extensions remain authoritative.
 
 The earlier component records prove actual bare MON3 entry and Snake9 inverse
-menus. The final receiving strict pair and publication remain pending. An
+menus. The serial strict runner starts a fresh Node process for every file. On
+Node versions supporting `--test-isolation=none` it removes the redundant
+per-file coordinator. Older Node versions use the existing process mode.
+The manifest records the Node version and selected isolation mode. Every
+file and test remains required under the same whole-tree memory limit.
+
+The final receiving strict pair and publication remain pending. An
 older USER-removal timing bound still fails on the shell's new bare-name
 lookup and remains unchanged. No earlier component or historical pass is
 claimed as full receiving qualification. The following records retain their
