@@ -1,3 +1,46 @@
+# Prompt history integration
+
+The selected native source is TEC-OS `c688458f7404b2f4cae9ab0bed5ebbf870ca86ba`,
+incorporating main `4d581d0e`. It preserves the separately qualified card,
+Caverns and book integration. This increment changes buffered console input.
+At the shell prompt plain Up/Down recalls older/newer commands using the
+existing Ctrl-W/Ctrl-N history. Recall replaces partial input, down past the
+newest gives an empty line and the recalled command can be edited. Bare CCP
+and program line input ignore navigation; raw character input retains it.
+
+The ROM uses 15,787 bytes with 597 free. Its SHA-256 is
+`41c87b73e189aa2057c38f31751f5645ac8b61e6b4b3bbd6d3d13fc7bb4423f0`.
+The symbol-file SHA-256 is
+`1557067177614d60d59e36cd940c198371283479cb0f8ca2d0814bdf896c479c`.
+The passive observer retains all admission checks and instruction-span lengths.
+Its shifted address operands are bound to the complete matching ROM and map.
+The 15 starter files and canonical recipe remain unchanged from the current
+main dependency; pins.json names their actual digests.
+
+Page-queue cases cover empty and populated history on serial, PICO and GLCD.
+The real Chromium case checks each recall against the active last screen line,
+then edits and executes the recalled command. Earlier command echoes cannot
+satisfy those active-line checks. The bare-CCP cases verify no shell hook.
+The preceding Viewer head `f7ccdc44bbe863338d22a21f2a2088453b166fcd`, with
+firmware `6e002a7`, passed all 43 focused navigation, cache and bundle cases,
+including real Chromium browser events. Chromium was 156.0.8078.79; the
+1,024 MiB guard measured an 820 MiB peak. The run completed on 18 November
+2026 at 15:09:16 UTC. This receiving pin preserves those runtime sources
+and incorporates later main documentation and its editorial audit tool.
+The focused result is supporting evidence; it does not replace full
+qualification at this final clean receiving head. Origo's
+studies/p3-tec-os/stages/viewer-navigation.md records qualification and landing.
+Physical-board tests remain separate and no firmware release is authorised.
+
+The two real transaction/browser cases also passed at Viewer fe726fc with
+native5971cb59, using unchanged storage and cost criteria. The sampled peak
+was1,003MiB under the same1,024MiB guard. A preceding full Viewer attempt
+stopped at the host memory limit and counts as no full pass. These focused
+results remain historical supporting evidence after receiving the newer
+card. Both full runs must complete at this exact final Viewer head.
+
+Earlier sections retain the pins and results they describe.
+
 # TEC-OS integration 1
 
 The firmware gitlink is `782b0074f11019efe9d1fd0f02e8862421128853`, TEC-OS

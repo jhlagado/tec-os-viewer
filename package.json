@@ -14,6 +14,7 @@
     "web": "node tools/build.mjs",
     "page": "npm run tecos && npm run web && node tools/page.mjs",
     "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "test:strict": "bash tools/test-serial.sh",
     "quick": "node --test --test-concurrency=1 --test-name-pattern=\"bundle|serial board\" test/web-bundle.test.mjs test/boards.test.mjs"
   }
 }

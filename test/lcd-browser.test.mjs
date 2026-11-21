@@ -21,7 +21,7 @@ async function fixture(t, image) {
   const opened = await open(browser, url, image, 'tms', 40);
   t.after(() => opened.context.close());
   await opened.page.waitForFunction(() => globalThis.tecos?.screen().some(l => l.trim() === 'A:SYSTEM>'));
-  await opened.page.click('#tms'); await opened.page.keyboard.type('mon3.svc\n');
+  await opened.page.click('#tms'); await opened.page.keyboard.type('mon3\n');
   await opened.page.waitForFunction(() => globalThis.tecos?.screen().some(l => l.trim() === 'MON3>'));
   return opened;
 }

@@ -9,7 +9,7 @@ the Viewer source and firmware pin. Changes to `main` need a new demo build
 before they appear on that site.
 
 The starter card includes Tutankhamen's Snake. At the TEC-OS prompt,
-enter `MON3.SVC`, then `LOAD SNAKE9.BIN` and `GO` at `MON3>`.
+enter `MON3` (or `MON3.SVC`), then `LOAD SNAKE9.BIN` and `GO` at `MON3>`.
 Click the RGB panel to route arrow keys to the matrix keyboard.
 To rebuild the game, run `TAS SNAKE9 SNAKE9.BIN` from the TEC-OS prompt.
 
@@ -21,13 +21,13 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `782b007`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `7a75399`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
-`SHELL.SVC`, the resident shell, in 17 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from Thorium `20339b8`, TAS from Thorium `b8a9994`, which takes
-several statements on a line and writes Intel HEX, and BAZA from Baza `74c4382`
-and `BOUNCE.BAS` from Baza `45f2598`, with the card's `BOUNCE.BAS` and
+`SHELL.SVC`, the resident shell, in 18 pages in this unqualified candidate, `MON3.SVC` for MON-3's programs,
+in 19 pages, TED from Thorium `02b63d8`, TAS from Thorium `b8a9994`, which takes
+several statements on a line and writes Intel HEX, and BAZA from Baza `eee4ee6`
+and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
@@ -41,11 +41,11 @@ changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), 
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with a row for each file, its
 whole name and its size, as `SHELL.SVC       4224`, then the count, the bytes
 and the drive's free space (`DIR /W` is the ROM's wide listing), the
-`[more]` pager in `TYPE` and `DIR`, the history on ^W and ^N, and lines of
+`[more]` pager in `TYPE` and `DIR`, history on Up/Down and ^W/^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
-`TYPE`, `SAVE` and `USER`, and `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/782b007/docs/shell.md)
+`TYPE`, `CON` and `UNLOAD`; TEC-OS's
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/c688458f/docs/shell.md)
 has the rest. With the shell loaded the TPA is 41,984 bytes (the word at
 `0006h` is `A500h`), 37,120 with `MON3.SVC` installed too, and 36,352 with
 `GLCD.SVC` as well; TED's text then holds 28,182, 23,318 and 22,550 bytes.
@@ -89,8 +89,7 @@ The card line under SD card and the Drive list show each volume on the drive
 the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
 reset keeps the drives as `CD` left them. After `CD A:GAMES`, a reset can
 give the bare `A>` on GAMES. The ROM's `CD ?`, `CD A:SYSTEM` and `SHELL.SVC`
-restore the shell; if you changed the user area, use `USER 0` before loading
-the starter's shell. Power cycle restores the card's default drives and startup.
+restore the shell. The prompt always returns to user area 0. Power cycle restores the card's default drives and startup.
 
 A browser that already holds a card keeps it; press New starter card for
 this one. A card with no `SHELL.SVC` on A: and no `MON3.SVC` that is entered
@@ -159,7 +158,7 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`b8a9994` for `TAS.COM`,
-`20339b8` for `TED.COM`), jhlagado/baza (`74c4382` for compiler/runtime, `45f2598` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+`02b63d8` for `TED.COM`), jhlagado/baza (`eee4ee6` for compiler/runtime, `5f6b58d` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -194,3 +193,18 @@ Browser tests normally use Playwright's installed Chromium. Where browser
 downloads are unavailable, `TEST_CHROMIUM=/usr/bin/chromium npm test` selects
 an installed real Chromium explicitly. Record its version with the test result;
 this is not qualification of Playwright's separately distributed browser build.
+
+
+For a complete strict run under Origo's shared memory guard, use
+`TEST_CHROMIUM=/path/to/chromium npm run test:strict`. Each test entry file
+runs once in a fresh Node process with the existing assertions and strict
+input requirements. The enclosing guard covers the entire suite. Set
+`TEST_REPORT_DIR` to a fresh empty directory to retain every per-file TAP
+and the verified `full-suite.json` aggregate; otherwise a temporary directory
+is created. Missing, changed, incomplete, failed or skipped evidence refuses
+qualification. Normal `npm test` is unchanged.
+
+Browser save and stored-card scenarios have individual entry files so each
+scenario has its own process lifetime. Shared helpers register no tests.
+Stored-card setup reuses its seed tab for a fresh application document after
+the native storage transaction completes.
