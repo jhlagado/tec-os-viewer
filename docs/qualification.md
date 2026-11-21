@@ -1,7 +1,7 @@
 # LCD and bare command receiving candidate
 
 This candidate combines the LCD renderer, prompt history and exact-extension
-fixes with the published TAS and Snake9 inputs. Native `c75fd32` retains
+fixes with the published TAS and Snake9 inputs. Native `a4fb884` retains
 506 free ROM bytes and the approved eighteen-page shell leaves 41,728 bytes
 of TPA on the starter card. Bare names try COM, SVC then CMD, with script
 interpretation in the shell. Explicit extensions remain authoritative.
