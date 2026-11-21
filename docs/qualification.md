@@ -1,7 +1,7 @@
 # LCD and bare command receiving candidate
 
 This candidate combines the LCD renderer, prompt history and exact-extension
-fixes with the published TAS and Snake9 inputs. Native `6c2bf8a` retains
+fixes with the published TAS and Snake9 inputs. Native `d3b07d6` retains
 506 free ROM bytes and the approved eighteen-page shell leaves 41,728 bytes
 of TPA on the starter card. Bare names try COM, SVC then CMD, with script
 interpretation in the shell. Explicit extensions remain authoritative.
@@ -9,7 +9,7 @@ interpretation in the shell. Explicit extensions remain authoritative.
 A complete Viewer run at `633fc5a` with Native `1518fb7` passed all 231 tests
 across 38 files using default Chromium, at a 982 MiB peak. Nine focused Native
 checks pass at `5171390` after the reviewed trace and shell-page expectation
-updates. Current Native `6c2bf8a` changes those expectations, diagnostics and
+updates. Current Native `d3b07d6` changes those expectations, diagnostics and
 capacity documentation. Its ROM and shell bytes are unchanged. These records
 support the candidate and do not replace its required final strict pairs.
 
@@ -20,11 +20,12 @@ per-file coordinator. Older Node versions use the existing process mode.
 The manifest records the Node version and selected isolation mode. Every
 file and test remains required under the same whole-tree memory limit.
 
-The final receiving strict pair and publication remain pending. An
-older USER-removal timing bound still fails on the shell's new bare-name
-lookup and remains unchanged. No earlier component or historical pass is
-claimed as full receiving qualification. The following records retain their
-own pins and measurements.
+The owner approved up to 24,000 additional T-states for shell bare-command
+launch, 6 ms at 4 MHz against the measured 5.6825 ms. Bare-ROM launch and
+both warm-prompt bounds retain their previous limits. Landing requires two
+complete strict passes at the final clean Native and Viewer heads. Earlier
+component and historical results retain their own pins and measurements.
+Physical-board testing is separate and no firmware release is authorised.
 
 # Prompt history integration
 
