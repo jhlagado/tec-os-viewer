@@ -21,7 +21,7 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `d3b07d6`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `3539298`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
