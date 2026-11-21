@@ -86,6 +86,10 @@ existing card. The firmware tests include a complete quest, a 54-room tour and
 the exact TED copy/edit/save/build/run/reopen exercise; these are emulator
 results. Physical-board and author gameplay review remain separate.
 
+Saved cards with `SHELL.SVC` retain that copy. Bare `MON3` also works with
+the previously published seventeen-page shell on this ROM. The full
+COM → SVC → CMD search order requires the current eighteen-page shell.
+
 The card line under SD card and the Drive list show each volume on the drive
 the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
 reset keeps the drives as `CD` left them. After `CD A:GAMES`, a reset can
