@@ -45,10 +45,12 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/c688458f/docs/shell.md)
-has the rest. With the shell loaded the TPA is 41,984 bytes (the word at
-`0006h` is `A500h`), 37,120 with `MON3.SVC` installed too, and 36,352 with
-`GLCD.SVC` as well; TED's text then holds 28,182, 23,318 and 22,550 bytes.
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/7a75399/docs/shell.md)
+has the rest. This candidate's shell uses one more 256-byte page than the published
+17-page version. Measured TPA with the shell is 41,728 bytes (the word at
+`0006h` is `A400h`). The standing 17-page size checks remain failed and
+unchanged pending the owner's allocation decision. This candidate is not
+a qualified publication.
 At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
