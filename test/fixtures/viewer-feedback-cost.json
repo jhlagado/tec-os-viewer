@@ -26,7 +26,8 @@
     "normalizedEmbeddedModuleBytes": 130450,
     "normalization": "strip sourceMappingURL line; trim trailing whitespace; append one LF"
   },
-  "maximumAddedNormalizedModuleBytes": 16384,
+  "maximumAddedNormalizedModuleBytes": 24576,
+  "lcdModuleSizeDecision": "Owner accepted the Viewer-only 155026-byte total ceiling on 21 November 2026; former 146834-byte ceiling failed by 6003 bytes. No CPU, click, copy or memory limit changes.",
   "basis": {
     "semanticMeasurementPacket": "guest-save-transaction-runtime01",
     "manifestSha256": "d3cf56c08c2165b95f6027e6608c97bd796bd80c43283038937ee8996a629248",

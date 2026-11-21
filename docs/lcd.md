@@ -29,6 +29,13 @@ font request or browser font substitution supplies its LCD dots.
 
 ## Qualification status
 
-The focused renderer/adapter tests are implementation checks. Actual
-Snake9 menu exercise, bundle limits and complete Viewer qualification remain
-required before publication.
+The renderer and existing card-lifecycle checks pass 22 tests. Two actual
+browser cases pass using the shipped Snake9 BIN through MON3, including
+inverse menu labels, changes to custom patterns, paused cursor blink and reset.
+These are emulator results; physical-board testing is separate.
+
+The renderer adds 6,561 normalised module bytes. The owner accepted a
+155,026-byte Viewer module ceiling on 21 November 2026; the former
+146,834-byte ceiling failed by 6,003 bytes. This changes the browser budget
+only, with no TEC-OS ROM or Z80 RAM cost. Full receiving integration and
+complete Viewer qualification remain required before publication.
