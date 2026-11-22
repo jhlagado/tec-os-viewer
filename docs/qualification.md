@@ -1,21 +1,22 @@
 # LCD and bare command receiving candidate
 
 This candidate combines the LCD renderer, prompt history and exact-extension
-fixes with the published TAS and Snake9 inputs. Native `b9522b8` retains
+fixes with the published TAS and Snake9 inputs. Native `2410a75` retains
 506 free ROM bytes and the approved eighteen-page shell leaves 41,728 bytes
 of TPA on the starter card. Bare names try COM, SVC then CMD, with script
 interpretation in the shell. Explicit extensions remain authoritative, and a
 ROM or shell built-in keeps precedence over a script of the same name: `TYPE`,
-`ERA`, `REN`, `CON` and `UNLOAD` go to the ROM (Native `b9522b8`, after the
+`ERA`, `REN`, `CON` and `UNLOAD` go to the ROM (Native `2410a75`, after the
 independent review found they did not). A card saved before the 18-page shell
-keeps its own `SHELL.SVC`, which tries CMD at the older priority; back the image
-up, then choose New starter card to take the new shell.
+keeps its own `SHELL.SVC`, which runs a script only by its full `NAME.CMD` (a bare
+name goes to the ROM, which tries COM then SVC); back the image up, then choose
+New starter card to take the new shell.
 
 A complete Viewer run at `633fc5a` with Native `1518fb7` passed all 231 tests
 across 38 files using default Chromium, at a 982 MiB peak. Nine focused Native
 checks pass at `5171390` after the reviewed trace and shell-page expectation
 updates. Native `d3b07d6` changes those expectations, diagnostics and capacity
-documentation. Current `b9522b8` also preserves the illustrated TEC-OS and
+documentation. Current `2410a75` also preserves the illustrated TEC-OS and
 TBG books and the paused-input save guidance from main `0cd9d45`. Its ROM
 bytes are those of `31bebd5`; its `SHELL.SVC` is 4,456 bytes, still 18 pages,
 with the five ROM built-in names handed to the ROM. These records
