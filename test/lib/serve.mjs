@@ -43,18 +43,19 @@ export function serve(directory = DIST) {
  * gets the browser context just before
  * the app opens.
  */
-export async function open(browser, url, image, display, width, { setup } = {}) {
+export async function open(browser, url, image, display, width, { setup, namespace = "tecos" } = {}) {
   const context = await browser.newContext();
   await context.route(`${url}planted.img`, (route) => route.fulfill({ status: 200, body: Buffer.from(image) }));
   const planter = await context.newPage();
   await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
-    async ([display, width]) => {
-      localStorage.setItem("tecos.display", display);
-      localStorage.setItem("tecos.width", width);
+    async ([display, width, namespace]) => {
+      const prefix = namespace === "tecos" ? "" : `${namespace}.`;
+      localStorage.setItem(`${prefix}tecos.display`, display);
+      localStorage.setItem(`${prefix}tecos.width`, width);
       const bytes = await fetch("planted.img").then((r) => r.arrayBuffer());
       await new Promise((ok) => {
-        const r = indexedDB.open("tecos", 1);
+        const r = indexedDB.open(namespace, 1);
         r.onupgradeneeded = () => r.result.createObjectStore("cards");
         r.onsuccess = () => {
           const tx = r.result.transaction("cards", "readwrite");
@@ -63,7 +64,7 @@ export async function open(browser, url, image, display, width, { setup } = {}) 
         };
       });
     },
-    [display, width],
+    [display, width, namespace],
   );
   await planter.close();
   if (setup) await setup(context);

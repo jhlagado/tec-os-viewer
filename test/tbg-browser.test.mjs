@@ -51,7 +51,7 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
     const rom = readFileSync(process.env.TBG_ROM);
     await context.route(`${url}roms/tecos.rom`, (route) => route.fulfill({ body: rom }));
   } : undefined;
-  const { page, errors } = await open(browser, url, image, "tms", "40", { setup });
+  const { page, errors } = await open(browser, url, image, "tms", "40", { setup, namespace: packaged ? "tecos-tbg-preview" : "tecos" });
   const lcd = (text) => page.waitForFunction((s) => document.getElementById("lcd").textContent.includes(s), text, { timeout: 12000 });
   const prompt = (command = "") => page.waitForFunction((expected) => {
     const lines = globalThis.tecos?.screen().filter((line) => line.trim()) ?? [];
@@ -149,6 +149,10 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
     await page.waitForFunction(() => globalThis.tecos.screen().some((line) => /^RESULT=ABC\s*$/.test(line)), null, { timeout: 12000 });
     await lcd("EX");
     assert.equal((await page.evaluate(() => globalThis.tecos.screen())).filter((line) => line.includes("RESULT=")).length, 1);
+  }
+  if (packaged) {
+    const databases = await page.evaluate(async () => (await indexedDB.databases()).map(({ name }) => name));
+    assert.deepEqual(databases, ["tecos-tbg-preview"], "the preview only opens its own card storage");
   }
   assert.deepEqual(errors, []);
 });

@@ -20,6 +20,8 @@ import { isText80, renderText80, renderTms } from "./tms.mjs";
 const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
 
+const cardNamespace = document.documentElement.dataset.cardNamespace;
+const preferenceKey = (key) => cardNamespace ? `${cardNamespace}.${key}` : key;
 const savedWidth = localStorageGet("tecos.width");
 const savedDisplay = localStorageGet("tecos.display");
 const state = {
@@ -40,14 +42,14 @@ const state = {
 
 function localStorageGet(key) {
   try {
-    return localStorage.getItem(key);
+    return localStorage.getItem(preferenceKey(key));
   } catch {
     return null;
   }
 }
 function localStorageSet(key, value) {
   try {
-    localStorage.setItem(key, value);
+    localStorage.setItem(preferenceKey(key), value);
   } catch {
     // Keep the session choice on failure.
   }

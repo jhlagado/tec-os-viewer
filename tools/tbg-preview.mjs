@@ -33,6 +33,9 @@ mkdirSync(out);
 for (const file of ["index.html", "style.css", "app.js", "app.js.map", "FONT-NOTICES.txt", "roms", "files"]) {
   cpSync(resolve(root, "dist", file), resolve(out, file), { recursive: true });
 }
+const htmlPath = resolve(out, "index.html");
+const html = readFileSync(htmlPath, "utf8");
+writeFileSync(htmlPath, html.replace('<html lang="en">', '<html lang="en" data-card-namespace="tecos-tbg-preview">'));
 writeFileSync(resolve(out, "roms/tecos.rom"), rom);
 writeFileSync(resolve(out, "roms/tecos.symbols.json"), JSON.stringify(symbols));
 const recipe = JSON.parse(readFileSync(resolve(root, "dist/starter.recipe.json"), "utf8"));
