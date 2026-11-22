@@ -211,7 +211,9 @@ The new directory contains the matching browser app, experimental ROM and
 starter recipe with TBG, TED, TAS and the book's STEP.ASM. Serve the directory
 over HTTP and open it in a fresh browser profile or origin to start with the
 preview card. At the TEC-OS prompt, use `UNLOAD`, `TAS STEP`, and
-`TBG.SVC STEP`, then focus the character LCD. The
+`TBG.SVC STEP`, then click the character LCD. While it has focus, its keys
+go to the matrix with their Shift or Ctrl, so Tab and Shift+Tab move between
+TBG's views. F6 returns focus to the screen. The
 [TBG book](https://tec-os.org/tbg/) walks through the controls.
 
 To verify the package with Chromium, run
