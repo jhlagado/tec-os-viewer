@@ -21,7 +21,7 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `31bebd5`, TEC-OS integration 1, which builds with
+The firmware pin is TEC-OS `f8d0cf1`, TEC-OS integration 1, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
@@ -39,13 +39,13 @@ GAMES and SPARE on no drive. A: holds its 17 files, `BAZA.COM`, `BAZA.RTL`,
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with a row for each file, its
-whole name and its size, as `SHELL.SVC       4224`, then the count, the bytes
+whole name and its size, as `SHELL.SVC       4480`, then the count, the bytes
 and the drive's free space (`DIR /W` is the ROM's wide listing), the
 `[more]` pager in `TYPE` and `DIR`, history on Up/Down and ^W/^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/1518fb7/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/f8d0cf137756/docs/shell.md)
 has the rest. The shell's approved eighteen-page allocation leaves 41,728 bytes of TPA
 (the word at `0006h` is `A400h`). The additional page costs 256 bytes compared
 with the earlier seventeen-page shell. Qualification remains in progress.

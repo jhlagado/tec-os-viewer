@@ -29,7 +29,7 @@ font request or browser font substitution supplies its LCD dots.
 
 ## Qualification status
 
-The renderer and existing card-lifecycle checks pass 22 tests. Two actual
+The renderer and card-lifecycle checks are part of the Viewer's complete runs, whose counts and pins are in `docs/qualification.md`. Two actual
 browser cases pass using the shipped Snake9 BIN through MON3, including
 inverse menu labels, changes to custom patterns, paused cursor blink and reset.
 These are emulator results; physical-board testing is separate.

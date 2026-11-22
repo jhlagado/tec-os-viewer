@@ -7,14 +7,14 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`c688458f7404b2f4cae9ab0bed5ebbf870ca86ba`, TEC-OS integration 1, with
+`f8d0cf13775691973e7696284d5de5691df2b5e9`, TEC-OS integration 1, with
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
-17-page resident shell, with `CD`, the sized `DIR` and the prompt
+18-page resident shell, with `CD`, the sized `DIR` and the prompt
 `A:SYSTEM>`, TED from Thorium `02b63d8` with its language table, TAS from
-Thorium `7a217f9` with chained lines and Intel HEX output, BAZA from Baza
-`eee4ee6` for compiler/runtime, BOUNCE from `eee4ee6`, and the 19-page
+Thorium `b8a9994` with chained lines and Intel HEX output, BAZA from Baza
+`eee4ee6` for compiler/runtime, BOUNCE from `5f6b58d`, and the 19-page
 `MON3.SVC`. TEC-OS builds one card, the starter card, of five
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with a row of name and size for
