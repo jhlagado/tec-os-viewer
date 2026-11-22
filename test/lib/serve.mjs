@@ -14,17 +14,17 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/cs
  * Serve dist/ at 127.0.0.1 on the port
  * returned by server.address().port.
  */
-export function serve() {
+export function serve(directory = DIST) {
   const server = createServer(async (req, res) => {
     if (req.url === "/__test_setup__") {
       res.writeHead(200, { "content-type": "text/html" });
       res.end("<!doctype html><title>Test setup</title>");
       return;
     }
-    const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
-    const file = path === DIST || path.endsWith(sep) ? resolve(path, "index.html") : path;
+    const path = resolve(directory, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
+    const file = path === directory || path.endsWith(sep) ? resolve(path, "index.html") : path;
     try {
-      if (!file.startsWith(DIST + sep)) throw new Error("outside");
+      if (!file.startsWith(directory + sep)) throw new Error("outside");
       const body = await readFile(file);
       res.writeHead(200, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
       res.end(body);

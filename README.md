@@ -194,3 +194,26 @@ Browser tests normally use Playwright's installed Chromium. Where browser
 downloads are unavailable, `TEST_CHROMIUM=/usr/bin/chromium npm test` selects
 an installed real Chromium explicitly. Record its version with the test result;
 this is not qualification of Playwright's separately distributed browser build.
+
+## TBG debugger preview
+
+Build the experimental TEC-OS ROM with `TECOS_COMSTART=1 npm run build`
+and build Thorium's resident debugger with
+`node tools/build-tdb.mjs --service ../tec-os` from Thorium. Then run
+the following from the Viewer checkout:
+
+```sh
+npm run web
+node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium
+```
+
+The new directory contains the matching browser app, experimental ROM and
+starter recipe with TBG, TED, TAS and the book's STEP.ASM. Serve the directory
+over HTTP and open it in a fresh browser profile or origin to start with the
+preview card. At the TEC-OS prompt, use `UNLOAD`, `TAS STEP`, and
+`TBG.SVC STEP`, then focus the character LCD. The
+[TBG book](https://tec-os.org/tbg/) walks through the controls.
+
+To verify the package with Chromium, run
+`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node test/tbg-browser.test.mjs`.
+The experimental ROM is confined to the preview package.
