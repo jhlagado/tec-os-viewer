@@ -1,0 +1,51 @@
+CAVERNS -- JOHN HARDY'S BASIC ADVENTURE, REFINED FOR TEC-OS
+
+On the starter disk's main SYSTEM volume:
+  CON PICO 80
+  BAZA CAVERNS
+  CAVERNS
+
+Caverns is supplied as BASIC source. BAZA creates your executable.
+TED CAVERNS.BAS opens it for reading or editing; Ctrl-S saves the file.
+Lines are numbered in tens, leaving room to insert your experiments.
+Keywords are UPPERCASE and variables lowercase.
+To preserve the original, COPY CAVERNS.BAS CAVBOOK.BAS and edit that copy.
+The compiled game includes its selected runtime. BAZA.RTL is needed to
+compile, not to run. No UNLOAD is needed.
+
+Find the lost treasures and bring them home. Returning through the hut door
+with the key welcomes you home, deposits carried treasures, and displays
+your score and ranking. Equipment is retained. Your possessions count double
+at home. The maximum score is 126. You may leave again to explore, or QUIT.
+After QUIT, N returns to TEC-OS and Y starts another adventure.
+
+Commands use whole words, in either case:
+  NORTH, SOUTH, EAST, WEST (or N/S/E/W)
+  LOOK, LIST, INVENTORY, INVENT (or I), SCORE, QUIT
+  TAKE COMPASS, GET COMPASS, DROP COMPASS, PUT COMPASS
+  ATTACK TROLL WITH SWORD (ATTACK TROLL SWORD also works)
+  USE KEY, OPEN DOOR WITH KEY
+  TIE ROPE TO RAIL, DOWN, UP, UNTIE ROPE
+  OPEN HATCH
+  LIGHT BOMB WITH CANDLE
+LOOK, inventory and SCORE are free. An incomplete attack asks for a weapon.
+
+Take the compass before leaving. Without it you lose your bearings.
+Room descriptions distinguish paths from distant views. Normal paths can
+be retraced; locked passages explain what blocks them. A visible fatal
+crater edge remains dangerous. Combat can still kill you, but fatigue clears
+between encounters. A secured rope allows climbing both down and up.
+Successful actions confirm what changed. Read the clues you discover.
+The candle is currently found lit; matches are a later refinement.
+
+There is no in-game SAVE or LOAD command. Developer scenario files and their
+separate CAVLOAD launcher are not part of this starter disk. To preserve
+source edits in the Viewer, save in TED, then download the card image.
+An image download preserves files, not the running game's memory.
+
+Copyright 1982-83 John Hardy; Microbee edition 1983. Dreamcards.
+GNU GPL release 2019; see repository LICENSE. Recovered MicroWorld BASIC
+for the Microbee, refined by its author. See the repository documentation
+for ZX81/VIC-20 lineage, preservation credits, tests and development history.
+The assembly Caverns80 version is retained for development, not shipped here.
+

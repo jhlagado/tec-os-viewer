@@ -1,0 +1,32 @@
+{
+  "format": "tecos-tbg-preview-v1",
+  "files": {
+    "FONT-NOTICES.txt": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
+    "app.js": "dc3a28dca00b7d35c24e4471aed157a18b4fb0530432991207d1b1247149f12f",
+    "app.js.map": "7e9a78ad2d87eb2dd61179b6449550c9a189ebeeacf6fd32ac4869c5ab599f17",
+    "files/BAZA.COM": "f8d4b8944be95451faa7aa0bc99e611f6793b7d4a8e413344e951e26ede07498",
+    "files/BAZA.RTL": "29c07740630069921f93581c8527d5db057c63a073a95b37c7a020df92ae5e38",
+    "files/BOUNCE.BAS": "a8d0d013af31853e3ca49ac9d30574a783c4ebd1f19eaab7d6724b10bc84e50d",
+    "files/CAVERNS.BAS": "b6d01c0348fa429b3eb26786aca1200ef9a140ded6f3f56768968125c0fea92b",
+    "files/CAVERNS.TXT": "defe872e184d9728da2f47c7a7bd27c0c2e9df3ad2b76bad0a7091163e3e7a52",
+    "files/DEMO.ASM": "5b9adf635849686fc7bda59f81196c96a1a52e50e00be6fd4ead3b9bf388e66d",
+    "files/GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
+    "files/HELLO3.ASM": "7d05f11549f2b69fe20e66c9369b4e820ed7d1dec62703a6eb7c7ba888c128fe",
+    "files/MON3.SVC": "9cf63c798f29c6140f02ae59c6fba7bbcf04c66106da912210b69c0babd24cf4",
+    "files/SAMPLE.ASM": "1bfd9696548327f5717f18b749ec2bcb3468df2e6c1dbea095b295673a00c20e",
+    "files/SHELL.SVC": "166dbe88c12a5d29577ba2acfc1f275f993c8f7f6f4da4d530622349a4b459ab",
+    "files/SNAKE9.ASM": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
+    "files/SNAKE9.BIN": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d",
+    "files/STARTUP.CMD": "6f864b1705ae269c03903f630181ca89b5372a25f0d17147bc9d98a5c84f72be",
+    "files/STEP.ASM": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6",
+    "files/TAS.COM": "8373f19c1562a706ff6724895f96996614e494cf2f1a37a02b658a4b92322773",
+    "files/TBG.SVC": "d0f0042426e8d803b8a4ef95190378f0596e543b746e077bd8dae817cd931d15",
+    "files/TED.COM": "c6c8374a8f3499e974503083e543738db4ad13aff96a7ae3c52c717d220a5573",
+    "files/TIMES.BAS": "287f0237a5ec1fec26f03686b20476ae24c5ec6892da0b3f872da388291d2671",
+    "index.html": "fdffa4b89b501985a2d79dc825da41b7b3aeb44c8eb3496917029a167ed9101e",
+    "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
+    "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
+    "starter.recipe.json": "8769ee482b35485a07ab991abb56c67b972e2e594f4d40e58832ce6179f81ab1",
+    "style.css": "9f2ce42f34eaac5a066594501d125f0b72b58e2f2a07dcbb9295ccd306be41f0"
+  }
+}
