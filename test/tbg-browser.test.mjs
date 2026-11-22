@@ -122,6 +122,8 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
     await key("Control+x");
     await lcd("INPUT PAUSED");
     await page.locator("#lcd").click();
+    await key("w");
+    await lcd("Saved TBGSTATE.BIN");
     await key("r");
     await page.focus("#tms");
     await page.keyboard.type("C\n", { delay: 100 });
