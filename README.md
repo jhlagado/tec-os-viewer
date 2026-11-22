@@ -198,14 +198,17 @@ this is not qualification of Playwright's separately distributed browser build.
 ## TBG debugger preview
 
 Build the experimental TEC-OS ROM with `TECOS_COMSTART=1 npm run build`
-and build Thorium's resident debugger with
-`node tools/build-tdb.mjs --service ../tec-os` from Thorium. Then run
+and build the debugger with `npm run build` in a
+[TBG](https://github.com/jhlagado/tbg) checkout beside Thorium. Then run
 the following from the Viewer checkout:
 
 ```sh
 npm run web
-node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium
+node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg
 ```
+
+The last argument defaults to `tbg` beside the Thorium checkout. TAS and TED
+still come from Thorium.
 
 The new directory contains the matching browser app, experimental ROM and
 starter recipe with TBG, TED, TAS and the book's STEP.ASM. Serve the directory

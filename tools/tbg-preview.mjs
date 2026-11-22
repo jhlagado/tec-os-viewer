@@ -5,14 +5,16 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { outputHashes } from "./build.mjs";
 
-const [outArg, tecosArg, thoriumArg] = process.argv.slice(2);
+const [outArg, tecosArg, thoriumArg, tbgArg] = process.argv.slice(2);
 if (!outArg || !tecosArg || !thoriumArg) {
-  throw new Error("usage: node tools/tbg-preview.mjs NEW_DIR TEC_OS THORIUM");
+  throw new Error("usage: node tools/tbg-preview.mjs NEW_DIR TEC_OS THORIUM [TBG]");
 }
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const out = resolve(outArg);
 const tecos = resolve(tecosArg);
 const thorium = resolve(thoriumArg);
+// TBG builds in its own repository, by default beside Thorium.
+const tbg = resolve(tbgArg ?? resolve(thorium, "../tbg"));
 const firmware = resolve(tecos, "build/tecos");
 const d8 = JSON.parse(readFileSync(resolve(firmware, "tecos.d8.json"), "utf8"));
 const symbols = d8.symbols
@@ -25,7 +27,7 @@ const manual = readFileSync(resolve(tecos, "documentation/content/tbg/02-watch-t
 const example = manual.match(/```asm\n([\s\S]+?)```/)?.[1];
 if (!example) throw new Error("the TBG book's STEP.ASM example is missing");
 const rom = readFileSync(resolve(firmware, "tecos.rom"));
-const svc = readFileSync(resolve(thorium, "build/tbg/TBG.SVC"));
+const svc = readFileSync(resolve(tbg, "build/TBG.SVC"));
 const tas = readFileSync(resolve(thorium, "dist/TAS.COM"));
 const ted = readFileSync(resolve(thorium, "dist/TED.COM"));
 
