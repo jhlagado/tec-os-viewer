@@ -621,7 +621,7 @@ the starter recipe is pinned by its canonical digest. Source relocation records 
 and supplies no Mac qualification.
 
 
-**Packed font and RST 7 pin.** TEC-OS `ee07429` packs the ROM font (384
+**Packed font and RST 7 pin.** TEC-OS `e60fd77` packs the ROM font (384
 bytes plus an eight-byte table of the four glyphs that light a fifth
 column), serves glyphs through service 17, `TNGLYPH`, retires service 15 at
 ABI 5.2, and lets a service claim RST 7 only, RST 1 to 6 being swept at every

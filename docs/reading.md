@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`ee074295c3ff8c934b56d7e413cfe06b7d53c8a7`, TEC-OS integration 1, with
+`e60fd77e2ba10869d07d33cc6e0d6e48370401a5`, TEC-OS integration 1, with
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
