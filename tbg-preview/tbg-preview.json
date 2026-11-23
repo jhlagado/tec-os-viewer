@@ -20,14 +20,14 @@
     "files/STARTUP.CMD": "6f864b1705ae269c03903f630181ca89b5372a25f0d17147bc9d98a5c84f72be",
     "files/STEP.ASM": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6",
     "files/TAS.COM": "8373f19c1562a706ff6724895f96996614e494cf2f1a37a02b658a4b92322773",
-    "files/TBG.HLP": "984e9406d743073a921c85ad6a975f03c96c359b6c8c2f318299dd77993c0c37",
-    "files/TBG.SVC": "266556a10908c4265ffa10f0a2766e78ab1ee59f77719a8057d038a7d2730f8a",
+    "files/TBG.HLP": "406571091410671048d5b6aecc7af455ff3a75d1d60a7a4f06de7933eaea380d",
+    "files/TBG.SVC": "ddd482169f1a0dcf71aaf81d3c38c9b2c6614935e717aa25dfcde2e20286ffa8",
     "files/TED.COM": "c6c8374a8f3499e974503083e543738db4ad13aff96a7ae3c52c717d220a5573",
     "files/TIMES.BAS": "287f0237a5ec1fec26f03686b20476ae24c5ec6892da0b3f872da388291d2671",
     "index.html": "016275c3ff361c4889197ba5c75ea76531aee3a5d08cace4c3608d982b75125c",
     "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
     "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
-    "starter.recipe.json": "687e6c7d69be0a0f799c69cd42a8ffa560f6ced7964d8d5e00d2b26eaaf608b4",
+    "starter.recipe.json": "e51d633c7aa198601e03e733fca1deb4ec64322403a3559392e2de8c5648cf4a",
     "style.css": "a47357c78317b0ab4c99b00b0fb23915a3b35c0353fe3197c5b5767c955d5e7d"
   }
 }
