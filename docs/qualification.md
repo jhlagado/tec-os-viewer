@@ -620,6 +620,17 @@ VE-5 are implemented: `dist/build.json` certifies the standalone page, and
 the starter recipe is pinned by its canonical digest. Source relocation records no new runtime result
 and supplies no Mac qualification.
 
+
+**Packed font and RST 7 pin.** TEC-OS `ee07429` packs the ROM font (384
+bytes plus an eight-byte table of the four glyphs that light a fifth
+column), serves glyphs through service 17, `TNGLYPH`, retires service 15 at
+ABI 5.2, and lets a service claim RST 7 only, RST 1 to 6 being swept at every
+warm boot. ROM `2a895d6f…`, 15,549 bytes used, 835 free. `GLCD.SVC`
+`ec8ee1d6…` (836 bytes, three pages), `MON3.SVC` `6fe01737…` (5,215 bytes,
+main's table-driven page-zero save), and the card's `BOUNCE.BAS` `9d909274…`
+(5,370 bytes: Baza `5f6b58d`'s lines 40, 50 and 170 taken through service 17).
+`SHELL.SVC` is unchanged. The guest observer's ROM spans and the shell symbol
+map (`TNGLYPH` 17, `TNCOUNT` 18) are restated to this build.
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
