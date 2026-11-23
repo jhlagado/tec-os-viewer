@@ -197,8 +197,9 @@ this is not qualification of Playwright's separately distributed browser build.
 
 ## TBG debugger preview
 
-Build the experimental TEC-OS ROM with `TECOS_COMSTART=1 npm run build`
-and build the debugger with `npm run build` in a
+The preview has its own firmware: the experimental TEC-OS ROM from the
+`tbg-user-guide` branch at `d36e3325`, not the Viewer's pin above. Build it
+with `TECOS_COMSTART=1 npm run build` there, and build the debugger with `npm run build` in a
 [TBG](https://github.com/jhlagado/tbg) checkout beside Thorium. Then run
 the following from the Viewer checkout:
 
@@ -211,7 +212,8 @@ The last argument defaults to `tbg` beside the Thorium checkout. TAS and TED
 still come from Thorium.
 
 The new directory contains the matching browser app, experimental ROM and
-starter recipe with TBG, TED, TAS and the book's STEP.ASM. Serve the directory
+starter recipe with TBG and its help file TBG.HLP, TED, TAS and the book's
+STEP.ASM. Serve the directory
 over HTTP and open it in a fresh browser profile or origin to start with the
 preview card. At the TEC-OS prompt, use `UNLOAD`, `TAS STEP`, and
 `TBG.SVC STEP`, then click the character LCD. While it has focus, its keys
@@ -220,5 +222,7 @@ TBG's views. F6 returns focus to the screen. The
 [TBG book](https://tec-os.org/tbg/) walks through the controls.
 
 To verify the package with Chromium, run
-`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node test/tbg-browser.test.mjs`.
+`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg-browser.test.mjs test/tbg-keys-browser.test.mjs`.
+The second test drives Code, the instruction detail, G, Esc, Ctrl+R, Until
+and the help pages.
 The experimental ROM is confined to the preview package.
