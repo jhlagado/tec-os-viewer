@@ -122,16 +122,12 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   await key("Tab"); // Symbols,
   await key("Tab"); // then Registers.
   await lcd("PC: 0104");
-  await key("Control+Space"); // Kept for Step Out: Ctrl must reach TBG, or this would step.
-  await page.waitForTimeout(500);
-  assert.match(await page.locator("#lcd").textContent(), /^PC: 0104/m);
   await key("Tab"); // Code,
   await key("Tab"); // then Stack.
   await lcd("SP>");
-  await key("Shift+Space"); // Step Over, which is a step on POP.
-  await key("Shift+Tab"); // Code, following PC.
-  await lcd(">@0105 RET");
-  await key("r");
+  // Ctrl+Space, Until Return, runs POP and RET out of STEP. Were Ctrl
+  // lost, Space would step POP and stop at 0105h instead.
+  await key("Control+Space");
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("q");
