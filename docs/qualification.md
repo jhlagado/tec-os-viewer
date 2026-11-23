@@ -16,7 +16,7 @@ A complete Viewer run at `633fc5a` with Native `1518fb7` passed all 231 tests
 across 38 files using default Chromium, at a 982 MiB peak. Nine focused Native
 checks pass at `5171390` after the reviewed trace and shell-page expectation
 updates. Native `d3b07d6` changes those expectations, diagnostics and capacity
-documentation. Current `2410a75` also preserves the illustrated TEC-OS and
+documentation. Current `8bfd69a` (a documentation-only merge over the qualified `2410a75`) also preserves the illustrated TEC-OS and
 TBG books and the paused-input save guidance from main `0cd9d45`. Its ROM
 bytes are those of `31bebd5`; its `SHELL.SVC` is 4,456 bytes, still 18 pages,
 with the five ROM built-in names handed to the ROM. These records
