@@ -28,6 +28,7 @@ const example = manual.match(/```asm\n([\s\S]+?)```/)?.[1];
 if (!example) throw new Error("the TBG book's STEP.ASM example is missing");
 const rom = readFileSync(resolve(firmware, "tecos.rom"));
 const svc = readFileSync(resolve(tbg, "build/TBG.SVC"));
+const help = readFileSync(resolve(tbg, "build/TBG.HLP"));
 const tas = readFileSync(resolve(thorium, "dist/TAS.COM"));
 const ted = readFileSync(resolve(thorium, "dist/TED.COM"));
 
@@ -57,6 +58,7 @@ put("startup-cmd", "STARTUP.CMD", Buffer.from("\r\n\x1a"), "Start without the op
 put("tas-com", "TAS.COM", tas, "TAS writes matching .TBG symbols.");
 put("ted-com", "TED.COM", ted, "Edit the practice source on the card.");
 put("tbg-svc", "TBG.SVC", svc, "LCD debugger with experimental paused-read snapshots.");
+put("tbg-hlp", "TBG.HLP", help, "The help pages H shows in TBG.");
 put("tbg-step-asm", "STEP.ASM", Buffer.from(example.replaceAll("\n", "\r\n") + "\x1a"), "Six-byte practice program from the TBG book.");
 writeFileSync(resolve(out, "starter.recipe.json"), JSON.stringify(recipe, null, 2) + "\n");
 writeFileSync(resolve(out, "tbg-preview.json"), JSON.stringify({

@@ -86,6 +86,11 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
     await page.keyboard.press(name, { delay: 100 });
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   };
+  if (packaged) {
+    await key("h"); // The package carries TBG.HLP.
+    await lcd("REGISTERS   HELP 1/4");
+    await key("Escape");
+  }
   await key("Space"); // Space steps, as S does.
   await lcd("PC: 0103");
   await key("Tab");
