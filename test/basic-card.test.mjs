@@ -12,7 +12,8 @@
 // it compiles, and TIMES runs it back
 // to the prompt; BAZA BOUNCE builds
 // BOUNCE, which takes Graphics I with
-// the ROM's font, found by REG("HL"),
+// the ROM's font, glyph by glyph from
+// service 17,
 // its title and its sprites, moves the
 // ship on W/A/S/D taps and on the arrow
 // keys as the page sends them from the
@@ -48,6 +49,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
+import { fontBytes } from "../tec-os/tools/lib/font.mjs";
 import { keyInput, pumpKeys } from "../src/keys.mjs";
 import { card, power, recipe } from "./lib/page.mjs";
 import { ROOT } from "./lib/root.mjs";
@@ -128,8 +130,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   run(150_000_000);
   assert.deepEqual(registers(), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I with 16 x 16 sprites");
   const vram = vdp().vram;
-  const font = m.sym("FONT");
-  assert.deepEqual(Array.from(vram.slice(0x100, 0x400)), Array.from({ length: 768 }, (_, i) => m.read(font + i)), 'the ROM\'s font at 0100h, found by REG("HL")');
+  assert.deepEqual(Array.from(vram.slice(0x100, 0x400)), Array.from(fontBytes(resolve(ROOT, "tec-os"))), "the ROM's font at 0100h, glyph by glyph through service 17");
   const title = " BAZA BASIC ON THE PICO9918 ";
   assert.equal(Buffer.from(vram.slice(0x1802, 0x1802 + title.length)).toString("latin1"), title, "the title in the name table");
   const first = sprites();
