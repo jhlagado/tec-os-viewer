@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "f7a3e1daf843144d4688e846b464b6b17414b486",
-  "firmwareCommit": "8bfd69a0ce042147c7f02310997ad199c623dd1e",
-  "firmwareRomSha256": "9cb2051b786339060e69e630d9b882a5ecabbbe92f23d8c1717691310c73dfff",
+  "viewerCommit": "891493c0fd6aad4a665149780e9cc009e4127dad",
+  "firmwareCommit": "249ab2366cd5d59417b6b60897551b4f446a4dbd",
+  "firmwareRomSha256": "2a895d6f701135b468f14198a606bcef8e270258cd964685ac2e753d22825f66",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 572953,
-      "sha256": "45ec8eeb080f73ac74b03e6f16a01db87954e228644077b49afe5c0135ebbd7a"
+      "bytes": 573137,
+      "sha256": "a02ef7b5dbcf36ee68c7419f956bc4756af1bd56f525baf915ee32d79fa42697"
     }
   },
   "defaultColumns": 40,
@@ -36,7 +36,7 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at f7a3e1d^ (26d56da, Native 2410a75): 38 files, 231/231 each; Native strict 1459/1459 twice at 2410a75; the final pin change (Native 8bfd69a, a documentation-only merge) rechecked with build-manifest, clean-build, copy-text, font-notices and single-page tests on the generated standalone.",
+    "scope": "Two complete strict Viewer rounds at 891493c^^ (09eedd8, Native e60fd77): 38 files, 231/231 each; Native strict 1480/1480 twice at e60fd77; the final pin change (Native 249ab23, a merge of main's TBG book pages only) rechecked with the documentation build, build-manifest, clean-build, copy-text, font-notices and single-page tests on the generated standalone.",
     "starterShell": "SHELL.SVC 18 pages; bare names run COM, then SVC, then CMD; built-ins first"
   },
   "previousQualification": "19448caef636bb8c245749923433b29aec29a2dc",
@@ -48,5 +48,13 @@
     "bareEnd": "No-op; assembly continues; operands refused",
     "comOriginDiagnostic": "COM output selected. COM must start at 0100H.",
     "usage": "usage: TAS INPUT.ASM [OUTPUT.TYP]"
+  },
+  "font": {
+    "romFontBytes": 384,
+    "fontWidthTable": 8,
+    "glyphService": 17,
+    "abi": "5.2",
+    "fontServiceRetired": 15,
+    "rst": "services claim RST 7 only"
   }
 }
