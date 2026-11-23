@@ -86,11 +86,11 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
     await page.keyboard.press(name, { delay: 100 });
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   };
-  await key("s");
+  await key("Space"); // Space steps, as S does.
   await lcd("PC: 0103");
   await key("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
-  await lcd("0103:>PUSH");
+  await lcd(">@0103 PUSH HL");
   await key("Shift+Tab"); // Registers,
   await key("Shift+Tab"); // then Symbols.
   if (packaged) {
@@ -102,9 +102,9 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   await lcd(packaged ? "0104 * TAKE" : "0104 * A");
   await key("Tab"); // Registers,
   await key("Tab"); // then Code.
-  await lcd("0103:>PUSH");
+  await lcd(">@0103 PUSH");
   await key("ArrowDown");
-  await lcd("0104:*POP");
+  await lcd(">*0104 POP");
   await key("Shift+Tab"); // Registers.
   await key("r");
   await lcd("PC: 0104");
@@ -122,12 +122,15 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   await key("Tab"); // Symbols,
   await key("Tab"); // then Registers.
   await lcd("PC: 0104");
+  await key("Control+Space"); // Kept for Step Out: Ctrl must reach TBG, or this would step.
+  await page.waitForTimeout(500);
+  assert.match(await page.locator("#lcd").textContent(), /^PC: 0104/m);
   await key("Tab"); // Code,
   await key("Tab"); // then Stack.
   await lcd("SP>");
-  await key("s");
-  await key("Shift+Tab"); // Code.
-  await lcd("0105:>RET");
+  await key("Shift+Space"); // Step Over, which is a step on POP.
+  await key("Shift+Tab"); // Code, following PC.
+  await lcd(">@0105 RET");
   await key("r");
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");

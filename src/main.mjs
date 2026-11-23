@@ -504,17 +504,19 @@ lcd.addEventListener("keydown", (event) => {
     $("tms").focus();
     return;
   }
-  const input = keyInput(event, true);
+  // Space keeps its Shift or Ctrl too: TBG steps over and out with them.
+  const space = event.key === " ";
+  const input = space ? { via: "matrix", text: " " } : keyInput(event, true);
   if (input?.via !== "matrix" || !state.machine) return;
   const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
-    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt");
+    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(space && candidate.modifier));
   if (!combo) return;
   event.preventDefault();
   if (event.repeat || lcdKey) return;
   const matrix = state.machine.tec1g;
   const { row, col } = combo;
   let modifier = matrixModifiers[combo.modifier];
-  if (modifier === undefined && LCD_CONTROL_KEYS.has(event.key)) {
+  if (modifier === undefined && (space || LCD_CONTROL_KEYS.has(event.key))) {
     if (event.shiftKey) modifier = matrixModifiers.shift;
     else if (event.ctrlKey) modifier = matrixModifiers.ctrl;
   }
