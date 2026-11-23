@@ -2,8 +2,8 @@
   "format": "tecos-tbg-preview-v1",
   "files": {
     "FONT-NOTICES.txt": "577c3e97edcf1d7e183f4b668ec93a3125c90a414a6203fb3194ba6a6c612b41",
-    "app.js": "dc3a28dca00b7d35c24e4471aed157a18b4fb0530432991207d1b1247149f12f",
-    "app.js.map": "7e9a78ad2d87eb2dd61179b6449550c9a189ebeeacf6fd32ac4869c5ab599f17",
+    "app.js": "6257f30377ac2c47da93b404261d0e34c31ca47a36144bc4b9a80b7417a6dd65",
+    "app.js.map": "20614ec6fdfc49587f62513609c8cce0c349fb292fe4c277ff75f28e147e5285",
     "files/BAZA.COM": "f8d4b8944be95451faa7aa0bc99e611f6793b7d4a8e413344e951e26ede07498",
     "files/BAZA.RTL": "29c07740630069921f93581c8527d5db057c63a073a95b37c7a020df92ae5e38",
     "files/BOUNCE.BAS": "a8d0d013af31853e3ca49ac9d30574a783c4ebd1f19eaab7d6724b10bc84e50d",
@@ -20,13 +20,14 @@
     "files/STARTUP.CMD": "6f864b1705ae269c03903f630181ca89b5372a25f0d17147bc9d98a5c84f72be",
     "files/STEP.ASM": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6",
     "files/TAS.COM": "8373f19c1562a706ff6724895f96996614e494cf2f1a37a02b658a4b92322773",
-    "files/TBG.SVC": "d0f0042426e8d803b8a4ef95190378f0596e543b746e077bd8dae817cd931d15",
+    "files/TBG.HLP": "5e5f6a42aaef8288637c69a176ad17376ee004de2a7d80ce66a6122f783ee8b2",
+    "files/TBG.SVC": "2e6156c30c8bc9369b7b66fc50873bdc8594ac4650476d46d61be471535ad900",
     "files/TED.COM": "c6c8374a8f3499e974503083e543738db4ad13aff96a7ae3c52c717d220a5573",
     "files/TIMES.BAS": "287f0237a5ec1fec26f03686b20476ae24c5ec6892da0b3f872da388291d2671",
-    "index.html": "fdffa4b89b501985a2d79dc825da41b7b3aeb44c8eb3496917029a167ed9101e",
+    "index.html": "016275c3ff361c4889197ba5c75ea76531aee3a5d08cace4c3608d982b75125c",
     "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
     "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
-    "starter.recipe.json": "8769ee482b35485a07ab991abb56c67b972e2e594f4d40e58832ce6179f81ab1",
-    "style.css": "9f2ce42f34eaac5a066594501d125f0b72b58e2f2a07dcbb9295ccd306be41f0"
+    "starter.recipe.json": "7525e0e80224b5db5a55289248d7280bf376c1e9fb044ef8408c5f4ead42a087",
+    "style.css": "a47357c78317b0ab4c99b00b0fb23915a3b35c0353fe3197c5b5767c955d5e7d"
   }
 }

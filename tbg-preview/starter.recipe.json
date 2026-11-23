@@ -1,7 +1,7 @@
 {
   "schema": "tecos-file-recipe-v1",
   "id": "tbg-preview",
-  "revision": "18",
+  "revision": "19",
   "name": "TBG debugger preview",
   "instruction": "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.",
   "profile": "tecos",
@@ -217,7 +217,7 @@
     {
       "id": "snake9-bin",
       "name": "SNAKE9.BIN",
-      "description": "Tutankhamen's Snake on the 8×8 RGB matrix: MON3.SVC, LOAD SNAKE9.BIN, GO",
+      "description": "Tutankhamen's Snake on the 8\u00d78 RGB matrix: MON3.SVC, LOAD SNAKE9.BIN, GO",
       "files": [
         {
           "name": "SNAKE9.BIN",
@@ -271,20 +271,6 @@
       ]
     },
     {
-      "id": "tbg-svc",
-      "name": "TBG.SVC",
-      "description": "LCD debugger with experimental paused-read snapshots.",
-      "files": [
-        {
-          "name": "TBG.SVC",
-          "url": "files/TBG.SVC",
-          "drive": "A",
-          "bytes": 14697,
-          "sha256": "d0f0042426e8d803b8a4ef95190378f0596e543b746e077bd8dae817cd931d15"
-        }
-      ]
-    },
-    {
       "id": "tbg-step-asm",
       "name": "STEP.ASM",
       "description": "Six-byte practice program from the TBG book.",
@@ -295,6 +281,34 @@
           "drive": "A",
           "bytes": 87,
           "sha256": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6"
+        }
+      ]
+    },
+    {
+      "id": "tbg-svc",
+      "name": "TBG.SVC",
+      "description": "LCD debugger with experimental paused-read snapshots.",
+      "files": [
+        {
+          "name": "TBG.SVC",
+          "url": "files/TBG.SVC",
+          "drive": "A",
+          "bytes": 10824,
+          "sha256": "2e6156c30c8bc9369b7b66fc50873bdc8594ac4650476d46d61be471535ad900"
+        }
+      ]
+    },
+    {
+      "id": "tbg-hlp",
+      "name": "TBG.HLP",
+      "description": "The help pages H shows in TBG.",
+      "files": [
+        {
+          "name": "TBG.HLP",
+          "url": "files/TBG.HLP",
+          "drive": "A",
+          "bytes": 3200,
+          "sha256": "5e5f6a42aaef8288637c69a176ad17376ee004de2a7d80ce66a6122f783ee8b2"
         }
       ]
     }
