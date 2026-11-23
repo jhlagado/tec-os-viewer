@@ -10,6 +10,7 @@
     "files/CAVERNS.BAS": "b6d01c0348fa429b3eb26786aca1200ef9a140ded6f3f56768968125c0fea92b",
     "files/CAVERNS.TXT": "defe872e184d9728da2f47c7a7bd27c0c2e9df3ad2b76bad0a7091163e3e7a52",
     "files/DEMO.ASM": "5b9adf635849686fc7bda59f81196c96a1a52e50e00be6fd4ead3b9bf388e66d",
+    "files/FILL.ASM": "c6b864dd4d498279925cb526d9050a77ba660ecced8bd54e60ffed58784d8d64",
     "files/GLCD.SVC": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736",
     "files/HELLO3.ASM": "7d05f11549f2b69fe20e66c9369b4e820ed7d1dec62703a6eb7c7ba888c128fe",
     "files/MON3.SVC": "9cf63c798f29c6140f02ae59c6fba7bbcf04c66106da912210b69c0babd24cf4",
@@ -27,7 +28,7 @@
     "index.html": "016275c3ff361c4889197ba5c75ea76531aee3a5d08cace4c3608d982b75125c",
     "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
     "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
-    "starter.recipe.json": "f8d08b57162fad608f19b15ed6c269e1c51c3bb86a5f84ec139486db27b9cda6",
+    "starter.recipe.json": "adfb2b864f57c5bca7102e6be2741dd134cca3d2b8af56c0815a3942e3016d5f",
     "style.css": "a47357c78317b0ab4c99b00b0fb23915a3b35c0353fe3197c5b5767c955d5e7d"
   }
 }
