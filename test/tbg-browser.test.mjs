@@ -88,10 +88,11 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   };
   await key("s");
   await lcd("PC: 0103");
-  await key("m");
-  await key("m");
+  await key("Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
   await lcd("0103:>PUSH");
-  await key("ArrowRight");
+  await key("Shift+Tab"); // Registers,
+  await key("Shift+Tab"); // then Symbols.
   if (packaged) {
     await lcd("0100   START");
     await key("ArrowDown");
@@ -99,15 +100,16 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   await lcd(packaged ? "0104   TAKE" : "0104   A");
   await key("b");
   await lcd(packaged ? "0104 * TAKE" : "0104 * A");
-  await key("ArrowLeft");
+  await key("Tab"); // Registers,
+  await key("Tab"); // then Code.
   await lcd("0103:>PUSH");
   await key("ArrowDown");
   await lcd("0104:*POP");
-  await key("m");
+  await key("Shift+Tab"); // Registers.
   await key("r");
   await lcd("PC: 0104");
   assert.match(await page.locator("#lcd").textContent(), /^PC: 0104.*BP/m);
-  await key("p");
+  for (let i = 0; i < 3; i += 1) await key("Tab"); // Code, Stack, Memory.
   await lcd("0104: D1 C9");
   await key("ArrowDown");
   await lcd("0108:");
@@ -117,18 +119,25 @@ test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_S
   assert.match(await page.locator("#lcd").textContent(), /^[0-9A-F]{4}: 34 12 .*SP$/m);
   await key("ArrowRight");
   await lcd("1234:");
-  await key("p");
+  await key("Tab"); // Symbols,
+  await key("Tab"); // then Registers.
   await lcd("PC: 0104");
-  await key("m");
+  await key("Tab"); // Code,
+  await key("Tab"); // then Stack.
   await lcd("SP>");
   await key("s");
-  await key("m");
+  await key("Shift+Tab"); // Code.
   await lcd("0105:>RET");
   await key("r");
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("q");
+  await lcd("Quit? Enter yes");
+  await key("Enter");
   await prompt();
+  await page.locator("#lcd").click();
+  await page.keyboard.press("F6");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "tms", "F6 leaves the LCD for the screen");
   if (armed) {
     await page.focus("#tms");
     await page.keyboard.type("tbg.svc line\n", { delay: 80 });

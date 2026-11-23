@@ -493,8 +493,17 @@ function releaseLcdKey() {
   if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, false);
   lcdKey = undefined;
 }
+// Keys without a character of their own, such as Tab and the arrows,
+// keep the Shift or Ctrl held with them, so Shift+Tab and Ctrl+Up reach a
+// program that reads the matrix. Tab stays on the LCD; F6 leaves it.
+const LCD_CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
 lcd.addEventListener("keydown", (event) => {
-  if (event.key === "Tab") return;
+  if (event.key === "F6") {
+    event.preventDefault();
+    releaseLcdKey();
+    $("tms").focus();
+    return;
+  }
   const input = keyInput(event, true);
   if (input?.via !== "matrix" || !state.machine) return;
   const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
@@ -504,7 +513,11 @@ lcd.addEventListener("keydown", (event) => {
   if (event.repeat || lcdKey) return;
   const matrix = state.machine.tec1g;
   const { row, col } = combo;
-  const modifier = matrixModifiers[combo.modifier];
+  let modifier = matrixModifiers[combo.modifier];
+  if (modifier === undefined && LCD_CONTROL_KEYS.has(event.key)) {
+    if (event.shiftKey) modifier = matrixModifiers.shift;
+    else if (event.ctrlKey) modifier = matrixModifiers.ctrl;
+  }
   lcdKey = { matrix, row, col, modifier, code: event.code };
   if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, true);
   matrix.applyMatrixKey(row, col, true);
