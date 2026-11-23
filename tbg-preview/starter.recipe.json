@@ -1,9 +1,9 @@
 {
   "schema": "tecos-file-recipe-v1",
   "id": "tbg-preview",
-  "revision": "26",
+  "revision": "27",
   "name": "TBG debugger preview",
-  "instruction": "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.",
+  "instruction": "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. For labels, type TBGSYM.SVC once after TBG.SVC. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.",
   "profile": "tecos",
   "drives": 4,
   "volumes": [
@@ -287,14 +287,28 @@
     {
       "id": "tbg-svc",
       "name": "TBG.SVC",
-      "description": "LCD debugger with experimental paused-read snapshots.",
+      "description": "The TBG LCD debugger.",
       "files": [
         {
           "name": "TBG.SVC",
           "url": "files/TBG.SVC",
           "drive": "A",
-          "bytes": 7879,
-          "sha256": "eff6fda3fe9993469ce6374c8340b7f09b38f3d27fcf56d069dcd0a8bcc4ca11"
+          "bytes": 8360,
+          "sha256": "aacada9ca72dfb5983c886fe48fce4a060180ce1644c311a447271d262453710"
+        }
+      ]
+    },
+    {
+      "id": "tbg-sym",
+      "name": "TBGSYM.SVC",
+      "description": "Labels for TBG from the .TBG file TAS writes; install after TBG.SVC.",
+      "files": [
+        {
+          "name": "TBGSYM.SVC",
+          "url": "files/TBGSYM.SVC",
+          "drive": "A",
+          "bytes": 1242,
+          "sha256": "314485b1a9333453cdb61b0b045058bd1ee3d08d0aefcf7c60ca4a3097ae4a66"
         }
       ]
     },
@@ -307,8 +321,8 @@
           "name": "TBG.HLP",
           "url": "files/TBG.HLP",
           "drive": "A",
-          "bytes": 2176,
-          "sha256": "371c1fdc80d3d610e1d56cfa237b09d329d0ea7155a3549eb3c541912befbb66"
+          "bytes": 2816,
+          "sha256": "8a734ea3a9543b11d83f05b255531169793424384ba538061904bc1e2013d031"
         }
       ]
     },
