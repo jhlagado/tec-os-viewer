@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "19448caef636bb8c245749923433b29aec29a2dc",
-  "firmwareCommit": "a6ece5a9e774fe2383877fa4918745394ad833f6",
-  "firmwareRomSha256": "35893cab810bf6757e5992ec492ec37a113828674e33d10da2e48dfa706b0bc8",
+  "viewerCommit": "f7a3e1daf843144d4688e846b464b6b17414b486",
+  "firmwareCommit": "8bfd69a0ce042147c7f02310997ad199c623dd1e",
+  "firmwareRomSha256": "9cb2051b786339060e69e630d9b882a5ecabbbe92f23d8c1717691310c73dfff",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 559516,
-      "sha256": "069d4c5c55d9135c103d29798a1efbbc50243376a2f777fee3e87f8682ce453a"
+      "bytes": 572953,
+      "sha256": "45ec8eeb080f73ac74b03e6f16a01db87954e228644077b49afe5c0135ebbd7a"
     }
   },
   "defaultColumns": 40,
@@ -36,10 +36,10 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "All 39 selected Viewer tests pass: exact native Snake9 COM diagnostic, no-argument usage, successful BIN, spinner, bare END, boards, observer, SAMPLE/TED and standalone Chromium boot.",
-    "previousSnake9Qualification": "27202c8fad83050762fa351dd741bb76bd65c667"
+    "scope": "Two complete strict Viewer rounds at f7a3e1d^ (26d56da, Native 2410a75): 38 files, 231/231 each; Native strict 1459/1459 twice at 2410a75; the final pin change (Native 8bfd69a, a documentation-only merge) rechecked with build-manifest, clean-build, copy-text, font-notices and single-page tests on the generated standalone.",
+    "starterShell": "SHELL.SVC 18 pages; bare names run COM, then SVC, then CMD; built-ins first"
   },
-  "previousQualification": "735f4da98751d351bb539093bcdc4637cbb191bc",
+  "previousQualification": "19448caef636bb8c245749923433b29aec29a2dc",
   "tas": {
     "thoriumCommit": "b8a9994a91e8a36bb2ae402df5297cbbe8599a99",
     "bytes": 11131,
