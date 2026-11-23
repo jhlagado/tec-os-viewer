@@ -621,7 +621,7 @@ the starter recipe is pinned by its canonical digest. Source relocation records 
 and supplies no Mac qualification.
 
 
-**Packed font and RST 7 pin.** TEC-OS `e60fd77` packs the ROM font (384
+**Packed font and RST 7 pin.** TEC-OS `249ab23` packs the ROM font (384
 bytes plus an eight-byte table of the four glyphs that light a fifth
 column), serves glyphs through service 17, `TNGLYPH`, retires service 15 at
 ABI 5.2, and lets a service claim RST 7 only, RST 1 to 6 being swept at every
@@ -630,7 +630,14 @@ warm boot. ROM `2a895d6f…`, 15,549 bytes used, 835 free. `GLCD.SVC`
 main's table-driven page-zero save), and the card's `BOUNCE.BAS` `9d909274…`
 (5,370 bytes: Baza `5f6b58d`'s lines 40, 50 and 170 taken through service 17).
 `SHELL.SVC` is unchanged. The guest observer's ROM spans and the shell symbol
-map (`TNGLYPH` 17, `TNCOUNT` 18) are restated to this build.
+map (`TNGLYPH` 17, `TNCOUNT` 18) are restated to this build. The BOUNCE
+check compares video memory with the font's glyphs as service 17 gives them.
+Two complete Viewer strict runs at Viewer `09eedd8` and TEC-OS `e60fd77` pass
+231 of 231 (peaks 907 and 904 MB). Two earlier runs at the same heads failed
+one representative card copy each (57 and 62 ms against 50 ms); the old pin
+showed the same host noise in isolated reruns, and those receipts are kept.
+TEC-OS `249ab23` adds only main's TBG book pages over `e60fd77`.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
