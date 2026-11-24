@@ -37,20 +37,20 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   await lcd("PC 0100");
   await page.locator("#lcd").click();
   await key("Tab");
-  await lcd(">@0100 CALL 0110");
+  await lcd(">→0100 CALL 0110");
   await key("Enter"); // Enter follows the call.
   await lcd("> 0110 RET");
   await key("Escape");
-  await lcd(">@0100 CALL 0110");
+  await lcd(">→0100 CALL 0110");
   await key("g");
   await lcd("Go to addr: _");
   for (const ch of "107") await key(ch);
   await key("Enter");
   await lcd("> 0107 CALL Z,0110");
   await key("r"); // R runs to the selected line.
-  await lcd(">@0107 CALL Z,0110");
+  await lcd(">→0107 CALL Z,0110");
   await key("Shift+Space"); // Over the taken call.
-  await lcd(">@010A LD C,0C");
+  await lcd(">→010A LD C,0C");
   await key("Shift+Tab");
   await lcd("PC 010A");
   await key("h");

@@ -76,11 +76,11 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await lcd("PC 0103");
   await key("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
-  await lcd(">@0103 PUSH HL");
+  await lcd(">→0103 PUSH HL");
   await lcd("TAKE:"); // TBGSYM's label row.
   await key("ArrowDown");
   await key("b");
-  await lcd(">*0104 POP DE");
+  await lcd(">□0104 POP DE");
   await lcd("BP SET 0104");
   await key("ArrowLeft"); // The selection back on PC.
   await key("Shift+Tab"); // Registers.
