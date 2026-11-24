@@ -225,11 +225,13 @@ the following from the Viewer checkout:
 
 ```sh
 npm run web
-node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg
+node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg ../tec-os-main
 ```
 
-The last argument defaults to `tbg` beside the Thorium checkout. TAS and TED
-still come from Thorium.
+`../tbg` defaults to `tbg` beside the Thorium checkout. The last argument is a
+TEC-OS checkout of `main`, where the book is, for the book's STEP.ASM and
+FILL.ASM; it defaults to the firmware's checkout. TAS and TED come from
+Thorium.
 
 The new directory contains:
 

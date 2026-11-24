@@ -5,9 +5,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { outputHashes } from "./build.mjs";
 
-const [outArg, tecosArg, thoriumArg, tbgArg] = process.argv.slice(2);
+const [outArg, tecosArg, thoriumArg, tbgArg, bookArg] = process.argv.slice(2);
 if (!outArg || !tecosArg || !thoriumArg) {
-  throw new Error("usage: node tools/tbg-preview.mjs NEW_DIR TEC_OS THORIUM [TBG]");
+  throw new Error("usage: node tools/tbg-preview.mjs NEW_DIR TEC_OS THORIUM [TBG] [BOOK]");
 }
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const out = resolve(outArg);
@@ -15,6 +15,8 @@ const tecos = resolve(tecosArg);
 const thorium = resolve(thoriumArg);
 // TBG builds in its own repository, by default beside Thorium.
 const tbg = resolve(tbgArg ?? resolve(thorium, "../tbg"));
+// The book's examples come from a TEC-OS checkout of main, by default TEC_OS.
+const book = resolve(bookArg ?? tecos);
 const firmware = resolve(tecos, "build/tecos");
 const d8 = JSON.parse(readFileSync(resolve(firmware, "tecos.d8.json"), "utf8"));
 const symbols = d8.symbols
@@ -23,10 +25,10 @@ const symbols = d8.symbols
 if (!symbols.some((s) => s.name === "COMHOOK")) { // The armed launch's callback.
   throw new Error("build the experimental TEC-OS ROM with TECOS_COMSTART=1 first");
 }
-const manual = readFileSync(resolve(tecos, "documentation/content/tbg/02-watch-the-stack.md"), "utf8");
+const manual = readFileSync(resolve(book, "documentation/content/tbg/02-watch-the-stack.md"), "utf8");
 const example = manual.match(/```asm\n([\s\S]+?)```/)?.[1];
 if (!example) throw new Error("the TBG book's STEP.ASM example is missing");
-const fillPage = readFileSync(resolve(tecos, "documentation/content/tbg/04-follow-data.md"), "utf8");
+const fillPage = readFileSync(resolve(book, "documentation/content/tbg/04-follow-data.md"), "utf8");
 const fill = fillPage.match(/```asm\n([\s\S]+?)```/)?.[1];
 if (!fill) throw new Error("the TBG book's FILL.ASM example is missing");
 const rom = readFileSync(resolve(firmware, "tecos.rom"));
