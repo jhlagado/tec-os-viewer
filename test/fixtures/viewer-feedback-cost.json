@@ -2,7 +2,7 @@
   "schema": "viewer-feedback-cost-criteria-v1",
   "scope": {
     "display": "PICO9918 40 columns",
-    "cardBytes": 13631488,
+    "cardBytes": 14680064,
     "configuredCpuHz": 4000000,
     "contextCore": "241b4381007a6b1e7f179c4f8358c65d564e06ae",
     "browser": "explicit real Chromium; host observations, no physical-board or universal timing guarantee"
