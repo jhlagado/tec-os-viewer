@@ -20,7 +20,7 @@
     "files/SNAKE9.BIN": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d",
     "files/STARTUP.CMD": "6f864b1705ae269c03903f630181ca89b5372a25f0d17147bc9d98a5c84f72be",
     "files/STEP.ASM": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6",
-    "files/TAS.COM": "8373f19c1562a706ff6724895f96996614e494cf2f1a37a02b658a4b92322773",
+    "files/TAS.COM": "343526f04800206d53df6aedc5706e7efb85e64cc313832eeb0946810299dc46",
     "files/TBG.HLP": "8a734ea3a9543b11d83f05b255531169793424384ba538061904bc1e2013d031",
     "files/TBG.SVC": "af3396e425e0dd59fd4da7571eee282c0b8b138aecdf1013e86d67e4879072a3",
     "files/TBGSYM.SVC": "68800bb72e7e2f3619b293a3c22efaf0c67b7eef53b28bf3e1b43717bac899eb",
@@ -29,7 +29,7 @@
     "index.html": "016275c3ff361c4889197ba5c75ea76531aee3a5d08cace4c3608d982b75125c",
     "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
     "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
-    "starter.recipe.json": "3ba8a49524ed61f626d5232e0477c3193caf429a7b51357aac653b486af324ef",
+    "starter.recipe.json": "814c37e04f004e4eee4ba503a878326c1f76d1f2ee510dafb09a6f51987d7589",
     "style.css": "a47357c78317b0ab4c99b00b0fb23915a3b35c0353fe3197c5b5767c955d5e7d"
   }
 }
