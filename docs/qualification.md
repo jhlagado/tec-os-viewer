@@ -650,6 +650,18 @@ Two complete Viewer strict runs at Viewer `23d1492` and TEC-OS `8d6c09b` pass
 231 of 231 across 38 files (peaks 857 and 846 MB). The TBG browser tests,
 which need a TBG package, sit in `test/tbg/` outside the strict suite.
 
+**Five-volume starter card.** TEC-OS `e03144e` puts five themed volumes on
+A: (SYSTEM, ASM, BASIC, MON3 and GAMES, each with the core set of
+`STARTUP.CMD`, `SHELL.SVC`, `GLCD.SVC`, `TED.COM` and TBG's `TBG.SVC`,
+`TBGSYM.SVC` and `TBG.HLP` from tbg `fb97b61`), WORK on B: and a spare C:;
+the card is 14,680,064 bytes and the starter TPA 46,790 bytes, 41,984 with
+the shell. GAMES carries `CAVERNS.COM` (37,888 bytes) and `BOUNCE.COM`
+(16,000 bytes), compiled by the pinned BAZA when the card is built. The ROM
+is unchanged (`d10a13a2…`). Tests that need a volume's files build the
+page's card with that volume on A: (`recipeOn`). Two complete Viewer strict
+runs at Viewer `debe336` and TEC-OS `e03144e` pass 231 of 231 across 38
+files (peaks 877 and 917 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
