@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "25c3711f16fd611a22883b79915b9a5ff631cee2",
-  "firmwareCommit": "e03144ee922cf6ed0ae435a98c349120bc225a16",
-  "firmwareRomSha256": "d10a13a227eb68ee1e319f7f54174f88b552f00194775655ef649f4a17438dfd",
+  "viewerCommit": "0e9e270c79196c249b5930ff68715e1fe690b793",
+  "firmwareCommit": "3f5ed4a0d6267c726e5a00d46fc2c93058af931b",
+  "firmwareRomSha256": "06e8c0f1dcb8eea2a9b91936f4a2b6c98b2ea8b8b51c2fd8ba1388d47087f28a",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 686764,
-      "sha256": "2b4309dbb6c83b791749192eae55608870b1e3e3d972d1ebe8b3049d3db5698e"
+      "bytes": 687091,
+      "sha256": "b68413601737ba7240d7c6ff2d55203a0b9e133bd19ae7652a32a4369517845f"
     }
   },
   "defaultColumns": 40,
@@ -29,23 +29,24 @@
       "CAVERNS.COM",
       "BOUNCE.COM"
     ],
-    "bazaCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692",
-    "tedCommit": "cf5460c3ffb988e96fcc7fbb0aaf7039bb9a611f",
-    "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0"
+    "bazaCommit": "4204b18f44f1f87f2eddf624bb53558854f0cc4a",
+    "tedCommit": "dc0cd0f991aad439c78ed8b7d541afa88dff16c0",
+    "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
+    "bazaRuntimeCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692"
   },
   "snake9": {
     "sourceSha256": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at 25c3711^ (debe336, Native e03144e): 38 files, 231/231 each; Native strict 1481/1481 twice at e03144e. 25c3711 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 0e9e270^ (460d359, Native 3f5ed4a): 38 files, 231/231 each; TBG browser tests 2/2; Native strict 1482/1482 twice at 3b9e3b3 (3f5ed4a adds only TBG book revisions). 0e9e270 adds only the qualification note.",
     "starterShell": "SHELL.SVC 18 pages; bare names run COM, then SVC, then CMD; built-ins first"
   },
-  "previousQualification": "b21f555bf5b66ce42232da499144c0c45d20ac93",
+  "previousQualification": "25c3711f16fd611a22883b79915b9a5ff631cee2",
   "tas": {
-    "thoriumCommit": "cf5460c3ffb988e96fcc7fbb0aaf7039bb9a611f",
+    "tasCommit": "fdd21f53c9fa13742eccc9f30339403c080ccfd1",
     "bytes": 10725,
-    "sha256": "ed6c00ca8f18ce112bee6657cb505c0a3bcdf711e995a03e8f9fcc81ff5049a7",
+    "sha256": "78541bbd3a66b8a832bba1f04ed48c3b174c98322fe8aabd57a2079bf1564ab1",
     "progressIndicator": true,
     "bareEnd": "No-op; assembly continues; operands refused",
     "comOriginDiagnostic": "COM output selected. COM must start at 0100H.",
@@ -87,10 +88,21 @@
       "TBGSYM.SVC",
       "TBG.HLP"
     ],
-    "tbgCommit": "fb97b61ac3cc0bb1d0a93939d29f08470fe0d02c",
+    "tbgCommit": "aacc59e57c17fc8496f3dfee32edc36a73d700ef",
     "tpa": {
       "starter": 46790,
       "withShell": 41984
-    }
+    },
+    "tbgsymCommit": "fb97b61ac3cc0bb1d0a93939d29f08470fe0d02c"
+  },
+  "ted": {
+    "sessionFiles": [
+      "TED.SES",
+      "TED.ERR",
+      "TED.PRJ"
+    ]
+  },
+  "keyboard": {
+    "functionKeys": "Fn+1-9 F1-F9, Fn+0 F10; F1-F4 ESC O P-S, F5-F10 ESC [ nn ~"
   }
 }
