@@ -21,9 +21,9 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `8d6c09b`, TEC-OS integration 1 with the packed ROM font (glyphs through service 17), services claiming RST 7 alone and the COM launch vector `COMVEC` (ABI 5.3), which builds with
+The firmware pin is TEC-OS `e03144e`, TEC-OS integration 1 with the packed ROM font (glyphs through service 17), services claiming RST 7 alone and the COM launch vector `COMVEC` (ABI 5.3), with the five-volume starter card (SYSTEM, ASM, BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBG from tbg `fb97b61`, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
-40-column console, the squeezed ROM with a minimal CCP and four equal drives,
+40-column console, the squeezed ROM with a minimal CCP and three drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
 in 19 pages, TED from Thorium `cf5460c`, TAS from Thorium `cf5460c`, which takes
 several statements on a line and writes Intel HEX, and BAZA from Baza `c49f477`
@@ -51,17 +51,17 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/8d6c09badb7b/docs/shell.md)
-has the rest. The shell's approved eighteen-page allocation leaves 41,728 bytes of TPA
-(the word at `0006h` is `A400h`). The additional page costs 256 bytes compared
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/e03144ee922c/docs/shell.md)
+has the rest. The shell's approved eighteen-page allocation leaves 41,984 bytes of TPA
+with three drives (the word at `0006h` is `A500h`). The additional page costs 256 bytes compared
 with the earlier seventeen-page shell. Qualification remains in progress.
 The hosted build details identify the version currently available online.
-At `A:SYSTEM>`, `TAS DEMO` then `DEMO` build and run the
+After `CD A:ASM`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
-and run a first program, `BAZA TIMES` and `TIMES` one in BASIC, and `BAZA
+and run a first program. After `CD A:BASIC`, `BAZA TIMES` and `TIMES` build one in BASIC, and `BAZA
 BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
 arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles.
-Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
+GAMES has `CAVERNS` and `BOUNCE` ready to run. Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
 `MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
 MON-3 program that writes four lines on the LCD and counts on the digits; on
 the page, Esc on the matrix keyboard returns to `MON3>` (on the board, AD on

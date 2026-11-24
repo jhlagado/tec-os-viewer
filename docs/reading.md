@@ -7,10 +7,10 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`8d6c09badb7be37a60c23faa80125abbf642b2a7`, TEC-OS integration 1, with
+`e03144ee922cf6ed0ae435a98c349120bc225a16`, TEC-OS integration 1, with
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
-the squeezed ROM with a minimal CCP and four equal drives, `SHELL.SVC`, the
+the squeezed ROM with a minimal CCP and three drives, `SHELL.SVC`, the
 18-page resident shell, with `CD`, the sized `DIR` and the prompt
 `A:SYSTEM>`, TED from Thorium `cf5460c` with its language table, TAS from
 Thorium `cf5460c` with chained lines and Intel HEX output, BAZA from Baza

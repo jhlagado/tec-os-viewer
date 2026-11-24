@@ -51,23 +51,25 @@ const recipe = JSON.parse(readFileSync(resolve(root, "dist/starter.recipe.json")
 recipe.id = "tbg-preview";
 recipe.name = "TBG debugger preview";
 recipe.instruction = "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. For labels, type TBGSYM.SVC once after TBG.SVC. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.";
-function put(id, name, bytes, description) {
+// The preview's files go on the SYSTEM volume, replacing the card's own copy.
+function put(name, bytes, description) {
   const url = `files/${name}`;
+  const id = `system-${name}`.toLowerCase().replace(/\W/g, "-");
   writeFileSync(resolve(out, url), bytes);
   recipe.components = recipe.components.filter((c) => c.id !== id);
   recipe.components.push({ id, name, description, files: [{
-    name, url, drive: "A", bytes: bytes.length,
+    name, url, drive: "SYSTEM", bytes: bytes.length,
     sha256: createHash("sha256").update(bytes).digest("hex"),
   }] });
 }
-put("startup-cmd", "STARTUP.CMD", Buffer.from("\r\n\x1a"), "Start without the optional GLCD service.");
-put("tas-com", "TAS.COM", tas, "TAS writes matching .TBG symbols.");
-put("ted-com", "TED.COM", ted, "Edit the practice source on the card.");
-put("tbg-svc", "TBG.SVC", svc, "The TBG LCD debugger.");
-put("tbg-sym", "TBGSYM.SVC", tbgsym, "Labels for TBG from the .TBG file TAS writes; install after TBG.SVC.");
-put("tbg-hlp", "TBG.HLP", help, "The help pages H shows in TBG.");
-put("tbg-step-asm", "STEP.ASM", Buffer.from(example.replaceAll("\n", "\r\n") + "\x1a"), "Six-byte practice program from the TBG book.");
-put("tbg-fill-asm", "FILL.ASM", Buffer.from(fill.replaceAll("\n", "\r\n") + "\x1a"), "The TBG book's data-following example.");
+put("STARTUP.CMD", Buffer.from("\r\n\x1a"), "Start without the optional GLCD service.");
+put("TAS.COM", tas, "TAS writes matching .TBG symbols.");
+put("TED.COM", ted, "Edit the practice source on the card.");
+put("TBG.SVC", svc, "The TBG LCD debugger.");
+put("TBGSYM.SVC", tbgsym, "Labels for TBG from the .TBG file TAS writes; install after TBG.SVC.");
+put("TBG.HLP", help, "The help pages H shows in TBG.");
+put("STEP.ASM", Buffer.from(example.replaceAll("\n", "\r\n") + "\x1a"), "Six-byte practice program from the TBG book.");
+put("FILL.ASM", Buffer.from(fill.replaceAll("\n", "\r\n") + "\x1a"), "The TBG book's data-following example.");
 writeFileSync(resolve(out, "starter.recipe.json"), JSON.stringify(recipe, null, 2) + "\n");
 writeFileSync(resolve(out, "tbg-preview.json"), JSON.stringify({
   format: "tecos-tbg-preview-v1",
