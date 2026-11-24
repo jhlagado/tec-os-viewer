@@ -22,14 +22,14 @@
     "files/STEP.ASM": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6",
     "files/TAS.COM": "343526f04800206d53df6aedc5706e7efb85e64cc313832eeb0946810299dc46",
     "files/TBG.HLP": "8a734ea3a9543b11d83f05b255531169793424384ba538061904bc1e2013d031",
-    "files/TBG.SVC": "af3396e425e0dd59fd4da7571eee282c0b8b138aecdf1013e86d67e4879072a3",
+    "files/TBG.SVC": "6b3694c8f6c2df2b937f2a439f7752286d6a9e058709384d5c68206776e3beb7",
     "files/TBGSYM.SVC": "68800bb72e7e2f3619b293a3c22efaf0c67b7eef53b28bf3e1b43717bac899eb",
-    "files/TED.COM": "c6c8374a8f3499e974503083e543738db4ad13aff96a7ae3c52c717d220a5573",
+    "files/TED.COM": "81b9ff24cb6fac22665215bf8881c08d33dc189a59087f7dd4c3d715a9435c7c",
     "files/TIMES.BAS": "287f0237a5ec1fec26f03686b20476ae24c5ec6892da0b3f872da388291d2671",
     "index.html": "1af902d61fe6376c5333217147a76276550539a4e5ec16f4ea216d3022743f56",
-    "roms/tecos.rom": "e05dc02c24f561bf9f25bd2e7b767be14dba98f8d643a5066062fc5b66911cc7",
-    "roms/tecos.symbols.json": "aa7832875814ae6e542dc24ff5f41665df7b7d3ade74ccd7883c9c37fe42af67",
-    "starter.recipe.json": "8230c586f6edf86e9cc7ef7f5847824677dea5dddb9e6ee2089f6e000cbc2ead",
+    "roms/tecos.rom": "d10a13a227eb68ee1e319f7f54174f88b552f00194775655ef649f4a17438dfd",
+    "roms/tecos.symbols.json": "90d67e7a9b8b25eff5eefc72162593c9633ccaac05aef269370dc81d069abe0b",
+    "starter.recipe.json": "1c2de7a1e56b0c1db2e88d40aed8d5b383db9436ff76f1f0d43d1a2a54e8551a",
     "style.css": "e23a47864d716c915c4417231ec6fb472c51cc80a5d2c85a15141b8c71f7310c"
   }
 }
