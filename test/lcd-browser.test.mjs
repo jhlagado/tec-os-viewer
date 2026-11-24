@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { card, web, DIST } from './lib/assets.mjs';
+import { card, recipeOn, web, DIST } from './lib/assets.mjs';
 import { open, serve } from './lib/serve.mjs';
 import { fromTecos } from './lib/root.mjs';
 import { parseContainer, findVolume, volumePayload } from '../tec-os/tools/lib/container.mjs';
@@ -20,7 +20,7 @@ async function fixture(t, image) {
   t.after(async () => { await browser.close(); await new Promise(ok => server.close(ok)); });
   const opened = await open(browser, url, image, 'tms', 40);
   t.after(() => opened.context.close());
-  await opened.page.waitForFunction(() => globalThis.tecos?.screen().some(l => l.trim() === 'A:SYSTEM>'));
+  await opened.page.waitForFunction(() => globalThis.tecos?.screen().some(l => /^A:\w+>$/.test(l.trim())));
   await opened.page.click('#tms'); await opened.page.keyboard.type('mon3\n');
   await opened.page.waitForFunction(() => globalThis.tecos?.screen().some(l => l.trim() === 'MON3>'));
   return opened;
@@ -71,7 +71,7 @@ async function evidence(page, name, record) {
 }
 
 test('Snake9 settings render inverse labels and refresh unchanged custom codes', { timeout: 120000 }, async t => {
-  const { page, errors } = await fixture(t, await card());
+  const { page, errors } = await fixture(t, await card(recipeOn('MON3')));
   await load(page, 'SNAKE9.BIN');
   await page.waitForFunction(() => document.getElementById('lcd').textContent.includes("Tutankhamen's Snake"));
   for (const label of ['A small snake fled', 'Keypad:', '7segs:', 'Speed:']) {

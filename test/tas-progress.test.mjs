@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { findVolume, parseContainer, volumePayload } from '../tec-os/tools/lib/container.mjs';
 import { CpmVolume } from '../tec-os/tools/lib/cpmfs.mjs';
-import { card, power } from './lib/page.mjs';
+import { card, power, recipeOn } from './lib/page.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const pins = JSON.parse(readFileSync(new URL('../pins.json', import.meta.url), 'utf8'));
@@ -13,14 +13,14 @@ const expected = pins.files['TAS.COM'];
 const limit = 800_000_000;
 
 test('the bundled card TAS turns progress during Snake9 COM refusal and BIN assembly', { timeout: 300_000 }, async t => {
-  const image = await card();
+  const image = await card(recipeOn('MON3'));
   const v = findVolume(parseContainer(image), 'A');
   const drive = () => new CpmVolume(volumePayload(image, v), v.g);
   assert.equal(sha(bundled), expected);
   assert.equal(sha(drive().read('TAS.COM').subarray(0, bundled.length)), expected);
   const original = drive().read('SNAKE9.BIN');
   const m = power(image, 'pico', 40);
-  m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text()), limit, 'boot');
+  m.runUntilChecked(() => m.ready() && /A:MON3>$/.test(m.text()), limit, 'boot');
   const invoke = command => {
     const out = m.command(command, { maxCycles: limit });
     const marks = [...out.matchAll(/([|/\\-])\x08/g)].map(mark => mark[1]);
@@ -41,13 +41,13 @@ test('the bundled card TAS turns progress during Snake9 COM refusal and BIN asse
 });
 
 test('the bundled TAS accepts bare END without stopping assembly and refuses an operand', { timeout: 120_000 }, async () => {
-  const image = await card();
+  const image = await card(recipeOn('MON3'));
   const v = findVolume(parseContainer(image), 'A');
   const drive = () => new CpmVolume(volumePayload(image, v), v.g, { readOnly: false });
   drive().write('ENDOK.ASM', Buffer.from('ORG 100H\n DB 1\n END\n DB 2\n'), { text: true });
   drive().write('ENDBAD.ASM', Buffer.from('ORG 100H\n RET\n END 100H\n'), { text: true });
   const m = power(image, 'pico', 40);
-  m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text()), limit, 'boot');
+  m.runUntilChecked(() => m.ready() && /A:MON3>$/.test(m.text()), limit, 'boot');
   assert.match(m.command('TAS'), /usage: TAS INPUT\.ASM \[OUTPUT\.TYP\]/);
   assert.match(m.command('TAS ENDOK'), /ENDOK.COM written/);
   assert.deepEqual([...drive().read('ENDOK.COM').subarray(0, 2)], [1, 2]);

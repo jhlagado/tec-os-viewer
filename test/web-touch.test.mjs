@@ -74,7 +74,7 @@ test("on a phone, tapping the screen and typing dir on the phone's keyboard list
   const lines = await screen();
   const at = lines.indexOf("A:SYSTEM>dir");
   assert.ok(at >= 0, `the typed command is on the screen:\n${lines.join("\n")}`);
-  assert.match(lines.slice(at + 1, at + 3).join("\n"), /^\n?SHELL\.SVC {7}4480$/m, `the directory follows it:\n${lines.join("\n")}`);
+  assert.match(lines.slice(at + 1, at + 3).join("\n"), /^\n?STARTUP\.CMD {6}128$/m, `the directory follows it:\n${lines.join("\n")}`);
   assert.ok(lines.slice(at).some((l) => /^\d+ files, \d+ bytes$/.test(l)), `the directory's count follows it:\n${lines.join("\n")}`);
   assert.deepEqual(errors, []);
 });

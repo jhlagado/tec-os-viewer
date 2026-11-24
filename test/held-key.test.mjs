@@ -129,8 +129,8 @@ async function hello3() {
   m.command("CON TTY");
   assert.ok(!m.videoConsole(), "CON: is TTY:");
   assert.match(m.command("TAS HELLO3 HELLO3.BIN", { maxCycles: 3_000_000_000 }), /HELLO3\.BIN written/);
-  m.command("MON3.SVC", { prompt: /MON3>$/ });
-  m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
+  m.command("MON3.SVC", { prompt: /(?<!:)MON3>$/ });
+  m.command("LOAD HELLO3.BIN", { prompt: /(?<!:)MON3>$/ });
   m.mark = m.output.length;
   m.type("GO\r");
   run(m, 20_000_000, () => {});
@@ -230,7 +230,7 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
   m = await hello3();
   const mark = m.output.length;
   m.enqueueInput("1\x1b", "matrix");
-  m.runUntil(() => (pumpKeys(m), /MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
+  m.runUntil(() => (pumpKeys(m), /(?<!:)MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
   assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
 });
 
@@ -279,15 +279,15 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:MON3>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
   assert.match(m.command("TAS HELLO3 HELLO3.BIN", { maxCycles: 3_000_000_000 }), /HELLO3\.BIN written/);
-  m.command("MON3.SVC", { prompt: /MON3>$/ });
-  m.command("LOAD HELLO3.BIN", { prompt: /MON3>$/ });
+  m.command("MON3.SVC", { prompt: /(?<!:)MON3>$/ });
+  m.command("LOAD HELLO3.BIN", { prompt: /(?<!:)MON3>$/ });
   m.type("GO\r");
   run(m, 20_000_000, () => {});
   const key = keyAddress(m);
   const down = watchKeys(m);
   let mark = m.output.length;
   m.enqueueInput("1\x1b", "matrix");
-  m.runUntil(() => (pumpKeys(m), !m.pending.length && /MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
+  m.runUntil(() => (pumpKeys(m), !m.pending.length && /(?<!:)MON3>$/.test(m.text(mark))), LIMIT, "MON3> after 1 and Esc");
   assert.equal(m.read(key), 1, "HELLO3 saw the 1");
   mark = m.output.length;
   m.enqueueInput("EXIT\r", "matrix");
@@ -298,7 +298,7 @@ test("on CRT: HELLO3 takes the page's 1 then Esc, and EXIT reaches A>", { timeou
 
 test("under CON TTY from STARTUP.CMD, at MON3> before anything is typed, a screen key is let go and EXIT on serial reaches A>", { timeout: 300_000 }, async () => {
   const m = power(await startupCard("SHELL.SVC", "GLCD.SVC", "CON TTY", "MON3.SVC"), "pico", 40);
-  runPage(m, () => /MON3>$/.test(m.text()), "MON3> from STARTUP.CMD");
+  runPage(m, () => /(?<!:)MON3>$/.test(m.text()), "MON3> from STARTUP.CMD");
   assert.ok(!m.videoConsole(), "CON: is TTY:");
   const down = watchKeys(m);
   const mark = m.output.length;
@@ -333,7 +333,7 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   m.enqueueInput("DIR\r", "matrix");
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
   m.runUntil(() => /\[more\]|A:MON3>$/.test(m.text()), LIMIT, "DIR's listing");
-  assert.match(m.text(), /A:MON3>DIR\r\r\n\r\nSHELL\.SVC {7}4480\r\n/, "DIR typed whole");
+  assert.match(m.text(), /A:MON3>DIR\r\r\n\r\nF0000\.TXT {8}128\r\nSHELL\.SVC {7}4480\r\n/, "DIR typed whole");
 });
 
 test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO", { timeout: 300_000 }, async () => {
