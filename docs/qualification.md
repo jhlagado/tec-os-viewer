@@ -646,6 +646,9 @@ and `BAZA.RTL` come from Baza `c49f477`, which claims RST 7 only. ROM
 `d10a13a2…`, 15,600 bytes used, 784 free; TPA 47,238 bytes, starter 46,534.
 `SHELL.SVC` is unchanged. The guest observer's ROM spans are restated to
 this build: eleven of the fourteen move with the two-byte workspace word.
+Two complete Viewer strict runs at Viewer `23d1492` and TEC-OS `8d6c09b` pass
+231 of 231 across 38 files (peaks 857 and 846 MB). The TBG browser tests,
+which need a TBG package, sit in `test/tbg/` outside the strict suite.
 
 ## Restored Caverns prose and current firmware
 
