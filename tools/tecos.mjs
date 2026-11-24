@@ -5,21 +5,23 @@
 // npm run inputs in tec-os checks the
 // pinned inputs that tec-os's
 // test/inputs.json lists: from
-// Thorium, Baza and MON-3's sources.
+// TAS, Thorium, Baza, TBG and MON-3's
+// sources.
 // Each comes from its variable when
 // set, else tec-os/.inputs/, else a
 // pinned sibling checkout, else it is
 // fetched; see TEC-OS's README.
 // A build needs read access to
 // jhlagado/tec-os and to the inputs'
-// repositories, jhlagado/thorium,
-// jhlagado/baza and
+// repositories, jhlagado/tas,
+// jhlagado/thorium, jhlagado/baza,
+// jhlagado/tbg and
 // jhlagado/debug80-tec1g-mon3, at the
 // commits test/inputs.json pins.
 // Without it, supply the files through
 // the variables or tec-os/.inputs/.
 // TAS builds everything; it runs on the
-// host from Thorium's runner, taken
+// host from TAS's runner, taken
 // from TECOS_TAS_HOST when set, else
 // tec-os/.inputs/tas-host, which is
 // prepared as TEC-OS's README says when
@@ -197,7 +199,7 @@ export function check() {
  * Prepare tec-os/.inputs/tas-host, the
  * TAS runner TEC-OS's build uses, unless
  * TECOS_TAS_HOST names one or it is
- * there: Thorium at the runner commit
+ * there: TAS at the runner commit
  * TEC-OS pins, with its dependencies,
  * as TEC-OS's README prepares it. The
  * stage becomes the host only once
@@ -207,7 +209,7 @@ export function check() {
  * no host is left. TECOS and URL are
  * for a probe of that.
  */
-export function tasHost({ tecos = TECOS, url = "https://github.com/jhlagado/thorium.git" } = {}) {
+export function tasHost({ tecos = TECOS, url = "https://github.com/jhlagado/tas.git" } = {}) {
   if (process.env.TECOS_TAS_HOST) return;
   const host = resolve(tecos, ".inputs/tas-host");
   if (existsSync(host)) return;

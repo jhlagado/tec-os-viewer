@@ -21,12 +21,14 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `e03144e`, TEC-OS integration 1 with the packed ROM font (glyphs through service 17), services claiming RST 7 alone and the COM launch vector `COMVEC` (ABI 5.3), with the five-volume starter card (SYSTEM, ASM, BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBG from tbg `fb97b61`, which builds with
+The firmware pin is TEC-OS `3f5ed4a`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+the COM launch vector `COMVEC` (ABI 5.3) and F1-F10 on Fn with a digit key, with the five-volume starter card (SYSTEM, ASM,
+BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBG from tbg `aacc59e` (`TBGSYM.SVC` from `fb97b61`), which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and three drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from Thorium `cf5460c`, TAS from Thorium `cf5460c`, which takes
-several statements on a line and writes Intel HEX, and BAZA from Baza `c49f477`
+in 19 pages, TED from Thorium `dc0cd0f`, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `fdd21f5`,
+which takes several statements on a line and writes Intel HEX, and BAZA from Baza `4204b18` with its runtime from `c49f477`
 and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
@@ -51,7 +53,7 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/e03144ee922c/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/3f5ed4a0d626/docs/shell.md)
 has the rest. The shell's approved eighteen-page allocation leaves 41,984 bytes of TPA
 with three drives (the word at `0006h` is `A500h`). The additional page costs 256 bytes compared
 with the earlier seventeen-page shell. Qualification remains in progress.
@@ -167,10 +169,11 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 `tec-os/node_modules`, which `npm run tecos` installs. `pins.json` holds the SHA-256 of the ROM, of each file on the card and of the starter recipe's canonical form,
 as TEC-OS's build at the pin gives them.
 
-`npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`cf5460c` for `TAS.COM`,
-`cf5460c` for `TED.COM`), jhlagado/baza (`c49f477` for compiler/runtime, `5f6b58d` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
-that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
+`npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`fdd21f5` for `TAS.COM` and the runner),
+jhlagado/thorium (`dc0cd0f` for `TED.COM`), jhlagado/baza (`4204b18` for the compiler, `c49f477` for the runtime, `5f6b58d` for
+BOUNCE), jhlagado/tbg (`aacc59e` for `TBG.SVC` and `TBG.HLP`, `fb97b61` for `TBGSYM.SVC`) and jhlagado/debug80-tec1g-mon3
+(`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
 git clone --recurse-submodules https://github.com/jhlagado/tec-os-viewer.git
@@ -181,9 +184,8 @@ npm start
 Open `http://localhost:8765`. For an existing build, just run `npm start`.
 The local server uses esbuild from the submodule; Python is not needed.
 
-TEC-OS builds its ROM, card files and services with TAS, Thorium's assembler, run on the host from Thorium's
-runner. `npm run tecos` takes the runner from `TECOS_TAS_HOST` when set, else `tec-os/.inputs/tas-host`; when neither is
-there it clones Thorium at the runner commit TEC-OS pins into `tec-os/.inputs/tas-host` and installs its dependencies, as
+TEC-OS builds its ROM, card files and services with TAS, run on the host from TAS's runner. `npm run tecos` takes the
+runner from `TECOS_TAS_HOST` when set, else `tec-os/.inputs/tas-host`; when neither is there it clones TAS at the runner commit TEC-OS pins into `tec-os/.inputs/tas-host` and installs its dependencies, as
 TEC-OS's README describes, and TEC-OS checks the runner against its pins.
 
 - `npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
