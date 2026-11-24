@@ -52,7 +52,7 @@ export function serve(options = {}) {
  * gets the browser context just before
  * the app opens.
  */
-export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false, serverSeed = false, namespace = "tecos" } = {}) {
+export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false, serverSeed = false } = {}) {
   const context = await browser.newContext();
   const plantedUrl = `${url}planted.img`;
   const plant = (route) => route.fulfill({ status: 200, body: reuseSetupPage
@@ -61,13 +61,12 @@ export async function open(browser, url, image, display, width, { setup, reuseSe
   const planter = await context.newPage();
   await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
-    async ([display, width, namespace]) => {
-      const prefix = namespace === "tecos" ? "" : `${namespace}.`;
-      localStorage.setItem(`${prefix}tecos.display`, display);
-      localStorage.setItem(`${prefix}tecos.width`, width);
+    async ([display, width]) => {
+      localStorage.setItem("tecos.display", display);
+      localStorage.setItem("tecos.width", width);
       const bytes = await fetch("planted.img").then((r) => r.arrayBuffer());
       await new Promise((ok) => {
-        const r = indexedDB.open(namespace, 1);
+        const r = indexedDB.open("tecos", 1);
         r.onupgradeneeded = () => r.result.createObjectStore("cards");
         r.onsuccess = () => {
           const tx = r.result.transaction("cards", "readwrite");
@@ -76,7 +75,7 @@ export async function open(browser, url, image, display, width, { setup, reuseSe
         };
       });
     },
-    [display, width, namespace],
+    [display, width],
   );
   if (reuseSetupPage) {
     if (!serverSeed) await context.unroute(plantedUrl, plant);

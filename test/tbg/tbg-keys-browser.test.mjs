@@ -1,33 +1,30 @@
-// Drive TBG's Code, Enter, G, Esc, R to a line, stepping and help keys through a
-// packaged preview in Chromium. Set TBG_PREVIEW to the package directory.
+// Drive TBG's Code, Enter, G, Esc, R to a line, stepping and help keys on
+// the standard card in Chromium. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { buildRecipe } from "../../tec-os/tools/lib/recipe.mjs";
 import { findVolume, parseContainer, volumePayload } from "../../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../../tec-os/tools/lib/cpmfs.mjs";
+import { card } from "../lib/page.mjs";
 import { fromTecos } from "../lib/root.mjs";
 import { open, serve } from "../lib/serve.mjs";
 
-test("TBG's Code, stepping and help keys work in the packaged preview", { skip: !process.env.TBG_PREVIEW, timeout: 180_000 }, async (t) => {
-  const packaged = resolve(process.env.TBG_PREVIEW);
-  const image = await buildRecipe(JSON.parse(readFileSync(resolve(packaged, "starter.recipe.json"), "utf8")),
-    (url) => readFileSync(resolve(packaged, url)));
+test("TBG's Code, stepping and help keys work on the standard card", { timeout: 180_000 }, async (t) => {
+  const image = await card();
   const volume = findVolume(parseContainer(image), "A");
   const disk = new CpmVolume(volumePayload(image, volume), volume.g, { readOnly: false });
   disk.write("OVER.COM", Buffer.from("CD1001AFC41001CC10010E0CCD0500C9C9", "hex"));
+  disk.write("STARTUP.CMD", Buffer.from("\r\n\x1a")); // No GLCD console.
   disk.write("REC.COM", Buffer.from("3E03CD0601C93DC8CD0601C9", "hex"));
-  const server = await serve(packaged);
+  const server = await serve();
   t.after(() => server.close());
   const browser = await fromTecos("playwright").chromium.launch();
   t.after(() => browser.close());
   const url = `http://127.0.0.1:${server.address().port}/`;
-  const { page, errors } = await open(browser, url, image, "tms", "40", { namespace: "tecos-tbg-preview" });
+  const { page, errors } = await open(browser, url, image, "tms", "40");
   const text = () => page.locator("#lcd").textContent();
   const lcd = (s) => page.waitForFunction((x) => document.getElementById("lcd").textContent.includes(x), s, { timeout: 15000 })
     .catch(async (e) => { throw new Error(`waiting for ${JSON.stringify(s)}; LCD: ${JSON.stringify(await text())}`, { cause: e }); });
-  const prompt = () => page.waitForFunction(() => /^A>\s*$/.test(globalThis.tecos?.screen().filter((l) => l.trim()).at(-1) ?? ""), null, { timeout: 15000 });
+  const prompt = () => page.waitForFunction(() => /^A(:[A-Z0-9]+)?>\s*$/.test(globalThis.tecos?.screen().filter((l) => l.trim()).at(-1) ?? ""), null, { timeout: 15000 });
   const key = async (name) => {
     await page.keyboard.press(name, { delay: 100 });
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));

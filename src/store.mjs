@@ -6,7 +6,7 @@
 // caller can report unsaved data and
 // retry.
 
-const DB = globalThis.document?.documentElement.dataset.cardNamespace ?? "tecos";
+const DB = "tecos";
 const STORE = "cards";
 const KEY = "current";
 

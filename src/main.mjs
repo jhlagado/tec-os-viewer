@@ -21,8 +21,6 @@ import { createLcdRenderer } from "./lcd.mjs";
 const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
 
-const cardNamespace = globalThis.document?.documentElement.dataset.cardNamespace;
-const preferenceKey = (key) => cardNamespace ? `${cardNamespace}.${key}` : key;
 const savedWidth = localStorageGet("tecos.width");
 const savedDisplay = localStorageGet("tecos.display");
 const state = {
@@ -43,14 +41,14 @@ const state = {
 
 function localStorageGet(key) {
   try {
-    return localStorage.getItem(preferenceKey(key));
+    return localStorage.getItem(key);
   } catch {
     return null;
   }
 }
 function localStorageSet(key, value) {
   try {
-    localStorage.setItem(preferenceKey(key), value);
+    localStorage.setItem(key, value);
   } catch {
     // Keep the session choice on failure.
   }

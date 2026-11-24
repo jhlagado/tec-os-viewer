@@ -220,43 +220,18 @@ scenario has its own process lifetime. Shared helpers register no tests.
 Stored-card setup reuses its seed tab for a fresh application document after
 the native storage transaction completes.
 
-## TBG debugger preview
+## TBG, the LCD debugger
 
-The preview uses a TEC-OS ROM with ABI 5.3 or later, whose COMVEC word lets
-`TBG.SVC ARM` catch the next launch. TEC-OS `main` has it from `220fea8`.
-Build the ROM with `npm run build` in a TEC-OS checkout of `main`. Then build
-the debugger with `npm run build` in a [TBG](https://github.com/jhlagado/tbg)
-checkout beside Thorium, and run the following from the Viewer checkout:
-
-```sh
-npm run web
-node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg
-```
-
-`../tbg` defaults to `tbg` beside the Thorium checkout. The book's STEP.ASM
-and FILL.ASM come from the same TEC-OS checkout; an optional fifth argument
-names another. TAS and TED come from Thorium.
-
-The new directory contains:
-
-- the matching browser app and that ROM;
-- a starter recipe with TBG.SVC, its help file TBG.HLP and the symbols
-  extension TBGSYM.SVC;
-- TED and TAS;
-- the book's STEP.ASM and FILL.ASM.
-
-Serve the directory over HTTP and open it in a fresh browser profile or
-origin, so that it starts with the preview card. At the TEC-OS prompt, type
-`UNLOAD`, `TAS STEP`, `TBG.SVC` and `TBGSYM.SVC`, then `TBG.SVC STEP`, and
+The page's card carries TBG.SVC, TBGSYM.SVC and TBG.HLP on every A: volume,
+and its ROM, TEC-OS ABI 5.3, has the COMVEC word that `TBG.SVC ARM` uses.
+At the prompt, type `UNLOAD`, then `TBG.SVC NAME` for a COM on the card, and
 click the character LCD. While the LCD has focus, its keys go to the matrix
 with their Shift or Ctrl, so Tab and Shift+Tab move between TBG's views. F6
 returns focus to the screen. The [TBG book](https://tec-os.org/tbg/) walks
-through the controls.
+through a first session.
 
-To verify the package with Chromium, run
-`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg/*.test.mjs`.
-They sit in `test/tbg/`, outside `npm test` and the strict suite, as they need a
-TBG package.
-The first test steps, arms a launch, sets a breakpoint and checks the labels
-TBGSYM adds. The second drives Code, G, Esc, R to a line, step out and the
-help pages.
+The TBG browser tests are outside `npm test`. Run them with
+`TEST_CHROMIUM=/usr/bin/chromium node --test test/tbg/*.test.mjs`. The first
+assembles the book's STEP.ASM with TAS on the card, arms the launch, steps,
+sets a breakpoint and checks the labels TBGSYM adds. The second drives Code,
+G, Esc, R to a line, step out and the help pages.
