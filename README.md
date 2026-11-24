@@ -30,14 +30,20 @@ several statements on a line and writes Intel HEX, and BAZA from Baza `c49f477`
 and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
-card, 13 MiB, of five volumes, SYSTEM on A:, WORK on B:, PROJECTS on C:, and
-GAMES and SPARE on no drive. A: holds its 17 files, `BAZA.COM`, `BAZA.RTL`,
-`BOUNCE.BAS`, `DEMO.ASM`, `GLCD.SVC`, `HELLO3.ASM`, `MON3.SVC`,
-`SAMPLE.ASM`, `SHELL.SVC`, `SNAKE9.ASM`, `SNAKE9.BIN`, `STARTUP.CMD`, `TAS.COM`, `TED.COM` and
-`TIMES.BAS`, plus `CAVERNS.BAS` and `CAVERNS.TXT`; B: is an empty work disk. The card's `STARTUP.CMD` loads
+card, 14 MiB, of six volumes on three drives: SYSTEM on A:, WORK (8 MiB,
+empty, the work disk) on B:, and the themed volumes ASM, BASIC, MON3 and
+GAMES, which `CD A:NAME` puts on A:; C: is a spare drive. Every A: volume
+carries the core set, `STARTUP.CMD`, `SHELL.SVC`, `GLCD.SVC`, `TED.COM`,
+`TBG.SVC`, `TBGSYM.SVC` and `TBG.HLP`, plus its theme's files. SYSTEM adds
+`TAS.COM`, `BAZA.COM`, `BAZA.RTL`, `MON3.SVC`, `SAMPLE.ASM` and `TIMES.BAS`;
+ASM adds TAS with `SAMPLE.ASM`, `DEMO.ASM` and `HELLO3.ASM`; BASIC adds BAZA
+and its runtime with `TIMES.BAS`, `BOUNCE.BAS`, `CAVERNS.BAS` and
+`CAVERNS.TXT`; MON3 adds `MON3.SVC` and TAS with `SNAKE9.ASM`, `SNAKE9.BIN`
+and `HELLO3.ASM`; and GAMES holds the finished programs, `CAVERNS.COM`,
+`BOUNCE.COM`, and `SNAKE9.BIN` with `MON3.SVC`. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
-changes the directory presented by a drive (`CD D:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
+changes the directory presented by a drive (`CD A:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with a row for each file, its
 whole name and its size, as `SHELL.SVC       4480`, then the count, the bytes
 and the drive's free space (`DIR /W` is the ROM's wide listing), the

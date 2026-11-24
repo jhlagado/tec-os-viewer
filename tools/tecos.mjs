@@ -103,7 +103,10 @@ export function problems() {
     fault("components must be an array");
     return found;
   }
+  // A file may sit on several volumes, each by its label, once on each.
+  const labels = new Set((Array.isArray(recipe.volumes) ? recipe.volumes : []).map((v) => v?.label));
   const declared = new Set();
+  const placed = new Set();
   for (const component of recipe.components) {
     if (component === null || typeof component !== "object" || !Array.isArray(component.files)) {
       fault("component files must be an array");
@@ -119,11 +122,13 @@ export function problems() {
         fault(`${name} is not named in pins.json`);
         continue;
       }
-      if (declared.has(name)) fault(`${name} is declared more than once`);
+      const drive = file.drive ?? "A";
+      if (placed.has(`${drive} ${name}`)) fault(`${name} is declared more than once on ${drive}`);
+      placed.add(`${drive} ${name}`);
       declared.add(name);
       if (file.url !== `files/${name}`) fault(`${name} URL must be files/${name}`);
-      if ((file.drive ?? "A") !== "A" || (file.user ?? 0) !== 0) {
-        fault(`${name} must be placed on drive A in user 0`);
+      if ((drive !== "A" && !labels.has(drive)) || (file.user ?? 0) !== 0) {
+        fault(`${name} must be placed on drive A or a volume of the card, in user 0`);
       }
       const path = resolve(files, name);
       if (!existsSync(path)) continue;
