@@ -1,7 +1,7 @@
 {
   "schema": "tecos-file-recipe-v1",
   "id": "tbg-preview",
-  "revision": "33",
+  "revision": "34",
   "name": "TBG debugger preview",
   "instruction": "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. For labels, type TBGSYM.SVC once after TBG.SVC. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.",
   "profile": "tecos",
@@ -251,8 +251,8 @@
           "name": "TAS.COM",
           "url": "files/TAS.COM",
           "drive": "A",
-          "bytes": 11131,
-          "sha256": "343526f04800206d53df6aedc5706e7efb85e64cc313832eeb0946810299dc46"
+          "bytes": 10725,
+          "sha256": "ed6c00ca8f18ce112bee6657cb505c0a3bcdf711e995a03e8f9fcc81ff5049a7"
         }
       ]
     },
