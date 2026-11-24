@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "b21f555bf5b66ce42232da499144c0c45d20ac93",
-  "firmwareCommit": "8d6c09badb7be37a60c23faa80125abbf642b2a7",
+  "viewerCommit": "25c3711f16fd611a22883b79915b9a5ff631cee2",
+  "firmwareCommit": "e03144ee922cf6ed0ae435a98c349120bc225a16",
   "firmwareRomSha256": "d10a13a227eb68ee1e319f7f54174f88b552f00194775655ef649f4a17438dfd",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 574043,
-      "sha256": "d68153f74914a23cc0b97e2fd1093ec639465377db2c24375f137608f8423da0"
+      "bytes": 686764,
+      "sha256": "2b4309dbb6c83b791749192eae55608870b1e3e3d972d1ebe8b3049d3db5698e"
     }
   },
   "defaultColumns": 40,
@@ -25,7 +25,9 @@
       "TIMES.BAS",
       "BOUNCE.BAS",
       "CAVERNS.BAS",
-      "CAVERNS.TXT"
+      "CAVERNS.TXT",
+      "CAVERNS.COM",
+      "BOUNCE.COM"
     ],
     "bazaCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692",
     "tedCommit": "cf5460c3ffb988e96fcc7fbb0aaf7039bb9a611f",
@@ -36,10 +38,10 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at b21f555^ (23d1492, Native 8d6c09b): 38 files, 231/231 each; Native strict 1481/1481 twice at 08d1a00; 8d6c09b adds only main's TBG book pages, checked with the documentation source check and tests. b21f555 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 25c3711^ (debe336, Native e03144e): 38 files, 231/231 each; Native strict 1481/1481 twice at e03144e. 25c3711 adds only the qualification note.",
     "starterShell": "SHELL.SVC 18 pages; bare names run COM, then SVC, then CMD; built-ins first"
   },
-  "previousQualification": "891493c0fd6aad4a665149780e9cc009e4127dad",
+  "previousQualification": "b21f555bf5b66ce42232da499144c0c45d20ac93",
   "tas": {
     "thoriumCommit": "cf5460c3ffb988e96fcc7fbb0aaf7039bb9a611f",
     "bytes": 10725,
@@ -61,5 +63,34 @@
     "symbol": "COMVEC",
     "address": "BF62h",
     "abiMinor": 3
+  },
+  "card": {
+    "bytes": 14680064,
+    "drives": 3,
+    "volumes": {
+      "A": [
+        "SYSTEM",
+        "ASM",
+        "BASIC",
+        "MON3",
+        "GAMES"
+      ],
+      "B": "WORK",
+      "C": "spare"
+    },
+    "core": [
+      "STARTUP.CMD",
+      "SHELL.SVC",
+      "GLCD.SVC",
+      "TED.COM",
+      "TBG.SVC",
+      "TBGSYM.SVC",
+      "TBG.HLP"
+    ],
+    "tbgCommit": "fb97b61ac3cc0bb1d0a93939d29f08470fe0d02c",
+    "tpa": {
+      "starter": 46790,
+      "withShell": 41984
+    }
   }
 }
