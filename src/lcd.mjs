@@ -49,7 +49,7 @@ export function renderLcd(image, bytes, state = {}, cgram = [], blink = false) {
 export function lcdText(bytes, state = {}) {
   if (state.displayOn === false) return '';
   const shift = shiftOf(state.displayShift), rows = [];
-  const special = { 92: '¥', 126: '→', 127: '←', 255: '█' };
+  const special = { 92: '¥', 126: '→', 127: '←', 219: '□', 255: '█' };
   for (let r = 0; r < LCD_ROWS; r++) {
     let text = '';
     for (let c = 0; c < LCD_COLS; c++) {

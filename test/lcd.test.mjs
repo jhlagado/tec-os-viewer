@@ -37,11 +37,11 @@ test('all eight custom glyphs, slot zero and mirrored codes preserve every dot',
 });
 
 test('ordinary text and non-ASCII A00 characters use the ROM patterns', () => {
-  const bytes = blank(), codes = [69, 126, 127, 255, 16];
+  const bytes = blank(), codes = [69, 126, 127, 219, 255, 16];
   codes.forEach((code, i) => bytes[i] = code);
   const im = image(); renderLcd(im, bytes);
   codes.forEach((code, i) => glyph(im, 0, i, A00.slice(code * 8, code * 8 + 8)));
-  assert.equal(lcdText(bytes).slice(0, 4), 'E→←█');
+  assert.equal(lcdText(bytes).slice(0, 5), 'E→←□█');
 });
 
 test('Snake9 ELDERLY inverse glyphs keep the eighth row and lit background', () => {
