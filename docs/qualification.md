@@ -662,6 +662,17 @@ page's card with that volume on A: (`recipeOn`). Two complete Viewer strict
 runs at Viewer `debe336` and TEC-OS `e03144e` pass 231 of 231 across 38
 files (peaks 877 and 917 MB).
 
+**F1-F10, TED.\* and TAS from TAS.** TEC-OS `3f5ed4a` sends F1-F10 for
+Fn with a digit key (Fn+1-4 as ESC O P-S, Fn+5-0 as ESC [ nn ~), the tail
+read from ROM through `KBTP`. TED comes from Thorium `dc0cd0f` and keeps its
+session in `TED.SES`, `TED.ERR` and `TED.PRJ`; TAS comes from TAS `fdd21f5`,
+as does the host runner; BAZA comes from Baza `4204b18` with its runtime
+from `c49f477`; `TBG.SVC` and `TBG.HLP` come from tbg `aacc59e`. The ROM is
+`06e8c0f1…`, 15,675 bytes used. The guest observer's ROM spans are restated:
+thirteen move with the ROM and keep their instructions. Two complete Viewer
+strict runs at Viewer `460d359` and TEC-OS `3f5ed4a` pass 231 of 231 across
+38 files (peaks 866 and 866 MB), and the two TBG browser tests pass.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
