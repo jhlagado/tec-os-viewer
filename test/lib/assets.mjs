@@ -30,3 +30,17 @@ export async function card(r = recipe()) {
   return buildRecipe(r, async (url) => new Uint8Array(readFileSync(resolve(DIST, url))));
 }
 
+/**
+ * The page's recipe with volume LABEL
+ * on A: in place of SYSTEM, as CD A:LABEL
+ * leaves the card.
+ */
+export function recipeOn(label, r = recipe()) {
+  const out = structuredClone(r);
+  if (!out.volumes.some((v) => v.label === label)) throw new Error(`the card has no volume ${label}`);
+  for (const v of out.volumes) {
+    if (v.label === label) v.mount = "A";
+    else if (v.mount === "A") delete v.mount;
+  }
+  return out;
+}

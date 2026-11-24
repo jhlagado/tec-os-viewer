@@ -1,9 +1,9 @@
 // The page's card carries BAZA, its
 // first BASIC program and Baza's
 // BOUNCE.BAS, and the demo as source:
-// its recipe and A: hold BAZA.COM,
-// BAZA.RTL, TIMES.BAS, BOUNCE.BAS and
-// DEMO.ASM, which is TEC-OS's
+// its BASIC volume holds BAZA.COM,
+// BAZA.RTL, TIMES.BAS and BOUNCE.BAS,
+// and ASM holds DEMO.ASM, TEC-OS's
 // programs/DEMO.ASM as CP/M text, and
 // no DEMO.COM.
 // In the page's machine, PICO9918 at
@@ -51,7 +51,7 @@ import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/c
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { fontBytes } from "../tec-os/tools/lib/font.mjs";
 import { keyInput, pumpKeys } from "../src/keys.mjs";
-import { card, power, recipe } from "./lib/page.mjs";
+import { card, power, recipe, recipeOn } from "./lib/page.mjs";
 import { ROOT } from "./lib/root.mjs";
 
 const LIMIT = 400_000_000; // Per-step cycle limit.
@@ -78,29 +78,30 @@ function keys(m, s, what, done) {
   m.runUntilChecked(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), LIMIT, what);
 }
 
-test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on A:", async () => {
+test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on the BASIC and ASM volumes", async () => {
   const declared = recipe().components.flatMap((c) => c.files.map((f) => f.name));
   for (const name of FILES) assert.ok(declared.includes(name), `${name} in the starter recipe`);
-  const image = await card();
-  const onA = names(image);
-  for (const name of FILES) assert.ok(onA.includes(name), `${name} on A:`);
+  const image = await card(recipeOn("BASIC")), asm = await card(recipeOn("ASM"));
+  const onA = names(image), onAsm = names(asm);
+  for (const name of FILES.slice(0, 4)) assert.ok(onA.includes(name), `${name} on BASIC`);
+  assert.ok(onAsm.includes("DEMO.ASM"), "DEMO.ASM on ASM");
   const source = Buffer.from(readFileSync(resolve(ROOT, "tec-os/programs/DEMO.ASM"), "utf8").replace(/\n/g, "\r\n") + "\x1a", "latin1");
-  const demo = Buffer.from(driveA(image).read("DEMO.ASM"));
+  const demo = Buffer.from(driveA(asm).read("DEMO.ASM"));
   assert.deepEqual(demo.subarray(0, source.length), source, "DEMO.ASM is the demo's source as CP/M text");
-  assert.ok(!declared.includes("DEMO.COM") && !onA.includes("DEMO.COM"), "no DEMO.COM: TAS DEMO makes it");
+  assert.ok(!declared.includes("DEMO.COM") && !onAsm.includes("DEMO.COM"), "no DEMO.COM: TAS DEMO makes it");
 });
 
 test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
-  const image = await card();
+  const image = await card(recipeOn("BASIC"));
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:BASIC>"), LIMIT, "the prompt");
   let mark = m.output.length;
   keys(m, "baza times\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
   assert.match(m.text(mark), /^baza times\r\r\n(?:[|\/\\-]\x08)+COM written\r\n/, "BAZA's spinner, each mark then a backspace, then COM written");
   mark = m.output.length;
   keys(m, "times\r", "TIMES's first question", () => /WHAT IS YOUR NAME\? $/.test(m.text(mark)));
   keys(m, "TEC\r", "TIMES's second question", () => /PICK A NUMBER, 1 TO 12\? $/.test(m.text(mark)));
-  keys(m, "7\r", "the table and the prompt", () => m.ready() && m.text(mark).endsWith("A:SYSTEM>"));
+  keys(m, "7\r", "the table and the prompt", () => m.ready() && m.text(mark).endsWith("A:BASIC>"));
   const run = m.text(mark);
   assert.match(run, /HI, TEC\.\r\n/);
   assert.match(run, /THE 7 TIMES TABLE:\r\n/);
@@ -111,7 +112,7 @@ test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the promp
 });
 
 test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives A> back on Q", { timeout: 900_000 }, async () => {
-  const image = await card();
+  const image = await card(recipeOn("BASIC"));
   const m = power(image, "pico", 40);
   const vdp = () => m.tec1g.state.display.tms9918.stateSnapshot();
   const registers = () => Array.from(vdp().registers.slice(0, 8));
@@ -120,7 +121,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
     const end = m.cycles + cycles;
     m.runUntil(() => m.cycles >= end, cycles + 1_000_000, "BOUNCE running");
   };
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:BASIC>"), LIMIT, "the prompt");
   const console40 = registers();
   let mark = m.output.length;
   keys(m, "baza bounce\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
@@ -155,7 +156,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   }
   mark = m.output.length;
   m.typeMatrix("Q");
-  m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text(mark)), LIMIT, "the prompt after Q");
+  m.runUntilChecked(() => m.ready() && /A:BASIC>$/.test(m.text(mark)), LIMIT, "the prompt after Q");
   assert.match(m.text(mark), /THANKS FOR PLAYING\. SCORE -?\d+ \r\n/);
   assert.deepEqual(registers(), console40, "the console's VDP mode back");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
@@ -164,11 +165,11 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
 });
 
 test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a key", { timeout: 300_000 }, async () => {
-  const image = await card();
+  const image = await card(recipeOn("ASM"));
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:ASM>"), LIMIT, "the prompt");
   let mark = m.output.length;
-  keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
+  keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A:ASM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DEMO\.COM written/);
   // The program TEC-OS's own build
   // makes from the same source.
@@ -182,7 +183,7 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
   assert.deepEqual(Array.from(m.tec1g.state.display.tms9918.stateSnapshot().registers.slice(0, 8)), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I on the PICO9918");
   assert.equal(String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20)), "TEC-OS hardware demo", "the LCD's first row");
   m.enqueueInput(" ", "matrix");
-  m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A:SYSTEM>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
+  m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A:ASM>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");
   assert.deepEqual(m.violations, []);
 });
@@ -289,7 +290,7 @@ test("in the page's machine, logged on B:, which is then the drive written behin
 
 // Verify the actual Viewer recipe, rather than a separately constructed disk.
 test("Viewer Caverns disk includes BASIC source only, compiles identically and runs at 80 columns", { timeout: 600_000 }, async () => {
-  const image = await card(), a = driveA(image);
+  const image = await card(recipeOn("BASIC")), a = driveA(image);
   for (const name of ["CAVERNS.BAS", "CAVERNS.TXT"]) assert.ok(names(image).includes(name));
   assert.ok(!names(image).includes("CAVASM.COM"), "assembly comparison stays development-only");
   assert.ok(!names(image).includes("CAVERNS.COM"), "user compiles the source");

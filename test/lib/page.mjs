@@ -8,11 +8,11 @@ import { resolve } from "node:path";
 import { prepareCard } from "../../tec-os/host/card.mjs";
 import { Machine } from "../../tec-os/test/lib/machine.mjs";
 import { symbolsFromD8 } from "../../tec-os/host/machine.mjs";
-import { web, recipe, card, DIST } from "./assets.mjs";
+import { web, recipe, recipeOn, card, DIST } from "./assets.mjs";
 
 export { Machine, prepareCard };
 export const TEST_CLOCK = new Date(2026, 0, 1, 12, 0, 0); // Fixed TEC-OS test time.
-export { web, recipe, card, DIST };
+export { web, recipe, recipeOn, card, DIST };
 
 /** Load the page ROM and symbol map. */
 export function rom() {
