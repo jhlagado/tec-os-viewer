@@ -2,8 +2,8 @@
 20 REM Tap A left, D right, W up or S down, or use the
 25 REM arrow keys. Q quits
 30 REM The ROM services: video claims the screen,
-40 REM tone beeps and the font gives its address
-50 DEF CALL vi = ROM 3: DEF CALL bp = ROM 4: DEF CALL ft = ROM 15
+40 REM tone beeps and the font gives one glyph's rows
+50 DEF CALL vi = ROM 3: DEF CALL bp = ROM 4: DEF CALL gl = ROM 17
 60 REM The PICO console's VDP entries: register,
 70 REM fill VRAM and copy RAM to VRAM
 80 DEF CALL vr = "PICO", 3, 8: DEF CALL vf = "PICO", 3, 9
@@ -15,7 +15,7 @@
 140 DATA 0, 194, 6, 128, 0, 54, 7, 1
 150 CALL vf, hl = 0, de = 16384, a = 0
 160 REM The ROM's font for characters 32 to 127
-170 CALL ft: f = REG("HL"): CALL vw, hl = 256, de = f, bc = 768
+170 g$ = "12345678": FOR c% = 32 TO 127: CALL gl, b = c%, hl = g$: CALL vw, hl = 256 + 8 * (c% - 32), de = g$, bc = 8: NEXT
 180 REM Two stars, characters 1 and 2, and a brick, 8
 190 p$ = "": FOR i = 1 TO 16: READ v: p$ = p$ + CHR$(v): NEXT
 200 CALL vw, hl = 8, de = p$, bc = 16

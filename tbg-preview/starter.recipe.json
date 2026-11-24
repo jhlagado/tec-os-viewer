@@ -1,7 +1,7 @@
 {
   "schema": "tecos-file-recipe-v1",
   "id": "tbg-preview",
-  "revision": "31",
+  "revision": "32",
   "name": "TBG debugger preview",
   "instruction": "At A:SYSTEM>, type UNLOAD to release the shell. Type TAS STEP, then TBG.SVC STEP. For labels, type TBGSYM.SVC once after TBG.SVC. Click the character LCD to step, inspect the stack, and set a breakpoint. See the TBG book at tec-os.org/tbg/.",
   "profile": "tecos",
@@ -41,8 +41,8 @@
           "name": "SHELL.SVC",
           "url": "files/SHELL.SVC",
           "drive": "A",
-          "bytes": 4191,
-          "sha256": "166dbe88c12a5d29577ba2acfc1f275f993c8f7f6f4da4d530622349a4b459ab"
+          "bytes": 4456,
+          "sha256": "b7d55c700f53f49719c0936cd6fcd0befe45fd103ea958e2a5f1f49a2a0bf8f8"
         }
       ]
     },
@@ -56,7 +56,7 @@
           "url": "files/GLCD.SVC",
           "drive": "A",
           "bytes": 836,
-          "sha256": "ac040f75f8d91226fd80ff9be1764673dec0ec5cde606769425bd815fb75e736"
+          "sha256": "ec8ee1d61be956117dd1ad8a96397e134a145a316a979f1f71b8e28d76be97df"
         }
       ]
     },
@@ -125,8 +125,8 @@
           "name": "BOUNCE.BAS",
           "url": "files/BOUNCE.BAS",
           "drive": "A",
-          "bytes": 5305,
-          "sha256": "a8d0d013af31853e3ca49ac9d30574a783c4ebd1f19eaab7d6724b10bc84e50d"
+          "bytes": 5370,
+          "sha256": "9d9092748d11be539c86e79ba591849191540812c4342f601ac9c1de065fc0d6"
         }
       ]
     },
@@ -139,8 +139,8 @@
           "name": "CAVERNS.BAS",
           "url": "files/CAVERNS.BAS",
           "drive": "A",
-          "bytes": 25166,
-          "sha256": "b6d01c0348fa429b3eb26786aca1200ef9a140ded6f3f56768968125c0fea92b"
+          "bytes": 27213,
+          "sha256": "e7164dfcedc3e63933425005635193de66e27fe7d4b7ce19f89420631d651bb1"
         }
       ]
     },
@@ -153,8 +153,8 @@
           "name": "CAVERNS.TXT",
           "url": "files/CAVERNS.TXT",
           "drive": "A",
-          "bytes": 2591,
-          "sha256": "defe872e184d9728da2f47c7a7bd27c0c2e9df3ad2b76bad0a7091163e3e7a52"
+          "bytes": 4747,
+          "sha256": "b9ae1d9b17992cf0943685011a3e6677a29cf47ac70bb5e437a426accc04d677"
         }
       ]
     },
@@ -181,8 +181,8 @@
           "name": "MON3.SVC",
           "url": "files/MON3.SVC",
           "drive": "A",
-          "bytes": 5237,
-          "sha256": "9cf63c798f29c6140f02ae59c6fba7bbcf04c66106da912210b69c0babd24cf4"
+          "bytes": 5215,
+          "sha256": "6fe01737baf4dda8f724f1dcc74eeb43f491cdff1b7630a12d9de33c1d555b64"
         }
       ]
     },
@@ -271,20 +271,6 @@
       ]
     },
     {
-      "id": "tbg-step-asm",
-      "name": "STEP.ASM",
-      "description": "Six-byte practice program from the TBG book.",
-      "files": [
-        {
-          "name": "STEP.ASM",
-          "url": "files/STEP.ASM",
-          "drive": "A",
-          "bytes": 87,
-          "sha256": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6"
-        }
-      ]
-    },
-    {
       "id": "tbg-svc",
       "name": "TBG.SVC",
       "description": "The TBG LCD debugger.",
@@ -323,6 +309,20 @@
           "drive": "A",
           "bytes": 2816,
           "sha256": "8a734ea3a9543b11d83f05b255531169793424384ba538061904bc1e2013d031"
+        }
+      ]
+    },
+    {
+      "id": "tbg-step-asm",
+      "name": "STEP.ASM",
+      "description": "Six-byte practice program from the TBG book.",
+      "files": [
+        {
+          "name": "STEP.ASM",
+          "url": "files/STEP.ASM",
+          "drive": "A",
+          "bytes": 87,
+          "sha256": "c90d2c675fcbeb1c78a9b4c6cc9dad65e511d50788ffd530bc9ee422ebbf75d6"
         }
       ]
     },
