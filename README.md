@@ -213,3 +213,42 @@ Browser save and stored-card scenarios have individual entry files so each
 scenario has its own process lifetime. Shared helpers register no tests.
 Stored-card setup reuses its seed tab for a fresh application document after
 the native storage transaction completes.
+
+## TBG debugger preview
+
+The preview has its own firmware: the experimental TEC-OS ROM from the
+`tbg-user-guide` branch at `1c45bb9`, not the Viewer's pin above, because the
+armed launch needs its COMFILE callback. Build it there with
+`TECOS_COMSTART=1 npm run build`. Then build the debugger with `npm run build`
+in a [TBG](https://github.com/jhlagado/tbg) checkout beside Thorium, and run
+the following from the Viewer checkout:
+
+```sh
+npm run web
+node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg
+```
+
+The last argument defaults to `tbg` beside the Thorium checkout. TAS and TED
+still come from Thorium.
+
+The new directory contains:
+
+- the matching browser app and the experimental ROM;
+- a starter recipe with TBG.SVC, its help file TBG.HLP and the symbols
+  extension TBGSYM.SVC;
+- TED and TAS;
+- the book's STEP.ASM and FILL.ASM.
+
+Serve the directory over HTTP and open it in a fresh browser profile or
+origin, so that it starts with the preview card. At the TEC-OS prompt, type
+`UNLOAD`, `TAS STEP`, `TBG.SVC` and `TBGSYM.SVC`, then `TBG.SVC STEP`, and
+click the character LCD. While the LCD has focus, its keys go to the matrix
+with their Shift or Ctrl, so Tab and Shift+Tab move between TBG's views. F6
+returns focus to the screen. The [TBG book](https://tec-os.org/tbg/) walks
+through the controls.
+
+To verify the package with Chromium, run
+`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg-browser.test.mjs test/tbg-keys-browser.test.mjs`.
+The first test steps, sets a breakpoint and checks the labels TBGSYM adds.
+The second drives Code, G, Esc, R to a line, step out and the help pages.
+The experimental ROM is confined to the preview package.

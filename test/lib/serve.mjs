@@ -14,7 +14,9 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/cs
  * Serve dist/ at 127.0.0.1 on the port
  * returned by server.address().port.
  */
-export function serve({ seedImage = null } = {}) {
+export function serve(options = {}) {
+  const { directory = DIST, seedImage: seed = null } = typeof options === "string" ? { directory: options } : options;
+  let seedImage = seed;
   const server = createServer(async (req, res) => {
     if (req.url === "/__test_setup__") {
       res.writeHead(200, { "content-type": "text/html" });
@@ -28,10 +30,10 @@ export function serve({ seedImage = null } = {}) {
       res.end(body);
       return;
     }
-    const path = resolve(DIST, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
-    const file = path === DIST || path.endsWith(sep) ? resolve(path, "index.html") : path;
+    const path = resolve(directory, `.${decodeURIComponent(new URL(req.url, "http://x").pathname)}`);
+    const file = path === directory || path.endsWith(sep) ? resolve(path, "index.html") : path;
     try {
-      if (!file.startsWith(DIST + sep)) throw new Error("outside");
+      if (!file.startsWith(directory + sep)) throw new Error("outside");
       const body = await readFile(file);
       res.writeHead(200, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
       res.end(body);
@@ -50,7 +52,7 @@ export function serve({ seedImage = null } = {}) {
  * gets the browser context just before
  * the app opens.
  */
-export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false, serverSeed = false } = {}) {
+export async function open(browser, url, image, display, width, { setup, reuseSetupPage = false, serverSeed = false, namespace = "tecos" } = {}) {
   const context = await browser.newContext();
   const plantedUrl = `${url}planted.img`;
   const plant = (route) => route.fulfill({ status: 200, body: reuseSetupPage
@@ -59,12 +61,13 @@ export async function open(browser, url, image, display, width, { setup, reuseSe
   const planter = await context.newPage();
   await planter.goto(`${url}__test_setup__`); // Set the origin without running the app.
   await planter.evaluate(
-    async ([display, width]) => {
-      localStorage.setItem("tecos.display", display);
-      localStorage.setItem("tecos.width", width);
+    async ([display, width, namespace]) => {
+      const prefix = namespace === "tecos" ? "" : `${namespace}.`;
+      localStorage.setItem(`${prefix}tecos.display`, display);
+      localStorage.setItem(`${prefix}tecos.width`, width);
       const bytes = await fetch("planted.img").then((r) => r.arrayBuffer());
       await new Promise((ok) => {
-        const r = indexedDB.open("tecos", 1);
+        const r = indexedDB.open(namespace, 1);
         r.onupgradeneeded = () => r.result.createObjectStore("cards");
         r.onsuccess = () => {
           const tx = r.result.transaction("cards", "readwrite");
@@ -73,7 +76,7 @@ export async function open(browser, url, image, display, width, { setup, reuseSe
         };
       });
     },
-    [display, width],
+    [display, width, namespace],
   );
   if (reuseSetupPage) {
     if (!serverSeed) await context.unroute(plantedUrl, plant);

@@ -3,6 +3,7 @@
 // Draw its displays and serial output.
 // Keep the SD card image in IndexedDB.
 
+import { getMatrixCombosForAscii } from "@jhlagado/debug80-runtime/platforms/tec1g/matrix-keymap";
 import { Machine, symbolsFromD8 } from "../tec-os/host/machine.mjs";
 import { serializeTec1gUpdateFromRuntimeState } from "@jhlagado/debug80-runtime/platforms/tec1g/update-controller";
 import { needsStarter, prepareCard } from "../tec-os/host/card.mjs";
@@ -20,6 +21,8 @@ import { createLcdRenderer } from "./lcd.mjs";
 const CPU_HZ = 4_000_000;
 const $ = (id) => document.getElementById(id);
 
+const cardNamespace = globalThis.document?.documentElement.dataset.cardNamespace;
+const preferenceKey = (key) => cardNamespace ? `${cardNamespace}.${key}` : key;
 const savedWidth = localStorageGet("tecos.width");
 const savedDisplay = localStorageGet("tecos.display");
 const state = {
@@ -40,14 +43,14 @@ const state = {
 
 function localStorageGet(key) {
   try {
-    return localStorage.getItem(key);
+    return localStorage.getItem(preferenceKey(key));
   } catch {
     return null;
   }
 }
 function localStorageSet(key, value) {
   try {
-    localStorage.setItem(key, value);
+    localStorage.setItem(preferenceKey(key), value);
   } catch {
     // Keep the session choice on failure.
   }
@@ -464,6 +467,55 @@ $("glcd").addEventListener("keydown", onKey(() => "matrix"));
 $("glcd").addEventListener("click", () => $("glcd").focus());
 $("leds").addEventListener("keydown", onKey(() => "matrix"));
 $("leds").addEventListener("click", () => $("leds").focus());
+
+// The character LCD is an input surface for programs that poll the
+// physical matrix. Browser key release opens the emulated switch.
+const lcd = $("lcd");
+const matrixModifiers = { shift: 0, ctrl: 1, fn: 2 };
+let lcdKey;
+function releaseLcdKey() {
+  if (!lcdKey) return;
+  const { matrix, row, col, modifier } = lcdKey;
+  matrix.applyMatrixKey(row, col, false);
+  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, false);
+  lcdKey = undefined;
+}
+// Keys without a character of their own, such as Tab and the arrows,
+// keep the Shift or Ctrl held with them, so Shift+Tab and Ctrl+Up reach a
+// program that reads the matrix. Tab stays on the LCD; F6 leaves it.
+const LCD_CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+lcd.addEventListener("keydown", (event) => {
+  if (event.key === "F6") {
+    event.preventDefault();
+    releaseLcdKey();
+    $("tms").focus();
+    return;
+  }
+  // Space keeps its Shift or Ctrl too: TBG steps over and out with them.
+  const space = event.key === " ";
+  const input = space ? { via: "matrix", text: " " } : keyInput(event, true);
+  if (input?.via !== "matrix" || !state.machine) return;
+  const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
+    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(space && candidate.modifier));
+  if (!combo) return;
+  event.preventDefault();
+  if (event.repeat || lcdKey) return;
+  const matrix = state.machine.tec1g;
+  const { row, col } = combo;
+  let modifier = matrixModifiers[combo.modifier];
+  if (modifier === undefined && (space || LCD_CONTROL_KEYS.has(event.key))) {
+    if (event.shiftKey) modifier = matrixModifiers.shift;
+    else if (event.ctrlKey) modifier = matrixModifiers.ctrl;
+  }
+  lcdKey = { matrix, row, col, modifier, code: event.code };
+  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, true);
+  matrix.applyMatrixKey(row, col, true);
+});
+lcd.addEventListener("keyup", (event) => {
+  if (lcdKey?.code === event.code) releaseLcdKey();
+});
+lcd.addEventListener("blur", releaseLcdKey);
+window.addEventListener("blur", releaseLcdKey);
 
 // ---- Phones and tablets
 // Open the touch keyboard by focusing a

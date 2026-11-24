@@ -125,7 +125,8 @@ section {
   display: block;
 }
 canvas:focus,
-pre:focus {
+pre:focus,
+.lcd:focus {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
