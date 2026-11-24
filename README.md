@@ -21,12 +21,12 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `249ab23`, TEC-OS integration 1 with the packed ROM font (glyphs through service 17, ABI 5.2) and services claiming RST 7 alone, which builds with
+The firmware pin is TEC-OS `8d6c09b`, TEC-OS integration 1 with the packed ROM font (glyphs through service 17), services claiming RST 7 alone and the COM launch vector `COMVEC` (ABI 5.3), which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and four equal drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from Thorium `02b63d8`, TAS from Thorium `b8a9994`, which takes
-several statements on a line and writes Intel HEX, and BAZA from Baza `eee4ee6`
+in 19 pages, TED from Thorium `cf5460c`, TAS from Thorium `cf5460c`, which takes
+several statements on a line and writes Intel HEX, and BAZA from Baza `c49f477`
 and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
@@ -45,7 +45,7 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/249ab2366cd5/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/8d6c09badb7b/docs/shell.md)
 has the rest. The shell's approved eighteen-page allocation leaves 41,728 bytes of TPA
 (the word at `0006h` is `A400h`). The additional page costs 256 bytes compared
 with the earlier seventeen-page shell. Qualification remains in progress.
@@ -162,8 +162,8 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to four repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the three its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`b8a9994` for `TAS.COM`,
-`02b63d8` for `TED.COM`), jhlagado/baza (`eee4ee6` for compiler/runtime, `5f6b58d` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/thorium (`cf5460c` for `TAS.COM`,
+`cf5460c` for `TED.COM`), jhlagado/baza (`c49f477` for compiler/runtime, `5f6b58d` for BOUNCE) and jhlagado/debug80-tec1g-mon3 (`000c052`, MON-3's ROM and sources). Without
 that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -248,7 +248,9 @@ returns focus to the screen. The [TBG book](https://tec-os.org/tbg/) walks
 through the controls.
 
 To verify the package with Chromium, run
-`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg-browser.test.mjs test/tbg-keys-browser.test.mjs`.
+`TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg/*.test.mjs`.
+They sit in `test/tbg/`, outside `npm test` and the strict suite, as they need a
+TBG package.
 The first test steps, arms a launch, sets a breakpoint and checks the labels
 TBGSYM adds. The second drives Code, G, Esc, R to a line, step out and the
 help pages.

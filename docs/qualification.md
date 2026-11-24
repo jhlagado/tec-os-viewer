@@ -638,6 +638,15 @@ one representative card copy each (57 and 62 ms against 50 ms); the old pin
 showed the same host noise in isolated reruns, and those receipts are kept.
 TEC-OS `249ab23` adds only main's TBG book pages over `e60fd77`.
 
+**COM launch vector and stream-free TAS pin.** TEC-OS `8d6c09b` adds
+`COMVEC` at BF62h, ABI 5.3 (ABIMIN 3): a word the CCP calls after loading a
+COM file that runs at 0100h, cleared when its page is freed. TAS and TED
+come from Thorium `cf5460c`, whose `.TBG` drops the statement stream; BAZA
+and `BAZA.RTL` come from Baza `c49f477`, which claims RST 7 only. ROM
+`d10a13a2…`, 15,600 bytes used, 784 free; TPA 47,238 bytes, starter 46,534.
+`SHELL.SVC` is unchanged. The guest observer's ROM spans are restated to
+this build: eleven of the fourteen move with the two-byte workspace word.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte

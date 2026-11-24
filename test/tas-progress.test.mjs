@@ -7,15 +7,17 @@ import { CpmVolume } from '../tec-os/tools/lib/cpmfs.mjs';
 import { card, power } from './lib/page.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const expected = 'b77762f7c2172def224c45b0ab88035d95532309b0522349e6bcf1f5a16f3af3';
+const pins = JSON.parse(readFileSync(new URL('../pins.json', import.meta.url), 'utf8'));
+const bundled = readFileSync(new URL('../dist/files/TAS.COM', import.meta.url));
+const expected = pins.files['TAS.COM'];
 const limit = 800_000_000;
 
 test('the bundled card TAS turns progress during Snake9 COM refusal and BIN assembly', { timeout: 300_000 }, async t => {
   const image = await card();
   const v = findVolume(parseContainer(image), 'A');
   const drive = () => new CpmVolume(volumePayload(image, v), v.g);
-  assert.equal(sha(drive().read('TAS.COM').subarray(0, 11131)), expected);
-  assert.equal(sha(readFileSync(new URL('../dist/files/TAS.COM', import.meta.url))), expected);
+  assert.equal(sha(bundled), expected);
+  assert.equal(sha(drive().read('TAS.COM').subarray(0, bundled.length)), expected);
   const original = drive().read('SNAKE9.BIN');
   const m = power(image, 'pico', 40);
   m.runUntilChecked(() => m.ready() && /A:SYSTEM>$/.test(m.text()), limit, 'boot');

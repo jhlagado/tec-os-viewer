@@ -5,12 +5,12 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
-import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
-import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
-import { card } from "./lib/page.mjs";
-import { fromTecos } from "./lib/root.mjs";
-import { open, serve } from "./lib/serve.mjs";
+import { buildRecipe } from "../../tec-os/tools/lib/recipe.mjs";
+import { findVolume, parseContainer, volumePayload } from "../../tec-os/tools/lib/container.mjs";
+import { CpmVolume } from "../../tec-os/tools/lib/cpmfs.mjs";
+import { card } from "../lib/page.mjs";
+import { fromTecos } from "../lib/root.mjs";
+import { open, serve } from "../lib/serve.mjs";
 
 test("TBG launches, steps and resumes in the Viewer", { skip: !process.env.TBG_SVC && !process.env.TBG_PREVIEW, timeout: 90_000 }, async (t) => {
   const packaged = process.env.TBG_PREVIEW && resolve(process.env.TBG_PREVIEW);
