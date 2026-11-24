@@ -216,26 +216,24 @@ the native storage transaction completes.
 
 ## TBG debugger preview
 
-The preview has its own firmware: the experimental TEC-OS ROM from the
-`tbg-user-guide` branch at `1c45bb9`, not the Viewer's pin above, because the
-armed launch needs its COMFILE callback. Build it there with
-`TECOS_COMSTART=1 npm run build`. Then build the debugger with `npm run build`
-in a [TBG](https://github.com/jhlagado/tbg) checkout beside Thorium, and run
-the following from the Viewer checkout:
+The preview uses a TEC-OS ROM with ABI 5.3 or later, whose COMVEC word lets
+`TBG.SVC ARM` catch the next launch. TEC-OS `main` has it from `220fea8`.
+Build the ROM with `npm run build` in a TEC-OS checkout of `main`. Then build
+the debugger with `npm run build` in a [TBG](https://github.com/jhlagado/tbg)
+checkout beside Thorium, and run the following from the Viewer checkout:
 
 ```sh
 npm run web
-node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg ../tec-os-main
+node tools/tbg-preview.mjs /tmp/tbg-preview ../tec-os ../thorium ../tbg
 ```
 
-`../tbg` defaults to `tbg` beside the Thorium checkout. The last argument is a
-TEC-OS checkout of `main`, where the book is, for the book's STEP.ASM and
-FILL.ASM; it defaults to the firmware's checkout. TAS and TED come from
-Thorium.
+`../tbg` defaults to `tbg` beside the Thorium checkout. The book's STEP.ASM
+and FILL.ASM come from the same TEC-OS checkout; an optional fifth argument
+names another. TAS and TED come from Thorium.
 
 The new directory contains:
 
-- the matching browser app and the experimental ROM;
+- the matching browser app and that ROM;
 - a starter recipe with TBG.SVC, its help file TBG.HLP and the symbols
   extension TBGSYM.SVC;
 - TED and TAS;
@@ -251,6 +249,6 @@ through the controls.
 
 To verify the package with Chromium, run
 `TEST_CHROMIUM=/usr/bin/chromium TBG_PREVIEW=/tmp/tbg-preview node --test test/tbg-browser.test.mjs test/tbg-keys-browser.test.mjs`.
-The first test steps, sets a breakpoint and checks the labels TBGSYM adds.
-The second drives Code, G, Esc, R to a line, step out and the help pages.
-The experimental ROM is confined to the preview package.
+The first test steps, arms a launch, sets a breakpoint and checks the labels
+TBGSYM adds. The second drives Code, G, Esc, R to a line, step out and the
+help pages.

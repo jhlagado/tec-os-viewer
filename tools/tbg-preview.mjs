@@ -22,8 +22,8 @@ const d8 = JSON.parse(readFileSync(resolve(firmware, "tecos.d8.json"), "utf8"));
 const symbols = d8.symbols
   .filter((s) => typeof (s.address ?? s.value) === "number")
   .map((s) => ({ name: s.name, address: s.address ?? s.value }));
-if (!symbols.some((s) => s.name === "COMHOOK")) { // The armed launch's callback.
-  throw new Error("build the experimental TEC-OS ROM with TECOS_COMSTART=1 first");
+if (!symbols.some((s) => s.name === "COMVEC")) { // TEC-OS ABI 5.3: TBG.SVC ARM.
+  throw new Error("build a TEC-OS ROM with ABI 5.3 or later, which has COMVEC, first");
 }
 const manual = readFileSync(resolve(book, "documentation/content/tbg/02-watch-the-stack.md"), "utf8");
 const example = manual.match(/```asm\n([\s\S]+?)```/)?.[1];

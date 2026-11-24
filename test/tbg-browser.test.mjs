@@ -1,5 +1,6 @@
-// Set TBG_SVC to the Thorium build. Set TBG_ROM to an experimental
-// TEC-OS ROM to exercise the armed shell launch.
+// Set TBG_SVC to TBG's build, or TBG_PREVIEW to a package from
+// tools/tbg-preview.mjs. Set TBG_ROM to a TEC-OS ROM with ABI 5.3 or later
+// to exercise the armed launch without a package.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
