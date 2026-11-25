@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "bb9db4061db69841348feb4d9611aba2869f7c28",
-  "firmwareCommit": "093b07ffd5755433388d6c88a472df1f0d79796e",
+  "viewerCommit": "36a9f68a16e525b1a0e2259146631a4fb2908d94",
+  "firmwareCommit": "b539be372ef64cb40a2cfbb3f468053d324d2b38",
   "firmwareRomSha256": "d21e1f6cab6e29c7567067429eeb3034635c1a415b7d48a9acdb6907b8b87086",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 713664,
-      "sha256": "ab68c88b4c8b712953dce96bef0fd1d5eed5b84b065b3a46738fcab5de378cc0"
+      "bytes": 734172,
+      "sha256": "ab91031ae0a0c00cf70e3d60f350a9bcb8a6b54c5fc64ced0758f1fdfac0d0af"
     }
   },
   "defaultColumns": 40,
@@ -34,17 +34,18 @@
     "tedCommit": "28d9cc7718868b06d0a47a77f9b270aebd3af1eb",
     "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
     "bazaRuntimeCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692",
-    "bazCommit": "8655d81392050ef673103e04f888d7e5c34ea2b9"
+    "bazCommit": "8655d81392050ef673103e04f888d7e5c34ea2b9",
+    "tedpCommit": "fc2e652438acaade869eb75d4718bde2cc3c537b"
   },
   "snake9": {
     "sourceSha256": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at bb9db40^ (c1ce20b, Native 093b07f): 38 files, 231/231 each; Native strict 1473/1473 twice at 093b07f. bb9db40 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 36a9f68^ (976acd6, Native b539be3): 38 files, 231/231 each; Native strict 1474/1474 twice at b539be3. 36a9f68 adds only the qualification note.",
     "starterShell": "SHELL.SVC 11 pages (4,224 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; bare names run COM, then SVC, then CMD; built-ins first"
   },
-  "previousQualification": "c4237be617bbd23701e759132ca852dca1cda33b",
+  "previousQualification": "bb9db4061db69841348feb4d9611aba2869f7c28",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -106,7 +107,14 @@
       "TED.ERR",
       "TED.PRJ"
     ],
-    "keys": "F9 builds, F5 runs (a .BAS under BAZ), F1 help, F3 another file; ^T retired"
+    "keys": "F9 builds, F5 runs (a .BAS under BAZ), F1 help, F3 another file; ^T retired",
+    "tedp": {
+      "file": "TEDP.COM",
+      "volume": "SYSTEM",
+      "bytes": 14919,
+      "sha256": "509560a0de3063ee624f957ea172aa1604a73ba371ace0b4f66a54cd3ec41ea7",
+      "maxDocument": 65535
+    }
   },
   "keyboard": {
     "functionKeys": "Fn+1-9 F1-F9, Fn+0 F10; F1-F4 ESC O P-S, F5-F10 ESC [ nn ~"
