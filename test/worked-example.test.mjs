@@ -1,8 +1,9 @@
 // Build and run SAMPLE
 // at the prompt on PICO9918, width 80.
 // Edit its greeting in TED, then build
-// with ^T B and run with ^T R. Check
-// the edited output in the emulator.
+// with F9 and run with F5, Fn+9 and
+// Fn+5 on the matrix. Check the edited
+// output in the emulator.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -39,6 +40,22 @@ function keys(m, s, what, done = () => true) {
   } catch {
     throw new Error(`${what}: not within ${LIMIT} cycles, ${m.pending?.length ?? 0} keys unread\n${m.screen().filter((l) => l.trim()).join("\n")}`);
   }
+}
+
+/**
+ * Press Fn with digit D on M's matrix,
+ * as the TEC-1G's F-keys are, and let
+ * go once TEC-OS's scan has it in
+ * KBLAST. Fn is row 0 column 2; the
+ * digits are keys 13h to 1Ch.
+ */
+function fn(m, d) {
+  const key = 0x13 + d, kblast = m.sym("KBLAST");
+  m.tec1g.applyMatrixKey(0, 2, true);
+  m.tec1g.applyMatrixKey(key >> 3, key & 7, true);
+  m.runUntil(() => m.read(kblast) === key, LIMIT, `Fn+${d}`);
+  m.tec1g.applyMatrixKey(key >> 3, key & 7, false);
+  m.tec1g.applyMatrixKey(0, 2, false);
 }
 
 /**
@@ -88,10 +105,12 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   keys(m, `${RIGHT.repeat(insertAt)}the `, "the edit", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
   assert.ok(screen().includes(edited), `the edited line:\n${screen().join("\n")}`);
   let mark = m.output.length;
-  keys(m, "\x14b", "^T B's build", () => /TED\r\n/.test(m.text(mark)) && /SAMPLE\.ASM/.test(screen()[23]));
+  fn(m, 9);
+  keys(m, "", "F9's build", () => /TED\r\n/.test(m.text(mark)) && /SAMPLE\.ASM/.test(screen()[23]));
   assert.match(m.text(mark), /SAMPLE\.COM written/);
   mark = m.output.length;
-  keys(m, "\x14r", "^T R's run", () => /Press a key/.test(m.text(mark)));
+  fn(m, 5);
+  keys(m, "", "F5's run", () => /Press a key/.test(m.text(mark)));
   assert.match(m.text(mark), /Hello from the TEC-OS\.\r\n/, "the edited line printed");
   keys(m, " ", "TED again", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
   keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A:SYSTEM>"));
