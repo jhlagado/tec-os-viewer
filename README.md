@@ -228,12 +228,15 @@ The page's card carries TBG.SVC, TBGSYM.SVC and TBG.HLP on every A: volume,
 and its ROM, TEC-OS ABI 5.3, has the COMVEC word that `TBG.SVC ARM` uses.
 At the prompt, type `UNLOAD`, then `TBG.SVC NAME` for a COM on the card, and
 click the character LCD. While the LCD has focus, its keys go to the matrix
-with their Shift or Ctrl, so Tab and Shift+Tab move between TBG's views. F6
-returns focus to the screen. The [TBG book](https://tec-os.org/tbg/) walks
-through a first session.
+with their Shift or Ctrl, so Tab and Shift+Tab move between TBG's views, and
+F1 to F10 go as Fn with a digit (F10 as Fn+0), as on the TEC-1G: F5 runs,
+F6, F7 and F8 step out, over and into. On a Mac, press fn with the F-key
+unless the keyboard sends standard function keys. Click the screen to leave
+the LCD. The [TBG book](https://tec-os.org/tbg/) walks through a first
+session.
 
 The TBG browser tests are outside `npm test`. Run them with
 `TEST_CHROMIUM=/usr/bin/chromium node --test test/tbg/*.test.mjs`. The first
 assembles the book's STEP.ASM with TAS on the card, arms the launch, steps,
 sets a breakpoint and checks the labels TBGSYM adds. The second drives Code,
-G, Esc, R to a line, step out and the help pages.
+G, Esc, F5 to a line, step out and the help pages.

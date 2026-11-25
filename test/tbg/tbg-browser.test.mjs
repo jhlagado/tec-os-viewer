@@ -63,7 +63,7 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   };
   {
     await key("h"); // The card carries TBG.HLP.
-    await lcd("REGISTERS   HELP 1/4");
+    await lcd("REGISTERS   HELP 1/5");
     await key("Escape");
     assert.match(await page.locator("#lcd").textContent(), /SY/, "TBGSYM matched STEP.TBG");
     await key("Shift+Tab"); // Symbols.
@@ -72,19 +72,19 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
     await key("Tab"); // Registers again.
     await lcd("PC 0100");
   }
-  await key("Space"); // Space steps.
+  await key("F8"); // F8, Fn+8: step into.
   await lcd("PC 0103");
   await key("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
   await lcd(">→0103 PUSH HL");
   await lcd("TAKE:"); // TBGSYM's label row.
   await key("ArrowDown");
-  await key("b");
+  await key("Space"); // Space: a breakpoint.
   await lcd(">□0104 POP DE");
   await lcd("BP SET 0104");
   await key("ArrowLeft"); // The selection back on PC.
   await key("Shift+Tab"); // Registers.
-  await key("r");
+  await key("F5"); // F5, Fn+5: run.
   await lcd("PC 0104");
   assert.match(await page.locator("#lcd").textContent(), /PC 0104.*BP/);
   for (let i = 0; i < 3; i += 1) await key("Tab"); // Code, Stack, Memory.
@@ -112,7 +112,7 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await lcd(">SP ");
   // Ctrl+Space steps out: POP and RET leave STEP. Were Ctrl lost, Space
   // would step POP and stop at 0105h instead.
-  await key("Control+Space");
+  await key("F6"); // F6, Fn+6: step out.
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("Escape"); // Back to the view before, then the question.
@@ -121,14 +121,14 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await key("Enter");
   await prompt();
   await page.locator("#lcd").click();
-  await page.keyboard.press("F6");
-  assert.equal(await page.evaluate(() => document.activeElement?.id), "tms", "F6 leaves the LCD for the screen");
+  await page.locator("#tms").click();
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "tms", "a click on the screen leaves the LCD");
   {
     await page.focus("#tms");
     await page.keyboard.type("tbg.svc line\n", { delay: 80 });
     await lcd("PC 0100");
     await page.locator("#lcd").click();
-    await key("r"); // A line read under TBG is the program's own.
+    await key("F5"); // A line read under TBG is the program's own.
     await page.focus("#tms");
     await page.keyboard.type("ABC\n", { delay: 100 });
     await page.waitForFunction(() => globalThis.tecos.screen().some((line) => /^RESULT=ABC\s*$/.test(line)), null, { timeout: 12000 });

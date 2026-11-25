@@ -1,4 +1,4 @@
-// Drive TBG's Code, Enter, G, Esc, R to a line, stepping and help keys on
+// Drive TBG's Code, Enter, G, Esc, F5 to a line, F6 to F8 and help keys on
 // the standard card in Chromium. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -47,16 +47,16 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   for (const ch of "107") await key(ch);
   await key("Enter");
   await lcd("> 0107 CALL Z,0110");
-  await key("r"); // R runs to the selected line.
+  await key("F5"); // F5 runs to the selected line.
   await lcd(">→0107 CALL Z,0110");
-  await key("Shift+Space"); // Over the taken call.
+  await key("F7"); // F7: over the taken call.
   await lcd(">→010A LD C,0C");
   await key("Shift+Tab");
   await lcd("PC 010A");
   await key("h");
-  await lcd("REGISTERS   HELP 1/4");
+  await lcd("REGISTERS   HELP 1/5");
   for (let i = 0; i < 3; i += 1) await key("ArrowRight");
-  await lcd("RUNNING     HELP 4/4");
+  await lcd("RUNNING     HELP 4/5");
   assert.match(await text(), /Ctrl\+Esc held breaks/);
   await key("Escape");
   await lcd("PC 010A");
@@ -68,9 +68,9 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   await page.keyboard.type("tbg.svc rec\n", { delay: 80 });
   await lcd("PC 0100");
   await page.locator("#lcd").click();
-  for (let i = 0; i < 5; i += 1) await key("Space");
+  for (let i = 0; i < 5; i += 1) await key("F8");
   await lcd("PC 0106");
-  await key("Control+Space"); // Step out, past the recursion.
+  await key("F6"); // F6: step out, past the recursion.
   await lcd("Steps 0004");
   await lcd("PC 010B");
   assert.deepEqual(errors, []);
