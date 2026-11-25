@@ -703,6 +703,13 @@ by its TNPARSE dispatch, and the guest probes are bound to the new shell's
 symbol map. Two complete Viewer strict runs at Viewer `c1ce20b` and TEC-OS
 `093b07f` pass 231 of 231 across 38 files (peaks 930 and 922 MB).
 
+**TEDP.** TEC-OS `b539be3` adds `TEDP.COM` from TED `fc2e652` (14,919 bytes,
+`509560a0…`) to SYSTEM beside `TED.COM`, which is unchanged: TED with the
+document kept on the card, for files up to 65,535 bytes. The ROM is
+unchanged (`d21e1f6c…`), so the guest observer's profile and the shell
+binding stand. Two complete Viewer strict runs at Viewer `976acd6` and TEC-OS
+`b539be3` pass 231 of 231 across 38 files (peaks 923 and 866 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
