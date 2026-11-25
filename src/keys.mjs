@@ -71,21 +71,48 @@ export const STARTUP_CYCLES = 40_000_000;
 
 const ARROWS = { ArrowUp: "A", ArrowDown: "B", ArrowRight: "C", ArrowLeft: "D" };
 
+/** The page keys, as xterm sends them. */
+const PAGE_KEYS = { PageUp: "\x1b[5~", PageDown: "\x1b[6~", Home: "\x1b[H", End: "\x1b[F" };
+
 /**
  * The matrix's own arrow keys, which
  * TEC-OS turns into ESC [ A to D.
  */
 export const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\x05", ArrowRight: "\x06" };
 
-/** The text a browser key event E sends, or null for none. */
+/**
+ * Keys 3-6, the matrix's arrows, by the
+ * browser key each stands for, and the
+ * page keys as Fn with an arrow: TEC-OS
+ * sends Fn+up as Page Up, Fn+down as Page
+ * Down, Fn+left as Home and Fn+right as
+ * End. On a Mac these are Fn and an arrow
+ * already, so the Mac's keys carry through.
+ */
+const MATRIX_KEY = { ArrowUp: 3, ArrowDown: 4, ArrowLeft: 5, ArrowRight: 6, PageUp: 3, PageDown: 4, Home: 5, End: 6 };
+const SHIFT = 0, FN = 2;
+
+/**
+ * The text a browser key event E sends,
+ * or null for none. Option (Alt) with a
+ * letter is Ctrl with it, read from
+ * E.code, since on a Mac Option makes an
+ * accented letter and macOS takes some
+ * Ctrl keys for itself.
+ */
 export function keyText(e) {
-  if (e.metaKey || e.altKey) return null;
+  if (e.metaKey) return null;
+  if (e.altKey) {
+    const letter = /^Key([A-Z])$/.exec(e.code ?? "");
+    return letter && !e.ctrlKey ? String.fromCharCode(letter[1].charCodeAt(0) - 0x40) : null;
+  }
   if (e.key === "Enter") return "\r";
   if (e.key === "Backspace") return "\b";
   if (e.key === "Escape") return "\x1b";
   if (e.key === "Tab") return "\t";
   if (e.key === "Delete") return "\x7f";
-  if (ARROWS[e.key]) return `\x1b[${ARROWS[e.key]}`;
+  if (ARROWS[e.key]) return e.shiftKey ? `\x1b[1;2${ARROWS[e.key]}` : `\x1b[${ARROWS[e.key]}`;
+  if (PAGE_KEYS[e.key]) return PAGE_KEYS[e.key];
   if (e.key.length !== 1) return null;
   if (e.ctrlKey) {
     const c = e.key.toUpperCase().charCodeAt(0);
@@ -100,12 +127,23 @@ export function keyText(e) {
  * matrix an arrow is the matrix's arrow
  * key, and any other single key a
  * matrix key; the rest goes by serial.
+ * Shift with an arrow and the page keys
+ * are a matrix key held with a modifier,
+ * KEY with MOD, which no character names.
  */
 export function keyInput(e, matrix) {
   let text = keyText(e);
   if (text === null) return null;
+  if (matrix && PAGE_KEYS[e.key]) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: FN };
+  if (matrix && MATRIX_ARROWS[e.key] && e.shiftKey) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: SHIFT };
   if (matrix && MATRIX_ARROWS[e.key]) text = MATRIX_ARROWS[e.key];
   return { text, via: matrix && text.length === 1 ? "matrix" : "serial" };
+}
+
+/** Queue keyInput's INPUT on machine M: a held matrix key, or its text. */
+export function queueInput(m, input) {
+  if (input.key !== undefined) m.enqueueKey(input.key, input.mod);
+  else m.enqueueInput(input.text, input.via);
 }
 
 /** TEC-OS's console reads that wait for a key: serial, then the matrix. */

@@ -10,7 +10,7 @@ import { needsStarter, prepareCard } from "../tec-os/host/card.mjs";
 import { parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
 import { CpmVolume } from "../tec-os/tools/lib/cpmfs.mjs";
 import { buildRecipe } from "../tec-os/tools/lib/recipe.mjs";
-import { keyInput, keyText, pumpKeys, resetKeys } from "./keys.mjs";
+import { keyInput, keyText, pumpKeys, queueInput, resetKeys } from "./keys.mjs";
 import { loadCard, saveCard } from "./store.mjs";
 import { Persistence } from "./persistence.mjs";
 import { bindGuestProfile, GuestCacheObserver } from "./guest-cache.mjs";
@@ -454,7 +454,7 @@ function onKey(route) {
     const input = keyInput(e, route() === "matrix");
     if (input === null || !state.machine) return;
     e.preventDefault();
-    state.machine.enqueueInput(input.text, input.via);
+    queueInput(state.machine, input);
   };
 }
 
@@ -482,6 +482,7 @@ function releaseLcdKey() {
 // keep the Shift or Ctrl held with them, so Shift+Tab and Ctrl+Up reach a
 // program that reads the matrix. F1 to F10 reach it as Fn with a digit,
 // F10 as Fn+0, as on the TEC-1G, and the browser does not act on them.
+// Page Up, Page Down, Home and End reach it as Fn with an arrow.
 // Tab stays on the LCD; clicking the screen leaves it.
 const LCD_CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
 const LCD_FN_KEY = /^F(10|[1-9])$/;
@@ -493,14 +494,17 @@ lcd.addEventListener("keydown", (event) => {
   const input = fn ? { via: "matrix", text: fn[1] === "10" ? "0" : fn[1] }
     : space ? { via: "matrix", text: " " } : keyInput(event, true);
   if (input?.via !== "matrix" || !state.machine) return;
-  const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
-    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(plain && candidate.modifier));
+  // Shift with an arrow and the page keys name their key and modifier.
+  const held = input.key !== undefined;
+  const combo = held ? { row: input.key >> 3, col: input.key & 7 }
+    : getMatrixCombosForAscii(input.text.charCodeAt(0))
+      .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(plain && candidate.modifier));
   if (!combo) return;
   event.preventDefault();
   if (event.repeat || lcdKey) return;
   const matrix = state.machine.tec1g;
   const { row, col } = combo;
-  let modifier = fn ? matrixModifiers.fn : matrixModifiers[combo.modifier];
+  let modifier = held ? input.mod : fn ? matrixModifiers.fn : matrixModifiers[combo.modifier];
   if (modifier === undefined && (space || LCD_CONTROL_KEYS.has(event.key))) {
     if (event.shiftKey) modifier = matrixModifiers.shift;
     else if (event.ctrlKey) modifier = matrixModifiers.ctrl;
