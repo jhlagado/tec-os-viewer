@@ -5,7 +5,7 @@
 // npm run inputs in tec-os checks the
 // pinned inputs that tec-os's
 // test/inputs.json lists: from
-// TAS, Thorium, Baza, TBG and MON-3's
+// TAS, TED, Baza, TBUG and MON-3's
 // sources.
 // Each comes from its variable when
 // set, else tec-os/.inputs/, else a
@@ -14,8 +14,8 @@
 // A build needs read access to
 // jhlagado/tec-os and to the inputs'
 // repositories, jhlagado/tas,
-// jhlagado/thorium, jhlagado/baza,
-// jhlagado/tbg and
+// jhlagado/ted, jhlagado/baza,
+// jhlagado/tbug and
 // jhlagado/debug80-tec1g-mon3, at the
 // commits test/inputs.json pins.
 // Without it, supply the files through

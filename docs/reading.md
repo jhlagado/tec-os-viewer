@@ -7,13 +7,13 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`3f5ed4a0d6267c726e5a00d46fc2c93058af931b`, with F1-F10 on Fn with a
-digit key, TBG from tbg `aacc59e`,
+`7a5d9320abf8f540f50094ca0eeee9edc66210e8`, with F1-F10 on Fn with a
+digit key, TBUG from tbug `58e4054` with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a minimal CCP and three drives, `SHELL.SVC`, the
 18-page resident shell, with `CD`, the sized `DIR` and the prompt
-`A:SYSTEM>`, TED from Thorium `dc0cd0f` with its language table and its
+`A:SYSTEM>`, TED from TED `dc0cd0f` with its language table and its
 session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `fdd21f5`
 with chained lines and Intel HEX output, BAZA from Baza `4204b18` with
 its runtime from `c49f477`, BOUNCE from `5f6b58d`, and the 19-page
