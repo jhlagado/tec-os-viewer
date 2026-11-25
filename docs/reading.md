@@ -67,6 +67,8 @@ The rendering, keyboard and controls sections in `main.mjs` contain the page's
 event handlers. Screen input uses the matrix-keyboard route and serial-terminal
 input uses the serial route. [src/keys.mjs](../src/keys.mjs) says what each
 browser key sends, an arrow on the screen being the matrix's own arrow key,
+Shift with an arrow and the page keys that arrow key held with Shift or Fn
+(`queueInput` puts them in the machine's queue by `enqueueKey`),
 and moves the queued keys on as the frame loop steps the machine. A matrix key
 stays down until TEC-OS's scan has read it, but TEC-OS scans the matrix only
 while CON: is CRT: or UC1:. Under `CON TTY` or `CON BAT` the page holds a

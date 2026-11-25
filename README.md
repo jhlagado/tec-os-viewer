@@ -11,6 +11,11 @@ before they appear on that site.
 The starter card includes Tutankhamen's Snake. At the TEC-OS prompt,
 enter `MON3` (or `MON3.SVC`), then `LOAD SNAKE9.BIN` and `GO` at `MON3>`.
 Click the RGB panel to route arrow keys to the matrix keyboard.
+Page Up, Page Down, Home and End reach the machine as Fn with an arrow (on a
+Mac those keys are fn with an arrow already), which TEC-OS sends as
+`ESC [ 5 ~`, `ESC [ 6 ~`, `ESC [ H` and `ESC [ F`; Shift with an arrow is
+`ESC [ 1 ; 2` and the arrow's letter. Option (Alt) with a letter is Ctrl with it,
+for the Ctrl keys macOS keeps for itself.
 To rebuild the game, run `TAS SNAKE9 SNAKE9.BIN` from the TEC-OS prompt.
 
 [Reading the source](docs/reading.md) follows page startup, the controls, card
