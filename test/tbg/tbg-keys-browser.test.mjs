@@ -1,4 +1,4 @@
-// Drive TBG's Code, Enter, G, Esc, F5 to a line, F6 to F8 and help keys on
+// Drive TBUG's Code, Enter, G, Esc, F5 to a line, F6 to F8 and help keys on
 // the standard card in Chromium. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -8,7 +8,7 @@ import { card } from "../lib/page.mjs";
 import { fromTecos } from "../lib/root.mjs";
 import { open, serve } from "../lib/serve.mjs";
 
-test("TBG's Code, stepping and help keys work on the standard card", { timeout: 180_000 }, async (t) => {
+test("TBUG's Code, stepping and help keys work on the standard card", { timeout: 180_000 }, async (t) => {
   const image = await card();
   const volume = findVolume(parseContainer(image), "A");
   const disk = new CpmVolume(volumePayload(image, volume), volume.g, { readOnly: false });
@@ -33,7 +33,7 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   await page.focus("#tms");
   await page.keyboard.type("unload\n");
   await prompt();
-  await page.keyboard.type("tbg.svc over\n", { delay: 80 });
+  await page.keyboard.type("tbug.svc over\n", { delay: 80 });
   await lcd("PC 0100");
   await page.locator("#lcd").click();
   await key("Tab");
@@ -60,12 +60,12 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   assert.match(await text(), /Ctrl\+Esc held breaks/);
   await key("Escape");
   await lcd("PC 010A");
-  for (let i = 0; i < 3 && !(await text()).includes("Quit TBG? Y/N"); i += 1) await key("Escape");
-  await lcd("Quit TBG? Y/N");
+  for (let i = 0; i < 3 && !(await text()).includes("Quit TBUG? Y/N"); i += 1) await key("Escape");
+  await lcd("Quit TBUG? Y/N");
   await key("y");
   await page.focus("#tms");
   await prompt();
-  await page.keyboard.type("tbg.svc rec\n", { delay: 80 });
+  await page.keyboard.type("tbug.svc rec\n", { delay: 80 });
   await lcd("PC 0100");
   await page.locator("#lcd").click();
   for (let i = 0; i < 5; i += 1) await key("F8");

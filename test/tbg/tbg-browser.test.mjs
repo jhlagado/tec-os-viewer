@@ -1,7 +1,7 @@
-// TBG on the standard card: TAS assembles the book's STEP.ASM, TBG.SVC ARM
-// catches the launch through COMVEC (TEC-OS ABI 5.3), and TBGSYM.SVC names
-// its labels. The card's SYSTEM volume on A: carries TAS, TBG.SVC,
-// TBGSYM.SVC and TBG.HLP. Run with node --test test/tbg/*.test.mjs.
+// TBUG on the standard card: TAS assembles the book's STEP.ASM, TBUG.SVC ARM
+// catches the launch through COMVEC (TEC-OS ABI 5.3), and STEP.TBG names
+// its labels. The card's SYSTEM volume on A: carries TAS, TBUG.SVC and
+// TBUG.HLP. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -12,7 +12,7 @@ import { fromTecos } from "../lib/root.mjs";
 import { open, serve } from "../lib/serve.mjs";
 import { bookSource } from "./book.mjs";
 
-test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async (t) => {
+test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async (t) => {
   const image = await card();
   const volume = findVolume(parseContainer(image), "A");
   const disk = new CpmVolume(volumePayload(image, volume), volume.g, { readOnly: false });
@@ -45,10 +45,8 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
     const lines = globalThis.tecos.screen().filter((line) => line.trim());
     return /^A(:[A-Z0-9]+)?>\s*$/.test(lines.at(-1)) && lines.some((line) => /STEP.COM written/.test(line));
   }, null, { timeout: 12000 });
-  await page.keyboard.type("tbg.svc arm\n");
-  await prompt("tbg.svc arm");
-  await page.keyboard.type("tbgsym.svc\n", { delay: 80 }); // Labels, from STEP.TBG.
-  await prompt("tbgsym.svc");
+  await page.keyboard.type("tbug.svc arm\n");
+  await prompt("tbug.svc arm");
   await page.focus("#tms");
   await page.keyboard.type("step\n", { delay: 80 });
   await lcd("PC 0100").catch(async (error) => {
@@ -62,10 +60,10 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   };
   {
-    await key("h"); // The card carries TBG.HLP.
+    await key("h"); // The card carries TBUG.HLP.
     await lcd("REGISTERS   HELP 1/5");
     await key("Escape");
-    assert.match(await page.locator("#lcd").textContent(), /SY/, "TBGSYM matched STEP.TBG");
+    assert.match(await page.locator("#lcd").textContent(), /SY/, "STEP.TBG matched STEP.COM");
     await key("Shift+Tab"); // Symbols.
     await lcd(">0100 START");
     await lcd(" 0104 TAKE");
@@ -77,7 +75,7 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await key("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
   await lcd(">→0103 PUSH HL");
-  await lcd("TAKE:"); // TBGSYM's label row.
+  await lcd("TAKE:"); // STEP.TBG's label row.
   await key("ArrowDown");
   await key("Space"); // Space: a breakpoint.
   await lcd(">□0104 POP DE");
@@ -91,10 +89,10 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await lcd("0104>D1 C9");
   await key("ArrowDown");
   await lcd("0108>");
-  await key("Control+ArrowDown"); // Ctrl must reach TBG for a page.
+  await key("Control+ArrowDown"); // Ctrl must reach TBUG for a page.
   await lcd("0118>");
   {
-    await key("Tab"); // Symbols, which TBGSYM adds after Memory.
+    await key("Tab"); // Symbols, after Memory when STEP.TBG matches.
     await lcd(">0100 START");
   }
   await key("Tab"); // Registers.
@@ -116,8 +114,8 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("Escape"); // Back to the view before, then the question.
-  if (!(await page.locator("#lcd").textContent()).includes("Quit TBG? Y/N")) await key("Escape");
-  await lcd("Quit TBG? Y/N");
+  if (!(await page.locator("#lcd").textContent()).includes("Quit TBUG? Y/N")) await key("Escape");
+  await lcd("Quit TBUG? Y/N");
   await key("y");
   await prompt();
   await page.locator("#lcd").click();
@@ -125,10 +123,10 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   assert.equal(await page.evaluate(() => document.activeElement?.id), "tms", "a click on the screen leaves the LCD");
   {
     await page.focus("#tms");
-    await page.keyboard.type("tbg.svc line\n", { delay: 80 });
+    await page.keyboard.type("tbug.svc line\n", { delay: 80 });
     await lcd("PC 0100");
     await page.locator("#lcd").click();
-    await key("F5"); // A line read under TBG is the program's own.
+    await key("F5"); // A line read under TBUG is the program's own.
     await page.focus("#tms");
     await page.keyboard.type("ABC\n", { delay: 100 });
     await page.waitForFunction(() => globalThis.tecos.screen().some((line) => /^RESULT=ABC\s*$/.test(line)), null, { timeout: 12000 });
