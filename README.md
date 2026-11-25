@@ -21,15 +21,15 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `7a5d932`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is TEC-OS `787068f`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC` (ABI 5.3) and F1-F10 on Fn with a digit key, with the five-volume starter card (SYSTEM, ASM,
 BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `58e4054`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and three drives,
 `SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from TED `dc0cd0f`, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `fdd21f5`,
+in 19 pages, TED from TED `70ff3df`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `fdd21f5`,
 which takes several statements on a line and writes Intel HEX, and BAZA from Baza `4204b18` with its runtime from `c49f477`
-and `BOUNCE.BAS` from Baza `5f6b58d`, with the card's `BOUNCE.BAS` and
+and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `11af8c3`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 14 MiB, of six volumes on three drives: SYSTEM on A:, WORK (8 MiB,
@@ -37,9 +37,9 @@ empty, the work disk) on B:, and the themed volumes ASM, BASIC, MON3 and
 GAMES, which `CD A:NAME` puts on A:; C: is a spare drive. Every A: volume
 carries the core set, `STARTUP.CMD`, `SHELL.SVC`, `GLCD.SVC`, `TED.COM`,
 `TBUG.SVC` and `TBUG.HLP`, plus its theme's files. SYSTEM adds
-`TAS.COM`, `BAZA.COM`, `BAZA.RTL`, `MON3.SVC`, `SAMPLE.ASM` and `TIMES.BAS`;
+`TAS.COM`, `BAZA.COM`, `BAZA.RTL`, `BAZ.COM`, `MON3.SVC`, `SAMPLE.ASM` and `TIMES.BAS`;
 ASM adds TAS with `SAMPLE.ASM`, `DEMO.ASM` and `HELLO3.ASM`; BASIC adds BAZA
-and its runtime with `TIMES.BAS`, `BOUNCE.BAS`, `CAVERNS.BAS` and
+and its runtime and BAZ with `TIMES.BAS`, `BOUNCE.BAS`, `CAVERNS.BAS` and
 `CAVERNS.TXT`; MON3 adds `MON3.SVC` and TAS with `SNAKE9.ASM`, `SNAKE9.BIN`
 and `HELLO3.ASM`; and GAMES holds the finished programs, `CAVERNS.COM`,
 `BOUNCE.COM`, and `SNAKE9.BIN` with `MON3.SVC`. The card's `STARTUP.CMD` loads
@@ -53,7 +53,7 @@ and the drive's free space (`DIR /W` is the ROM's wide listing), the
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/7a5d9320abf8/docs/shell.md)
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/787068ffea01/docs/shell.md)
 has the rest. The shell's approved eighteen-page allocation leaves 41,984 bytes of TPA
 with three drives (the word at `0006h` is `A500h`). The additional page costs 256 bytes compared
 with the earlier seventeen-page shell. Qualification remains in progress.
@@ -62,7 +62,8 @@ After `CD A:ASM`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
 and run a first program. After `CD A:BASIC`, `BAZA TIMES` and `TIMES` build one in BASIC, and `BAZA
 BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
-arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles.
+arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles. In
+`TED TIMES.BAS`, F5 runs it under BAZ and comes back to TED; F9 builds it.
 GAMES has `CAVERNS` and `BOUNCE` ready to run. Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
 `MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
 MON-3 program that writes four lines on the LCD and counts on the digits; on
@@ -171,8 +172,8 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`fdd21f5` for `TAS.COM` and the runner),
-jhlagado/ted (`dc0cd0f` for `TED.COM`), jhlagado/baza (`4204b18` for the compiler, `c49f477` for the runtime, `5f6b58d` for
-BOUNCE), jhlagado/tbug (`58e4054` for `TBUG.SVC` and `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
+jhlagado/ted (`70ff3df` for `TED.COM`), jhlagado/baza (`4204b18` for the compiler, `c49f477` for the runtime, `5f6b58d` for
+BOUNCE, `11af8c3` for `BAZ.COM`), jhlagado/tbug (`58e4054` for `TBUG.SVC` and `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -191,7 +192,7 @@ TEC-OS's README describes, and TEC-OS checks the runner against its pins.
 - `npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its
   canonical digest. It runs TEC-OS's `npm run inputs` first, which takes the inputs TEC-OS's `test/inputs.json` pins, among them
-  `TAS.COM` from TAS, `TED.COM` from TED, `BAZA.COM`, `BAZA.RTL` and `BOUNCE.BAS` from Baza and MON-3's ROM and sources,
+  `TAS.COM` from TAS, `TED.COM` from TED, `BAZA.COM`, `BAZA.RTL`, `BAZ.COM` and `BOUNCE.BAS` from Baza and MON-3's ROM and sources,
   each from its variable there (`TAS_COM`, `BAZA_COM` and the rest) when set, else `tec-os/.inputs/`, else a pinned sibling checkout
   beside `tec-os/`, as TEC-OS's README says, else fetches it, and refuses any that differs from its pin. To supply the files
   without fetching them, put them in `tec-os/.inputs/` or name them in those variables.
