@@ -673,6 +673,17 @@ thirteen move with the ROM and keep their instructions. Two complete Viewer
 strict runs at Viewer `460d359` and TEC-OS `3f5ed4a` pass 231 of 231 across
 38 files (peaks 866 and 866 MB), and the two TBG browser tests pass.
 
+**TBUG.** TEC-OS `7a5d932` carries TBUG from tbug `58e4054`, the debugger
+renamed from TBG with its symbols built in: `TBUG.SVC` (9,184 bytes, 32 pages)
+and `TBUG.HLP` take the place of `TBG.SVC`, `TBGSYM.SVC` and `TBG.HLP`, so
+every A: volume holds two debugger files. `UNLOAD` leaves `(0006h)` at B7C6h
+and `TBUG.SVC` lowers it to 9700h, 38,400 bytes for a program. `TBUG.SVC NAME`
+arms and chains the program by function 47. TED's pin names jhlagado/ted. The
+ROM is unchanged (`06e8c0f1…`), so the guest observer's profile stands. Two
+complete Viewer strict runs at Viewer `a89a4f2` and TEC-OS `7a5d932` pass 231
+of 231 across 38 files (peaks 874 and 834 MB), and the two TBUG browser
+tests pass.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
