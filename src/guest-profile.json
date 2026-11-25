@@ -1,7 +1,7 @@
 {
-  "rom": "06e8c0f1dcb8eea2a9b91936f4a2b6c98b2ea8b8b51c2fd8ba1388d47087f28a",
-  "d8": "06033613793de6b48deb163d76a4b30b151bebca02729b295fef6101d80e197b",
-  "symbolMap": "1b4effa651158578f40420ec44507f002892d77454f67168958cd631211cfc41",
+  "rom": "d21e1f6cab6e29c7567067429eeb3034635c1a415b7d48a9acdb6907b8b87086",
+  "d8": "ef60ff803391d202fdb6175ec6457e61113f66cd98ab4e63652c04ec2aaa62b0",
+  "symbolMap": "7c86b077717ccd49a9d2f98e974f554a58a1adf405df95d1385bc2a5287d757c",
   "memoryProfile": {
     "ram96": false,
     "windowRam": true,
@@ -12,12 +12,12 @@
     {
       "symbol": "COLD",
       "offset": 0,
-      "bytes": "f33100803e01d3ffed56cd83c5"
+      "bytes": "f33100803e01d3ffed56cd85c5"
     },
     {
       "symbol": "COLD",
       "offset": 13,
-      "bytes": "3e0121000011010001ff0075edb0324000cdc4c621c9ba11caba0136053600edb03100bfcd44c9cde6f3200521e7bfcbde2159c3cdb5cacdd9c5"
+      "bytes": "3e0121000011010001ff0075edb0324000cdc6c621c9ba11caba0136053600edb03100bfcd46c9cdedf3200521e7bfcbde215bc3cdb7cacddbc5"
     },
     {
       "symbol": "MEMINIT",
@@ -27,52 +27,52 @@
     {
       "symbol": "BENTRY",
       "offset": 0,
-      "bytes": "ed736dbe3100bf21c0e4e5ed5370becda3f8"
+      "bytes": "ed736dbe3100bf21c2e4e5ed5370becdaaf8"
     },
     {
       "symbol": "RETWORD",
       "offset": 0,
-      "bytes": "cdc7f87d44ed7b6dbec9"
+      "bytes": "cdcef87d44ed7b6dbec9"
     },
     {
       "symbol": "SVCDSP",
       "offset": 0,
-      "bytes": "79fe11ca2ff43aa6bfb720113aa7bfb7200bcda3f8e322"
+      "bytes": "79fe11ca36f4fe12cad0e23aa6bfb720113aa7bfb7200bcdaaf8e322"
     },
     {
       "symbol": "HKBENTER",
       "offset": 0,
-      "bytes": "f53aa6bfb7201d3aa7bfb72017f1cda3f8e322a9bfe1e322a3bd214df9e3e52aa9bfe3c9f1c9"
+      "bytes": "f53aa6bfb7201d3aa7bfb72017f1cdaaf8e322a9bfe1e322a3bd2154f9e3e52aa9bfe3c9f1c9"
     },
     {
       "symbol": "HKAPIRET",
       "offset": 0,
-      "bytes": "cdc7f8e52aa3bde3c9"
+      "bytes": "cdcef8e52aa3bde3c9"
     },
     {
       "symbol": "HKWORK",
       "offset": 0,
-      "bytes": "ed73a9bf31e5bfc5d5e5dde5fde5f53e0132a7bfcd0ec9f1b7c466f8cd39c9cd1af9af32a7bffde1dde1e1d1c1ed7ba9bff1c9"
+      "bytes": "ed73a9bf31e5bfc5d5e5dde5fde5f53e0132a7bfcd10c9f1b7c46df8cd3bc9cd21f9af32a7bffde1dde1e1d1c1ed7ba9bff1c9"
     },
     {
       "symbol": "HKNOTICE",
       "offset": 0,
-      "bytes": "3a6fbe3cc83aa8bfb7c83aa3bfb728103aa8bf3dc03e0232a8bf2168c4c3b5ca3aa8bf3d218ac42803217ac4af32a8bfc3b5ca"
+      "bytes": "3a6fbe3cc83aa8bfb7c83aa3bfb728103aa8bf3dc03e0232a8bf216ac4c3b7ca3aa8bf3d218cc42803217cc4af32a8bfc3b7ca"
     },
     {
       "symbol": "BCONIN",
       "offset": 0,
-      "bytes": "cd3af7cd62c9cd5acf3ae5bfb720173aa6bc0f3033cdf6ce"
+      "bytes": "cd41f7cd64c9cd5ccf3ae5bfb720173aa6bc0f3033cdf8ce"
     },
     {
       "symbol": "CINMX",
       "offset": 0,
-      "bytes": "cd14cb28fbcd31caf5cd03cff1c9"
+      "bytes": "cd16cb28fbcd33caf5cd05cff1c9"
     },
     {
       "symbol": "CINLP",
       "offset": 0,
-      "bytes": "db00db030738f9cd62cae67f28f2c9"
+      "bytes": "db00db030738f9cd64cae67f28f2c9"
     },
     {
       "symbol": "CCPRKEY",

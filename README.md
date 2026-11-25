@@ -21,15 +21,15 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `787068f`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
-the COM launch vector `COMVEC` (ABI 5.3) and F1-F10 on Fn with a digit key, with the five-volume starter card (SYSTEM, ASM,
-BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `58e4054`, with its symbols built in, which builds with
+The firmware pin is TEC-OS `0ceac78`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, with the five-volume starter card (SYSTEM, ASM,
+BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `ca2934c`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a minimal CCP and three drives,
-`SHELL.SVC`, the resident shell, in 18 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from TED `70ff3df`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `fdd21f5`,
+`SHELL.SVC`, the resident shell, in 11 pages, `MON3.SVC` for MON-3's programs,
+in 19 pages, TED from TED `28d9cc7`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ`, TAS from TAS `f1e4dbc`,
 which takes several statements on a line and writes Intel HEX, and BAZA from Baza `4204b18` with its runtime from `c49f477`
-and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `11af8c3`, with the card's `BOUNCE.BAS` and
+and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `ab997bd`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 14 MiB, of six volumes on three drives: SYSTEM on A:, WORK (8 MiB,
@@ -47,16 +47,18 @@ and `HELLO3.ASM`; and GAMES holds the finished programs, `CAVERNS.COM`,
 prompt names the drive and its volume, `A:SYSTEM>`. The shell has `CD`, which
 changes the directory presented by a drive (`CD A:GAMES`, `CD ?` to list them), `COPY`, `DEL`,
 `SERVICES`, `CLS`, `ECHO` and `PAUSE`, `DIR` with a row for each file, its
-whole name and its size, as `SHELL.SVC       4480`, then the count, the bytes
+whole name and its size, as `SHELL.SVC       4224`, then the count, the bytes
 and the drive's free space (`DIR /W` is the ROM's wide listing), the
 `[more]` pager in `TYPE` and `DIR`, history on Up/Down and ^W/^N, and lines of
 several commands, joined by `!` (always go on) or ` &` (go on if the last one
 succeeded). The ROM's own prompt provides `CD`, `DIR`, `ERA`, `REN`,
 `TYPE`, `CON` and `UNLOAD`; TEC-OS's
-[docs/shell.md](https://github.com/jhlagado/tec-os/blob/787068ffea01/docs/shell.md)
-has the rest. The shell's approved eighteen-page allocation leaves 41,984 bytes of TPA
-with three drives (the word at `0006h` is `A500h`). The additional page costs 256 bytes compared
-with the earlier seventeen-page shell. Qualification remains in progress.
+[docs/shell.md](https://github.com/jhlagado/tec-os/blob/0ceac781c1fc/docs/shell.md)
+has the rest. The shell's eleven pages leave 43,776 bytes of TPA
+with three drives (the word at `0006h` is `AC00h`), seven pages more than the
+eighteen-page shell left. `DIR`, `COPY` and `SERVICES` live in an overlay the
+shell reads from its own file, on the drive it was loaded from, when one of them runs.
+Qualification remains in progress.
 The hosted build details identify the version currently available online.
 After `CD A:ASM`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
@@ -95,9 +97,8 @@ existing card. The firmware tests include a complete quest, a 54-room tour and
 the exact TED copy/edit/save/build/run/reopen exercise; these are emulator
 results. Physical-board and author gameplay review remain separate.
 
-Saved cards with `SHELL.SVC` retain that copy. Bare `MON3` also works with
-the previously published seventeen-page shell on this ROM. The full
-COM → SVC → CMD search order requires the current eighteen-page shell.
+Saved cards with `SHELL.SVC` retain that copy. The eleven-page shell needs a
+ROM at ABI 5.4 or later and refuses to install on an older one.
 
 The card line under SD card and the Drive list show each volume on the drive
 the running machine has it on, so after `CD D:GAMES` they show `D: GAMES`. A
@@ -171,9 +172,9 @@ from it and holds no copy of them. The viewer installs nothing of its own: the r
 as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
-inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`fdd21f5` for `TAS.COM` and the runner),
-jhlagado/ted (`70ff3df` for `TED.COM`), jhlagado/baza (`4204b18` for the compiler, `c49f477` for the runtime, `5f6b58d` for
-BOUNCE, `11af8c3` for `BAZ.COM`), jhlagado/tbug (`58e4054` for `TBUG.SVC` and `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
+inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
+jhlagado/ted (`28d9cc7` for `TED.COM`), jhlagado/baza (`4204b18` for the compiler, `c49f477` for the runtime, `5f6b58d` for
+BOUNCE, `ab997bd` for `BAZ.COM`), jhlagado/tbug (`ca2934c` for `TBUG.SVC`, `58e4054` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
