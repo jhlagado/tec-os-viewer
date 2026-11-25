@@ -693,6 +693,16 @@ unchanged (`06e8c0f1…`), so the guest observer's profile stands. Two complete
 Viewer strict runs at Viewer `6451793` and TEC-OS `787068f` pass 231 of 231
 across 38 files (peaks 880 and 862 MB), and the two TBUG browser tests pass.
 
+**The 11-page shell and BAZ 8655d81.** TEC-OS `093b07f` carries the 11-page
+`SHELL.SVC` (4,100 bytes, 4,224 on the card), with DIR, COPY and SERVICES an
+overlay read from the shell's own file, ABI 5.4 with TNPARSE, and a TPA of
+43,776 bytes with (0006h) at AC00h. `BAZ.COM` comes from Baza `8655d81`
+(20,864 bytes, `b4bceb5b…`). The ROM is `d21e1f6c…`. The guest observer's
+profile is restated to that ROM, with spans moved by address and SVCDSP grown
+by its TNPARSE dispatch, and the guest probes are bound to the new shell's
+symbol map. Two complete Viewer strict runs at Viewer `c1ce20b` and TEC-OS
+`093b07f` pass 231 of 231 across 38 files (peaks 930 and 922 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
