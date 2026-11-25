@@ -684,6 +684,15 @@ complete Viewer strict runs at Viewer `a89a4f2` and TEC-OS `7a5d932` pass 231
 of 231 across 38 files (peaks 874 and 834 MB), and the two TBUG browser
 tests pass.
 
+**TED 70ff3df and BAZ.** TEC-OS `787068f` carries TED from TED `70ff3df`
+(12,584 bytes), which builds with F9 and runs with F5, Fn+9 and Fn+5 on the
+matrix, and has retired `^T`; a `.BAS` runs under `BAZ.COM` from Baza
+`11af8c3` (18,048 bytes), the interpreter preview, now on SYSTEM and BASIC.
+The worked example builds and runs SAMPLE with F9 and F5. The ROM is
+unchanged (`06e8c0f1…`), so the guest observer's profile stands. Two complete
+Viewer strict runs at Viewer `6451793` and TEC-OS `787068f` pass 231 of 231
+across 38 files (peaks 880 and 862 MB), and the two TBUG browser tests pass.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
