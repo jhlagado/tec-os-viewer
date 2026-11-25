@@ -5,7 +5,7 @@ import { ROOT } from "../lib/root.mjs";
 
 /** The first asm block of the TBUG book's chapter FILE, as a CP/M text file. */
 export function bookSource(file) {
-  const page = readFileSync(resolve(ROOT, "tec-os/documentation/content/tbg", file), "utf8");
+  const page = readFileSync(resolve(ROOT, "tec-os/documentation/content/tbug", file), "utf8");
   const source = page.match(/```asm\n([\s\S]+?)```/)?.[1];
   if (!source) throw new Error(`the TBUG book's ${file} has no asm example`);
   return Buffer.from(source.replaceAll("\n", "\r\n") + "\x1a");
