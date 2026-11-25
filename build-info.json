@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "b0b1787ef5a689b3a60b9ffdc2e21019362ce1cf",
-  "firmwareCommit": "7a5d9320abf8f540f50094ca0eeee9edc66210e8",
+  "viewerCommit": "c4237be617bbd23701e759132ca852dca1cda33b",
+  "firmwareCommit": "787068ffea01914e542c6b2204efddbdd9fcb7da",
   "firmwareRomSha256": "06e8c0f1dcb8eea2a9b91936f4a2b6c98b2ea8b8b51c2fd8ba1388d47087f28a",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 684671,
-      "sha256": "13c80fca37e6cf5f3782d23ba7f00011f96e6a054dab98fe0fa348e570690f6b"
+      "bytes": 710318,
+      "sha256": "53e8c976f4170a1d90d6016492c2d7ba2687c450adad22e918c54978e71830e3"
     }
   },
   "defaultColumns": 40,
@@ -22,6 +22,7 @@
     "cardFiles": [
       "BAZA.COM",
       "BAZA.RTL",
+      "BAZ.COM",
       "TIMES.BAS",
       "BOUNCE.BAS",
       "CAVERNS.BAS",
@@ -30,19 +31,20 @@
       "BOUNCE.COM"
     ],
     "bazaCommit": "4204b18f44f1f87f2eddf624bb53558854f0cc4a",
-    "tedCommit": "dc0cd0f991aad439c78ed8b7d541afa88dff16c0",
+    "tedCommit": "70ff3df8299d7e61405a4440cbc8644caa3fd8d6",
     "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
-    "bazaRuntimeCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692"
+    "bazaRuntimeCommit": "c49f477e0e2138c46fa6e84f0bb158874733d692",
+    "bazCommit": "11af8c3215a86aa0d8186491cfe2e8db66b8e195"
   },
   "snake9": {
     "sourceSha256": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at b0b1787^ (a89a4f2, Native 7a5d932): 38 files, 231/231 each; TBUG browser tests 2/2; Native strict 1482/1482 twice at 7a5d932. b0b1787 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at c4237be^ (6451793, Native 787068f): 38 files, 231/231 each; TBUG browser tests 2/2; Native strict 1482/1482 twice at 787068f. c4237be adds only the qualification note.",
     "starterShell": "SHELL.SVC 18 pages; bare names run COM, then SVC, then CMD; built-ins first"
   },
-  "previousQualification": "0e9e270c79196c249b5930ff68715e1fe690b793",
+  "previousQualification": "b0b1787ef5a689b3a60b9ffdc2e21019362ce1cf",
   "tas": {
     "tasCommit": "fdd21f53c9fa13742eccc9f30339403c080ccfd1",
     "bytes": 10725,
@@ -99,7 +101,8 @@
       "TED.SES",
       "TED.ERR",
       "TED.PRJ"
-    ]
+    ],
+    "keys": "F9 builds, F5 runs (a .BAS under BAZ), F1 help, F3 another file; ^T retired"
   },
   "keyboard": {
     "functionKeys": "Fn+1-9 F1-F9, Fn+0 F10; F1-F4 ESC O P-S, F5-F10 ESC [ nn ~"
