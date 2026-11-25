@@ -60,9 +60,9 @@ test("TBG's Code, stepping and help keys work on the standard card", { timeout: 
   assert.match(await text(), /Ctrl\+Esc held breaks/);
   await key("Escape");
   await lcd("PC 010A");
-  for (let i = 0; i < 3 && !(await text()).includes("Quit? Enter yes"); i += 1) await key("Escape");
-  await lcd("Quit? Enter yes");
-  await key("Enter");
+  for (let i = 0; i < 3 && !(await text()).includes("Quit TBG? Y/N"); i += 1) await key("Escape");
+  await lcd("Quit TBG? Y/N");
+  await key("y");
   await page.focus("#tms");
   await prompt();
   await page.keyboard.type("tbg.svc rec\n", { delay: 80 });

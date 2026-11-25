@@ -116,9 +116,9 @@ test("TBG launches, steps and resumes in the Viewer", { timeout: 90_000 }, async
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
   await key("Escape"); // Back to the view before, then the question.
-  if (!(await page.locator("#lcd").textContent()).includes("Quit? Enter yes")) await key("Escape");
-  await lcd("Quit? Enter yes");
-  await key("Enter");
+  if (!(await page.locator("#lcd").textContent()).includes("Quit TBG? Y/N")) await key("Escape");
+  await lcd("Quit TBG? Y/N");
+  await key("y");
   await prompt();
   await page.locator("#lcd").click();
   await page.locator("#tms").click();
