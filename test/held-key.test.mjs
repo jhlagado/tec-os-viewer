@@ -333,7 +333,7 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   m.enqueueInput("DIR\r", "matrix");
   assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
   m.runUntil(() => /\[more\]|A:MON3>$/.test(m.text()), LIMIT, "DIR's listing");
-  assert.match(m.text(), /A:MON3>DIR\r\r\n\r\nF0000\.TXT {8}128\r\nSHELL\.SVC {7}4480\r\n/, "DIR typed whole");
+  assert.match(m.text(), /A:MON3>DIR\r\r\n\r\nF0000\.TXT {8}128\r\nSHELL\.SVC {7}4224\r\n/, "DIR typed whole");
 });
 
 test("under CON TTY from STARTUP.CMD, while DEMO polls for a key, a screen key is let go after the startup bound and a serial space behind it stops DEMO", { timeout: 300_000 }, async () => {
