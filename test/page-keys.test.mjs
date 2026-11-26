@@ -48,8 +48,8 @@ function conin(m, inputs) {
   return String.fromCharCode(...Array.from({ length: 6 }, (_, i) => m.read(0x300 + i)));
 }
 
-test("on the PICO9918 board, the page's Page Down and Shift+Left reach a program as TEC-OS sends them", () => {
-  const m = power(card(), "pico", 40);
+test("on the PICO9918 board, the page's Page Down and Shift+Left reach a program as TEC-OS sends them", { timeout: 600_000 }, async () => {
+  const m = power(await card(), "pico", 40);
   m.runUntil(() => m.ready(), 300_000_000, "the first prompt");
   const plain = (c) => keyInput(key(c), true);
   assert.equal(conin(m, [keyInput(key("PageDown"), true), plain("x"), plain("y")]), "\x1b[6~xy", "Page Down is ESC [ 6 ~");
