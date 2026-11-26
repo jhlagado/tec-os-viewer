@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "c9b8406a5c234bc35fb11fcde528fdddb88c855a",
-  "firmwareCommit": "658933d3b6f39867d093c5a664ee0e48a95e6dc8",
-  "firmwareRomSha256": "bf2bcef572cd6611ff90543e3cab60ff664fab0c9ea263cb64547f5a4f1e21ba",
+  "viewerCommit": "fbf1331d96ff24f38613d4fe08fbc45fd1c2acb5",
+  "firmwareCommit": "2e5473190bf390e5d0b570c9d6144db7499b4543",
+  "firmwareRomSha256": "bb429d10b011de989fc415281072a98304445f2b2335dc6ba85542931427593f",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 717850,
-      "sha256": "0de9bb81459c360009d85387c96486535e76df8acdbc3dbdb5cb0cbdaf5030eb"
+      "bytes": 724428,
+      "sha256": "6069d486252c49d3669991f1f6c5c600355889f765bab58266212852a8785892"
     }
   },
   "defaultColumns": 40,
@@ -30,21 +30,22 @@
       "CAVERNS.COM",
       "BOUNCE.COM"
     ],
-    "bazaCommit": "be3370cb941fea1155b10e1bc2b1f74f9459b426",
-    "tedCommit": "9cbb955e754d1fe6751f40ac961852552ce14d80",
+    "bazaCommit": "184db08b142baeb69ecb49a11e618a974060647e",
+    "tedCommit": "dbcffc12a2fc0e53dbf6bd0cea13281fc4b7429a",
     "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
-    "bazaRuntimeCommit": "be3370cb941fea1155b10e1bc2b1f74f9459b426",
-    "bazCommit": "be3370cb941fea1155b10e1bc2b1f74f9459b426"
+    "bazaRuntimeCommit": "184db08b142baeb69ecb49a11e618a974060647e",
+    "bazCommit": "184db08b142baeb69ecb49a11e618a974060647e"
   },
   "snake9": {
     "sourceSha256": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at c9b8406^ (05d4e80, Native 658933d): 39 files, 235/235 each; Native strict 1475/1475 twice at 658933d. c9b8406 adds only the qualification note.",
-    "starterShell": "SHELL.SVC 11 pages (4,224 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; bare names run COM, then SVC, then CMD; built-ins first"
+    "scope": "Two complete strict Viewer rounds at 57a4d36 and two at fbf1331 (Native 2e54731): 39 files, 236/236 each; Native strict 1483/1483 twice at 2e54731. fbf1331 adds only the qualification note.",
+    "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
+    "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "36a9f68a16e525b1a0e2259146631a4fb2908d94",
+  "previousQualification": "c9b8406a5c234bc35fb11fcde528fdddb88c855a",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -58,12 +59,14 @@
     "romFontBytes": 384,
     "fontWidthTable": 8,
     "glyphService": 17,
-    "abi": "5.4",
+    "abi": "5.6",
     "fontServiceRetired": 15,
     "rst": "services claim RST 7 only",
     "parserService": {
       "TNPARSE": 18,
-      "TNCOUNT": 19
+      "TNPAGE": 19,
+      "TNPRMPT": 20,
+      "TNCOUNT": 21
     }
   },
   "comLaunchVector": {
@@ -94,8 +97,8 @@
       "TBUG.HLP"
     ],
     "tpa": {
-      "withShell": 43776,
-      "bdosVector": "AC00h"
+      "withShell": 44288,
+      "bdosVector": "AE00h"
     },
     "tbugCommit": "ca2934ca9cba02efd659bc44de21a0c3fd6c4bbe",
     "tbugHelpCommit": "58e405469cd657110eb8afff97a142b41b8a6e10"
@@ -110,19 +113,20 @@
     "document": {
       "onCard": true,
       "maxDocument": 65535,
-      "bytes": 14919,
-      "sha256": "94e3ba36f470d13e14b593cba9f48c47013fee85c2af0ecbe32598418bdce130"
+      "bytes": 16199,
+      "sha256": "350845670175557ef655e55e4bc85b1f95c189898b97f37b5564109b727438d3"
     }
   },
   "keyboard": {
     "functionKeys": "Fn+1-9 F1-F9, Fn+0 F10; F1-F4 ESC O P-S, F5-F10 ESC [ nn ~",
     "pageKeys": "Fn+Up/Down/Left/Right: Page Up ESC [5~, Page Down ESC [6~, Home ESC [H, End ESC [F",
     "shiftArrows": "Shift+arrow: ESC [1;2A-D as xterm sends it; Ctrl+arrow the plain arrow",
-    "option": "Option (Alt) with a letter sends Ctrl with it; Command is the browser's"
+    "option": "Option (Alt) with a letter sends Ctrl with it; Command is the browser's",
+    "backTab": "Shift+Tab: ESC [Z, as Shift with key 9 on the matrix and by serial; Tab alone and with Ctrl 09h"
   },
   "lcdKeys": "F1-F10 on the LCD reach the matrix as Fn with a digit (F10 as Fn+0); click the screen to leave the LCD",
   "rom": {
-    "used": 15712,
-    "free": 672
+    "used": 16144,
+    "free": 240
   }
 }
