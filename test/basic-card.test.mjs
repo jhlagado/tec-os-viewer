@@ -25,7 +25,8 @@
 // as ERA does. A card whose SHELL.SVC
 // was taken off, which keeps today's
 // MON3.SVC and so isn't upgraded,
-// boots to the ROM's bare prompt, which
+// boots to the ROM's bare prompt,
+// A:SYSTEM>, which
 // refuses DEL and takes DIR!TYPE as one
 // word.
 // TEC-OS holds a program's writes in
@@ -209,14 +210,14 @@ test("in the page's machine, a card whose SHELL.SVC was taken off boots to the R
   a.erase("SHELL.SVC");
   a.write("STARTUP.CMD", Buffer.from("GLCD.SVC\r\n\x1a", "latin1"));
   const m = power(image, "pico", 40);
-  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A>"), LIMIT, "the prompt");
+  m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:SYSTEM>"), LIMIT, "the prompt");
   assert.equal(Buffer.from(driveA(image).read("STARTUP.CMD", { text: true })).toString("latin1"), "CON PICO 40\n", "the page's startup file, with no SHELL.SVC line");
   let mark = m.output.length;
-  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A>$/.test(m.text(mark)));
+  keys(m, "del times.bas\r", "DEL", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DEL\?/, "DEL is refused");
   assert.ok(names(image).includes("TIMES.BAS"), "TIMES.BAS stays");
   mark = m.output.length;
-  keys(m, "dir!type times.bas\r", "DIR!TYPE", () => m.ready() && /A>$/.test(m.text(mark)));
+  keys(m, "dir!type times.bas\r", "DIR!TYPE", () => m.ready() && /A:SYSTEM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DIR!TYPE\?/, "the line is one word");
   assert.deepEqual(m.violations, []);
 });
