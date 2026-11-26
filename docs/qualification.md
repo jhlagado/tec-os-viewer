@@ -710,6 +710,18 @@ unchanged (`d21e1f6c…`), so the guest observer's profile and the shell
 binding stand. Two complete Viewer strict runs at Viewer `976acd6` and TEC-OS
 `b539be3` pass 231 of 231 across 38 files (peaks 923 and 866 MB).
 
+**The page keys.** TEC-OS `658933d` gives the matrix Page Up, Page Down,
+Home and End on Fn with an arrow and xterm's Shift arrows, from one table of
+the tails after ESC (ROM `bf2bcef5…`, 15,712 bytes used, 672 free). It takes
+TED `9cbb955` (`94e3ba36…`, 14,919 bytes), TED with its document on the
+card, drops `TEDP.COM` from SYSTEM, and takes Baza `be3370c` for BAZA, its
+runtime and BAZ, with CAVERNS and BOUNCE rebuilt. The Viewer sends the page
+keys and Shift arrows as those matrix chords, and Option with a letter as Ctrl
+with it. The guest observer's thirteen moved spans are restated: their call
+targets and table addresses move 30 bytes, and their instructions do not;
+the shell binding stands. Two complete Viewer strict runs at Viewer `05d4e80`
+and TEC-OS `658933d` pass 235 of 235 across 39 files (peaks 870 and 923 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
