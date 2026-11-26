@@ -1,7 +1,7 @@
 // Load older cards in Chromium. Replace
 // PICO.SVC and its startup line with
 // CON PICO 40 after SHELL.SVC's, then
-// check A> and the stored image. Reject
+// check A:SYSTEM> and the stored image. Reject
 // .DRV cards. A card stored before the
 // shell gets the starter card's
 // SHELL.SVC and MON3.SVC and keeps the
@@ -220,10 +220,10 @@ async function browse(t) {
   return { browser, url: `http://127.0.0.1:${server.address().port}/` };
 }
 
-/** Wait until PAGE's serial pane shows NOTE in brackets, then for A>. */
+/** Wait until PAGE's serial pane shows NOTE in brackets, then for the bare A:SYSTEM>. */
 async function noteThenPrompt(page, note) {
   await page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), note, { timeout: 60_000 });
-  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A>\s*$/.test(l)), null, { timeout: 60_000 });
+  await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:SYSTEM>\s*$/.test(l)), null, { timeout: 60_000 });
 }
 
 export async function fullDirectoryRecovery(t) {
