@@ -7,17 +7,17 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`658933d3b6f39867d093c5a664ee0e48a95e6dc8`, with F1-F10 on Fn with a
+`2e5473190bf390e5d0b570c9d6144db7499b4543`, with the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
 digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG from tbug `ca2934c` with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
-the squeezed ROM with a minimal CCP and three drives, `SHELL.SVC`, the
-11-page resident shell, whose `DIR`, `COPY` and `SERVICES` are read from its file as an overlay, with `CD`, the sized `DIR` and the prompt
-`A:SYSTEM>`, TED from TED `9cbb955` with F9 to build, F5 to run and its language table and its
+the squeezed ROM with a small CCP and three drives, `SHELL.SVC`, the
+9-page resident shell, whose `DIR`, `COPY` and `SERVICES` are read from its file as an overlay, with `CD`, the sized `DIR` and the prompt
+`A:SYSTEM>`, TED from TED `dbcffc1` with F9 to build, F5 to run and its language table and its
 session in `TED.SES`, `TED.ERR` and `TED.PRJ`, which keeps
 the document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`
-with chained lines and Intel HEX output, BAZA from Baza `be3370c` with
-its runtime from the same commit, BOUNCE from `5f6b58d`, BAZ, the interpreter preview, from `be3370c`, and the 19-page
+with chained lines and Intel HEX output, BAZA from Baza `184db08` with
+its runtime from the same commit, BOUNCE from `5f6b58d`, BAZ, the interpreter preview, from `184db08`, and the 19-page
 `MON3.SVC`. TEC-OS builds one card, the starter card, of five
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with a row of name and size for
@@ -67,7 +67,7 @@ The rendering, keyboard and controls sections in `main.mjs` contain the page's
 event handlers. Screen input uses the matrix-keyboard route and serial-terminal
 input uses the serial route. [src/keys.mjs](../src/keys.mjs) says what each
 browser key sends, an arrow on the screen being the matrix's own arrow key,
-Shift with an arrow and the page keys that arrow key held with Shift or Fn
+Shift with an arrow or Tab and the page keys that key held with Shift or Fn
 (`queueInput` puts them in the machine's queue by `enqueueKey`),
 and moves the queued keys on as the frame loop steps the machine. A matrix key
 stays down until TEC-OS's scan has read it, but TEC-OS scans the matrix only

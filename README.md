@@ -14,7 +14,7 @@ Click the RGB panel to route arrow keys to the matrix keyboard.
 Page Up, Page Down, Home and End reach the machine as Fn with an arrow (on a
 Mac those keys are fn with an arrow already), which TEC-OS sends as
 `ESC [ 5 ~`, `ESC [ 6 ~`, `ESC [ H` and `ESC [ F`; Shift with an arrow is
-`ESC [ 1 ; 2` and the arrow's letter. Option (Alt) with a letter is Ctrl with it,
+`ESC [ 1 ; 2` and the arrow's letter, and Shift with Tab is back-tab, `ESC [ Z`. Option (Alt) with a letter is Ctrl with it,
 for the Ctrl keys macOS keeps for itself.
 To rebuild the game, run `TAS SNAKE9 SNAKE9.BIN` from the TEC-OS prompt.
 
@@ -26,15 +26,15 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `658933d`, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is TEC-OS `2e54731`, with the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, Page Up, Page Down, Home and End on Fn with an arrow and Shift with an arrow sent as xterm sends it, with the five-volume starter card (SYSTEM, ASM,
 BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `ca2934c`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
-40-column console, the squeezed ROM with a minimal CCP and three drives,
-`SHELL.SVC`, the resident shell, in 11 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from TED `9cbb955`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ` and its document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`,
-which takes several statements on a line and writes Intel HEX, and BAZA from Baza `be3370c` with its runtime from the same commit
-and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `be3370c`, with the card's `BOUNCE.BAS` and
+40-column console, the squeezed ROM with a small CCP and three drives,
+`SHELL.SVC`, the resident shell, in 9 pages, `MON3.SVC` for MON-3's programs,
+in 19 pages, TED from TED `dbcffc1`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ` and its document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`,
+which takes several statements on a line and writes Intel HEX, and BAZA from Baza `184db08` with its runtime from the same commit
+and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `184db08`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 14 MiB, of six volumes on three drives: SYSTEM on A:, WORK (8 MiB,
@@ -178,7 +178,7 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
-jhlagado/ted (`9cbb955` for `TED.COM`), jhlagado/baza (`be3370c` for the compiler, the runtime and `BAZ.COM`, `5f6b58d` for
+jhlagado/ted (`dbcffc1` for `TED.COM`), jhlagado/baza (`184db08` for the compiler, the runtime and `BAZ.COM`, `5f6b58d` for
 BOUNCE), jhlagado/tbug (`ca2934c` for `TBUG.SVC`, `58e4054` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
