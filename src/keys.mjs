@@ -92,13 +92,18 @@ export const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\
 const MATRIX_KEY = { ArrowUp: 3, ArrowDown: 4, ArrowLeft: 5, ArrowRight: 6, PageUp: 3, PageDown: 4, Home: 5, End: 6 };
 const SHIFT = 0, FN = 2;
 
+/** Back-tab, and key 9, the matrix's Tab, which TEC-OS makes back-tab with Shift. */
+const BACKTAB = "\x1b[Z", TAB_KEY = 9;
+
 /**
  * The text a browser key event E sends,
  * or null for none. Option (Alt) with a
  * letter is Ctrl with it, read from
  * E.code, since on a Mac Option makes an
  * accented letter and macOS takes some
- * Ctrl keys for itself.
+ * Ctrl keys for itself. Shift with Tab
+ * is xterm's back-tab, ESC [ Z, as the
+ * matrix sends it.
  */
 export function keyText(e) {
   if (e.metaKey) return null;
@@ -109,7 +114,7 @@ export function keyText(e) {
   if (e.key === "Enter") return "\r";
   if (e.key === "Backspace") return "\b";
   if (e.key === "Escape") return "\x1b";
-  if (e.key === "Tab") return "\t";
+  if (e.key === "Tab") return e.shiftKey && !e.ctrlKey ? BACKTAB : "\t";
   if (e.key === "Delete") return "\x7f";
   if (ARROWS[e.key]) return e.shiftKey ? `\x1b[1;2${ARROWS[e.key]}` : `\x1b[${ARROWS[e.key]}`;
   if (PAGE_KEYS[e.key]) return PAGE_KEYS[e.key];
@@ -127,14 +132,15 @@ export function keyText(e) {
  * matrix an arrow is the matrix's arrow
  * key, and any other single key a
  * matrix key; the rest goes by serial.
- * Shift with an arrow and the page keys
- * are a matrix key held with a modifier,
+ * Shift with an arrow or Tab, and the page
+ * keys, are a matrix key held with a modifier,
  * KEY with MOD, which no character names.
  */
 export function keyInput(e, matrix) {
   let text = keyText(e);
   if (text === null) return null;
   if (matrix && PAGE_KEYS[e.key]) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: FN };
+  if (matrix && text === BACKTAB) return { text, via: "matrix", key: TAB_KEY, mod: SHIFT };
   if (matrix && MATRIX_ARROWS[e.key] && e.shiftKey) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: SHIFT };
   if (matrix && MATRIX_ARROWS[e.key]) text = MATRIX_ARROWS[e.key];
   return { text, via: matrix && text.length === 1 ? "matrix" : "serial" };

@@ -1,4 +1,4 @@
-// The page keys, Shift with an arrow and Option with a letter: what the
+// The page keys, Shift with an arrow or Tab and Option with a letter: what the
 // page sends for them, by serial and on the matrix, and what TEC-OS gives
 // a program for them through BIOS CONIN.
 import { test } from "node:test";
@@ -25,6 +25,14 @@ test("Shift with an arrow is ESC [ 1 ; 2 and its letter by serial, and Shift wit
   }
 });
 
+test("Shift with Tab is xterm's back-tab, ESC [ Z, by serial, and Shift with key 9 on the matrix; Tab alone and with Ctrl stays 09h", () => {
+  assert.deepEqual(keyInput(key("Tab", { shiftKey: true }), false), { text: "\x1b[Z", via: "serial" }, "Shift+Tab by serial");
+  assert.deepEqual(keyInput(key("Tab", { shiftKey: true }), true), { text: "\x1b[Z", via: "matrix", key: 9, mod: 0 }, "Shift+Tab on the matrix");
+  assert.deepEqual(keyInput(key("Tab"), true), { text: "\t", via: "matrix" }, "Tab on the matrix");
+  assert.equal(keyText(key("Tab")), "\t", "Tab by serial");
+  assert.equal(keyText(key("Tab", { shiftKey: true, ctrlKey: true })), "\t", "Ctrl+Shift+Tab");
+});
+
 test("Option (Alt) with a letter is Ctrl with it, read from the key's code, so a Mac's accented letter doesn't matter", () => {
   assert.equal(keyText(key("å", { altKey: true, code: "KeyA" })), "\x01", "Option+A on a Mac");
   assert.equal(keyText(key("∫", { altKey: true, code: "KeyB" })), "\x02");
@@ -48,12 +56,13 @@ function conin(m, inputs) {
   return String.fromCharCode(...Array.from({ length: 6 }, (_, i) => m.read(0x300 + i)));
 }
 
-test("on the PICO9918 board, the page's Page Down and Shift+Left reach a program as TEC-OS sends them", { timeout: 600_000 }, async () => {
+test("on the PICO9918 board, the page's Page Down, Shift+Left and Shift+Tab reach a program as TEC-OS sends them", { timeout: 600_000 }, async () => {
   const m = power(await card(), "pico", 40);
   m.runUntil(() => m.ready(), 300_000_000, "the first prompt");
   const plain = (c) => keyInput(key(c), true);
   assert.equal(conin(m, [keyInput(key("PageDown"), true), plain("x"), plain("y")]), "\x1b[6~xy", "Page Down is ESC [ 6 ~");
   assert.equal(conin(m, [keyInput(key("ArrowLeft", { shiftKey: true }), true)]), "\x1b[1;2D", "Shift+Left is ESC [ 1 ; 2 D");
   assert.equal(conin(m, [keyInput(key("End"), true), plain("a"), plain("b"), plain("c")]), "\x1b[Fabc", "End is ESC [ F");
+  assert.equal(conin(m, [keyInput(key("Tab", { shiftKey: true }), true), plain("t"), plain("u"), plain("v")]), "\x1b[Ztuv", "Shift+Tab is ESC [ Z");
   assert.deepEqual(m.violations, []);
 });
