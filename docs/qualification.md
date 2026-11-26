@@ -722,6 +722,22 @@ targets and table addresses move 30 bytes, and their instructions do not;
 the shell binding stands. Two complete Viewer strict runs at Viewer `05d4e80`
 and TEC-OS `658933d` pass 235 of 235 across 39 files (peaks 870 and 923 MB).
 
+**The CCP's pager, history and prompt.** TEC-OS `2e54731` moves the pager,
+a 96-byte line history, `CLS` and the volume label into the CCP (ABI 5.6,
+`TNPAGE` and `TNPRMPT`), so the bare prompt reads `A:SYSTEM>` as the
+shell's does, and Shift with Tab on the matrix is back-tab, `ESC [ Z`
+(ROM `bb429d10…`, 16,144 bytes used, 240 free). `SHELL.SVC` is 9 pages
+(3,462 bytes, `e8f707b4…`). It takes TED `dbcffc1` (`35084567…`, 16,199
+bytes) and Baza `184db08` for BAZA (`bd937973…`), its runtime
+(`27196de6…`) and BAZ, with CAVERNS (`7ad164db…`, 38,400 bytes) and BOUNCE
+rebuilt. The Viewer sends Shift with Tab as back-tab by serial too, and as
+Shift with key 9 on the matrix. The guest observer's fourteen spans are
+restated at the new ROM; every hook point it acts on is the same
+instruction, and COLD's second span now holds the history ring's start.
+The guest probes are bound to the 9-page shell's symbol map. Two complete
+Viewer strict runs at Viewer `57a4d36` and TEC-OS `2e54731` pass 236 of 236
+across 39 files (peaks 871 and 874 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
