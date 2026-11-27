@@ -1,5 +1,5 @@
 {
-  "viewerCommit": "8d7e623861c65359073828dbc23bf21255a2cfaa",
+  "viewerCommit": "e91bbe245922f66dd628b835cd927c4773d0f0dc",
   "firmwareCommit": "b5af50574eab03da1efeb0ede138ac6a13d057a2",
   "firmwareRomSha256": "bb429d10b011de989fc415281072a98304445f2b2335dc6ba85542931427593f",
   "publication": "standalone-demo",
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 725497,
-      "sha256": "eb0eadd176f2d67ed2b1d922dcd35fb7ad52bdbb9e0479ee8364a9639a64f54e"
+      "bytes": 725549,
+      "sha256": "43b83eb7a1070eccf3e7086b74e239f4970d868a830b94196c2d3580ca85b770"
     }
   },
   "defaultColumns": 40,
@@ -41,11 +41,11 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at 82468a5 and two at 8d7e623 (Native b5af505, TBUG a4d1da8): 39 files, 236/236 each, with test/tbg 4/4 after each at 8d7e623; Native strict 1483/1483 twice at b5af505. Also two strict rounds at 12ab9ff (one keyboard, Native a376a76), 236/236 each. 8d7e623 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 6d2cb08 and two at e91bbe2 (Native b5af505): 40 files, 238/238 each, with test/tbg 4/4 after each; Native strict 1483/1483 twice at b5af505. e91bbe2 adds only the qualification note and a README line.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "31e8d23c87cd5bfa403881bdc116a6b488b02d84",
+  "previousQualification": "8d7e623861c65359073828dbc23bf21255a2cfaa",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -124,7 +124,8 @@
     "shiftArrows": "Shift+arrow: ESC [1;2A-D as xterm sends it; Ctrl+arrow the plain arrow",
     "option": "Option (Alt) with a letter sends Ctrl with it; Command is the browser's",
     "backTab": "Shift+Tab: ESC [Z, as Shift with key 9 on the matrix and by serial; Tab alone and with Ctrl 09h",
-    "matrix": "One keyboard, as the TEC-1G has one matrix: keys typed anywhere on the page but the serial pane, the phone keyboard and the page controls are matrix keys; a held key is one press and lifts at its keyup"
+    "matrix": "One keyboard, as the TEC-1G has one matrix: keys typed anywhere on the page but the serial pane, the phone keyboard and the page controls are matrix keys; a held key is one press and lifts at its keyup",
+    "ctrlLetters": "Ctrl, Option or the phone keyboard’s Ctrl with a letter is that letter’s matrix key held with Ctrl, so ^C breaks and copies in TED; by serial its control code"
   },
   "lcdKeys": "F1-F10 reach the matrix as Fn with a digit (F10 as Fn+0), whichever display was clicked",
   "rom": {
