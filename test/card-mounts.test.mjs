@@ -70,6 +70,14 @@ test("a reset with GAMES on A keeps GAMES and its own startup, and CD A:SYSTEM b
   t.after(() => browser.close());
   const { context, page, errors } = await open(browser, `http://127.0.0.1:${server.address().port}/`, await card(), "tms", "40");
   const shellPrompt = (name) => page.waitForFunction((n) => globalThis.tecos.screen().some((l) => new RegExp(`^A:${n}>\\s*$`).test(l)), name, { timeout: 60_000 });
+  // After a reset, the startup is done when its last line, GLCD.SVC,
+  // has been echoed and the bare prompt is the screen's last line. The
+  // CCP prints a bare prompt before each startup line's echo too, and a
+  // key typed then is lost to the warm boot that ends the service's load.
+  const startupDone = (name) => page.waitForFunction((n) => {
+    const lines = globalThis.tecos.screen().filter((l) => l.trim() !== "");
+    return lines.some((l) => l.startsWith(`A:${n}>GLCD.SVC`)) && new RegExp(`^A:${n}>\\s*$`).test(lines.at(-1) ?? "");
+  }, name, { timeout: 60_000 });
   await shellPrompt("SYSTEM");
   await page.focus("#tms");
   await page.keyboard.type("cd a:games\n");
@@ -79,7 +87,7 @@ test("a reset with GAMES on A keeps GAMES and its own startup, and CD A:SYSTEM b
   await page.click("#reset");
   // The boot banner names A:'s volume, A: GAMES, which no command before the reset prints.
   await page.waitForFunction(() => globalThis.tecos.screen().some((l) => /^A: GAMES\s*$/.test(l)), null, { timeout: 60_000 });
-  await shellPrompt("GAMES");
+  await startupDone("GAMES");
   assert.match(await page.locator("#cardinfo").textContent(), /A: GAMES/, "reset retains the changed selection");
   await page.focus("#tms");
   await page.keyboard.type("cd a:system\n");
