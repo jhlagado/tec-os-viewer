@@ -10,7 +10,8 @@ before they appear on that site.
 
 The starter card includes Tutankhamen's Snake. At the TEC-OS prompt,
 enter `MON3` (or `MON3.SVC`), then `LOAD SNAKE9.BIN` and `GO` at `MON3>`.
-Click the RGB panel to route arrow keys to the matrix keyboard.
+The page has one keyboard, as the TEC-1G has one matrix: arrow keys reach the
+matrix keyboard from anywhere on the page but the serial pane and its controls.
 Page Up, Page Down, Home and End reach the machine as Fn with an arrow (on a
 Mac those keys are fn with an arrow already), which TEC-OS sends as
 `ESC [ 5 ~`, `ESC [ 6 ~`, `ESC [ H` and `ESC [ F`; Shift with an arrow is
@@ -26,9 +27,9 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `a376a76`, with BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is TEC-OS `b5af505`, with TBUG from tbug `a4d1da8` (no key repeats, the first stop in Code), BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, Page Up, Page Down, Home and End on Fn with an arrow and Shift with an arrow sent as xterm sends it, with the five-volume starter card (SYSTEM, ASM,
-BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `ca2934c`, with its symbols built in, which builds with
+BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `a4d1da8`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a small CCP and three drives,
 `SHELL.SVC`, the resident shell, in 9 pages, `MON3.SVC` for MON-3's programs,
@@ -179,7 +180,7 @@ as TEC-OS's build at the pin gives them.
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
 jhlagado/ted (`b2f98bc` for `TED.COM`), jhlagado/baza (`3f31488` for the compiler, the runtime and `BAZ.COM`, `7beac04` for
-BOUNCE), jhlagado/tbug (`ca2934c` for `TBUG.SVC`, `58e4054` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
+BOUNCE), jhlagado/tbug (`a4d1da8` for `TBUG.SVC` and `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -233,13 +234,15 @@ the native storage transaction completes.
 
 The page's card carries TBUG.SVC and TBUG.HLP on every A: volume, and its ROM,
 TEC-OS ABI 5.3, has the COMVEC word that `TBUG.SVC ARM` uses. At the prompt,
-type `UNLOAD`, then `TBUG.SVC NAME` for a COM on the card, and
-click the character LCD. While the LCD has focus, its keys go to the matrix
-with their Shift or Ctrl, so Tab and Shift+Tab move between TBUG's views, and
-F1 to F10 go as Fn with a digit (F10 as Fn+0), as on the TEC-1G: F5 runs,
-F6, F7 and F8 step out, over and into. On a Mac, press fn with the F-key
-unless the keyboard sends standard function keys. Click the screen to leave
-the LCD. The [TBUG book](https://tec-os.org/tbug/) walks through a first
+type `UNLOAD`, then `TBUG.SVC NAME` for a COM on the card. TBUG's first
+stop opens in Code, and its views run Code, Registers, Symbols, Stack and
+Memory. Keys typed anywhere on the page but the serial pane, the phone
+keyboard and the page's controls go to the matrix with their Shift or Ctrl,
+whichever display was clicked, so Tab and Shift+Tab move between TBUG's
+views, and F1 to F10 go as Fn with a digit (F10 as Fn+0), as on the TEC-1G:
+F5 runs, F6, F7 and F8 step out, over and into. On a Mac, press fn with the
+F-key unless the keyboard sends standard function keys. The matrix doesn't
+repeat: a key held is one press, and it lifts at its keyup. The [TBUG book](https://tec-os.org/tbug/) walks through a first
 session.
 
 The TBUG browser tests are outside `npm test`. Run them with

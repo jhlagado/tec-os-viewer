@@ -7,8 +7,8 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`a376a76590580294792e7bff34684c93a28b0cbb`, with BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
-digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG from tbug `ca2934c` with its symbols built in,
+`b5af50574eab03da1efeb0ede138ac6a13d057a2`, with TBUG from tbug `a4d1da8` (no key repeats, the first stop in Code), BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
+digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
 the squeezed ROM with a small CCP and three drives, `SHELL.SVC`, the
@@ -64,13 +64,17 @@ uses IndexedDB, a separate browser database.
 ## 3. Connect the controls to the display
 
 The rendering, keyboard and controls sections in `main.mjs` contain the page's
-event handlers. Screen input uses the matrix-keyboard route and serial-terminal
-input uses the serial route. [src/keys.mjs](../src/keys.mjs) says what each
+event handlers. The page has one keyboard, as the TEC-1G has one matrix: a key
+typed anywhere on the page takes the matrix-keyboard route, whichever display
+was clicked, and only the serial terminal, the phone keyboard and the page's
+controls keep their keys, the serial terminal by the serial route. [src/keys.mjs](../src/keys.mjs) says what each
 browser key sends, an arrow on the screen being the matrix's own arrow key,
 Shift with an arrow or Tab and the page keys that key held with Shift or Fn
 (`queueInput` puts them in the machine's queue by `enqueueKey`),
 and moves the queued keys on as the frame loop steps the machine. A matrix key
-stays down until TEC-OS's scan has read it, but TEC-OS scans the matrix only
+stays down while it is held, and once let go until TEC-OS's scan has read it,
+or a twentieth of a second after another reader such as TBUG has read it; a
+key held is one press, and keys typed together queue. TEC-OS scans the matrix only
 while CON: is CRT: or UC1:. Under `CON TTY` or `CON BAT` the page holds a
 matrix key for a tenth of a second and then lets it go, so a key nothing reads
 doesn't hold up the keys behind it, and a key a MON-3 program read, whose
