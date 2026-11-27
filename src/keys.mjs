@@ -101,7 +101,16 @@ export const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\
  * already, so the Mac's keys carry through.
  */
 const MATRIX_KEY = { ArrowUp: 3, ArrowDown: 4, ArrowLeft: 5, ArrowRight: 6, PageUp: 3, PageDown: 4, Home: 5, End: 6 };
-const SHIFT = 0, FN = 2;
+const SHIFT = 0, CTRL = 1, FN = 2;
+
+/**
+ * Ctrl with a letter is that letter's key
+ * held with Ctrl: A to Z are keys 36 to 61,
+ * so Ctrl's code N is key 35+N. As text,
+ * 01h to 07h would be keys 1 to 7, which
+ * are Ctrl, Fn, the arrows and Caps Lock.
+ */
+const CTRL_LETTER = 35;
 
 /** Back-tab, and key 9, the matrix's Tab, which TEC-OS makes back-tab with Shift. */
 const BACKTAB = "\x1b[Z", TAB_KEY = 9;
@@ -150,9 +159,11 @@ export function keyText(e) {
 export function keyInput(e, matrix) {
   let text = keyText(e);
   if (text === null) return null;
-  if (matrix && PAGE_KEYS[e.key]) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: FN };
-  if (matrix && text === BACKTAB) return { text, via: "matrix", key: TAB_KEY, mod: SHIFT };
-  if (matrix && MATRIX_ARROWS[e.key] && e.shiftKey) return { text, via: "matrix", key: MATRIX_KEY[e.key], mod: SHIFT };
+  const held = (key, mod) => ({ text, via: "matrix", key, mod });
+  if (matrix && text > "\0" && text < "\x1b" && e.key.length === 1) return held(CTRL_LETTER + text.charCodeAt(0), CTRL);
+  if (matrix && PAGE_KEYS[e.key]) return held(MATRIX_KEY[e.key], FN);
+  if (matrix && text === BACKTAB) return held(TAB_KEY, SHIFT);
+  if (matrix && MATRIX_ARROWS[e.key] && e.shiftKey) return held(MATRIX_KEY[e.key], SHIFT);
   if (matrix && MATRIX_ARROWS[e.key]) text = MATRIX_ARROWS[e.key];
   return { text, via: matrix && text.length === 1 ? "matrix" : "serial" };
 }
