@@ -753,6 +753,14 @@ boot that ends the service's load. Two complete Viewer strict runs at
 Viewer `da037c7` and TEC-OS `36bb11e` pass 236 of 236 across 39 files
 (peaks 878 and 917 MB).
 
+**BOUNCE titled BAZ BASIC.** TEC-OS `a376a76` takes `BOUNCE.BAS` from Baza
+`7beac04`, whose title and opening `REM` name BAZ BASIC, the language,
+rather than BAZA (`b886676a…`, 5,187 bytes). The card's adapted copy is
+`4d0bbdd8…` (5,368 bytes) and its `BOUNCE.COM` `bd9e1b38…`, still 16,640
+bytes; the title is drawn at 1802h as before. Nothing else on the card
+changes. Two complete Viewer strict runs at Viewer `6baa947` and TEC-OS
+`a376a76` pass 236 of 236 across 39 files (peaks 892 and 867 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
