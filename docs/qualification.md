@@ -812,6 +812,13 @@ normalized module is 155,011 bytes, 15 under the 155,026-byte bound, as
 runs at `6d2cb08` pass 238 of 238 across 40 files (peaks 733 and 759 MB), and
 `test/tbg` passes 4 of 4 after each (peaks 608 and 617 MB).
 
+**TEC-OS a738e2d.** TEC-OS `a738e2d` moves the books to jhlagado/tec-os-books,
+gives `tools/capture.mjs` `@fn` and `@arrow`, and has its host model type
+01h, 02h and 07h on the matrix as Ctrl with A, B and G rather than the Ctrl,
+Fn and Caps Lock keys; 03h to 06h stay the arrow keys. The ROM, the card, the
+recipe and every pinned file are those of `b5af505`, so only the gitlink
+moves. The page already sends Ctrl with a letter as the letter's key.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
