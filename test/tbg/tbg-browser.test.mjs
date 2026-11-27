@@ -88,7 +88,13 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
   await key("Shift+Tab"); // And back to Code.
   await lcd(">→0103 PUSH HL");
+  // Code keeps its window while PC stays in it, and a label row never
+  // takes the bottom row, so put PC on the top row for TAKE:'s row.
+  await key("g");
+  for (const ch of "103") await key(ch);
+  await key("Enter");
   await lcd("TAKE:"); // STEP.TBG's label row.
+  await lcd(">→0103 PUSH HL");
   await key("ArrowDown");
   await key("Space"); // Space: a breakpoint.
   await lcd(">□0104 POP DE");
@@ -136,7 +142,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   {
     await page.focus("#tms");
     await page.keyboard.type("tbug.svc line\n", { delay: 80 });
-    await lcd("PC 0100");
+    await entry(); // The first stop, in whichever view TBUG opens.
     await page.locator("#lcd").click();
     await key("F5"); // A line read under TBUG is the program's own.
     await page.focus("#tms");
