@@ -817,7 +817,17 @@ gives `tools/capture.mjs` `@fn` and `@arrow`, and has its host model type
 01h, 02h and 07h on the matrix as Ctrl with A, B and G rather than the Ctrl,
 Fn and Caps Lock keys; 03h to 06h stay the arrow keys. The ROM, the card, the
 recipe and every pinned file are those of `b5af505`, so only the gitlink
-moves. The page already sends Ctrl with a letter as the letter's key.
+moves. The page already sends Ctrl with a letter as the letter's key. The
+host model's change adds 76 bytes to the page's module, 61 over the bound;
+Display, Columns and Power now share one `notRestarted` for their restart
+message (Viewer `e07587b`), which saves 149, leaving the module at 154,938
+bytes, 88 under. `test/tbg` read the book's `STEP.ASM` from
+`tec-os/documentation`, which a738e2d no longer has; it now keeps the book's
+listing as `test/tbg/step.asm`, from tec-os-books `1896e6e` (Viewer
+`8c82ea5`), identical to the copy in TEC-OS `b5af505`. Two complete Viewer
+strict runs at `e07587b` pass 238 of 238 across 40 files (peaks 800 and
+767 MB), and `test/tbg` passes 4 of 4 at `7410c5e`, which merges `8c82ea5`
+(peak 686 MB).
 
 ## Restored Caverns prose and current firmware
 
