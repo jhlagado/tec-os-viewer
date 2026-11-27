@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "7e561367ac29411a94b6345eec380bc3196df360",
-  "firmwareCommit": "36bb11e42a52a7dab849915a39747bc0043ade6b",
+  "viewerCommit": "31e8d23c87cd5bfa403881bdc116a6b488b02d84",
+  "firmwareCommit": "a376a76590580294792e7bff34684c93a28b0cbb",
   "firmwareRomSha256": "bb429d10b011de989fc415281072a98304445f2b2335dc6ba85542931427593f",
   "publication": "standalone-demo",
   "payloads": {
@@ -14,7 +14,7 @@
     },
     "index.html": {
       "bytes": 725508,
-      "sha256": "bef35b18d681762f83b61030d7e86a4b401793ff0ab704849d82cb13438431a3"
+      "sha256": "091b735be07690f7c080d9fe7021629d2f9341a1f6d2b058063196f3261dabf2"
     }
   },
   "defaultColumns": 40,
@@ -32,7 +32,7 @@
     ],
     "bazcCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee",
     "tedCommit": "b2f98bce48e1d1b8f8e19f1532c3a1e91ecce74f",
-    "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
+    "bounceCommit": "7beac04497888664c7d092b9d168ef538c0d9346",
     "bazcRuntimeCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee",
     "bazCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee"
   },
@@ -41,11 +41,11 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at da037c7 and two at 7e56136 (Native 36bb11e): 39 files, 236/236 each; Native strict 1483/1483 twice at 36bb11e. 7e56136 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 6baa947 and two at 31e8d23 (Native a376a76): 39 files, 236/236 each; Native strict 1483/1483 twice at a376a76. 31e8d23 adds only the qualification note.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "fbf1331d96ff24f38613d4fe08fbc45fd1c2acb5",
+  "previousQualification": "7e561367ac29411a94b6345eec380bc3196df360",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
