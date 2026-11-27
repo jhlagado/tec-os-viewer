@@ -829,6 +829,14 @@ strict runs at `e07587b` pass 238 of 238 across 40 files (peaks 800 and
 767 MB), and `test/tbg` passes 4 of 4 at `7410c5e`, which merges `8c82ea5`
 (peak 686 MB).
 
+**TBUG f31249a.** TEC-OS `0160b48` takes `TBUG.SVC` from TBUG `f31249a`
+(9,139 bytes, `997363d9…`), where Left in Code puts PC on the top row;
+`TBUG.HLP` stays at `a4d1da8`. The ROM, the shell and every other card file
+are unchanged, and the recipe digest becomes `6e232cbd…`. The module is still
+154,938 bytes. Two complete Viewer strict runs at `c25f0d0` pass 238 of 238
+across 40 files (peaks 812 and 798 MB), and `test/tbg` passes 4 of 4 after
+each (peaks 647 and 647 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
