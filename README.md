@@ -26,26 +26,26 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `2e54731`, with the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is TEC-OS `36bb11e`, with BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, Page Up, Page Down, Home and End on Fn with an arrow and Shift with an arrow sent as xterm sends it, with the five-volume starter card (SYSTEM, ASM,
 BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `ca2934c`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a small CCP and three drives,
 `SHELL.SVC`, the resident shell, in 9 pages, `MON3.SVC` for MON-3's programs,
-in 19 pages, TED from TED `dbcffc1`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ` and its document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`,
-which takes several statements on a line and writes Intel HEX, and BAZA from Baza `184db08` with its runtime from the same commit
-and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter preview, from Baza `184db08`, with the card's `BOUNCE.BAS` and
+in 19 pages, TED from TED `b2f98bc`, with F9 to build and F5 to run, which keeps its session in `TED.SES`, `TED.ERR` and `TED.PRJ` and its document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`,
+which takes several statements on a line and writes Intel HEX, and BAZC, the compiler, from Baza `3f31488` with its runtime from the same commit
+and `BOUNCE.BAS` from Baza `5f6b58d`, BAZ, the BASIC interpreter, from Baza `3f31488`, with the card's `BOUNCE.BAS` and
 `TIMES.BAS` in the BASIC style, and the Compact font's notices shipped beside
 and inside the page. TEC-OS builds one card, and the page runs it: the starter
 card, 14 MiB, of six volumes on three drives: SYSTEM on A:, WORK (8 MiB,
 empty, the work disk) on B:, and the themed volumes ASM, BASIC, MON3 and
 GAMES, which `CD A:NAME` puts on A:; C: is a spare drive. Every A: volume
 carries the core set, `STARTUP.CMD`, `SHELL.SVC`, `GLCD.SVC`, `TED.COM`,
-`TBUG.SVC` and `TBUG.HLP`, plus its theme's files. SYSTEM adds
-`TAS.COM`, `BAZA.COM`, `BAZA.RTL`, `BAZ.COM`, `MON3.SVC`, `SAMPLE.ASM` and `TIMES.BAS`;
-ASM adds TAS with `SAMPLE.ASM`, `DEMO.ASM` and `HELLO3.ASM`; BASIC adds BAZA
+`TBUG.SVC`, `TBUG.HLP` and `TAS.COM`, plus its theme's files. SYSTEM adds
+`BAZC.COM`, `BAZC.RTL`, `BAZ.COM`, `MON3.SVC`, `SAMPLE.ASM` and `TIMES.BAS`;
+ASM adds `SAMPLE.ASM`, `DEMO.ASM` and `HELLO3.ASM`; BASIC adds BAZC
 and its runtime and BAZ with `TIMES.BAS`, `BOUNCE.BAS`, `CAVERNS.BAS` and
-`CAVERNS.TXT`; MON3 adds `MON3.SVC` and TAS with `SNAKE9.ASM`, `SNAKE9.BIN`
+`CAVERNS.TXT`; MON3 adds `MON3.SVC` with `SNAKE9.ASM`, `SNAKE9.BIN`
 and `HELLO3.ASM`; and GAMES holds the finished programs, `CAVERNS.COM`,
 `BOUNCE.COM`, and `SNAKE9.BIN` with `MON3.SVC`. The card's `STARTUP.CMD` loads
 `SHELL.SVC` first, so the shell holds the prompt when SYSTEM is selected on A:, and the
@@ -67,9 +67,9 @@ Qualification remains in progress.
 The hosted build details identify the version currently available online.
 After `CD A:ASM`, `TAS DEMO` then `DEMO` build and run the
 hardware demo, and `TED DEMO.ASM` reads it; `TAS SAMPLE` and `SAMPLE` build
-and run a first program. After `CD A:BASIC`, `BAZA TIMES` and `TIMES` build one in BASIC, and `BAZA
+and run a first program. After `CD A:BASIC`, `BAZC TIMES` and `TIMES` build one in BASIC, and `BAZC
 BOUNCE` and `BOUNCE` a sprite game on the PICO9918: tap W, A, S and D or the
-arrow keys to steer, Q to quit. BAZA shows a spinner while it compiles. In
+arrow keys to steer, Q to quit. BAZC shows a spinner while it compiles. In
 `TED TIMES.BAS`, F5 runs it under BAZ and comes back to TED; F9 builds it.
 GAMES has `CAVERNS` and `BOUNCE` ready to run. Build the source-only example with `TAS HELLO3 HELLO3.BIN` first.
 `MON3.SVC` gives `MON3>`, where `LOAD HELLO3.BIN` and `GO` run `HELLO3`, a
@@ -83,12 +83,12 @@ write is still pending `GO` prints `?` and starts nothing.
 
 ## BASIC Caverns
 
-Select PICO9918 at **80 columns**, type `BAZA CAVERNS` to compile the supplied
+Select PICO9918 at **80 columns**, type `BAZC CAVERNS` to compile the supplied
 source, then `CAVERNS` to play. The 35,968-byte executable is created on your
 card; it is not preinstalled. `TYPE CAVERNS.TXT` gives instructions and
-`TED CAVERNS.BAS` opens the author-refined BASIC source. The matching BAZA
+`TED CAVERNS.BAS` opens the author-refined BASIC source. The matching BAZC
 compiler/runtime pair is on the card; compilation works with the shell resident.
-The game includes its selected runtime rather than loading BAZA.RTL separately.
+The game includes its selected runtime rather than loading BAZC.RTL separately.
 QUIT followed by N returns to the shell. Returning home banks treasures and
 shows the score while permitting more exploration. Developer checkpoints are
 separate from this public source-only disk; there is no in-game SAVE command.
@@ -178,7 +178,7 @@ as TEC-OS's build at the pin gives them.
 
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
-jhlagado/ted (`dbcffc1` for `TED.COM`), jhlagado/baza (`184db08` for the compiler, the runtime and `BAZ.COM`, `5f6b58d` for
+jhlagado/ted (`b2f98bc` for `TED.COM`), jhlagado/baza (`3f31488` for the compiler, the runtime and `BAZ.COM`, `5f6b58d` for
 BOUNCE), jhlagado/tbug (`ca2934c` for `TBUG.SVC`, `58e4054` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
@@ -198,8 +198,8 @@ TEC-OS's README describes, and TEC-OS checks the runner against its pins.
 - `npm run tecos` builds TEC-OS's ROM and media in the submodule and stops, naming the cause, if the submodule has changes or what
   it made differs from `pins.json`. That includes the ROM, the card's files and the starter recipe, which is pinned in full by its
   canonical digest. It runs TEC-OS's `npm run inputs` first, which takes the inputs TEC-OS's `test/inputs.json` pins, among them
-  `TAS.COM` from TAS, `TED.COM` from TED, `BAZA.COM`, `BAZA.RTL`, `BAZ.COM` and `BOUNCE.BAS` from Baza and MON-3's ROM and sources,
-  each from its variable there (`TAS_COM`, `BAZA_COM` and the rest) when set, else `tec-os/.inputs/`, else a pinned sibling checkout
+  `TAS.COM` from TAS, `TED.COM` from TED, `BAZC.COM`, `BAZC.RTL`, `BAZ.COM` and `BOUNCE.BAS` from Baza and MON-3's ROM and sources,
+  each from its variable there (`TAS_COM`, `BAZC_COM` and the rest) when set, else `tec-os/.inputs/`, else a pinned sibling checkout
   beside `tec-os/`, as TEC-OS's README says, else fetches it, and refuses any that differs from its pin. To supply the files
   without fetching them, put them in `tec-os/.inputs/` or name them in those variables.
 - `npm run web` bundles the page into `dist/`, with the ROM, the card's files and `FONT-NOTICES.txt`; the font notices also appear in the
