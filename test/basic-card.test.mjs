@@ -1,16 +1,16 @@
-// The page's card carries BAZA, its
+// The page's card carries BAZC, its
 // first BASIC program and Baza's
 // BOUNCE.BAS, and the demo as source:
-// its BASIC volume holds BAZA.COM,
-// BAZA.RTL, TIMES.BAS and BOUNCE.BAS,
+// its BASIC volume holds BAZC.COM,
+// BAZC.RTL, TIMES.BAS and BOUNCE.BAS,
 // and ASM holds DEMO.ASM, TEC-OS's
 // programs/DEMO.ASM as CP/M text, and
 // no DEMO.COM.
 // In the page's machine, PICO9918 at
-// 40 columns, BAZA TIMES builds
+// 40 columns, BAZC TIMES builds
 // TIMES.COM, its spinner turning while
 // it compiles, and TIMES runs it back
-// to the prompt; BAZA BOUNCE builds
+// to the prompt; BAZC BOUNCE builds
 // BOUNCE, which takes Graphics I with
 // the ROM's font, glyph by glyph from
 // service 17,
@@ -56,7 +56,7 @@ import { card, power, recipe, recipeOn } from "./lib/page.mjs";
 import { ROOT } from "./lib/root.mjs";
 
 const LIMIT = 400_000_000; // Per-step cycle limit.
-const FILES = ["BAZA.COM", "BAZA.RTL", "TIMES.BAS", "BOUNCE.BAS", "DEMO.ASM"];
+const FILES = ["BAZC.COM", "BAZC.RTL", "TIMES.BAS", "BOUNCE.BAS", "DEMO.ASM"];
 
 /** A: on IMAGE. */
 function driveA(image) {
@@ -79,7 +79,7 @@ function keys(m, s, what, done) {
   m.runUntilChecked(() => (m.pumpInput(), !m.pending?.length && m.waitingForInput() && done()), LIMIT, what);
 }
 
-test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on the BASIC and ASM volumes", async () => {
+test("the page's card holds BAZC.COM, BAZC.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.ASM on the BASIC and ASM volumes", async () => {
   const declared = recipe().components.flatMap((c) => c.files.map((f) => f.name));
   for (const name of FILES) assert.ok(declared.includes(name), `${name} in the starter recipe`);
   const image = await card(recipeOn("BASIC")), asm = await card(recipeOn("ASM"));
@@ -92,13 +92,13 @@ test("the page's card holds BAZA.COM, BAZA.RTL, TIMES.BAS, BOUNCE.BAS and DEMO.A
   assert.ok(!declared.includes("DEMO.COM") && !onAsm.includes("DEMO.COM"), "no DEMO.COM: TAS DEMO makes it");
 });
 
-test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
+test("in the page's machine, BAZC TIMES builds TIMES and TIMES runs to the prompt", { timeout: 600_000 }, async () => {
   const image = await card(recipeOn("BASIC"));
   const m = power(image, "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:BASIC>"), LIMIT, "the prompt");
   let mark = m.output.length;
-  keys(m, "baza times\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
-  assert.match(m.text(mark), /^baza times\r\r\n(?:[|\/\\-]\x08)+COM written\r\n/, "BAZA's spinner, each mark then a backspace, then COM written");
+  keys(m, "bazc times\r", "BAZC's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
+  assert.match(m.text(mark), /^bazc times\r\r\n(?:[|\/\\-]\x08)+COM written\r\n/, "BAZC's spinner, each mark then a backspace, then COM written");
   mark = m.output.length;
   keys(m, "times\r", "TIMES's first question", () => /WHAT IS YOUR NAME\? $/.test(m.text(mark)));
   keys(m, "TEC\r", "TIMES's second question", () => /PICK A NUMBER, 1 TO 12\? $/.test(m.text(mark)));
@@ -112,7 +112,7 @@ test("in the page's machine, BAZA TIMES builds TIMES and TIMES runs to the promp
   assert.deepEqual(m.violations, []);
 });
 
-test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives A> back on Q", { timeout: 900_000 }, async () => {
+test("in the page's machine, BAZC BOUNCE builds BOUNCE, which takes Graphics I with sprites, moves the ship on taps and on the page's arrow keys and gives the prompt back on Q", { timeout: 900_000 }, async () => {
   const image = await card(recipeOn("BASIC"));
   const m = power(image, "pico", 40);
   const vdp = () => m.tec1g.state.display.tms9918.stateSnapshot();
@@ -125,7 +125,7 @@ test("in the page's machine, BAZA BOUNCE builds BOUNCE, which takes Graphics I w
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:BASIC>"), LIMIT, "the prompt");
   const console40 = registers();
   let mark = m.output.length;
-  keys(m, "baza bounce\r", "BAZA's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
+  keys(m, "bazc bounce\r", "BAZC's build", () => /COM written\r\n/.test(m.text(mark)) && m.ready());
   assert.ok(names(image).includes("BOUNCE.COM"), "BOUNCE.COM on A:");
   m.enqueueInput("bounce\r", "matrix");
   m.runUntil(() => (m.pumpInput(), !m.pending?.length), 50_000_000, "the command line");
@@ -298,7 +298,7 @@ test("Viewer Caverns disk includes BASIC source only, compiles identically and r
   const expected = JSON.parse(readFileSync(new URL("../tec-os/test/caverns-basic.json", import.meta.url))).comSha256;
   const m = power(image, "pico", 80);
   m.runUntilChecked(() => m.ready(), LIMIT, "Viewer shell");
-  keys(m, "baza caverns\r", "Viewer native Caverns rebuild", () => m.ready());
+  keys(m, "bazc caverns\r", "Viewer native Caverns rebuild", () => m.ready());
   assert.match(m.text(), /COM written/);
   assert.equal(createHash("sha256").update(a.read("CAVERNS.COM")).digest("hex"), expected);
   keys(m, "caverns\r", "Viewer Caverns launch", () => m.text().endsWith("? "));
