@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`36bb11e42a52a7dab849915a39747bc0043ade6b`, with BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
+`a376a76590580294792e7bff34684c93a28b0cbb`, with BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
 digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG from tbug `ca2934c` with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
@@ -17,7 +17,7 @@ the squeezed ROM with a small CCP and three drives, `SHELL.SVC`, the
 session in `TED.SES`, `TED.ERR` and `TED.PRJ`, which keeps
 the document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`
 with chained lines and Intel HEX output, BAZC, the compiler, from Baza `3f31488` with
-its runtime from the same commit, BOUNCE from `5f6b58d`, BAZ, the interpreter, from `3f31488`, and the 19-page
+its runtime from the same commit, BOUNCE from `7beac04`, BAZ, the interpreter, from `3f31488`, and the 19-page
 `MON3.SVC`. TEC-OS builds one card, the starter card, of five
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with a row of name and size for
