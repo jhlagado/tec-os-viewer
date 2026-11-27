@@ -7,7 +7,7 @@ machine, card and file-system libraries are in the `tec-os/` submodule.
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`a738e2da1f4726a2eccc78c6ebd0372018a3ecac`, with TBUG from tbug `a4d1da8` (no key repeats, the first stop in Code), BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
+`0160b48d1961b0d25775218e5ccbf5e960ffc0b5`, with TBUG from tbug `f31249a` (no key repeats, the first stop in Code, Left in Code puts PC on the top row), BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
 digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
