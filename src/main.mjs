@@ -469,68 +469,46 @@ function onKey(route) {
 $("serial").addEventListener("keydown", onKey(() => "serial"));
 for (const id of ["tms", "glcd", "leds", "lcd"]) $(id).addEventListener("click", () => $(id).focus());
 
-const matrixModifiers = { shift: 0, ctrl: 1, fn: 2 };
 // Keys without a character of their own, such as Tab and the arrows,
 // keep the Shift or Ctrl held with them, so Shift+Tab, Ctrl+Up and
 // Ctrl+Esc reach a program that reads the matrix. F1 to F10 reach it as
 // Fn with a digit, F10 as Fn+0, as on the TEC-1G, and the browser does
 // not act on them. Page Up, Page Down, Home and End reach it as Fn with
 // an arrow.
+const MODS = { shift: 0, ctrl: 1, fn: 2 };
 const CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
-const FN_KEY = /^F(10|[1-9])$/;
 
-/** Whether key event E belongs to the page's own controls, not the matrix. */
-function pageControl(e) {
-  const t = e.target;
-  if (!(t instanceof Element)) return false;
-  return t.id === "serial" || t.id === "phonekeys" || t.closest("input, select, textarea, button, label, a") !== null;
-}
-
-/** The matrix key and modifier browser key event E stands for, or the input to queue as text, or null. */
+/** The matrix key and modifier key event E stands for, its text input to queue, or null. */
 function matrixKey(e) {
-  const fn = FN_KEY.exec(e.key);
-  const space = e.key === " ";
-  const plain = space || fn;
-  const input = fn ? { via: "matrix", text: fn[1] === "10" ? "0" : fn[1] }
-    : space ? { via: "matrix", text: " " } : keyInput(e, true);
-  if (!input) return null;
-  if (input.via !== "matrix") return { input };
-  if (input.key !== undefined) return { key: input.key, mod: input.mod };
+  const fn = /^F(10|[1-9])$/.exec(e.key), space = e.key === " ";
+  const input = fn ? { text: fn[1] === "10" ? "0" : fn[1] } : space ? { text: " " } : keyInput(e, true);
+  if (!input || input.via === "serial") return input && { input };
+  if (input.key !== undefined) return input;
   const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
-    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(plain && candidate.modifier));
+    .find((c) => !c.capsLock && c.modifier !== "alt" && !((space || fn) && c.modifier));
   if (!combo) return null;
-  let mod = fn ? matrixModifiers.fn : matrixModifiers[combo.modifier];
-  if (mod === undefined && (space || CONTROL_KEYS.has(e.key))) {
-    if (e.shiftKey) mod = matrixModifiers.shift;
-    else if (e.ctrlKey) mod = matrixModifiers.ctrl;
-  }
+  let mod = fn ? MODS.fn : MODS[combo.modifier];
+  if (mod === undefined && (space || CONTROL_KEYS.has(e.key))) mod = e.shiftKey ? MODS.shift : e.ctrlKey ? MODS.ctrl : undefined;
   return { key: combo.row * 8 + combo.col, mod };
 }
 
 document.addEventListener("keydown", (e) => {
-  if (!state.machine || pageControl(e)) return;
+  // The serial pane, the phone field and the page's controls keep their keys.
+  const t = e.target;
+  if (!state.machine || t.id === "serial" || t.id === "phonekeys" || t.closest?.("input,select,textarea,button,label,a")) return;
   const k = matrixKey(e);
   if (!k) return;
   e.preventDefault();
   if (e.repeat) return; // The matrix doesn't repeat; a key held is one press.
-  if (k.input) {
-    queueInput(state.machine, k.input);
-    return;
-  }
+  if (k.input) return queueInput(state.machine, k.input);
   state.machine.enqueueKey(k.key, k.mod);
-  const entry = state.machine.pending.at(-1);
-  entry.held = true;
-  entry.phys = e.code; // Its physical key, for keyup.
+  Object.assign(state.machine.pending.at(-1), { held: true, phys: e.code }); // Held until its keyup.
 });
 document.addEventListener("keyup", (e) => {
-  const entry = state.machine?.pending?.find((p) => p.held && p.phys === e.code);
-  if (entry) entry.held = false;
+  const held = state.machine?.pending?.find((p) => p.held && p.phys === e.code);
+  if (held) held.held = false;
 });
-/** Let go of every key the page's user is holding, as when the page loses focus. */
-function releaseHeld() {
-  for (const p of state.machine?.pending ?? []) p.held = false;
-}
-window.addEventListener("blur", releaseHeld);
+window.addEventListener("blur", () => state.machine?.pending?.forEach((p) => { p.held = false; }));
 
 // ---- Phones and tablets
 // Open the touch keyboard by focusing a

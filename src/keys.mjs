@@ -189,22 +189,6 @@ function noteStart(m) {
   m.keyGate = m.keyReads.some(([from, to]) => pc >= from && pc < to);
 }
 
-/**
- * Whether M's matrix reads have seen
- * HEAD's key down: the runtime latches
- * the pending switches into what a read
- * returns, so a latched key was read.
- */
-function seen(m, head) {
-  const states = m.tec1g.state?.input?.matrixKeyStates;
-  return states !== undefined && (states[head.combo.row] & (1 << head.combo.col)) === 0;
-}
-
-/** Whether TEC-OS's scan has taken HEAD's key, as KBLAST shows it. */
-function takenByScan(m, head) {
-  return m.classicBankIn && m.read(m.sym("KBLAST")) === head.key;
-}
-
 /** Forget M's startup mark, as at a reset. */
 export function resetKeys(m) {
   m.keyGate = false;
@@ -232,32 +216,26 @@ export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
     if (m.cycles - head.letGo >= hold) m.pending.shift();
     return;
   }
+  const matrix = head.via === "matrix";
   // A key the page's user still holds stays down, whoever reads it:
   // Ctrl+Esc held while a program runs, or a key held in TBUG.
-  if (head.via === "matrix" && head.down && !head.up && head.held) return;
-  if (head.via === "matrix" && head.down && !head.up && m.videoConsole() && seen(m, head)) {
-    // Read, but not taken by TEC-OS's scan: a reader of its own, such as
-    // TBUG through TNKEYS. Let it go a short while after, then the gap.
+  if (matrix && head.down && !head.up && head.held) return;
+  if (matrix && head.down && m.videoConsole()) {
+    // A reader of its own, such as TBUG through TNKEYS, reads the matrix
+    // without TEC-OS's scan taking the key: a key it has read lifts a
+    // short while after, and one it has read as up moves the queue on.
     // KBLAST already holding the key when it went down is a key TEC-OS
     // took before, not this one.
-    head.seenAt ??= m.cycles;
-    if (m.cycles - head.seenAt >= SEEN_CYCLES && (head.stale || !takenByScan(m, head))) {
-      m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
-      if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
-      head.letGo = m.cycles - Math.max(0, hold - SEEN_CYCLES); // A gap of SEEN_CYCLES.
+    const read = !(m.tec1g.state.input.matrixKeyStates[head.combo.row] >> head.combo.col & 1);
+    const taken = taker(m, head);
+    if (!head.up && read && m.cycles - (head.seenAt ??= m.cycles) >= SEEN_CYCLES && (head.stale || !taken)) {
+      lift(m, head);
+      head.letGo = m.cycles - hold + SEEN_CYCLES; // A gap of SEEN_CYCLES.
       return;
     }
+    if (head.up && !read && m.cycles - (head.upSeenAt ??= m.cycles) >= SEEN_CYCLES) return void m.pending.shift();
+    if (!head.up && head.stale && taken) return;
   }
-  if (head.via === "matrix" && head.up && m.videoConsole() && !seen(m, head)) {
-    // Let go, and read as up, but TEC-OS's scan hasn't seen it go: a
-    // reader of its own, such as TBUG, has the machine. Move on.
-    head.upSeenAt ??= m.cycles;
-    if (m.cycles - head.upSeenAt >= SEEN_CYCLES) {
-      m.pending.shift();
-      return;
-    }
-  }
-  if (head.via === "matrix" && head.down && !head.up && head.stale && takenByScan(m, head)) return;
   if (head.via === "matrix" && head.down) {
     if (m.sysCtrl & 0x04) return;
     let due = false;
@@ -274,15 +252,23 @@ export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
       due = m.cycles - head.heldFrom >= hold;
     }
     if (due) {
-      if (!head.up) {
-        m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
-        if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
-      }
+      if (!head.up) lift(m, head);
       head.letGo = m.cycles;
       return;
     }
   }
-  const pressing = head.via === "matrix" && !head.down;
+  const pressing = matrix && !head.down;
   m.pumpInput();
-  if (pressing && head.down) head.stale = takenByScan(m, head);
+  if (pressing && head.down) head.stale = taker(m, head);
+}
+
+/** Let go of HEAD's key and its modifier. */
+function lift(m, head) {
+  m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
+  if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
+}
+
+/** Whether KBLAST shows HEAD's key, as TEC-OS's scan leaves it once taken. */
+function taker(m, head) {
+  return m.classicBankIn && m.read(m.sym("KBLAST")) === head.key;
 }
