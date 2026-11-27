@@ -761,6 +761,19 @@ bytes; the title is drawn at 1802h as before. Nothing else on the card
 changes. Two complete Viewer strict runs at Viewer `6baa947` and TEC-OS
 `a376a76` pass 236 of 236 across 39 files (peaks 892 and 867 MB).
 
+**One keyboard.** Viewer `dc84aa3` gives the page one matrix keyboard, as
+the TEC-1G has one matrix: every key typed on the page is a matrix key,
+whichever display was clicked, and only the serial pane, the phone keyboard
+and the page's controls keep their own. A held key stays down until its
+keyup; once let go it stays down until TEC-OS's scan takes it, or a
+twentieth of a second after another reader such as TBUG has read it, so
+type-ahead waits for the scan and a key no longer stays down while TBUG
+holds a program stopped. The firmware pin, TEC-OS `a376a76`, and the card
+are unchanged. The normalized module is 154,959 bytes, 67 under the
+155,026-byte bound. Two complete Viewer strict runs at `dc84aa3` pass 236 of
+236 across 39 files (peaks 881 and 889 MB), and `test/tbg` passes 4 of 4
+there (peak 840 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
