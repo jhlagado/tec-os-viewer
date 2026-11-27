@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "fbf1331d96ff24f38613d4fe08fbc45fd1c2acb5",
-  "firmwareCommit": "2e5473190bf390e5d0b570c9d6144db7499b4543",
+  "viewerCommit": "7e561367ac29411a94b6345eec380bc3196df360",
+  "firmwareCommit": "36bb11e42a52a7dab849915a39747bc0043ade6b",
   "firmwareRomSha256": "bb429d10b011de989fc415281072a98304445f2b2335dc6ba85542931427593f",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,15 +13,15 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 724428,
-      "sha256": "6069d486252c49d3669991f1f6c5c600355889f765bab58266212852a8785892"
+      "bytes": 725508,
+      "sha256": "bef35b18d681762f83b61030d7e86a4b401793ff0ab704849d82cb13438431a3"
     }
   },
   "defaultColumns": 40,
   "basic": {
     "cardFiles": [
-      "BAZA.COM",
-      "BAZA.RTL",
+      "BAZC.COM",
+      "BAZC.RTL",
       "BAZ.COM",
       "TIMES.BAS",
       "BOUNCE.BAS",
@@ -30,22 +30,22 @@
       "CAVERNS.COM",
       "BOUNCE.COM"
     ],
-    "bazaCommit": "184db08b142baeb69ecb49a11e618a974060647e",
-    "tedCommit": "dbcffc12a2fc0e53dbf6bd0cea13281fc4b7429a",
+    "bazcCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee",
+    "tedCommit": "b2f98bce48e1d1b8f8e19f1532c3a1e91ecce74f",
     "bounceCommit": "5f6b58d07b70e570bc993cfc430ec0196f4855d0",
-    "bazaRuntimeCommit": "184db08b142baeb69ecb49a11e618a974060647e",
-    "bazCommit": "184db08b142baeb69ecb49a11e618a974060647e"
+    "bazcRuntimeCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee",
+    "bazCommit": "3f31488041961b1d0a1ee3aac46d91f61955f6ee"
   },
   "snake9": {
     "sourceSha256": "9528ea653fc615f1975a31489b427fc17f9217e033ab8448a64f3d9d9801d887",
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at 57a4d36 and two at fbf1331 (Native 2e54731): 39 files, 236/236 each; Native strict 1483/1483 twice at 2e54731. fbf1331 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at da037c7 and two at 7e56136 (Native 36bb11e): 39 files, 236/236 each; Native strict 1483/1483 twice at 36bb11e. 7e56136 adds only the qualification note.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "c9b8406a5c234bc35fb11fcde528fdddb88c855a",
+  "previousQualification": "fbf1331d96ff24f38613d4fe08fbc45fd1c2acb5",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -94,7 +94,8 @@
       "GLCD.SVC",
       "TED.COM",
       "TBUG.SVC",
-      "TBUG.HLP"
+      "TBUG.HLP",
+      "TAS.COM"
     ],
     "tpa": {
       "withShell": 44288,
@@ -114,7 +115,7 @@
       "onCard": true,
       "maxDocument": 65535,
       "bytes": 16199,
-      "sha256": "350845670175557ef655e55e4bc85b1f95c189898b97f37b5564109b727438d3"
+      "sha256": "2f5bfb21f46ad155253f2dd30c0f95167f05e06e005466fd600e48759c2f5e8e"
     }
   },
   "keyboard": {
