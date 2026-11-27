@@ -785,6 +785,18 @@ puts PC on Code's top row with `G 103` before it looks for `TAKE:`'s label row
 236 across 39 files (peaks 949 and 997 MB), and `test/tbg` passes 4 of 4 at
 `2f12d22`, which merges `3e9fa80` (peak 841 MB).
 
+**Browser tests in less memory.** The strict runs at `8d7e623` peaked at
+1,006 and 1,000 MB against the 1,024 MB guard, and every file over 260 MB was a
+browser test, from 698 MB (`web-touch`) to 947 MB (`guest-save-cost-browser`),
+each measured alone. The guard adds up every process in the tree, and Chromium
+ran one page in seven: 524 MB. From `a90c139`, `test/lib/root.mjs` launches it
+in three, with no zygotes and the GPU and network services in the browser
+process, 346 MB for the same page; the page renders and fetches as before.
+`guest-save-cost-browser` falls to 732 MB and `copy-text` from 907 to 720 MB.
+The guard's limit is unchanged. Two complete Viewer strict runs at `a90c139`
+pass 236 of 236 across 39 files (peaks 747 and 798 MB), and `test/tbg` passes
+4 of 4 after each (peaks 607 and 661 MB, from 835 and 868).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
