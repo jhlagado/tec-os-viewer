@@ -738,6 +738,21 @@ The guest probes are bound to the 9-page shell's symbol map. Two complete
 Viewer strict runs at Viewer `57a4d36` and TEC-OS `2e54731` pass 236 of 236
 across 39 files (peaks 871 and 874 MB).
 
+**BAZC and TAS on every volume.** TEC-OS `36bb11e` renames the BASIC
+compiler BAZC, from Baza `3f31488`: `BAZC.COM` (`05e81d71…`, 13,824 bytes),
+its runtime `BAZC.RTL` (`27196de6…`, the same bytes as BAZA's) and BAZ, the
+interpreter (`4e2631d2…`, unchanged). CAVERNS (`7ad164db…`) and BOUNCE
+(`edecad40…`) compile to the same bytes as before. `TAS.COM` joins the core
+set, so every A: volume carries it, and TED is `b2f98bc` (`2f5bfb21…`,
+16,199 bytes). The ROM (`bb429d10…`) and `SHELL.SVC` (`e8f707b4…`) are
+unchanged, so the guest observer's spans and the shell binding stand. The
+card-mounts test now waits, after a reset, for the startup's `GLCD.SVC`
+line and the bare prompt before it types: the CCP prints a bare prompt
+before each startup line's echo, and a key typed then is lost to the warm
+boot that ends the service's load. Two complete Viewer strict runs at
+Viewer `da037c7` and TEC-OS `36bb11e` pass 236 of 236 across 39 files
+(peaks 878 and 917 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
