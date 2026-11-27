@@ -35,6 +35,8 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
     return /^A(:[A-Z0-9]+)?>\s*$/.test(lines.at(-1) ?? "")
       && (!expected || lines.at(-2)?.toLowerCase().endsWith(expected));
   }, command, { timeout: 12000 });
+  /** Wait for a first stop at 0100h: Registers or Code, whichever TBUG shows first. */
+  const entry = () => page.waitForFunction(() => /PC 0100|→0100/.test(document.getElementById("lcd").textContent), null, { timeout: 15000 });
   await page.waitForFunction(() => globalThis.tecos?.screen().some((line) => /^A:?[A-Z]*>\s*$/.test(line)), null, { timeout: 12000 });
   await page.focus("#tms");
   // Release the shell before allocating the resident debugger.
@@ -49,7 +51,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await prompt("tbug.svc arm");
   await page.focus("#tms");
   await page.keyboard.type("step\n", { delay: 80 });
-  await lcd("PC 0100").catch(async (error) => {
+  await entry().catch(async (error) => {
     throw new Error(`Entry stop missing. LCD: ${await page.locator("#lcd").textContent()}\n${await page.evaluate(() => globalThis.tecos.screen())}`, { cause: error });
   });
   await page.locator("#lcd").click();
@@ -59,21 +61,32 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
     await page.keyboard.press(name, { delay: 100 });
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   };
+  /** Press NAME and wait until the LCD shows its effect. */
+  const keyThen = async (name) => {
+    const before = await page.locator("#lcd").textContent();
+    await key(name);
+    await page.waitForFunction((b) => document.getElementById("lcd").textContent !== b, before, { timeout: 5000 });
+  };
+  await key("r"); // Registers, whichever view the first stop shows.
+  await lcd("PC 0100");
   {
     await key("h"); // The card carries TBUG.HLP.
     await lcd("REGISTERS   HELP 1/5");
     await key("Escape");
     assert.match(await page.locator("#lcd").textContent(), /SY/, "STEP.TBG matched STEP.COM");
-    await key("Shift+Tab"); // Symbols.
+    await key("y"); // Symbols.
     await lcd(">0100 START");
     await lcd(" 0104 TAKE");
-    await key("Tab"); // Registers again.
+    await key("r"); // Registers again.
     await lcd("PC 0100");
   }
   await key("F8"); // F8, Fn+8: step into.
   await lcd("PC 0103");
+  await key("c"); // Code.
+  await lcd(">→0103 PUSH HL");
   await key("Tab");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "lcd", "Tab stays on the LCD");
+  await key("Shift+Tab"); // And back to Code.
   await lcd(">→0103 PUSH HL");
   await lcd("TAKE:"); // STEP.TBG's label row.
   await key("ArrowDown");
@@ -81,21 +94,21 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await lcd(">□0104 POP DE");
   await lcd("BP SET 0104");
   await key("ArrowLeft"); // The selection back on PC.
-  await key("Shift+Tab"); // Registers.
+  await key("r"); // Registers.
   await key("F5"); // F5, Fn+5: run.
   await lcd("PC 0104");
   assert.match(await page.locator("#lcd").textContent(), /PC 0104.*BP/);
-  for (let i = 0; i < 3; i += 1) await key("Tab"); // Code, Stack, Memory.
+  await key("m"); // Memory.
   await lcd("0104>D1 C9");
   await key("ArrowDown");
   await lcd("0108>");
   await key("Control+ArrowDown"); // Ctrl must reach TBUG for a page.
   await lcd("0118>");
   {
-    await key("Tab"); // Symbols, after Memory when STEP.TBG matches.
+    await key("y"); // Symbols, when STEP.TBG matches.
     await lcd(">0100 START");
   }
-  await key("Tab"); // Registers.
+  await key("r"); // Registers.
   await lcd("PC 0104");
   await key("ArrowDown"); // AF,
   await key("ArrowDown"); // DE,
@@ -105,16 +118,15 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await lcd("1234>");
   await key("Escape");
   await lcd(">HL 1234");
-  await key("Tab"); // Code,
-  await key("Tab"); // then Stack.
+  await key("s"); // Stack.
   await lcd(">SP ");
   // Ctrl+Space steps out: POP and RET leave STEP. Were Ctrl lost, Space
   // would step POP and stop at 0105h instead.
   await key("F6"); // F6, Fn+6: step out.
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
-  await key("Escape"); // Back to the view before, then the question.
-  if (!(await page.locator("#lcd").textContent()).includes("Quit TBUG? Y/N")) await key("Escape");
+  await keyThen("Escape"); // Back to the view before, then the question.
+  if (!(await page.locator("#lcd").textContent()).includes("Quit TBUG? Y/N")) await keyThen("Escape");
   await lcd("Quit TBUG? Y/N");
   await key("y");
   await prompt();

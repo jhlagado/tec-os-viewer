@@ -25,18 +25,26 @@ test("TBUG's Code, stepping and help keys work on the standard card", { timeout:
   const lcd = (s) => page.waitForFunction((x) => document.getElementById("lcd").textContent.includes(x), s, { timeout: 15000 })
     .catch(async (e) => { throw new Error(`waiting for ${JSON.stringify(s)}; LCD: ${JSON.stringify(await text())}`, { cause: e }); });
   const prompt = () => page.waitForFunction(() => /^A(:[A-Z0-9]+)?>\s*$/.test(globalThis.tecos?.screen().filter((l) => l.trim()).at(-1) ?? ""), null, { timeout: 15000 });
+  /** Wait for a first stop at 0100h: Registers or Code, whichever TBUG shows first. */
+  const entry = () => page.waitForFunction(() => /PC 0100|→0100/.test(document.getElementById("lcd").textContent), null, { timeout: 15000 });
   const key = async (name) => {
     await page.keyboard.press(name, { delay: 100 });
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+  };
+  /** Press NAME and wait until the LCD shows its effect. */
+  const keyThen = async (name) => {
+    const before = await text();
+    await key(name);
+    await page.waitForFunction((b) => document.getElementById("lcd").textContent !== b, before, { timeout: 5000 });
   };
   await page.waitForFunction(() => globalThis.tecos?.screen().some((l) => /^A:?[A-Z]*>\s*$/.test(l)), null, { timeout: 15000 });
   await page.focus("#tms");
   await page.keyboard.type("unload\n");
   await prompt();
   await page.keyboard.type("tbug.svc over\n", { delay: 80 });
-  await lcd("PC 0100");
+  await entry(); // The first stop.
   await page.locator("#lcd").click();
-  await key("Tab");
+  await key("c"); // Code, whichever view the first stop shows.
   await lcd(">→0100 CALL 0110");
   await key("Enter"); // Enter follows the call.
   await lcd("> 0110 RET");
@@ -51,23 +59,25 @@ test("TBUG's Code, stepping and help keys work on the standard card", { timeout:
   await lcd(">→0107 CALL Z,0110");
   await key("F7"); // F7: over the taken call.
   await lcd(">→010A LD C,0C");
-  await key("Shift+Tab");
+  await key("r"); // Registers.
   await lcd("PC 010A");
   await key("h");
   await lcd("REGISTERS   HELP 1/5");
   for (let i = 0; i < 3; i += 1) await key("ArrowRight");
   await lcd("RUNNING     HELP 4/5");
-  assert.match(await text(), /Ctrl\+Esc held breaks/);
+  await lcd("Ctrl+Esc held breaks"); // The page's rows, once drawn.
   await key("Escape");
   await lcd("PC 010A");
-  for (let i = 0; i < 3 && !(await text()).includes("Quit TBUG? Y/N"); i += 1) await key("Escape");
+  for (let i = 0; i < 3 && !(await text()).includes("Quit TBUG? Y/N"); i += 1) await keyThen("Escape");
   await lcd("Quit TBUG? Y/N");
   await key("y");
   await page.focus("#tms");
   await prompt();
   await page.keyboard.type("tbug.svc rec\n", { delay: 80 });
-  await lcd("PC 0100");
+  await entry();
   await page.locator("#lcd").click();
+  await key("r"); // Registers.
+  await lcd("PC 0100");
   for (let i = 0; i < 5; i += 1) await key("F8");
   await lcd("PC 0106");
   await key("F6"); // F6: step out, past the recursion.

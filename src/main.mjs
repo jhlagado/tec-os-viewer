@@ -448,6 +448,14 @@ function appendSerial(text) {
 }
 
 // ---- Keyboard
+// The page has one keyboard, as the TEC-1G has one matrix: a key typed
+// anywhere on the page is a matrix key, whichever display was clicked,
+// and TEC-OS or the program that reads the matrix decides what it means.
+// Only the serial terminal, the phone keyboard and the page's own
+// controls keep their keys. A key goes down at keydown and stays down
+// while it is held; once let go it stays down until TEC-OS's scan takes
+// it, or a short while after another reader, such as TBUG, has read it
+// (src/keys.mjs). Keys typed together queue and go down one at a time.
 
 function onKey(route) {
   return (e) => {
@@ -458,66 +466,71 @@ function onKey(route) {
   };
 }
 
-$("tms").addEventListener("keydown", onKey(() => "matrix"));
 $("serial").addEventListener("keydown", onKey(() => "serial"));
-$("tms").addEventListener("click", () => $("tms").focus());
-$("glcd").addEventListener("keydown", onKey(() => "matrix"));
-$("glcd").addEventListener("click", () => $("glcd").focus());
-$("leds").addEventListener("keydown", onKey(() => "matrix"));
-$("leds").addEventListener("click", () => $("leds").focus());
+for (const id of ["tms", "glcd", "leds", "lcd"]) $(id).addEventListener("click", () => $(id).focus());
 
-// The character LCD is an input surface for programs that poll the
-// physical matrix. Browser key release opens the emulated switch.
-const lcd = $("lcd");
 const matrixModifiers = { shift: 0, ctrl: 1, fn: 2 };
-let lcdKey;
-function releaseLcdKey() {
-  if (!lcdKey) return;
-  const { matrix, row, col, modifier } = lcdKey;
-  matrix.applyMatrixKey(row, col, false);
-  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, false);
-  lcdKey = undefined;
-}
 // Keys without a character of their own, such as Tab and the arrows,
-// keep the Shift or Ctrl held with them, so Shift+Tab and Ctrl+Up reach a
-// program that reads the matrix. F1 to F10 reach it as Fn with a digit,
-// F10 as Fn+0, as on the TEC-1G, and the browser does not act on them.
-// Page Up, Page Down, Home and End reach it as Fn with an arrow.
-// Tab stays on the LCD; clicking the screen leaves it.
-const LCD_CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
-const LCD_FN_KEY = /^F(10|[1-9])$/;
-lcd.addEventListener("keydown", (event) => {
-  const fn = LCD_FN_KEY.exec(event.key);
-  // Space and the Fn digits are plain matrix keys, with the modifiers set below.
-  const space = event.key === " ";
+// keep the Shift or Ctrl held with them, so Shift+Tab, Ctrl+Up and
+// Ctrl+Esc reach a program that reads the matrix. F1 to F10 reach it as
+// Fn with a digit, F10 as Fn+0, as on the TEC-1G, and the browser does
+// not act on them. Page Up, Page Down, Home and End reach it as Fn with
+// an arrow.
+const CONTROL_KEYS = new Set(["Tab", "Enter", "Escape", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+const FN_KEY = /^F(10|[1-9])$/;
+
+/** Whether key event E belongs to the page's own controls, not the matrix. */
+function pageControl(e) {
+  const t = e.target;
+  if (!(t instanceof Element)) return false;
+  return t.id === "serial" || t.id === "phonekeys" || t.closest("input, select, textarea, button, label, a") !== null;
+}
+
+/** The matrix key and modifier browser key event E stands for, or the input to queue as text, or null. */
+function matrixKey(e) {
+  const fn = FN_KEY.exec(e.key);
+  const space = e.key === " ";
   const plain = space || fn;
   const input = fn ? { via: "matrix", text: fn[1] === "10" ? "0" : fn[1] }
-    : space ? { via: "matrix", text: " " } : keyInput(event, true);
-  if (input?.via !== "matrix" || !state.machine) return;
-  // Shift with an arrow and the page keys name their key and modifier.
-  const held = input.key !== undefined;
-  const combo = held ? { row: input.key >> 3, col: input.key & 7 }
-    : getMatrixCombosForAscii(input.text.charCodeAt(0))
-      .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(plain && candidate.modifier));
-  if (!combo) return;
-  event.preventDefault();
-  if (event.repeat || lcdKey) return;
-  const matrix = state.machine.tec1g;
-  const { row, col } = combo;
-  let modifier = held ? input.mod : fn ? matrixModifiers.fn : matrixModifiers[combo.modifier];
-  if (modifier === undefined && (space || LCD_CONTROL_KEYS.has(event.key))) {
-    if (event.shiftKey) modifier = matrixModifiers.shift;
-    else if (event.ctrlKey) modifier = matrixModifiers.ctrl;
+    : space ? { via: "matrix", text: " " } : keyInput(e, true);
+  if (!input) return null;
+  if (input.via !== "matrix") return { input };
+  if (input.key !== undefined) return { key: input.key, mod: input.mod };
+  const combo = getMatrixCombosForAscii(input.text.charCodeAt(0))
+    .find((candidate) => !candidate.capsLock && candidate.modifier !== "alt" && !(plain && candidate.modifier));
+  if (!combo) return null;
+  let mod = fn ? matrixModifiers.fn : matrixModifiers[combo.modifier];
+  if (mod === undefined && (space || CONTROL_KEYS.has(e.key))) {
+    if (e.shiftKey) mod = matrixModifiers.shift;
+    else if (e.ctrlKey) mod = matrixModifiers.ctrl;
   }
-  lcdKey = { matrix, row, col, modifier, code: event.code };
-  if (modifier !== undefined) matrix.applyMatrixKey(0, modifier, true);
-  matrix.applyMatrixKey(row, col, true);
+  return { key: combo.row * 8 + combo.col, mod };
+}
+
+document.addEventListener("keydown", (e) => {
+  if (!state.machine || pageControl(e)) return;
+  const k = matrixKey(e);
+  if (!k) return;
+  e.preventDefault();
+  if (e.repeat) return; // The matrix doesn't repeat; a key held is one press.
+  if (k.input) {
+    queueInput(state.machine, k.input);
+    return;
+  }
+  state.machine.enqueueKey(k.key, k.mod);
+  const entry = state.machine.pending.at(-1);
+  entry.held = true;
+  entry.phys = e.code; // Its physical key, for keyup.
 });
-lcd.addEventListener("keyup", (event) => {
-  if (lcdKey?.code === event.code) releaseLcdKey();
+document.addEventListener("keyup", (e) => {
+  const entry = state.machine?.pending?.find((p) => p.held && p.phys === e.code);
+  if (entry) entry.held = false;
 });
-lcd.addEventListener("blur", releaseLcdKey);
-window.addEventListener("blur", releaseLcdKey);
+/** Let go of every key the page's user is holding, as when the page loses focus. */
+function releaseHeld() {
+  for (const p of state.machine?.pending ?? []) p.held = false;
+}
+window.addEventListener("blur", releaseHeld);
 
 // ---- Phones and tablets
 // Open the touch keyboard by focusing a

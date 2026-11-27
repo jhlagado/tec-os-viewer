@@ -69,6 +69,17 @@ export const HOLD_CYCLES = 400_000;
 /** Ten seconds at the page's 4 MHz. */
 export const STARTUP_CYCLES = 40_000_000;
 
+/**
+ * A twentieth of a second at the page's
+ * 4 MHz: how long a key that is no longer
+ * held stays down once something has
+ * read it without TEC-OS's scan taking
+ * it, as TBUG reads the matrix through
+ * TNKEYS. TEC-OS's own scan takes a key
+ * well within it.
+ */
+export const SEEN_CYCLES = 200_000;
+
 const ARROWS = { ArrowUp: "A", ArrowDown: "B", ArrowRight: "C", ArrowLeft: "D" };
 
 /** The page keys, as xterm sends them. */
@@ -178,6 +189,22 @@ function noteStart(m) {
   m.keyGate = m.keyReads.some(([from, to]) => pc >= from && pc < to);
 }
 
+/**
+ * Whether M's matrix reads have seen
+ * HEAD's key down: the runtime latches
+ * the pending switches into what a read
+ * returns, so a latched key was read.
+ */
+function seen(m, head) {
+  const states = m.tec1g.state?.input?.matrixKeyStates;
+  return states !== undefined && (states[head.combo.row] & (1 << head.combo.col)) === 0;
+}
+
+/** Whether TEC-OS's scan has taken HEAD's key, as KBLAST shows it. */
+function takenByScan(m, head) {
+  return m.classicBankIn && m.read(m.sym("KBLAST")) === head.key;
+}
+
 /** Forget M's startup mark, as at a reset. */
 export function resetKeys(m) {
   m.keyGate = false;
@@ -205,6 +232,32 @@ export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
     if (m.cycles - head.letGo >= hold) m.pending.shift();
     return;
   }
+  // A key the page's user still holds stays down, whoever reads it:
+  // Ctrl+Esc held while a program runs, or a key held in TBUG.
+  if (head.via === "matrix" && head.down && !head.up && head.held) return;
+  if (head.via === "matrix" && head.down && !head.up && m.videoConsole() && seen(m, head)) {
+    // Read, but not taken by TEC-OS's scan: a reader of its own, such as
+    // TBUG through TNKEYS. Let it go a short while after, then the gap.
+    // KBLAST already holding the key when it went down is a key TEC-OS
+    // took before, not this one.
+    head.seenAt ??= m.cycles;
+    if (m.cycles - head.seenAt >= SEEN_CYCLES && (head.stale || !takenByScan(m, head))) {
+      m.tec1g.applyMatrixKey(head.combo.row, head.combo.col, false);
+      if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
+      head.letGo = m.cycles - Math.max(0, hold - SEEN_CYCLES); // A gap of SEEN_CYCLES.
+      return;
+    }
+  }
+  if (head.via === "matrix" && head.up && m.videoConsole() && !seen(m, head)) {
+    // Let go, and read as up, but TEC-OS's scan hasn't seen it go: a
+    // reader of its own, such as TBUG, has the machine. Move on.
+    head.upSeenAt ??= m.cycles;
+    if (m.cycles - head.upSeenAt >= SEEN_CYCLES) {
+      m.pending.shift();
+      return;
+    }
+  }
+  if (head.via === "matrix" && head.down && !head.up && head.stale && takenByScan(m, head)) return;
   if (head.via === "matrix" && head.down) {
     if (m.sysCtrl & 0x04) return;
     let due = false;
@@ -229,5 +282,7 @@ export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
       return;
     }
   }
+  const pressing = head.via === "matrix" && !head.down;
   m.pumpInput();
+  if (pressing && head.down) head.stale = takenByScan(m, head);
 }
