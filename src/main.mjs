@@ -806,23 +806,28 @@ $("drive").addEventListener("change", () => {
 
 // ---- Controls
 
+/** Say why a restart from the controls didn't happen, or failed after the card was updated. */
+function notRestarted(err) {
+  fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`);
+}
+
 $("display").value = state.display;
 $("display").addEventListener("change", (e) => {
   const options = { ...choices(), display: e.target.value };
   return powerOn(options)
     .then(() => { localStorageSet("tecos.display", options.display); (options.display === "tms" ? $("tms") : $("glcd")).focus(); })
-    .catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`));
+    .catch(notRestarted);
 });
 $("profile").value = state.width;
 $("profile").addEventListener("change", (e) => {
   const options = { ...choices(), width: e.target.value };
-  return powerOn(options).then(() => localStorageSet("tecos.width", options.width)).catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`));
+  return powerOn(options).then(() => localStorageSet("tecos.width", options.width)).catch(notRestarted);
 });
 $("reset").addEventListener("click", () => lifecycle(() => {
   reset();
   refreshFiles();
 }).catch(err => fileProblem(`Reset failed: ${err.message}`)));
-$("power").addEventListener("click", () => powerOn().catch(err => fileProblem(`${err.published ? "Card updated; restart failed" : "Not restarted"}: ${err.message}`)));
+$("power").addEventListener("click", () => powerOn().catch(notRestarted));
 $("pause").addEventListener("click", () => {
   state.running = !state.running;
   $("pause").textContent = state.running ? "Pause" : "Run";
