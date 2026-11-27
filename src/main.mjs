@@ -39,6 +39,12 @@ const state = {
   escape: 0,
 };
 
+/** Set element ID's text to TEXT, leaving it alone when it already reads so. */
+function setText(id, text) {
+  const element = $(id);
+  if (element.textContent !== text) element.textContent = text;
+}
+
 function localStorageGet(key) {
   try {
     return localStorage.getItem(key);
@@ -201,8 +207,7 @@ function refreshPersistence() {
   } else if (status.saved) text = "Saved card image in this browser";
   else if (status.saving) text = "Saving card image… Changes pending";
   else text = "Changes pending";
-  const element = $("browserstatus");
-  if (element.textContent !== text) element.textContent = text;
+  setText("browserstatus", text);
 }
 
 function fileProblem(text = "", operation = null) {
@@ -268,33 +273,28 @@ function refreshGuestStatus() {
   } else if (status && !status.supported) text = "Guest cache: unavailable for this firmware or memory profile";
   if (status?.error) text += ". Guest write error observed; application files may be incomplete";
   else if (status?.resolvedPending) text += ". Earlier pending-write report resolved";
-  const element = $("gueststatus");
-  if (element.textContent !== text) element.textContent = text;
+  setText("gueststatus", text);
 }
 
 // ---- Rendering
 
 const tmsCanvas = $("tms");
 const tmsCtx = tmsCanvas.getContext("2d");
-const tmsBitmap = document.createElement("canvas");
-tmsBitmap.width = 256;
-tmsBitmap.height = 192;
-const tmsBitmapCtx = tmsBitmap.getContext("2d");
-const tmsImage = tmsBitmapCtx.createImageData(256, 192);
-const wideBitmap = document.createElement("canvas");
-wideBitmap.width = 512;
-wideBitmap.height = 192;
-const wideBitmapCtx = wideBitmap.getContext("2d");
-const wideImage = wideBitmapCtx.createImageData(512, 192);
+/** An off-screen W by H canvas, its context and an image to draw into it. */
+function offscreen(w, h) {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  return [canvas, ctx, ctx.createImageData(w, h)];
+}
+const [tmsBitmap, tmsBitmapCtx, tmsImage] = offscreen(256, 192);
+const [wideBitmap, wideBitmapCtx, wideImage] = offscreen(512, 192);
 
 const lcdRenderer = createLcdRenderer($("lcd"));
 const glcdCanvas = $("glcd");
 const glcdCtx = glcdCanvas.getContext("2d");
-const glcdBitmap = document.createElement("canvas");
-glcdBitmap.width = 128;
-glcdBitmap.height = 64;
-const glcdBitmapCtx = glcdBitmap.getContext("2d");
-const glcdImage = glcdBitmapCtx.createImageData(128, 64);
+const [glcdBitmap, glcdBitmapCtx, glcdImage] = offscreen(128, 64);
 
 function render(m, now = performance.now()) {
   const p = serializeTec1gUpdateFromRuntimeState(m.tec1g.state);
@@ -661,7 +661,7 @@ function refreshCopyAvailability() {
   const text = ready ? "Copy available; copying resets the machine."
     : state.lifecyclePending ? "Copy unavailable during a card operation."
     : "Copy unavailable; wait for console input and a selected drive.";
-  if ($("copyavailability").textContent !== text) $("copyavailability").textContent = text;
+  setText("copyavailability", text);
 }
 
 /** INFO's volumes, each with the drive it is on: the running machine's, else the card's. */
@@ -741,10 +741,15 @@ async function useCard(image, options = choices()) {
   clearFileProblem("open");
 }
 
+/** Report a card that couldn't be opened, or that replaced the old one and then failed to start. */
+function notOpened(err) {
+  fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open");
+}
+
 $("starter").addEventListener("click", () => {
   const options = choices();
   return lifecycle(async () => useCard(await starterCard(), options))
-    .catch(err => fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open"));
+    .catch(notOpened);
 });
 $("saveimg").addEventListener("click", () => state.card && download(state.card, "tecos-card.img"));
 $("openimg").addEventListener("change", (e) => {
@@ -753,7 +758,7 @@ $("openimg").addEventListener("change", (e) => {
   const options = choices();
   e.target.value = "";
   return lifecycle(async () => useCard(new Uint8Array(await file.arrayBuffer()), options))
-    .catch(err => fileProblem(`${err.published ? "Card replaced; restart failed" : "Not opened"}: ${err.message}`, "open"));
+    .catch(notOpened);
 });
 $("putfile").addEventListener("change", (e) => {
   const files = Array.from(e.target.files ?? []);
