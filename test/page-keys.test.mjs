@@ -37,7 +37,7 @@ test("Option (Alt) with a letter is Ctrl with it, read from the key's code, so a
   assert.equal(keyText(key("å", { altKey: true, code: "KeyA" })), "\x01", "Option+A on a Mac");
   assert.equal(keyText(key("∫", { altKey: true, code: "KeyB" })), "\x02");
   assert.equal(keyText(key("Ω", { altKey: true, code: "KeyZ" })), "\x1a");
-  assert.deepEqual(keyInput(key("ß", { altKey: true, code: "KeyS" }), true), { text: "\x13", via: "matrix" }, "Option+S is ^S on the matrix");
+  assert.deepEqual(keyInput(key("ß", { altKey: true, code: "KeyS" }), true), { text: "\x13", via: "matrix", key: 54, mod: 1 }, "Option+S is ^S on the matrix: S, key 54, held with Ctrl");
   assert.equal(keyText(key("1", { altKey: true, code: "Digit1" })), null, "Option with a digit sends nothing");
   assert.equal(keyText(key("a", { altKey: true, ctrlKey: true, code: "KeyA" })), null, "Ctrl+Option sends nothing");
   assert.equal(keyText(key("a", { metaKey: true, code: "KeyA" })), null, "Command is the browser's");
