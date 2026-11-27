@@ -133,7 +133,7 @@ test("in the page's machine, BAZC BOUNCE builds BOUNCE, which takes Graphics I w
   assert.deepEqual(registers(), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I with 16 x 16 sprites");
   const vram = vdp().vram;
   assert.deepEqual(Array.from(vram.slice(0x100, 0x400)), Array.from(fontBytes(resolve(ROOT, "tec-os"))), "the ROM's font at 0100h, glyph by glyph through service 17");
-  const title = " BAZA BASIC ON THE PICO9918 ";
+  const title = " BAZ BASIC ON THE PICO9918 ";
   assert.equal(Buffer.from(vram.slice(0x1802, 0x1802 + title.length)).toString("latin1"), title, "the title in the name table");
   const first = sprites();
   assert.deepEqual([2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 20].map((i) => first[i]), [0, 8, 0, 3, 0, 7, 0, 13, 4, 15, 208], "four balls, the ship and the table's end");
