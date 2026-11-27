@@ -16,7 +16,8 @@ Page Up, Page Down, Home and End reach the machine as Fn with an arrow (on a
 Mac those keys are fn with an arrow already), which TEC-OS sends as
 `ESC [ 5 ~`, `ESC [ 6 ~`, `ESC [ H` and `ESC [ F`; Shift with an arrow is
 `ESC [ 1 ; 2` and the arrow's letter, and Shift with Tab is back-tab, `ESC [ Z`. Option (Alt) with a letter is Ctrl with it,
-for the Ctrl keys macOS keeps for itself.
+for the Ctrl keys macOS keeps for itself. On the matrix, Ctrl with a letter is that
+letter's key held with Ctrl, as on the board, so `^C` breaks and TED's `^C` copies.
 To rebuild the game, run `TAS SNAKE9 SNAKE9.BIN` from the TEC-OS prompt.
 
 [Reading the source](docs/reading.md) follows page startup, the controls, card

@@ -797,6 +797,21 @@ The guard's limit is unchanged. Two complete Viewer strict runs at `a90c139`
 pass 236 of 236 across 39 files (peaks 747 and 798 MB), and `test/tbg` passes
 4 of 4 after each (peaks 607 and 661 MB, from 835 and 868).
 
+**Ctrl with a letter.** Ctrl with a letter reached the matrix as its control
+code, which the runtime's table types as the key with that number, and keys 1
+to 7 are the TEC-1G's Ctrl, Fn, the four arrows and Caps Lock: Ctrl+C pressed
+Up, so `^C` neither broke nor copied in TED, Ctrl+D to Ctrl+F pressed the other
+arrows, Ctrl+G toggled Caps Lock, and Ctrl+A and Ctrl+B did nothing. From
+Viewer `be87a10`, `keyInput` gives Ctrl, Option or the phone keyboard's Ctrl
+with a letter as that letter's key, 35 plus its code, held with Ctrl.
+`test/ctrl-letters` checks all 26 letters against the runtime's table and
+runs TEC-OS's `KEYS.COM` on the page's machine, where Ctrl+A, C, D, F and G
+and z read as `01 03 04 06 07 7A`; on the old `keys.mjs` it fails. The
+normalized module is 155,011 bytes, 15 under the 155,026-byte bound, as
+`keyInput`'s held-key results share one helper. Two complete Viewer strict
+runs at `6d2cb08` pass 238 of 238 across 40 files (peaks 733 and 759 MB), and
+`test/tbg` passes 4 of 4 after each (peaks 608 and 617 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
