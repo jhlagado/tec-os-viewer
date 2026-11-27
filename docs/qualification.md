@@ -774,6 +774,17 @@ are unchanged. The normalized module is 154,959 bytes, 67 under the
 236 across 39 files (peaks 881 and 889 MB), and `test/tbg` passes 4 of 4
 there (peak 840 MB).
 
+**TBUG a4d1da8.** TEC-OS `b5af505` takes `TBUG.SVC` (9,131 bytes,
+`ec86668b…`) and `TBUG.HLP` (3,584 bytes, `e3c26962…`) from TBUG `a4d1da8`:
+the matrix no longer repeats in TBUG, the first stop opens in Code, and the
+views run Code, Registers, Symbols, Stack and Memory. The ROM (`bb429d10…`),
+`SHELL.SVC` and the card's file list are unchanged; the recipe digest becomes
+`f1e735c1…`. Code now keeps its window while PC stays in it, so `test/tbg`
+puts PC on Code's top row with `G 103` before it looks for `TAKE:`'s label row
+(Viewer `3e9fa80`). Two complete Viewer strict runs at `82468a5` pass 236 of
+236 across 39 files (peaks 949 and 997 MB), and `test/tbg` passes 4 of 4 at
+`2f12d22`, which merges `3e9fa80` (peak 841 MB).
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
