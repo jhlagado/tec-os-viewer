@@ -1,5 +1,5 @@
 // TBUG on the standard card: TAS assembles the book's STEP.ASM, TBUG STEP
-// takes the launch through COMVEC (TEC-OS ABI 5.3), and STEP.TBG names
+// takes the launch through COMVEC (Tecos ABI 5.3), and STEP.TBG names
 // its labels. The card's SYSTEM volume on A: carries TAS, TBUG.SVC and
 // TBUG.HLP. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
