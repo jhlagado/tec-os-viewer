@@ -27,7 +27,7 @@ try {
 }
 if (manifest?.format !== "tecos-viewer-build-v1") refuse("dist/build.json has an unsupported format");
 const now = sourceState();
-for (const [name, tree] of [["viewer", "the viewer's tree"], ["tecos", "TEC-OS's tree"]]) {
+for (const [name, tree] of [["viewer", "the viewer's tree"], ["tecos", "Tecos's tree"]]) {
   if (!manifest[name]?.clean) refuse(`dist was built while ${tree} had changes; rebuild from a clean tree`);
   if (!now[name].clean) refuse(`${tree} has changes, so its commit wouldn't name what built the page`);
   if (manifest[name].commit !== now[name].commit) refuse(`dist was built from ${tree} at ${String(manifest[name].commit).slice(0, 7)}, not the current ${now[name].commit.slice(0, 7)}; rebuild`);

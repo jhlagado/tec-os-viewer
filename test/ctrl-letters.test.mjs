@@ -36,7 +36,7 @@ test("Ctrl and Option with each letter are that letter's matrix key held with Ct
 test("on the page's machine, Ctrl+A, C, D, F and G and z reach a program as 01 03 04 06 07 7A", { timeout: 120_000 }, async () => {
   const image = await card();
   const a = findVolume(parseContainer(image), "A");
-  // KEYS.COM: TEC-OS b5af505's test/programs/keys.asm, assembled by TAS
+  // KEYS.COM: Tecos b5af505's test/programs/keys.asm, assembled by TAS
   // f1e4dbc. It prints six keys read by BDOS 6 in hex, then returns.
   new CpmVolume(volumePayload(image, a), a.g).write("KEYS.COM", Buffer.from(
     "0606c51eff0e06cd0500b728f6cd1b011e200e02cd0500c110e8c9f50f0f0f0fcd2401f1e60fc69027ce40275f0e02c30500",

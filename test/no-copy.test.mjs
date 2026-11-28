@@ -1,8 +1,8 @@
 // Reject copies of pinned
-// TEC-OS files outside the submodule.
+// Tecos files outside the submodule.
 // Compare tracked and untracked viewer
 // files by Git blob identity. Exclude
-// TEC-OS's historical web/ sources.
+// Tecos's historical web/ sources.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -13,7 +13,7 @@ const git = (...args) => execFileSync("git", ["-C", ROOT, ...args], { encoding: 
 
 /**
  * List viewer files matching pinned
- * TEC-OS blobs selected by keep.
+ * Tecos blobs selected by keep.
  */
 function copies(keep) {
   const pinned = new Map();
@@ -26,7 +26,7 @@ function copies(keep) {
   return ours.flatMap((p, i) => (pinned.has(blobs[i]) ? [`${p} is tec-os/${pinned.get(blobs[i])}`] : []));
 }
 
-test("no file in the viewer outside tec-os/ is a file TEC-OS tracks outside web/ at its pin", () => {
+test("no file in the viewer outside tec-os/ is a file Tecos tracks outside web/ at its pin", () => {
   const found = copies((path) => !path.startsWith("web/"));
-  assert.deepEqual(found, [], `copies of TEC-OS's files:\n${found.join("\n")}`);
+  assert.deepEqual(found, [], `copies of Tecos's files:\n${found.join("\n")}`);
 });

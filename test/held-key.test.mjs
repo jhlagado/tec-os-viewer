@@ -1,4 +1,4 @@
-// Under CON TTY TEC-OS doesn't scan the
+// Under CON TTY Tecos doesn't scan the
 // matrix, so the page lets a matrix key
 // go after a short hold, and the keys
 // behind it are not stuck. In the page's
@@ -20,19 +20,19 @@
 // MON3.SVC's scan gives with or without
 // the gap, and 1 then Esc ends it. On
 // CRT: MON3.SVC records the matrix keys
-// it reads as TEC-OS's scan does, so
+// it reads as Tecos's scan does, so
 // HELLO3 takes 1 then Esc, and EXIT
 // reaches A>. On CRT:, and on the GLCD
 // board before the shell has run
 // STARTUP.CMD's GLCD.SVC line, the
-// page's keys wait for TEC-OS's scan
+// page's keys wait for Tecos's scan
 // and none is let go: typed ahead
 // while TAS builds DEMO, or typed while
 // the board starts, also with
 // STARTUP.CMD late in A:'s directory.
 // Nor is one let go, or taken as read,
 // on bytes read while a program has
-// EXPAND 1 in TEC-OS's 8000h-BFFFh
+// EXPAND 1 in Tecos's 8000h-BFFFh
 // window, which may look like CON TTY
 // or like the key in KBLAST. Startup
 // is over at the first console read
@@ -99,7 +99,7 @@ function watchKeys(m) {
 /**
  * Run M with its key queue moving until
  * it is empty, and give how each key
- * left: "read" by TEC-OS's scan, or
+ * left: "read" by Tecos's scan, or
  * "let go" by the page's bound.
  */
 function fates(m, maxCycles) {
@@ -201,7 +201,7 @@ test("at A> under CON TTY the second of two queued matrix keys goes down a hold 
   assert.ok(yDown.at - xUp.at >= HOLD_CYCLES, `y went down ${yDown.at - xUp.at} cycles after x was let go`);
 });
 
-test("on CRT: the page's matrix keys reach TEC-OS as before", { timeout: 300_000 }, async () => {
+test("on CRT: the page's matrix keys reach Tecos as before", { timeout: 300_000 }, async () => {
   const m = power(await card(recipeOn("MON3")), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:MON3>"), LIMIT, "the prompt");
   assert.ok(m.videoConsole(), "CON: is CRT:");
@@ -234,7 +234,7 @@ test("under CON TTY HELLO3 counts both of two queued keys, and 1 then Esc ends i
   assert.equal(m.read(keyAddress(m)), 1, "HELLO3 saw the 1 first");
 });
 
-test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that read as CON TTY, or as the key read, don't let a key go", { timeout: 300_000 }, async () => {
+test("on CRT: while a program has EXPAND 1 in Tecos's window, bytes there that read as CON TTY, or as the key read, don't let a key go", { timeout: 300_000 }, async () => {
   const m = power(await card(recipeOn("MON3")), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:MON3>"), LIMIT, "the prompt");
   m.enqueueInput("x", "matrix");
@@ -256,21 +256,21 @@ test("on CRT: while a program has EXPAND 1 in TEC-OS's window, bytes there that 
   assert.ok(!up, "x not taken as read");
   assert.ok(m.videoConsole(), "CON: is CRT: again");
   m.runUntil(() => (pumpKeys(m), !m.pending.length), LIMIT, "x read");
-  assert.equal(head.letGo, undefined, "x read by TEC-OS's scan");
+  assert.equal(head.letGo, undefined, "x read by Tecos's scan");
 });
 
-test("on CRT: keys typed ahead while TAS builds DEMO wait for TEC-OS's scan", { timeout: 600_000 }, async () => {
+test("on CRT: keys typed ahead while TAS builds DEMO wait for Tecos's scan", { timeout: 600_000 }, async () => {
   const m = power(await card(recipeOn("ASM")), "pico", 40);
   m.runUntilChecked(() => m.ready() && m.screen().some((l) => l.trimEnd() === "A:ASM>"), LIMIT, "the prompt");
   const text = "TAS DEMO\rDIR\r";
   m.enqueueInput(text, "matrix");
-  assert.deepEqual(fates(m, 2_000_000_000), Array(text.length).fill("read"), "every key read by TEC-OS");
+  assert.deepEqual(fates(m, 2_000_000_000), Array(text.length).fill("read"), "every key read by Tecos");
 });
 
-test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan", { timeout: 300_000 }, async () => {
+test("on the GLCD board, keys typed while it starts wait for Tecos's scan", { timeout: 300_000 }, async () => {
   const m = power(await card(recipeOn("MON3")), "glcd", 40);
   m.enqueueInput("DIR\r", "matrix");
-  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
+  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by Tecos");
   assert.ok(m.videoConsole(), "UC1: is the console");
 });
 
@@ -322,7 +322,7 @@ test("with STARTUP.CMD ending in CON TTY, a screen key at the first prompt is le
   assert.equal(down.size, 0, "no matrix key held");
 });
 
-test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when STARTUP.CMD is late in A:'s directory", { timeout: 300_000 }, async () => {
+test("on the GLCD board, keys typed while it starts wait for Tecos's scan when STARTUP.CMD is late in A:'s directory", { timeout: 300_000 }, async () => {
   const image = await card(recipeOn("MON3"));
   const a = driveA(image);
   const startup = a.read("STARTUP.CMD");
@@ -331,7 +331,7 @@ test("on the GLCD board, keys typed while it starts wait for TEC-OS's scan when 
   a.write("STARTUP.CMD", startup);
   const m = power(image, "glcd", 40);
   m.enqueueInput("DIR\r", "matrix");
-  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by TEC-OS");
+  assert.deepEqual(fates(m, 200_000_000), ["read", "read", "read", "read"], "every key read by Tecos");
   m.runUntil(() => /\[more\]|A:MON3>$/.test(m.text()), LIMIT, "DIR's listing");
   assert.match(m.text(), /A:MON3>DIR\r\r\n\r\nF0000\.TXT {8}128\r\nSHELL\.SVC {7}3584\r\n/, "DIR typed whole");
 });

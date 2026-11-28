@@ -38,7 +38,7 @@ async function damagedCard() {
 test("Download of a file whose entry names a block past DSM says why, and the page throws nothing", { timeout: 120_000 }, async (t) => {
   web();
   const { image, words } = await damagedCard();
-  assert.match(words ?? "", /MON3\.SVC: extent 0 .* names block \d+, beyond DSM \d+/, "TEC-OS's read refuses it, naming the entry");
+  assert.match(words ?? "", /MON3\.SVC: extent 0 .* names block \d+, beyond DSM \d+/, "Tecos's read refuses it, naming the entry");
   const { chromium } = fromTecos("playwright");
   const server = await serve();
   t.after(() => {

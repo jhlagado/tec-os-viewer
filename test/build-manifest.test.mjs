@@ -58,7 +58,7 @@ test("each stale or altered dist is refused with its cause", { timeout: 600_000 
 
   build();
   edit((m) => (m.tecos.commit = "f".repeat(40)));
-  refused(/built from TEC-OS's tree at fffffff, not the current/);
+  refused(/built from Tecos's tree at fffffff, not the current/);
 
   build();
   writeFileSync(resolve(DIST, "app.js"), readFileSync(resolve(DIST, "app.js"), "utf8") + "\n// changed");

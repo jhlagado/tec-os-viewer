@@ -3,8 +3,8 @@
 // the machine.
 //
 // The machine holds a matrix key down
-// until TEC-OS's own scan has read it.
-// TEC-OS scans the matrix only while
+// until Tecos's own scan has read it.
+// Tecos scans the matrix only while
 // CON: is CRT: or UC1:, so under CON
 // TTY or CON BAT that scan never comes:
 // a key that nothing else reads would
@@ -15,14 +15,14 @@
 // ends the wait for a key that was
 // read but whose release nothing sees:
 // a MON-3 program's scan records its
-// keys in TEC-OS's KBLAST, and once the
+// keys in Tecos's KBLAST, and once the
 // program ends nothing scans to clear
 // it. The next key waits as long again
 // with no key down, so two keys never
 // go down back to back for a program
 // that reads the matrix itself.
 //
-// Until TEC-OS's startup is over a key
+// Until Tecos's startup is over a key
 // waits as before: on the GLCD board
 // the matrix becomes the console only
 // when STARTUP.CMD's GLCD.SVC line has
@@ -56,7 +56,7 @@
 // console.
 //
 // While a program has EXPAND 1 in the
-// 8000h-BFFFh window, TEC-OS's own
+// 8000h-BFFFh window, Tecos's own
 // bytes there can't be read, so a key
 // that is down waits, neither let go
 // nor handed to the machine's own
@@ -73,9 +73,9 @@ export const STARTUP_CYCLES = 40_000_000;
  * A twentieth of a second at the page's
  * 4 MHz: how long a key that is no longer
  * held stays down once something has
- * read it without TEC-OS's scan taking
+ * read it without Tecos's scan taking
  * it, as TBUG reads the matrix through
- * TNKEYS. TEC-OS's own scan takes a key
+ * TNKEYS. Tecos's own scan takes a key
  * well within it.
  */
 export const SEEN_CYCLES = 200_000;
@@ -87,14 +87,14 @@ const PAGE_KEYS = { PageUp: "\x1b[5~", PageDown: "\x1b[6~", Home: "\x1b[H", End:
 
 /**
  * The matrix's own arrow keys, which
- * TEC-OS turns into ESC [ A to D.
+ * Tecos turns into ESC [ A to D.
  */
 export const MATRIX_ARROWS = { ArrowUp: "\x03", ArrowDown: "\x04", ArrowLeft: "\x05", ArrowRight: "\x06" };
 
 /**
  * Keys 3-6, the matrix's arrows, by the
  * browser key each stands for, and the
- * page keys as Fn with an arrow: TEC-OS
+ * page keys as Fn with an arrow: Tecos
  * sends Fn+up as Page Up, Fn+down as Page
  * Down, Fn+left as Home and Fn+right as
  * End. On a Mac these are Fn and an arrow
@@ -112,7 +112,7 @@ const SHIFT = 0, CTRL = 1, FN = 2;
  */
 const CTRL_LETTER = 35;
 
-/** Back-tab, and key 9, the matrix's Tab, which TEC-OS makes back-tab with Shift. */
+/** Back-tab, and key 9, the matrix's Tab, which Tecos makes back-tab with Shift. */
 const BACKTAB = "\x1b[Z", TAB_KEY = 9;
 
 /**
@@ -174,7 +174,7 @@ export function queueInput(m, input) {
   else m.enqueueInput(input.text, input.via);
 }
 
-/** TEC-OS's console reads that wait for a key: serial, then the matrix. */
+/** Tecos's console reads that wait for a key: serial, then the matrix. */
 const READS = [["CINLP", "CINWE"], ["CINMX", "CINME"]];
 
 /**
@@ -233,9 +233,9 @@ export function pumpKeys(m, hold = HOLD_CYCLES, startupHold = STARTUP_CYCLES) {
   if (matrix && head.down && !head.up && head.held) return;
   if (matrix && head.down && m.videoConsole()) {
     // A reader of its own, such as TBUG through TNKEYS, reads the matrix
-    // without TEC-OS's scan taking the key: a key it has read lifts a
+    // without Tecos's scan taking the key: a key it has read lifts a
     // short while after, and one it has read as up moves the queue on.
-    // KBLAST already holding the key when it went down is a key TEC-OS
+    // KBLAST already holding the key when it went down is a key Tecos
     // took before, not this one.
     const read = !(m.tec1g.state.input.matrixKeyStates[head.combo.row] >> head.combo.col & 1);
     const taken = taker(m, head);
@@ -279,7 +279,7 @@ function lift(m, head) {
   if (head.mod !== undefined) m.tec1g.applyMatrixKey(0, head.mod, false);
 }
 
-/** Whether KBLAST shows HEAD's key, as TEC-OS's scan leaves it once taken. */
+/** Whether KBLAST shows HEAD's key, as Tecos's scan leaves it once taken. */
 function taker(m, head) {
   return m.classicBankIn && m.read(m.sym("KBLAST")) === head.key;
 }

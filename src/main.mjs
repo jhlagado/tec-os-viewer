@@ -1,4 +1,4 @@
-// Run TEC-OS in a browser using the
+// Run Tecos in a browser using the
 // shared Debug80 TEC-1G machine model.
 // Draw its displays and serial output.
 // Keep the SD card image in IndexedDB.
@@ -450,10 +450,10 @@ function appendSerial(text) {
 // ---- Keyboard
 // The page has one keyboard, as the TEC-1G has one matrix: a key typed
 // anywhere on the page is a matrix key, whichever display was clicked,
-// and TEC-OS or the program that reads the matrix decides what it means.
+// and Tecos or the program that reads the matrix decides what it means.
 // Only the serial terminal, the phone keyboard and the page's own
 // controls keep their keys. A key goes down at keydown and stays down
-// while it is held; once let go it stays down until TEC-OS's scan takes
+// while it is held; once let go it stays down until Tecos's scan takes
 // it, or a short while after another reader, such as TBUG, has read it
 // (src/keys.mjs). Keys typed together queue and go down one at a time.
 

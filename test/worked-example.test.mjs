@@ -45,7 +45,7 @@ function keys(m, s, what, done = () => true) {
 /**
  * Press Fn with digit D on M's matrix,
  * as the TEC-1G's F-keys are, and let
- * go once TEC-OS's scan has it in
+ * go once Tecos's scan has it in
  * KBLAST. Fn is row 0 column 2; the
  * digits are keys 13h to 1Ch.
  */

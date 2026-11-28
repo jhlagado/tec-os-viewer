@@ -156,7 +156,7 @@ export async function legacyCardUpgrade(t) {
 
   const drv = await driverCard();
   const words = cardProblem(drv, "glcd");
-  assert.match(words ?? "", /older TEC-OS: this ROM doesn't load GLCD\.DRV/, "Node's reading");
+  assert.match(words ?? "", /older Tecos: this ROM doesn't load GLCD\.DRV/, "Node's reading");
   const refused = await open(browser, url, drv, "glcd", "80");
   await refused.page.waitForFunction((w) => document.getElementById("serial").textContent.includes(`[${w}]`), words, { timeout: 60_000 });
   assert.deepEqual(refused.errors, []);

@@ -1,13 +1,13 @@
 # Reading the viewer
 
-This repository connects a browser page to the TEC-1G machine model and TEC-OS
+This repository connects a browser page to the TEC-1G machine model and Tecos
 firmware. The page code is here. Firmware implementation and the shared
 machine, card and file-system libraries are in the `tec-os/` submodule.
 
 ## 1. Establish the version
 
 The gitlink at `tec-os/` selects firmware commit
-`8a7e24e30801bd6ff9672349ab7e32ce88019923`, with TBUG from tbug `167f7f0` (`tbug NAME`, no ARM, no key repeats, the first stop in Code), a bare service name read from A: as a COM is, BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
+`8c12c9ff1bcff78c53d3375e56aef1b73a6086da`, whose banner says "Tecos 0.1 for TEC-1G", with TBUG from tbug `167f7f0` (`tbug NAME`, no ARM, no key repeats, the first stop in Code), a bare service name read from A: as a COM is, BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, line history, `CLS` and labelled prompt (ABI 5.6), Shift-Tab as back-tab, F1-F10 on Fn with a
 digit key, Page Up, Page Down, Home and End on Fn with an arrow, Shift with an arrow sent as xterm sends it, the ROM's name parser exported as `TNPARSE` (ABI 5.4), TBUG with its symbols built in,
 cooperative housekeeping and ROM CD recovery, built with TAS alone, on the
 release 1 candidate with BASIC: the Compact font, a 40-column cold console,
@@ -18,7 +18,7 @@ session in `TED.SES`, `TED.ERR` and `TED.PRJ`, which keeps
 the document on the card for files up to 65,535 bytes, TAS from TAS `f1e4dbc`
 with chained lines and Intel HEX output, BAZC, the compiler, from Baza `3f31488` with
 its runtime from the same commit, BOUNCE from `7beac04`, BAZ, the interpreter, from `3f31488`, and the 19-page
-`MON3.SVC`. TEC-OS builds one card, the starter card, of five
+`MON3.SVC`. Tecos builds one card, the starter card, of five
 volumes, and the page runs it. Its `STARTUP.CMD` loads `SHELL.SVC`, which then
 holds the prompt: `CD`, `COPY`, `DEL`, `DIR` with a row of name and size for
 each file, the `[more]` pager,
@@ -72,16 +72,16 @@ browser key sends, an arrow on the screen being the matrix's own arrow key,
 Shift with an arrow or Tab and the page keys that key held with Shift or Fn
 (`queueInput` puts them in the machine's queue by `enqueueKey`),
 and moves the queued keys on as the frame loop steps the machine. A matrix key
-stays down while it is held, and once let go until TEC-OS's scan has read it,
+stays down while it is held, and once let go until Tecos's scan has read it,
 or a twentieth of a second after another reader such as TBUG has read it; a
-key held is one press, and keys typed together queue. TEC-OS scans the matrix only
+key held is one press, and keys typed together queue. Tecos scans the matrix only
 while CON: is CRT: or UC1:. Under `CON TTY` or `CON BAT` the page holds a
 matrix key for a tenth of a second and then lets it go, so a key nothing reads
 doesn't hold up the keys behind it, and a key a MON-3 program read, whose
 release nothing clears once the program ends, doesn't either. The next key
 waits as long again with no key down, so a program that reads the matrix
 itself never sees two keys go down back to back. Until startup is over, and on
-CRT: and UC1:, keys wait for TEC-OS's scan. Touch input passes through the
+CRT: and UC1:, keys wait for Tecos's scan. Touch input passes through the
 hidden text field and the extra keys defined in `index.html`.
 
 [src/tms.mjs](../src/tms.mjs) renders 80-column text, 40-column text and
@@ -94,7 +94,7 @@ The firmware's console and device routines remain in `tec-os/src/` and
 ## 4. Trace a card change
 
 The card section in `main.mjs` shows each volume on the drive the running
-machine has it on, read from TEC-OS's `DRVIDX`, lists files, downloads images and stages imported
+machine has it on, read from Tecos's `DRVIDX`, lists files, downloads images and stages imported
 files on a copy. A successful import publishes the staged card and resets the
 machine. Its storage step precedes publication when browser saving is enabled.
 [src/text.mjs](../src/text.mjs) decides, for each file copied onto or off the

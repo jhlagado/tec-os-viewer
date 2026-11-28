@@ -49,7 +49,7 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
     ["wrong A geometry", (recipe) => { recipe.volumes[0].geometry = "G8M"; }, /one writable G1M volume mounted at A/],
     // Fields the structural checks don't read are pinned through the canonical digest.
     ["changed B geometry", (recipe) => { recipe.volumes[1].geometry = "G1M"; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
-    ["a volume naming writeBehind", (recipe) => { recipe.volumes[1].writeBehind = false; }, /volume WORK names writeBehind, which TEC-OS refuses/],
+    ["a volume naming writeBehind", (recipe) => { recipe.volumes[1].writeBehind = false; }, /volume WORK names writeBehind, which Tecos refuses/],
     ["extra volume", (recipe) => { recipe.volumes.push({ geometry: "G1M", label: "EXTRA" }); }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
     ["empty component", (recipe) => { recipe.components.push({ id: "empty", name: "EMPTY", files: [] }); }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],
     ["extra file field", (recipe) => { sample(recipe).readOnly = true; }, /canonical SHA-256 is [0-9a-f]{64}, not the pinned/],

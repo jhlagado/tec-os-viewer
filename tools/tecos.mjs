@@ -10,7 +10,7 @@
 // Each comes from its variable when
 // set, else tec-os/.inputs/, else a
 // pinned sibling checkout, else it is
-// fetched; see TEC-OS's README.
+// fetched; see Tecos's README.
 // A build needs read access to
 // jhlagado/tec-os and to the inputs'
 // repositories, jhlagado/tas,
@@ -24,7 +24,7 @@
 // host from TAS's runner, taken
 // from TECOS_TAS_HOST when set, else
 // tec-os/.inputs/tas-host, which is
-// prepared as TEC-OS's README says when
+// prepared as Tecos's README says when
 // it is missing.
 //
 // node tools/tecos.mjs: build and check
@@ -93,13 +93,13 @@ export function problems() {
   if (systemVolumes.length !== 1 || systemVolumes[0].geometry !== "G1M" || systemVolumes[0].readOnly) {
     fault("starter files need one writable G1M volume mounted at A");
   }
-  // TEC-OS's card builder refuses a
+  // Tecos's card builder refuses a
   // volume that names writeBehind: the
   // logged drive is the one written
   // behind, and the byte that marked a
   // volume is reserved.
   for (const volume of Array.isArray(recipe.volumes) ? recipe.volumes : []) {
-    if (volume !== null && typeof volume === "object" && "writeBehind" in volume) fault(`volume ${volume.label ?? "?"} names writeBehind, which TEC-OS refuses`);
+    if (volume !== null && typeof volume === "object" && "writeBehind" in volume) fault(`volume ${volume.label ?? "?"} names writeBehind, which Tecos refuses`);
   }
   if (!Array.isArray(recipe.components)) {
     fault("components must be an array");
@@ -190,20 +190,20 @@ export function recipeDigest(recipe) {
 export function check() {
   const found = problems();
   if (found.length) {
-    console.error(`TEC-OS doesn't match pins.json:\n- ${found.join("\n- ")}`);
+    console.error(`Tecos doesn't match pins.json:\n- ${found.join("\n- ")}`);
     process.exit(1);
   }
 }
 
 /**
  * Prepare tec-os/.inputs/tas-host, the
- * TAS runner TEC-OS's build uses, unless
+ * TAS runner Tecos's build uses, unless
  * TECOS_TAS_HOST names one or it is
  * there: TAS at the runner commit
- * TEC-OS pins, with its dependencies,
- * as TEC-OS's README prepares it. The
+ * Tecos pins, with its dependencies,
+ * as Tecos's README prepares it. The
  * stage becomes the host only once
- * TEC-OS's own check of the runner
+ * Tecos's own check of the runner
  * passes on it; if the clone, npm ci or
  * the check fails, the stage goes and
  * no host is left. TECOS and URL are

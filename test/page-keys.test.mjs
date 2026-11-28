@@ -1,5 +1,5 @@
 // The page keys, Shift with an arrow or Tab and Option with a letter: what the
-// page sends for them, by serial and on the matrix, and what TEC-OS gives
+// page sends for them, by serial and on the matrix, and what Tecos gives
 // a program for them through BIOS CONIN.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -56,7 +56,7 @@ function conin(m, inputs) {
   return String.fromCharCode(...Array.from({ length: 6 }, (_, i) => m.read(0x300 + i)));
 }
 
-test("on the PICO9918 board, the page's Page Down, Shift+Left and Shift+Tab reach a program as TEC-OS sends them", { timeout: 600_000 }, async () => {
+test("on the PICO9918 board, the page's Page Down, Shift+Left and Shift+Tab reach a program as Tecos sends them", { timeout: 600_000 }, async () => {
   const m = power(await card(), "pico", 40);
   m.runUntil(() => m.ready(), 300_000_000, "the first prompt");
   const plain = (c) => keyInput(key(c), true);

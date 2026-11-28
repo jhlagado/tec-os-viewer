@@ -1,7 +1,7 @@
 // The page has one keyboard, as the TEC-1G has one matrix. Two faults it
 // fixes, run on the standard card in Chromium with TBUG:
 // - a key typed with the screen focused while TBUG has the program stopped
-//   used to stay down, because nothing but TEC-OS's own scan let it go, so
+//   used to stay down, because nothing but Tecos's own scan let it go, so
 //   one arrow ran Code's selection on by itself;
 // - after quitting TBUG with the LCD focused, keys typed at normal speed
 //   used to be lost, because the LCD pressed and released the matrix in

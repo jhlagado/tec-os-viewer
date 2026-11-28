@@ -1,10 +1,10 @@
 # Compact font and cold 40-column source offer
 
-This offer has been received. The current pin, TEC-OS `46cf3f1`,
+This offer has been received. The current pin, Tecos `46cf3f1`,
 descends from it. See [qualification](qualification.md). The rest of
 this page is the offer as it was made.
 
-| Source role | Exact TEC-OS commit |
+| Source role | Exact Tecos commit |
 | --- | --- |
 | Current viewer dependency | `c8c4a3e3ecfdd6c06c1d2c332ab1be9b0c7a5d4c` |
 | Upstream tested Compact source | `8b8664a7d93c6dc2e8bce509b9770585e106eedc` |

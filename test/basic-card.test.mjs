@@ -3,7 +3,7 @@
 // BOUNCE.BAS, and the demo as source:
 // its BASIC volume holds BAZC.COM,
 // BAZC.RTL, TIMES.BAS and BOUNCE.BAS,
-// and ASM holds DEMO.ASM, TEC-OS's
+// and ASM holds DEMO.ASM, Tecos's
 // programs/DEMO.ASM as CP/M text, and
 // no DEMO.COM.
 // In the page's machine, PICO9918 at
@@ -29,11 +29,11 @@
 // A:SYSTEM>, which
 // refuses DEL and takes DIR!TYPE as one
 // word.
-// TEC-OS holds a program's writes in
+// Tecos holds a program's writes in
 // its cache: the drive it is logged on
 // is written behind, and the others'
 // data writes wait for the next flush
-// point. Whenever TEC-OS waits for a
+// point. Whenever Tecos waits for a
 // key, every drive is on the card.
 // A program's close puts its pages in
 // the card image, which the page saves,
@@ -172,7 +172,7 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
   let mark = m.output.length;
   keys(m, "tas demo\r", "TAS's build", () => m.ready() && /A:ASM>$/.test(m.text(mark)));
   assert.match(m.text(mark), /DEMO\.COM written/);
-  // The program TEC-OS's own build
+  // The program Tecos's own build
   // makes from the same source.
   const built = Buffer.from(driveA(image).read("DEMO.COM"));
   assert.equal(createHash("sha256").update(built.subarray(0, 1191)).digest("hex"), "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d", "DEMO.COM's 1,191 bytes");

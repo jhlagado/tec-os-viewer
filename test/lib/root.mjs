@@ -1,6 +1,6 @@
 // Locate the viewer and resolve runtime,
 // esbuild and Playwright dependencies
-// from the TEC-OS submodule.
+// from the Tecos submodule.
 
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";

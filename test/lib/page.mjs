@@ -1,6 +1,6 @@
 // Build the page assets and card through
 // the same tools and helpers as the app.
-// Use the pinned TEC-OS Machine and
+// Use the pinned Tecos Machine and
 // its matching fixed test time.
 
 import { readFileSync } from "node:fs";
@@ -11,7 +11,7 @@ import { symbolsFromD8 } from "../../tec-os/host/machine.mjs";
 import { web, recipe, recipeOn, card, DIST } from "./assets.mjs";
 
 export { Machine, prepareCard };
-export const TEST_CLOCK = new Date(2026, 0, 1, 12, 0, 0); // Fixed TEC-OS test time.
+export const TEST_CLOCK = new Date(2026, 0, 1, 12, 0, 0); // Fixed Tecos test time.
 export { web, recipe, recipeOn, card, DIST };
 
 /** Load the page ROM and symbol map. */

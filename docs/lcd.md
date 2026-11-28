@@ -37,5 +37,5 @@ These are emulator results; physical-board testing is separate.
 The renderer adds 6,561 normalised module bytes. The owner accepted a
 155,026-byte Viewer module ceiling on 21 November 2026, and lifted the
 ceiling altogether on 28 November 2026: the module's size is now reported,
-not bounded. Neither changed a TEC-OS ROM or Z80 RAM cost. Full receiving integration and
+not bounded. Neither changed a Tecos ROM or Z80 RAM cost. Full receiving integration and
 complete Viewer qualification remain required before publication.

@@ -1,6 +1,6 @@
 // The Compact font's notices reach the
 // page: FONT-NOTICES.txt beside it, the
-// same bytes as TEC-OS's, and the escaped
+// same bytes as Tecos's, and the escaped
 // text inline in the page and standalone.
 // Run npm run tecos before this test.
 
@@ -17,7 +17,7 @@ const escape = (t) => t.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replace
 test("the font notices ship beside the page and inline in it", { timeout: 300_000 }, () => {
   execFileSync(process.execPath, [resolve(ROOT, "tools/build.mjs")], { stdio: "pipe" });
   const source = readFileSync(resolve(ROOT, "tec-os/dist/FONT-NOTICES.txt"));
-  assert.ok(source.equals(readFileSync(resolve(DIST, "FONT-NOTICES.txt"))), "the same bytes as TEC-OS's");
+  assert.ok(source.equals(readFileSync(resolve(DIST, "FONT-NOTICES.txt"))), "the same bytes as Tecos's");
   const text = source.toString("utf8");
   assert.match(text, /Spleen 5x8/);
   const html = readFileSync(resolve(DIST, "index.html"), "utf8");
