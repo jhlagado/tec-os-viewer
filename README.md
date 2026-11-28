@@ -28,9 +28,9 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is Tecos `fe23fa7`, with every program on the card saying Tecos, whose banner says "Tecos 0.1 for TEC-1G", with TBUG from tbug `167f7f0` (`tbug NAME`, no ARM, lowercase commands, no key repeats, the first stop in Code), a bare service name read from A: as a COM is, BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is Tecos `4c555ff`, with every program on the card saying Tecos, whose banner says "Tecos 0.1 for TEC-1G", with TBUG from tbug `1215559` (`tbug NAME`, F1 for help, the Labels view, no key repeats, the first stop in Code), a bare service name read from A: as a COM is, BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, Page Up, Page Down, Home and End on Fn with an arrow and Shift with an arrow sent as xterm sends it, with the five-volume starter card (SYSTEM, ASM,
-BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `167f7f0`, with its symbols built in, which builds with
+BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `1215559`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a small CCP and three drives,
 `SHELL.SVC`, the resident shell, in 9 pages, `MON3.SVC` for MON-3's programs,
@@ -181,7 +181,7 @@ as Tecos's build at the pin gives them.
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits Tecos's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
 jhlagado/ted (`b2f98bc` for `TED.COM`), jhlagado/baza (`3f31488` for the compiler, the runtime and `BAZ.COM`, `7beac04` for
-BOUNCE), jhlagado/tbug (`167f7f0` for `TBUG.SVC`, `a4d1da8` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
+BOUNCE), jhlagado/tbug (`1215559` for `TBUG.SVC` and `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -236,18 +236,31 @@ the native storage transaction completes.
 The page's card carries TBUG.SVC and TBUG.HLP on every A: volume. At the
 prompt, type `unload`, then `tbug name` for a COM on the card, such as
 `tbug step`; from B:, `tbug step` still finds A:TBUG.SVC. TBUG's first
-stop opens in Code, and its views run Code, Registers, Symbols, Stack and
-Memory. Keys typed anywhere on the page but the serial pane, the phone
-keyboard and the page's controls go to the matrix with their Shift or Ctrl,
-whichever display was clicked, so Tab and Shift+Tab move between TBUG's
-views, and F1 to F10 go as Fn with a digit (F10 as Fn+0), as on the TEC-1G:
-F5 runs, F6, F7 and F8 step out, over and into. On a Mac, press fn with the
-F-key unless the keyboard sends standard function keys. The matrix doesn't
-repeat: a key held is one press, and it lifts at its keyup. The [TBUG book](https://tec-os.org/tbug/) walks through a first
+stop opens in Code. Keys typed anywhere on the page but the serial pane, the
+phone keyboard and the page's controls go to the matrix with their Shift or
+Ctrl, whichever display was clicked, and F1 to F10 go as Fn with a digit (F10
+as Fn+0), as on the TEC-1G. On a Mac, press fn with the F-key unless the
+keyboard sends standard function keys. The matrix doesn't repeat: a key held
+is one press, and it lifts at its keyup. TBUG's keys:
+
+- C, R, L, S and M open Code, Registers, Labels, Stack and Memory; Tab and
+  Shift+Tab cycle them.
+- F1 opens help. F5 runs, or runs to the selected line; F6, F7 and F8 step
+  out, over and in (F8 also into RST 08h to 28h).
+- Space sets or clears a breakpoint in Code and Labels.
+- Enter follows a jump or call in Code, opens a label in Code from Labels,
+  edits in Registers and Memory (as E does), and opens a Stack slot in Memory.
+- A opens Memory at the selection's address. In Memory, B, D, H, X and Y jump
+  to the byte at BC, DE, HL, IX and IY.
+- P goes to PC: Code's top row, Registers' PC field, or PC's byte in Memory.
+- Left and Right pan Code's selected line, and move Memory's cursor.
+- G goes to an address; F in Labels finds a label by the start of its name.
+- Esc goes back through up to four places. Q quits, after "Quit TBUG? Y/N".
+- Ctrl+Esc held breaks in at the next BDOS call, during F7 and F6 too. The [TBUG book](https://tec-os.org/tbug/) walks through a first
 session.
 
 The TBUG browser tests are outside `npm test`. Run them with
 `TEST_CHROMIUM=/usr/bin/chromium node --test test/tbg/*.test.mjs`. The first
-assembles the book's STEP.ASM with TAS on the card, arms the launch, steps,
+assembles the book's STEP.ASM with TAS on the card, starts it with `tbug step`, steps,
 sets a breakpoint and checks the labels from STEP.TBG. The second drives Code,
 G, Esc, F5 to a line, step out and the help pages.
