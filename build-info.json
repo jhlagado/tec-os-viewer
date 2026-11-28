@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "ed1bb10909f755b1cee75cb25f7025a3c8c85956",
-  "firmwareCommit": "8a7e24e30801bd6ff9672349ab7e32ce88019923",
-  "firmwareRomSha256": "1225ea0da080d6c8257bce9fbccf7932dde5db7eed94f2d84f30a13ea9ec99ce",
+  "viewerCommit": "1e2d6717c66fda24a97b6653c01f3f90755bbd60",
+  "firmwareCommit": "8c12c9ff1bcff78c53d3375e56aef1b73a6086da",
+  "firmwareRomSha256": "04ab62be235be439f8b69e691e7666252608bed98bbe5da08a3a5927f8f29fbd",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 725416,
-      "sha256": "66a0993aa0b5073f86c0bfb8d8f329fe929a38a9268a90d50ebf9e9bf0e015e9"
+      "bytes": 725386,
+      "sha256": "aa165c719c0c22ccdf32139d3b0ead19eb004dcf7be4875135d7cae2deab1280"
     }
   },
   "defaultColumns": 40,
@@ -41,11 +41,11 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Three complete strict Viewer rounds of four at b8f4b4e (one stopped at guest-save-cost-browser on a host timing outlier) and two at ed1bb10 (Native 8a7e24e, TBUG 167f7f0): 40 files, 238/238 each, with test/tbg 4/4 after each; Native strict 1487/1487 twice at 8a7e24e. ed1bb10 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 6c82a9b and two at 1e2d671 (Tecos 8c12c9f): 40 files, 238/238 each, with test/tbg 4/4 after each. 1e2d671 adds only the qualification note.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "c175bb4d927757332e22e3311149d54ab365deca",
+  "previousQualification": "ed1bb10909f755b1cee75cb25f7025a3c8c85956",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -129,7 +129,7 @@
   },
   "lcdKeys": "F1-F10 reach the matrix as Fn with a digit (F10 as Fn+0), whichever display was clicked",
   "rom": {
-    "used": 16144,
-    "free": 240
+    "used": 16141,
+    "free": 243
   }
 }
