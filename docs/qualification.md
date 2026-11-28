@@ -882,6 +882,17 @@ build of `DEMO.ASM` rather than naming one pin's size and hash. Two complete
 Viewer strict runs at `f4074a3` pass 238 of 238 across 40 files (peaks 764 and
 766 MB), and `test/tbg` passes 4 of 4 after each.
 
+**Tecos 4c555ff: TBUG 1215559's keys.** Tecos `4c555ff` takes TBUG from tbug
+`1215559` (TBUG.SVC 9,375 bytes, `e75bdbfb…`; TBUG.HLP 3,712 bytes,
+`d6e1f6fc…`): F1 opens help, L opens Labels (once Symbols), P goes to PC, Q
+quits after a question, A opens Memory at the selection's address. The ROM is
+unchanged. TBUG's test branch `tbug-tg22-keys` (`bf22cea`) is merged at
+`f37fb00`, and the README lists TBUG's keys. Two complete Viewer strict runs at
+`7959b58` pass 238 of 238 across 40 files (peaks 731 and 798 MB), and
+`test/tbg` passes 4 of 4 after each. At the owner's request to see it sooner,
+`7959b58` landed on those two runs, without this paragraph's own pair; this
+paragraph lands with the next change.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
