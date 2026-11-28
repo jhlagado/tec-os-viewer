@@ -68,11 +68,11 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await key("r"); // Registers, whichever view the first stop shows.
   await lcd("PC 0100");
   {
-    await key("h"); // The card carries TBUG.HLP.
+    await key("F1"); // F1, Fn+1: help. The card carries TBUG.HLP.
     await lcd("REGISTERS   HELP 1/5");
     await key("Escape");
     assert.match(await page.locator("#lcd").textContent(), /SY/, "STEP.TBG matched STEP.COM");
-    await key("y"); // Symbols.
+    await key("l"); // Symbols.
     await lcd(">0100 START");
     await lcd(" 0104 TAKE");
     await key("r"); // Registers again.
@@ -97,7 +97,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await key("Space"); // Space: a breakpoint.
   await lcd(">□0104 POP DE");
   await lcd("BP SET 0104");
-  await key("ArrowLeft"); // The selection back on PC.
+  await key("p"); // P: the selection back on PC.
   await key("r"); // Registers.
   await key("F5"); // F5, Fn+5: run.
   await lcd("PC 0104");
@@ -109,7 +109,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await key("Control+ArrowDown"); // Ctrl must reach TBUG for a page.
   await lcd("0118>");
   {
-    await key("y"); // Symbols, when STEP.TBG matches.
+    await key("l"); // Symbols, when STEP.TBG matches.
     await lcd(">0100 START");
   }
   await key("r"); // Registers.
@@ -124,13 +124,11 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await lcd(">HL 1234");
   await key("s"); // Stack.
   await lcd(">SP ");
-  // Ctrl+Space steps out: POP and RET leave STEP. Were Ctrl lost, Space
-  // would step POP and stop at 0105h instead.
+  // F6 steps out: POP and RET leave STEP.
   await key("F6"); // F6, Fn+6: step out.
   await lcd("EX");
   assert.equal(await video(), videoAtEntry, "debugging kept the rendered 9918 display intact");
-  await keyThen("Escape"); // Back to the view before, then the question.
-  if (!(await page.locator("#lcd").textContent()).includes("Quit TBUG? Y/N")) await keyThen("Escape");
+  await keyThen("q"); // Q asks first.
   await lcd("Quit TBUG? Y/N");
   await key("y");
   await prompt();

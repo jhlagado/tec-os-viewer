@@ -61,14 +61,14 @@ test("TBUG's Code, stepping and help keys work on the standard card", { timeout:
   await lcd(">→010A LD C,0C");
   await key("r"); // Registers.
   await lcd("PC 010A");
-  await key("h");
+  await key("F1"); // F1, Fn+1: help.
   await lcd("REGISTERS   HELP 1/5");
   for (let i = 0; i < 3; i += 1) await key("ArrowRight");
   await lcd("RUNNING     HELP 4/5");
   await lcd("Ctrl+Esc held breaks"); // The page's rows, once drawn.
   await key("Escape");
   await lcd("PC 010A");
-  for (let i = 0; i < 3 && !(await text()).includes("Quit TBUG? Y/N"); i += 1) await keyThen("Escape");
+  await keyThen("q"); // Q asks first.
   await lcd("Quit TBUG? Y/N");
   await key("y");
   await page.focus("#tms");
