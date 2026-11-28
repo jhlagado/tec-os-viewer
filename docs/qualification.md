@@ -857,6 +857,19 @@ on a change that doesn't touch the copy path. The other three pass 238 of 238
 across 40 files (peaks 793, 764 and 706 MB), and `test/tbg` passes 4 of 4 after
 all four.
 
+**Tecos 8c12c9f, and Tecos for TEC-OS.** Tecos `8c12c9f` renames TEC-OS: the
+banner reads "Tecos 0.1 for TEC-1G" and the LCD line "Tecos 0.1  TEC-1G". The
+ROM is 16,141 bytes, `04ab62be…`; the banner and the RAM message are shorter,
+so code moves down by 3 bytes and the banner by 1. Every guest-observer span is
+the same instructions with only its address operands moved, and
+`src/guest-profile.json` restates the ROM, d8 and symbol-map hashes and the
+spans' bytes. `DEMO.ASM` and `SAMPLE.ASM` change only in comments; the recipe
+digest becomes `b813312e…`. The Viewer's page, messages, comments, tests and
+docs now say Tecos; dated records keep TEC-OS. `test/clean-build` takes
+`SAMPLE.ASM`'s size and hash from `pins.json` and the build rather than naming
+one pin's. Two complete Viewer strict runs at `6c82a9b` pass 238 of 238 across
+40 files (peaks 768 and 768 MB), and `test/tbg` passes 4 of 4 after each.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
