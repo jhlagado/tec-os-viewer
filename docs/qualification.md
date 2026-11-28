@@ -870,6 +870,18 @@ docs now say Tecos; dated records keep TEC-OS. `test/clean-build` takes
 one pin's. Two complete Viewer strict runs at `6c82a9b` pass 238 of 238 across
 40 files (peaks 768 and 768 MB), and `test/tbg` passes 4 of 4 after each.
 
+**Tecos fe23fa7: the card's programs say Tecos.** Tecos `fe23fa7` renames TEC-OS
+in DEMO, SAMPLE, MOUNT, TIMES, Caverns and, from MON-3's `c0f0f16`, HELLO3. The
+ROM is unchanged (`04ab62be…`). On the card `CAVERNS.BAS`, `CAVERNS.TXT`,
+`DEMO.ASM`, `HELLO3.ASM`, `SAMPLE.ASM` and `TIMES.BAS` change; the recipe digest
+becomes `2330ccf6…`. DEMO's LCD row is "Tecos hardware demo ", compared in all
+20 characters; SAMPLE prints "Hello from Tecos." at the same line and column;
+HELLO3's first row is "MON-3 ON TECOS". DEMO.COM, as TAS builds it on the card,
+is 1,189 bytes, `c868a5a0…`; `test/basic-card` now compares it with Tecos's own
+build of `DEMO.ASM` rather than naming one pin's size and hash. Two complete
+Viewer strict runs at `f4074a3` pass 238 of 238 across 40 files (peaks 764 and
+766 MB), and `test/tbg` passes 4 of 4 after each.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
