@@ -844,6 +844,19 @@ without failing on it. `test/fixtures/viewer-feedback-cost.json` drops the
 baseline module bytes, the allowance and the 155,026-byte decision, and keeps
 its speed, control and copy criteria.
 
+**TEC-OS 8a7e24e.** TEC-OS `8a7e24e` reads a bare or `.SVC` service name from
+A: as a COM is read, so `tbug step` at B:WORK> finds A:TBUG.SVC, and takes
+`TBUG.SVC` from TBUG `167f7f0` (9,085 bytes, `24d7ceb9…`): no ARM, `tbug
+NAME`, lowercase commands. The ROM changes, to `1225ea0d…`; every guest-observer
+span keeps its bytes at the same address and the symbol map is unchanged, so
+`src/guest-profile.json` restates only its ROM and d8 hashes. The recipe digest
+becomes `61cf83c2…`. Of four complete strict runs at `b8f4b4e`, the first
+stopped at `guest-save-cost-browser`: three of its eight card copies took 73 to
+79 ms against the 50 ms bound, where every other run's copies took 8 to 15 ms,
+on a change that doesn't touch the copy path. The other three pass 238 of 238
+across 40 files (peaks 793, 764 and 706 MB), and `test/tbg` passes 4 of 4 after
+all four.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
