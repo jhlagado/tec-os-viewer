@@ -28,9 +28,9 @@ The **Columns** selector provides all three choices. Changing Columns or Display
 restarts the machine and restores the card's default drives and startup. Missing, invalid or
 unavailable saved preferences use 40 columns.
 
-The firmware pin is TEC-OS `0160b48`, with TBUG from tbug `f31249a` (no key repeats, the first stop in Code, Left in Code puts PC on the top row), BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
+The firmware pin is TEC-OS `8a7e24e`, with TBUG from tbug `167f7f0` (`tbug NAME`, no ARM, lowercase commands, no key repeats, the first stop in Code), a bare service name read from A: as a COM is, BOUNCE titled BAZ BASIC, BAZC, the BASIC compiler under its new name, `TAS.COM` on every A: volume, the CCP's own pager, 96-byte line history, `CLS` and the prompt `A:SYSTEM>` naming the drive's volume, with or without the shell (ABI 5.6, `TNPAGE` and `TNPRMPT`), Shift-Tab as back-tab, with the packed ROM font (glyphs through service 17), services claiming RST 7 alone,
 the COM launch vector `COMVEC`, the ROM's name parser exported as `TNPARSE` (ABI 5.4) and F1-F10 on Fn with a digit key, Page Up, Page Down, Home and End on Fn with an arrow and Shift with an arrow sent as xterm sends it, with the five-volume starter card (SYSTEM, ASM,
-BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `f31249a`, with its symbols built in, which builds with
+BASIC, MON3 and GAMES on A:, WORK on B:, a spare C:) and TBUG from tbug `167f7f0`, with its symbols built in, which builds with
 TAS alone, on the release 1 candidate with BASIC: the Compact font, a cold
 40-column console, the squeezed ROM with a small CCP and three drives,
 `SHELL.SVC`, the resident shell, in 9 pages, `MON3.SVC` for MON-3's programs,
@@ -181,7 +181,7 @@ as TEC-OS's build at the pin gives them.
 `npm run tecos` needs read access to six repositories: jhlagado/tec-os, the `tec-os` submodule, at the pin, and the five its
 inputs come from, at the commits TEC-OS's `test/inputs.json` pins: jhlagado/tas (`f1e4dbc` for `TAS.COM` and the runner),
 jhlagado/ted (`b2f98bc` for `TED.COM`), jhlagado/baza (`3f31488` for the compiler, the runtime and `BAZ.COM`, `7beac04` for
-BOUNCE), jhlagado/tbug (`f31249a` for `TBUG.SVC`, `a4d1da8` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
+BOUNCE), jhlagado/tbug (`167f7f0` for `TBUG.SVC`, `a4d1da8` for `TBUG.HLP`) and jhlagado/debug80-tec1g-mon3
 (`000c052`, MON-3's ROM and sources). Without that access, supply the inputs in `tec-os/.inputs/`, or use the [live demo](https://jhlagado.github.io/tec-os-viewer/).
 
 ```
@@ -233,9 +233,9 @@ the native storage transaction completes.
 
 ## TBUG, the LCD debugger
 
-The page's card carries TBUG.SVC and TBUG.HLP on every A: volume, and its ROM,
-TEC-OS ABI 5.3, has the COMVEC word that `TBUG.SVC ARM` uses. At the prompt,
-type `UNLOAD`, then `TBUG.SVC NAME` for a COM on the card. TBUG's first
+The page's card carries TBUG.SVC and TBUG.HLP on every A: volume. At the
+prompt, type `unload`, then `tbug name` for a COM on the card, such as
+`tbug step`; from B:, `tbug step` still finds A:TBUG.SVC. TBUG's first
 stop opens in Code, and its views run Code, Registers, Symbols, Stack and
 Memory. Keys typed anywhere on the page but the serial pane, the phone
 keyboard and the page's controls go to the matrix with their Shift or Ctrl,
