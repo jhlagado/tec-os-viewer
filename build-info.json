@@ -1,7 +1,7 @@
 {
-  "viewerCommit": "c175bb4d927757332e22e3311149d54ab365deca",
-  "firmwareCommit": "0160b48d1961b0d25775218e5ccbf5e960ffc0b5",
-  "firmwareRomSha256": "bb429d10b011de989fc415281072a98304445f2b2335dc6ba85542931427593f",
+  "viewerCommit": "ed1bb10909f755b1cee75cb25f7025a3c8c85956",
+  "firmwareCommit": "8a7e24e30801bd6ff9672349ab7e32ce88019923",
+  "firmwareRomSha256": "1225ea0da080d6c8257bce9fbccf7932dde5db7eed94f2d84f30a13ea9ec99ce",
   "publication": "standalone-demo",
   "payloads": {
     ".nojekyll": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 725488,
-      "sha256": "4367485017cb696621eee2f2d57c66ff67ff2e37103aa91f2dae67510a79657d"
+      "bytes": 725416,
+      "sha256": "66a0993aa0b5073f86c0bfb8d8f329fe929a38a9268a90d50ebf9e9bf0e015e9"
     }
   },
   "defaultColumns": 40,
@@ -41,11 +41,11 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at c25f0d0 and two at c175bb4 (Native 0160b48, TBUG f31249a): 40 files, 238/238 each, with test/tbg 4/4 after each; Native strict 1485/1485 twice at 0160b48. c175bb4 adds only the qualification note.",
+    "scope": "Three complete strict Viewer rounds of four at b8f4b4e (one stopped at guest-save-cost-browser on a host timing outlier) and two at ed1bb10 (Native 8a7e24e, TBUG 167f7f0): 40 files, 238/238 each, with test/tbg 4/4 after each; Native strict 1487/1487 twice at 8a7e24e. ed1bb10 adds only the qualification note.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "db4208d5750eaf22fd7d93042e9194fdc79b0dbd",
+  "previousQualification": "c175bb4d927757332e22e3311149d54ab365deca",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -101,7 +101,7 @@
       "withShell": 44288,
       "bdosVector": "AE00h"
     },
-    "tbugCommit": "f31249a64b91c19ea5c8b68bc67ebb45c34e6efc",
+    "tbugCommit": "167f7f04a7af5fe859d4b3f4c1885ae4ce4d78e6",
     "tbugHelpCommit": "a4d1da82d2b5239b3154e910351dbe403ac1ab58"
   },
   "ted": {
