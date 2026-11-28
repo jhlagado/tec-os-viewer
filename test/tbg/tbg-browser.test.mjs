@@ -72,7 +72,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
     await lcd("REGISTERS   HELP 1/5");
     await key("Escape");
     assert.match(await page.locator("#lcd").textContent(), /SY/, "STEP.TBG matched STEP.COM");
-    await key("l"); // Symbols.
+    await key("l"); // Labels.
     await lcd(">0100 START");
     await lcd(" 0104 TAKE");
     await key("r"); // Registers again.
@@ -109,7 +109,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await key("Control+ArrowDown"); // Ctrl must reach TBUG for a page.
   await lcd("0118>");
   {
-    await key("l"); // Symbols, when STEP.TBG matches.
+    await key("l"); // Labels, when STEP.TBG matches.
     await lcd(">0100 START");
   }
   await key("r"); // Registers.
@@ -118,7 +118,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   await key("ArrowDown"); // DE,
   await key("ArrowRight"); // then HL.
   await lcd(">HL 1234");
-  await key("Enter"); // Memory following HL.
+  await key("a"); // A: Memory at HL.
   await lcd("1234>");
   await key("Escape");
   await lcd(">HL 1234");
