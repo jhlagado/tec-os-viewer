@@ -23,11 +23,9 @@
     "pages": "0366ec44b82a6edd7839a979550f6c243f05a0d2",
     "standaloneBytes": 443348,
     "standaloneSha256": "8843bfc5d459e7642d367668864f3e26963ee5f4d1e52c05b7763bab632430ae",
-    "normalizedEmbeddedModuleBytes": 130450,
     "normalization": "strip sourceMappingURL line; trim trailing whitespace; append one LF"
   },
-  "maximumAddedNormalizedModuleBytes": 24576,
-  "lcdModuleSizeDecision": "Owner accepted the Viewer-only 155026-byte total ceiling on 21 November 2026; former 146834-byte ceiling failed by 6003 bytes. No CPU, click, copy or memory limit changes.",
+  "moduleSizeDecision": "Owner lifted the module size ceiling on 28 November 2026: the bundle's size is reported, never bounded. No CPU, click, copy or memory limit changes.",
   "basis": {
     "semanticMeasurementPacket": "guest-save-transaction-runtime01",
     "manifestSha256": "d3cf56c08c2165b95f6027e6608c97bd796bd80c43283038937ee8996a629248",

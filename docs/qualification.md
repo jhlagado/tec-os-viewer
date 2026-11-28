@@ -837,6 +837,13 @@ are unchanged, and the recipe digest becomes `6e232cbd…`. The module is still
 across 40 files (peaks 812 and 798 MB), and `test/tbg` passes 4 of 4 after
 each (peaks 647 and 647 MB).
 
+**No size ceiling.** John lifted the module size ceiling on 28 November 2026.
+`test/web-bundle` keeps its checks that the bundle uses no Node globals and
+one runtime, from `tec-os/`, and now reports the module's size, 154,938 bytes,
+without failing on it. `test/fixtures/viewer-feedback-cost.json` drops the
+baseline module bytes, the allowance and the 155,026-byte decision, and keeps
+its speed, control and copy criteria.
+
 ## Restored Caverns prose and current firmware
 
 The source-only starter now supplies CAVERNS.BAS, compiling to a 37,248-byte
