@@ -79,10 +79,15 @@ bench**.
 
 - **Insert** (Run in emulator) puts the bench card in the machine and powers
   it on, and opens the Emulator page.
-- **Eject** waits until the machine is idle at a prompt with no pending
-  blocks, stops it and puts the card back on the bench. If the blocks don't
-  clear, Force eject loses them, as pulling the card from the board would,
-  after a warning that says how many.
+- **Eject** waits until the machine is waiting for console input with no
+  pending blocks, stops it and puts the card back on the bench. TEC-OS
+  writes its pending blocks whenever it waits for a key (BDOS 1, 6, 10 and
+  11 and BIOS CONIN), at a warm boot, a drive change, directory work and
+  BDOS 48, so an idle prompt has none unless a write is failing. A program
+  that loops without reading the console can hold them, so the Eject dialog
+  says to quit the program to the prompt, and offers Force eject, which
+  loses them as pulling the card from the board would, after a warning that
+  says how many.
 - The Card page of the card in the machine is read-only, marked "In the
   machine: Eject to change it", so TEC-OS and the PC never change the same
   card at once. It shows the card as it is now and says TEC-OS may still be
@@ -534,8 +539,9 @@ format:
    volumes, reordered, added to or removed from, payloads copied. Stage 4.
 5. `tecvol install`'s device code in the library, with a reader beside it.
    Stage 5.
-6. A question: can the page ask TEC-OS to write its pending blocks now, so
-   that Eject need not wait for the next OS call?
+6. Answered: the page can't ask TEC-OS to flush, and needn't. TEC-OS drains
+   its cache whenever it waits for console input, so Eject waits for that
+   (section 1, "The card and the machine").
 
 ## Open questions for John
 
