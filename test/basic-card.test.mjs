@@ -46,6 +46,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { assembleProgram } from "../tec-os/tools/lib/assemble.mjs";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { findVolume, parseContainer, volumePayload } from "../tec-os/tools/lib/container.mjs";
@@ -175,8 +176,9 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
   // The program Tecos's own build
   // makes from the same source.
   const built = Buffer.from(driveA(image).read("DEMO.COM"));
-  assert.equal(createHash("sha256").update(built.subarray(0, 1191)).digest("hex"), "7514c21df1dfabe11ddfa5ba94df9a40871f197e3e9b9d2e239c2b4988a9482d", "DEMO.COM's 1,191 bytes");
-  assert.ok(built.length - 1191 < 128 && built.subarray(1191).every((b) => b === 0 || b === 0x1a), "then only the record's padding");
+  const own = (await assembleProgram(resolve(ROOT, "tec-os/programs/DEMO.ASM"))).bytes;
+  assert.equal(createHash("sha256").update(built.subarray(0, own.length)).digest("hex"), createHash("sha256").update(own).digest("hex"), `DEMO.COM's ${own.length} bytes, as Tecos's build makes them`);
+  assert.ok(built.length - own.length < 128 && built.subarray(own.length).every((b) => b === 0 || b === 0x1a), "then only the record's padding");
   mark = m.output.length;
   keys(m, "demo\r", "the demo's loop", () => /Press any key to stop\./.test(m.text(mark)));
   const end = m.cycles + 100_000_000;
