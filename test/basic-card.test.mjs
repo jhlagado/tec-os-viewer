@@ -182,7 +182,7 @@ test("in the page's machine, TAS DEMO builds DEMO.COM and DEMO runs it until a k
   const end = m.cycles + 100_000_000;
   m.runUntil(() => m.cycles >= end, 101_000_000, "the demo running");
   assert.deepEqual(Array.from(m.tec1g.state.display.tms9918.stateSnapshot().registers.slice(0, 8)), [0, 0xc2, 6, 0x80, 0, 0x36, 7, 1], "Graphics I on the PICO9918");
-  assert.equal(String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20)), "TEC-OS hardware demo", "the LCD's first row");
+  assert.equal(String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20)), "Tecos hardware demo ", "the LCD's first row, all 20 characters");
   m.enqueueInput(" ", "matrix");
   m.runUntilChecked(() => (m.pumpInput(), m.ready() && /Demo stopped\.\r\n[^]*A:ASM>$/.test(m.text(mark))), LIMIT, "the prompt after a key");
   assert.ok(m.videoConsole(), "the PICO9918 is the console again");

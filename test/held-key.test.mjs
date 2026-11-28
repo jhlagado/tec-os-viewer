@@ -135,7 +135,7 @@ async function hello3() {
   m.type("GO\r");
   run(m, 20_000_000, () => {});
   const lcd = String.fromCharCode(...m.tec1g.state.lcdCtrl.lcd.slice(0, 20));
-  assert.match(lcd, /^MON-3 ON TEC-OS/, "HELLO3's first LCD line");
+  assert.match(lcd, /^MON-3 ON TECOS/, "HELLO3's first LCD line");
   return m;
 }
 

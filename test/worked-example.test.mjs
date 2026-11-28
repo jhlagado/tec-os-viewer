@@ -73,12 +73,12 @@ function samplePosition(image) {
   expected.copy(padded);
   assert.deepEqual(bytes, padded, "card source equals pinned source with CRLF, EOF and zero record padding");
   const lines = bytes.subarray(0, bytes.indexOf(0x1a)).toString("latin1").split("\r\n");
-  const line = lines.findIndex((l) => l === 'HELLO:    DB    "Hello from TEC-OS."') + 1;
+  const line = lines.findIndex((l) => l === 'HELLO:    DB    "Hello from Tecos."') + 1;
   assert.equal(line, 193, "the pinned greeting line");
   const text = lines[line - 1];
   assert.equal(text.indexOf("Hello") + 1, 18, "the pinned greeting text column");
   assert.ok(!text.includes("\t"), "the compact greeting has no tabs to expand");
-  const insertAt = text.indexOf("TEC-OS.");
+  const insertAt = text.indexOf("Tecos.");
   assert.equal(insertAt, 28, "the pinned insertion offset");
   return { line, insertAt, cursor: `L${line} C${insertAt + "the ".length + 1}`,
     edited: text.slice(0, insertAt) + "the " + text.slice(insertAt) };
@@ -98,7 +98,7 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
 
   keys(m, "tas sample\r", "TAS's build", () => m.ready() && screen().some((l) => /^SAMPLE\.COM written/.test(l)));
   keys(m, "sample\r", "SAMPLE's run", () => m.ready() && screen().includes("Back to the prompt."));
-  assert.match(screen().join("\n"), /Hello from TEC-OS\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA:SYSTEM>/);
+  assert.match(screen().join("\n"), /Hello from Tecos\.\nScreen: 80 by 24\nBack to the prompt\.\n\nA:SYSTEM>/);
 
   const { line, insertAt, cursor, edited } = samplePosition(image);
   keys(m, `ted sample.asm ${line}\r`, "TED at the hello line", () => new RegExp(`L${line} C1\\b`).test(screen()[23]));
@@ -111,7 +111,7 @@ test("the page's card builds and runs SAMPLE at the prompt, and again from TED w
   mark = m.output.length;
   fn(m, 5);
   keys(m, "", "F5's run", () => /Press a key/.test(m.text(mark)));
-  assert.match(m.text(mark), /Hello from the TEC-OS\.\r\n/, "the edited line printed");
+  assert.match(m.text(mark), /Hello from the Tecos\.\r\n/, "the edited line printed");
   keys(m, " ", "TED again", () => new RegExp(`${cursor}\\b`).test(screen()[23]));
   keys(m, "\x11", "the prompt", () => m.text(mark).endsWith("A:SYSTEM>"));
   assert.deepEqual(m.violations, []);
