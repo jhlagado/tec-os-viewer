@@ -23,10 +23,12 @@ test("the firmware precheck verifies the starter recipe", { concurrency: false }
   const valid = JSON.parse(original);
   const sample = (recipe) => recipe.components.flatMap((component) => component.files)
     .find((file) => file.name === "SAMPLE.ASM");
-  sample(valid).bytes = 4485;
-  sample(valid).sha256 = "1bfd9696548327f5717f18b749ec2bcb3468df2e6c1dbea095b295673a00c20e";
+  // SAMPLE.ASM as pinned and as built, so the cases don't name one pin's bytes.
+  const sampleBytes = readFileSync(resolve(ROOT, "tec-os/dist/files/SAMPLE.ASM")).length;
+  sample(valid).bytes = sampleBytes;
+  sample(valid).sha256 = JSON.parse(readFileSync(resolve(ROOT, "pins.json"), "utf8")).files["SAMPLE.ASM"];
   const cases = [
-    ["stale length", (recipe) => { sample(recipe).bytes = 5051; }, /SAMPLE\.ASM has 4485 bytes, recipe says 5051/],
+    ["stale length", (recipe) => { sample(recipe).bytes = sampleBytes + 1; }, new RegExp(`SAMPLE\\.ASM has ${sampleBytes} bytes, recipe says ${sampleBytes + 1}`)],
     ["wrong hash", (recipe) => { sample(recipe).sha256 = "0".repeat(64); }, /SAMPLE\.ASM recipe SHA-256/],
     ["duplicate name", (recipe) => { recipe.components[0].files.push({ ...sample(recipe) }); }, /declared more than once/],
     ["missing name", (recipe) => { for (const c of recipe.components) c.files = c.files.filter((f) => f.name !== "SAMPLE.ASM"); }, /SAMPLE\.ASM is missing from the recipe/],
