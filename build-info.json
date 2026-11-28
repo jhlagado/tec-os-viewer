@@ -1,6 +1,6 @@
 {
-  "viewerCommit": "7d6c6e53402a28cefc2f00ff9a74b601bbf7bb2c",
-  "firmwareCommit": "fe23fa7165a65a1c4670bbd61a25108fa996533a",
+  "viewerCommit": "7959b58a108716af9d2ca697d4c063cece35023a",
+  "firmwareCommit": "4c555ffce55a0d4e7abe710092f1793f678dd012",
   "firmwareRomSha256": "04ab62be235be439f8b69e691e7666252608bed98bbe5da08a3a5927f8f29fbd",
   "publication": "standalone-demo",
   "payloads": {
@@ -13,8 +13,8 @@
       "sha256": "6f0e2a6ac05068c54d7d82d92e437dadab46012bbafe641246bf429d88fb07e9"
     },
     "index.html": {
-      "bytes": 725378,
-      "sha256": "24463766887848d529f7f591ebec4e49945459ffbf7e8a807ba9d5cca8ef493b"
+      "bytes": 725934,
+      "sha256": "1d20ec7235ae29e4b9dd56e51c40d422c8755f7b3ca49e34466f7813081987af"
     }
   },
   "defaultColumns": 40,
@@ -41,11 +41,11 @@
     "binarySha256": "c1fa08cc2e19f13a56b41a484a56d9c9d1876ffa2d9ec4a82cdb780b962c3c5d"
   },
   "standaloneQa": {
-    "scope": "Two complete strict Viewer rounds at f4074a3 and two at 7d6c6e5 (Tecos fe23fa7): 40 files, 238/238 each, with test/tbg 4/4 after each. 7d6c6e5 adds only the qualification note.",
+    "scope": "Two complete strict Viewer rounds at 7959b58 (Tecos 4c555ff, TBUG 1215559): 40 files, 238/238 each, with test/tbg 4/4 after each.",
     "starterShell": "SHELL.SVC 9 pages (3,584 bytes on the card); DIR, COPY and SERVICES an overlay read from its file; the pager, history, CLS and prompt from the ROM; bare names run COM, then SVC, then CMD; built-ins first",
     "bareCcp": "The ROM CCP pages, keeps a 96-byte line history, clears with CLS and prompts d:LABEL>, e.g. A:SYSTEM>, with or without the shell"
   },
-  "previousQualification": "1e2d6717c66fda24a97b6653c01f3f90755bbd60",
+  "previousQualification": "7d6c6e53402a28cefc2f00ff9a74b601bbf7bb2c",
   "tas": {
     "tasCommit": "f1e4dbcb3ae48b18b7d06dfd395d19cfa0612d8e",
     "bytes": 10976,
@@ -101,8 +101,8 @@
       "withShell": 44288,
       "bdosVector": "AE00h"
     },
-    "tbugCommit": "167f7f04a7af5fe859d4b3f4c1885ae4ce4d78e6",
-    "tbugHelpCommit": "a4d1da82d2b5239b3154e910351dbe403ac1ab58"
+    "tbugCommit": "1215559",
+    "tbugHelpCommit": "1215559"
   },
   "ted": {
     "sessionFiles": [
