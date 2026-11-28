@@ -34,7 +34,7 @@ async function stopped(t) {
   await page.focus("#tms");
   await page.keyboard.type("unload\n");
   await prompt();
-  await page.keyboard.type("tbug.svc nops\n", { delay: 80 });
+  await page.keyboard.type("tbug nops\n", { delay: 80 });
   await page.waitForFunction(() => document.getElementById("lcd").textContent.includes("TBUG Tab Next H Help"), null, { timeout: 15000 });
   await page.waitForTimeout(1500); // The hint goes.
   return { page, errors, lcd, screen, prompt };

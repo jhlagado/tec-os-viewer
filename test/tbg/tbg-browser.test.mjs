@@ -1,5 +1,5 @@
-// TBUG on the standard card: TAS assembles the book's STEP.ASM, TBUG.SVC ARM
-// catches the launch through COMVEC (TEC-OS ABI 5.3), and STEP.TBG names
+// TBUG on the standard card: TAS assembles the book's STEP.ASM, TBUG STEP
+// takes the launch through COMVEC (TEC-OS ABI 5.3), and STEP.TBG names
 // its labels. The card's SYSTEM volume on A: carries TAS, TBUG.SVC and
 // TBUG.HLP. Run with node --test test/tbg/*.test.mjs.
 import { test } from "node:test";
@@ -47,10 +47,8 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
     const lines = globalThis.tecos.screen().filter((line) => line.trim());
     return /^A(:[A-Z0-9]+)?>\s*$/.test(lines.at(-1)) && lines.some((line) => /STEP.COM written/.test(line));
   }, null, { timeout: 12000 });
-  await page.keyboard.type("tbug.svc arm\n");
-  await prompt("tbug.svc arm");
   await page.focus("#tms");
-  await page.keyboard.type("step\n", { delay: 80 });
+  await page.keyboard.type("tbug step\n", { delay: 80 });
   await entry().catch(async (error) => {
     throw new Error(`Entry stop missing. LCD: ${await page.locator("#lcd").textContent()}\n${await page.evaluate(() => globalThis.tecos.screen())}`, { cause: error });
   });
@@ -141,7 +139,7 @@ test("TBUG launches, steps and resumes in the Viewer", { timeout: 90_000 }, asyn
   assert.equal(await page.evaluate(() => document.activeElement?.id), "tms", "a click on the screen leaves the LCD");
   {
     await page.focus("#tms");
-    await page.keyboard.type("tbug.svc line\n", { delay: 80 });
+    await page.keyboard.type("tbug line\n", { delay: 80 });
     await entry(); // The first stop, in whichever view TBUG opens.
     await page.locator("#lcd").click();
     await key("F5"); // A line read under TBUG is the program's own.

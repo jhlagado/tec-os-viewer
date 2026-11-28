@@ -41,7 +41,7 @@ test("TBUG's Code, stepping and help keys work on the standard card", { timeout:
   await page.focus("#tms");
   await page.keyboard.type("unload\n");
   await prompt();
-  await page.keyboard.type("tbug.svc over\n", { delay: 80 });
+  await page.keyboard.type("tbug over\n", { delay: 80 });
   await entry(); // The first stop.
   await page.locator("#lcd").click();
   await key("c"); // Code, whichever view the first stop shows.
@@ -73,7 +73,7 @@ test("TBUG's Code, stepping and help keys work on the standard card", { timeout:
   await key("y");
   await page.focus("#tms");
   await prompt();
-  await page.keyboard.type("tbug.svc rec\n", { delay: 80 });
+  await page.keyboard.type("tbug rec\n", { delay: 80 });
   await entry();
   await page.locator("#lcd").click();
   await key("r"); // Registers.
